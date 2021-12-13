@@ -1,0 +1,89 @@
+.bd-header { display: flex;  align-items: center;}
+.bd-header .pro-img {
+    width: 40px;
+    height: 40px;
+    background: #E7F1FD;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;margin-right: 10px;
+}
+.bd-header .pro-name p{font-size: 14px;margin-bottom: 0px;line-height: 1;}
+.bd-header .pro-name h3 {line-height: 1;  font-size: 18px;margin-bottom: 0px;}
+.farmer-db {  background: #F5F9FC;padding: 20px 15px; min-height: calc(100% - 70px);}
+.farmer-detail {
+    background: #DEF5D6 0% 0% no-repeat padding-box;
+    border-radius: 0px 0px 8px 8px;padding:20px;
+}
+.farmer-detail ul {
+    list-style: none;
+    padding-left: 0px;
+    margin-bottom: 0;display: flex;
+    flex-wrap: wrap;
+}
+.farmer-detail ul li { width: 33.33%; margin: 8px 0;}
+.farmer-detail ul li span { font-size: 14px;margin-left: 10px; }
+.farmer-tab { padding: 20px 0;display: flex;justify-content: space-between; flex-wrap: wrap;border-bottom: 1px solid #BABABA;}
+.farmer-tab button.nav-link.active { background: #393939; color: #fff;}
+.farmer-tab button.nav-link{font-size: 14px;color: #292929;padding: 10px 35px;border-radius: 20px; }
+.btn-farmer {
+    background: #2EADC4 0% 0% no-repeat padding-box;
+    box-shadow: 0px 1px 2px #00000038;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 20px;
+}
+.farmer-data { padding: 20px 0;}
+.farmer-data .view-data {border-bottom: none;margin: 0px 0 20px;border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #bababa;}
+.farmer-data .view-data li .form-check-input:checked {
+    background-color: #548244;
+    border-color: #548244;
+    border-radius: 50%;
+    padding: 0;
+}
+.farmer-data .view-data li .form-check-input {
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid #bababa;
+}
+.farmer-data .view-data .nav-link { border: none;background: #fff;
+    color: #292929;font-size: 14px;border-radius: 0px;padding:0px;isolation: inherit;
+}
+.farmer-data .view-data .form-check{padding: 8px 15px;margin-right: -1px;  background: #fff;margin-bottom: 0px;cursor: pointer;}
+.farmer-data .view-data .form-check .form-check-input{margin-left: 0px;}
+.farmer-data .view-data .nav-link.active{border: none;}
+.listview-table tr th{font-weight: 500 !important;}
+.listview-table tr td, .listview-table tr th {
+    padding: 12px 0;font-weight: normal;
+    border-bottom: 1px solid #bababa;font-size: 14px;
+}
+.listview-table {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px 8px 0px 0px;
+}
+.table-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.btn_add_farmer {
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 1px 2px #00000038;
+    border: 1px solid #2EADC4;
+    border-radius: 5px;
+    color: #2EADC4;
+    font-weight: 600;font-size: 14px;
+}
+.btn_add_farmer:hover {
+    color: #1ebedb;
+}
+.btn-farmer:hover {
+    color: #fff;
+    opacity: .9;
+}
+.farmer-data .view-data li+li{  border-left:1px solid #bababa;}
