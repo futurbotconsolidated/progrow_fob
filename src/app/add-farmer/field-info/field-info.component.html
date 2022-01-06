@@ -1,0 +1,1014 @@
+<div class="main-farmer">
+    <app-sidenav></app-sidenav>
+    <article class="right-sec">
+        <app-header></app-header>
+        <div class="main-sec">
+            <div class="field-info-form">
+                <div class="field-info-map">
+                    <h3 class="form-title"> Mark field numbers on the map corresponding to Crop-Season-Field</h3>
+                    <div class="map">
+                        <div id="map" style="width: 100%; height: 366px; border: 1px solid #ccc"></div>
+                        <!-- <img src="../../../assets/images/map-img.png" alt="" width="100%"> -->
+                    </div>
+                </div>
+                <form [formGroup]="fieldInfoForm">
+                    <div class="form-details">
+                        <h3 class="form-title">Cluster Details <a href="javascript:void(0)" class="comment-icon"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <defs>
+                                        <style>
+                                            .a {
+                                                fill: none;
+                                            }
+
+                                            .b {
+                                                fill: #0779ff;
+                                            }
+                                        </style>
+                                    </defs>
+                                    <path class="a" d="M0,0H24V24H0Z" />
+                                    <path class="b"
+                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
+                                </svg></a></h3>
+                        <div class="row align-items-center">
+
+                            <div class="col-md-3 lable-top">
+                                <label>Select cluster</label>
+                                <select class="form-select">
+                                    <option selected>cluster 1</option>
+                                    <option>Cluster 2</option>
+                                    <option>Cluster 3</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 lable-top">
+                                <label>Cluster area</label>
+                                <input type="text" class="form-control" id="" placeholder="5000 HA">
+                            </div>
+                            <div class="col-md-3 lable-top">
+                                <label>B. Land survey/Khasara number</label>
+                                <input type="text" class="form-control" id="" placeholder="Abc1234567890">
+                            </div>
+                            <div class="col-auto add-another">
+                                <a href="#">+ Add Cluster</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-details">
+                        <div class="form-details-inner">
+                            <h3 class="form-title">1. Planned season details <a href="javascript:void(0)"
+                                    class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24">
+                                        <defs>
+                                            <style>
+                                                .a {
+                                                    fill: none;
+                                                }
+
+                                                .b {
+                                                    fill: #0779ff;
+                                                }
+                                            </style>
+                                        </defs>
+                                        <path class="a" d="M0,0H24V24H0Z" />
+                                        <path class="b"
+                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
+                                    </svg></a></h3>
+                            <div class="row align-items-center planned-season-deatils">
+                                <div class="col-md-3">
+                                    <h3 class="form-title">A. Planned Season</h3>
+                                    <select class="form-select">
+                                        <option selected>Rabi 2021</option>
+                                        <option>Rabi 2021</option>
+                                        <option>Rabi 2021</option>
+                                        <option>Rabi 2021</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <h3 class="form-title">B. Planned Crops</h3>
+                                    <input type="text" class="form-control" id="planned_copy"
+                                        placeholder="Enter comma separated crop names here…">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-details-inner">
+                            <div class="row field-details">
+                                <div class="field-tooltip">
+                                    <h3 class="form-title">C. Field Details</h3><span><a href="#"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Irrigation System">Irrigation System<svg
+                                                xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 20 20">
+                                                <defs>
+                                                    <style>
+                                                        .a {
+                                                            fill: none;
+                                                        }
+                                                    </style>
+                                                </defs>
+                                                <path class="a" d="M0,0H20V20H0Z" />
+                                                <path
+                                                    d="M10.326,2a8.326,8.326,0,1,0,8.326,8.326A8.329,8.329,0,0,0,10.326,2Zm.833,12.489H9.493v-6h1.665Zm0-7.661H9.493V5.163h1.665Z"
+                                                    transform="translate(-0.326 -0.326)" />
+                                            </svg></a><a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Water Sources">Water Sources<svg xmlns="http://www.w3.org/2000/svg"
+                                                width="20" height="20" viewBox="0 0 20 20">
+                                                <defs>
+                                                    <style>
+                                                        .a {
+                                                            fill: none;
+                                                        }
+                                                    </style>
+                                                </defs>
+                                                <path class="a" d="M0,0H20V20H0Z" />
+                                                <path
+                                                    d="M10.326,2a8.326,8.326,0,1,0,8.326,8.326A8.329,8.329,0,0,0,10.326,2Zm.833,12.489H9.493v-6h1.665Zm0-7.661H9.493V5.163h1.665Z"
+                                                    transform="translate(-0.326 -0.326)" />
+                                            </svg></a></span>
+                                </div>
+                                <div class="display-flex align-normal">
+                                    <div class="col-md-1 lable-top">
+                                        <label>Field ID</label>
+                                        <input type="text" class="form-control text-center" placeholder="1">
+                                    </div>
+                                    <div class="display-flex-1">
+                                        <div class="col-md-2 lable-top">
+                                            <label>Area</label>
+                                            <input type="text" class="form-control" placeholder="5000 Hectares">
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Irrigation System</label>
+                                            <select class="form-select">
+                                                <option selected>Surface irrigation</option>
+                                                <option>Surface irrigation</option>
+                                                <option>Surface irrigation</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Water Sources</label>
+                                            <select class="form-select">
+                                                <option selected>Pond</option>
+                                                <option>Pond</option>
+                                                <option>Pond</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Crop</label>
+                                            <input type="text" name="" class="form-control" placeholder="Mustard">
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Expected Produce (Kg)</label>
+                                            <input type="text" name="" class="form-control" placeholder="1000">
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Soil Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Perceived Water Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Perceived Yield Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="javascript:void(0)" class="delete-item"><i
+                                                    class="fa fa-trash-o"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-details-inner">
+                            <div class="row field-details">
+                                <div class="display-flex align-normal">
+                                    <div class="col-md-1 lable-top">
+                                        <label>Field ID</label>
+                                        <input type="text" class="form-control text-center" placeholder="2">
+                                    </div>
+                                    <div class="display-flex-1">
+                                        <div class="col-md-2 lable-top">
+                                            <label>Area</label>
+                                            <input type="text" class="form-control" placeholder="5000 Hectares">
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Irrigation System</label>
+                                            <select class="form-select">
+                                                <option selected>Surface irrigation</option>
+                                                <option>Surface irrigation</option>
+                                                <option>Surface irrigation</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Water Sources</label>
+                                            <select class="form-select">
+                                                <option selected>Pond</option>
+                                                <option>Pond</option>
+                                                <option>Pond</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Crop</label>
+                                            <input type="text" name="" class="form-control" placeholder="Mustard">
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Expected Produce (Kg)</label>
+                                            <input type="text" name="" class="form-control" placeholder="1000">
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Soil Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Perceived Water Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Perceived Yield Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto add-another">
+                                            <a href="javascript:void(0)">+ Add</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-details">
+                        <div class="form-details-inner">
+                            <h3 class="form-title">1. Historical season details <a href="javascript:void(0)"
+                                    class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24">
+                                        <defs>
+                                            <style>
+                                                .a {
+                                                    fill: none;
+                                                }
+
+                                                .b {
+                                                    fill: #0779ff;
+                                                }
+                                            </style>
+                                        </defs>
+                                        <path class="a" d="M0,0H24V24H0Z" />
+                                        <path class="b"
+                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
+                                    </svg></a></h3>
+                            <div class="row align-items-center planned-season-deatils">
+                                <div class="col-md-3">
+                                    <h3 class="form-title">A. Historical Season</h3>
+                                    <select class="form-select">
+                                        <option selected>Rabi 2021</option>
+                                        <option>Rabi 2021</option>
+                                        <option>Rabi 2021</option>
+                                        <option>Rabi 2021</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <h3 class="form-title">B. Historical Crops</h3>
+                                    <input type="text" class="form-control" id="planned_copy"
+                                        placeholder="Enter comma separated crop names here…">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-details-inner">
+                            <div class="row field-details">
+                                <h3 class="form-title">C. Field Details</h3>
+                                <div class="display-flex align-normal">
+                                    <div class="col-md-1 lable-top">
+                                        <label>Field ID</label>
+                                        <input type="text" class="form-control text-center" placeholder="1">
+                                    </div>
+                                    <div class="display-flex-1">
+                                        <div class="col-md-2 lable-top">
+                                            <label>Area</label>
+                                            <input type="text" class="form-control" placeholder="5000 Hectares">
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Irrigation System</label>
+                                            <select class="form-select">
+                                                <option selected>Surface irrigation</option>
+                                                <option>Surface irrigation</option>
+                                                <option>Surface irrigation</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Water Sources</label>
+                                            <select class="form-select">
+                                                <option selected>Pond</option>
+                                                <option>Pond</option>
+                                                <option>Pond</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Crop</label>
+                                            <input type="text" name="" class="form-control" placeholder="Mustard">
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Soil Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Perceived Water Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Perceived Yield Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="javascript:void(0)" class="delete-item"><i
+                                                    class="fa fa-trash-o"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-details-inner">
+                            <div class="row field-details">
+                                <div class="display-flex align-normal">
+                                    <div class="col-md-1 lable-top">
+                                        <label>Field ID</label>
+                                        <input type="text" class="form-control text-center" placeholder="2">
+                                    </div>
+                                    <div class="display-flex-1">
+                                        <div class="col-md-2 lable-top">
+                                            <label>Area</label>
+                                            <input type="text" class="form-control" placeholder="5000 Hectares">
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Irrigation System</label>
+                                            <select class="form-select">
+                                                <option selected>Surface irrigation</option>
+                                                <option>Surface irrigation</option>
+                                                <option>Surface irrigation</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Water Sources</label>
+                                            <select class="form-select">
+                                                <option selected>Pond</option>
+                                                <option>Pond</option>
+                                                <option>Pond</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Crop</label>
+                                            <input type="text" name="" class="form-control" placeholder="Mustard">
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Soil Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Perceived Water Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Perceived Yield Quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a href="javascript:void(0)" class="active"><i
+                                                            class="fa fa-star"></i><span>Poor</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Fair</span></a>
+                                                    <a href="javascript:void(0)"><i
+                                                            class="fa fa-star"></i><span>Good</span></a>
+                                                </div>
+                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="20" height="20" viewBox="0 0 20 20">
+                                                        <defs>
+                                                            <style>
+                                                                .a {
+                                                                    fill: none;
+                                                                }
+
+                                                                .c {
+                                                                    fill: #fff;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path class="a" d="M0,0H20V20H0Z" />
+                                                        <path
+                                                            d="M17.214,2H3.69A1.7,1.7,0,0,0,2,3.69V18.9l3.381-3.381H17.214a1.7,1.7,0,0,0,1.69-1.69V3.69A1.7,1.7,0,0,0,17.214,2Z"
+                                                            transform="translate(-0.452 -0.452)" />
+                                                        <path class="c"
+                                                            d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
+                                                            transform="translate(4 13.776)" />
+                                                    </svg><span>Add Comment</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto add-another">
+                                            <a href="javascript:void(0)">+ Add</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto mt-3 add-another">
+                            <a href="#">+ Add another historical season</a>
+                        </div>
+                    </div>
+
+
+                    <div class="form-details">
+                        <h3 class="form-title">3. Field Ownership (for planned season only) <a href="javascript:void(0)"
+                                class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24">
+                                    <defs>
+                                        <style>
+                                            .a {
+                                                fill: none;
+                                            }
+
+                                            .b {
+                                                fill: #0779ff;
+                                            }
+                                        </style>
+                                    </defs>
+                                    <path class="a" d="M0,0H24V24H0Z" />
+                                    <path class="b"
+                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
+                                </svg></a></h3>
+                        <div class="row align-items-center form-details-inner">
+
+                            <div class="col-md-1 lable-top">
+                                <label for="field_id">Field ID</label>
+                                <input class="form-control" id="field_id" placeholder="1">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-check-label form-check bordered-radio" for="leased">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="leased">Leased (Joint/Self)</label>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-check-label form-check bordered-radio" for="owned">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="owned">Owned (Joint/Self)</label>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-check-label form-check bordered-radio" for="share_cropping">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="share_cropping">Share Cropping</label>
+                            </div>
+                            <div class="col-md-7 lable-top mt-3">
+                                <label>Co-owner details</label>
+                                <input class="form-control" id="" placeholder="Name/Add">
+                            </div>
+                            <div class="col-md-3 lable-top mt-3">
+                                <label>Phone number</label>
+                                <input class="form-control" id="" placeholder="9876543210">
+                            </div>
+                            <div class="col-auto add-another">
+                                <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload documents</a>
+                            </div>
+                        </div>
+                        <div class="row align-items-center form-details-inner">
+                            <div class="col-md-1 lable-top">
+                                <label for="field_id">Field ID</label>
+                                <input class="form-control" id="field_id" placeholder="2">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-check-label form-check bordered-radio" for="leased">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="leased">Leased (Joint/Self)</label>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-check-label form-check bordered-radio" for="owned">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="owned">Owned (Joint/Self)</label>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-check-label form-check bordered-radio" for="share_cropping">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="share_cropping">Share Cropping</label>
+                            </div>
+                            <div class="col-auto add-another">
+                                <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload documents</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">4. Enumerate (for planned season only) <a href="javascript:void(0)"
+                                class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24">
+                                    <defs>
+                                        <style>
+                                            .a {
+                                                fill: none;
+                                            }
+
+                                            .b {
+                                                fill: #0779ff;
+                                            }
+                                        </style>
+                                    </defs>
+                                    <path class="a" d="M0,0H24V24H0Z" />
+                                    <path class="b"
+                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
+                                </svg></a></h3>
+                        <!-- <a href="#" data-toggle="tooltip" title="Water Sources">Water Sources</a> -->
+                        <div class="row align-items-center form-details-inner">
+                            <div class="col-md-1 lable-top">
+                                <label>Field ID</label>
+                                <input type="text" class="form-control" id="" placeholder="1">
+                            </div>
+                            <div class="col-md-2 lable-top">
+                                <label>Water Source</label>
+                                <select class="form-select">
+                                    <option selected>Pound</option>
+                                    <option>Pound</option>
+                                    <option>Pound</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 lable-top">
+                                <label>Bore Depth (per feet)</label>
+                                <input type="text" class="form-control" id="" placeholder="">
+                            </div>
+                            <div class="col-md-2 lable-top">
+                                <label>Pump Depth (per feet)</label>
+                                <input type="text" class="form-control" id="" placeholder="">
+                            </div>
+                        </div>
+                        <div class="row align-items-center form-details-inner">
+                            <div class="col-md-1 lable-top">
+                                <label>Field ID</label>
+                                <input type="text" class="form-control" id="" placeholder="1">
+                            </div>
+                            <div class="col-md-2 lable-top">
+                                <label>Water Source</label>
+                                <select class="form-select">
+                                    <option selected>Pound</option>
+                                    <option>Pound</option>
+                                    <option>Pound</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 lable-top">
+                                <label>Bore Depth (per feet)</label>
+                                <input type="text" class="form-control" id="" placeholder="">
+                            </div>
+                            <div class="col-md-2 lable-top">
+                                <label>Pump Depth (per feet)</label>
+                                <input type="text" class="form-control" id="" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">5. Have you been doing soil/water test on the field(s) before undertaking
+                            any cultivation? <a href="javascript:void(0)" class="comment-icon"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <defs>
+                                        <style>
+                                            .a {
+                                                fill: none;
+                                            }
+
+                                            .b {
+                                                fill: #0779ff;
+                                            }
+                                        </style>
+                                    </defs>
+                                    <path class="a" d="M0,0H24V24H0Z" />
+                                    <path class="b"
+                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
+                                </svg></a></h3>
+                        <div class="row align-items-center form-details-inner">
+                            <div class="col-md-2 lable-top">
+                                <label>Type of test</label>
+                                <input type="text" class="form-control" id="" placeholder="Water Test">
+                            </div>
+                            <div class="col-md-2 lable-top">
+                                <label>Yes/No</label>
+                                <select class="form-select">
+                                    <option selected>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 lable-top">
+                                <label>When last done</label>
+                                <input type="text" class="form-control" id="" placeholder="Date of Birth"
+                                    value="Date of Birth" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                            <div class="col-md-3 lable-top">
+                                <label>Have you received the last test result?</label>
+                                <select class="form-select">
+                                    <option selected>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+                            <div class="col-auto add-another">
+                                <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
+                            </div>
+                        </div>
+                        <div class="row align-items-center form-details-inner">
+                            <div class="col-md-2 lable-top">
+                                <label>Type of test</label>
+                                <input type="text" class="form-control" id="" placeholder="Soil Test">
+                            </div>
+                            <div class="col-md-2 lable-top">
+                                <label>Yes/No</label>
+                                <select class="form-select">
+                                    <option selected>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 lable-top">
+                                <label>When last done</label>
+                                <input type="text" class="form-control" id="" placeholder="Date of Birth"
+                                    value="Date of Birth" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                            <div class="col-md-3 lable-top">
+                                <label>Have you received the last test result?</label>
+                                <select class="form-select">
+                                    <option selected>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+                            <div class="col-auto add-another">
+                                <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">6. Would you be interested in planning crop cycle based on the soil test
+                            and water test reports? <a href="javascript:void(0)" class="comment-icon"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <defs>
+                                        <style>
+                                            .a {
+                                                fill: none;
+                                            }
+
+                                            .b {
+                                                fill: #0779ff;
+                                            }
+                                        </style>
+                                    </defs>
+                                    <path class="a" d="M0,0H24V24H0Z" />
+                                    <path class="b"
+                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
+                                </svg></a></h3>
+                        <div class="row align-items-center">
+                            <div class="select-advice interested-child">
+                                <div class="col-auto">
+                                    <label class="form-check-label form-check bordered-radio" for="verymuch_interested">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="verymuch_interested">Yes</label>
+                                </div>
+                                <div class="col-auto">
+                                    <label class="form-check-label form-check bordered-radio" for="Intersted">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="Intersted">No</label>
+                                </div>
+                                <div class="col-auto">
+                                    <label class="form-check-label form-check bordered-radio" for="may_be">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="may_be">Maybe, I need more detail</label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+</div>
