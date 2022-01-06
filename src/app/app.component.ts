@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from './core/auth.service';
+import { Router } from '@angular/router';
 
+import { OAuthService } from 'angular-oauth2-oidc';
+import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
+import { authCodeFlowConfig } from './shared/authCodeFlowConfig';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,49 +12,32 @@ import { AuthService } from './core/auth.service';
 })
 export class AppComponent {
   title = 'FRCM-angular';
-  isAuthenticated$: Observable<boolean>;
-  isDoneLoading$: Observable<boolean>;
-  canActivateProtectedRoutes$: Observable<boolean>;
-  constructor(private authService: AuthService) {
-    this.isAuthenticated$ = this.authService.isAuthenticated$;
-    this.isDoneLoading$ = this.authService.isDoneLoading$;
-    this.canActivateProtectedRoutes$ =
-      this.authService.canActivateProtectedRoutes$;
-  }
-  login() {
-    this.authService.login();
-  }
-  logout() {
-    this.authService.logout();
-  }
-  refresh() {
-    this.authService.refresh();
-  }
-  reload() {
-    window.location.reload();
-  }
-  clearStorage() {
-    localStorage.clear();
-  }
-
-  logoutExternally() {
-    window.open(this.authService.logoutUrl);
-  }
-
-  get hasValidToken() {
-    return this.authService.hasValidToken();
-  }
-  get accessToken() {
-    return this.authService.accessToken;
-  }
-  get refreshToken() {
-    return this.authService.refreshToken;
-  }
-  get identityClaims() {
-    return this.authService.identityClaims;
-  }
-  get idToken() {
-    return this.authService.idToken;
+  constructor(public oauthService: OAuthService, private router: Router) {
+    this.oauthService.configure(authCodeFlowConfig);
+    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+    this.oauthService
+      .loadDiscoveryDocumentAndLogin({
+        customHashFragment: window.location.search,
+      })
+      .then((res: any) => {
+        if (
+          !this.oauthService.hasValidIdToken() &&
+          !this.oauthService.getAccessToken() &&
+          !this.oauthService.hasValidAccessToken()
+        ) {
+          this.oauthService.initCodeFlow();
+        } else {
+          console.log(this.oauthService.loadUserProfile());
+          this.router.navigate(['/bd/dashboard']);
+        }
+      });
   }
   ngOnInit(): void {}
+
+  get token() {
+    let claims: any = this.oauthService.getIdentityClaims();
+    console.log(claims);
+
+    return claims ? claims : null;
+  }
 }

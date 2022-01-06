@@ -7,10 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { OAuthModule, OAuthModuleConfig } from 'angular-oauth2-oidc';
+import { OAuthModule } from 'angular-oauth2-oidc';
 import { HomeComponent } from './home/home.component';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent],
@@ -20,9 +19,9 @@ import { CoreModule } from './core/core.module';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    CoreModule.forRoot(),
     OAuthModule.forRoot(),
   ],
   bootstrap: [AppComponent],
+  providers: [OAuthService],
 })
 export class AppModule {}

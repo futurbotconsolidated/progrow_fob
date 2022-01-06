@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', pathMatch: 'full', component: AppComponent },
   { path: 'home', redirectTo: 'bd/dashboard', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', redirectTo: '', pathMatch: 'full' },
   {
     path: 'bd',
     loadChildren: () =>
@@ -31,10 +32,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
-  ],
+  imports: [CommonModule, RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoginInterface } from '../shared/modal/login-interface';
-import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-login',
@@ -20,9 +18,5 @@ export class LoginComponent {
     password: '',
     newPassword: '',
   };
-  constructor(private authService: OAuthService) {}
-  public login($event: any) {
-    $event.preventDefault();
-    this.authService.initLoginFlow();
-  }
+  constructor() {}
 }
