@@ -165,14 +165,6 @@
                                         value="{{indGen.displayValue}}"
                                         id="{{indGen.displayValue}}"><span>{{indGen.displayName}}</span>
                                 </label>
-                                <!--  <label class="form-check-label form-check bordered-radio" for="female">
-                                    <input class="form-check-input" type="radio" formControlName="feMale" value="female"
-                                        name="female" id="female"><span>Female</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="third-gender">
-                                    <input class="form-check-input" type="radio" formControlName="thirdGender"
-                                        value="thirdGender" name="Gender" id="third-gender"><span>Third Gender</span>
-                                </label> -->
                             </div>
                         </div>
                         <div class="form-details-inner">
@@ -184,30 +176,6 @@
                                         value="{{indReligion.displayValue}}"
                                         id="{{indReligion.displayValue}}"><span>{{indReligion.displayName}}</span>
                                 </label>
-                                <!-- <label class="form-check-label form-check bordered-radio" for="hindu">
-                                    <input class="form-check-input" type="radio" name="Religion" id="hindu"
-                                        checked><span>Hindu</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="muslim">
-                                    <input class="form-check-input" type="radio" name="Religion"
-                                        id="muslim"><span>Muslim</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="sikh">
-                                    <input class="form-check-input" type="radio" name="Religion"
-                                        id="sikh"><span>Sikh</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="Christian">
-                                    <input class="form-check-input" type="radio" name="Religion"
-                                        id="Christian"><span>Christian</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="Zoroastrian">
-                                    <input class="form-check-input" type="radio" name="Religion"
-                                        id="Zoroastrian"><span>Zoroastrian</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="Buddhist">
-                                    <input class="form-check-input" type="radio" name="Religion"
-                                        id="Buddhist"><span>Buddhist</span>
-                                </label> -->
                                 <div class="farmer-details-inner lable-top flex-2">
                                     <label>Others(Please Specify)</label>
                                     <input type="text" class="form-control" id="" placeholder="">
@@ -217,19 +185,11 @@
                         <div class="form-details-inner">
                             <h3 class="form-title">4.D Caste/Tribe</h3>
                             <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio" for="SC">
-                                    <input class="form-check-input" type="radio" name="Caste" id="SC"
-                                        checked><span>SC</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="ST">
-                                    <input class="form-check-input" type="radio" name="Caste" id="ST"><span>ST</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="OBC">
-                                    <input class="form-check-input" type="radio" name="Caste" id="OBC"><span>OBC</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="General">
-                                    <input class="form-check-input" type="radio" name="Caste"
-                                        id="General"><span>General</span>
+                                <label class="form-check-label form-check bordered-radio"
+                                    *ngFor="let indCaste of casteList" for="{{indCaste.displayValue}}">
+                                    <input class="form-check-input" type="radio" formControlName="caste"
+                                        value="{{indCaste.displayValue}}"
+                                        id="{{indCaste.displayValue}}"><span>{{indCaste.displayName}}</span>
                                 </label>
                                 <div class="farmer-details-inner lable-top">
                                     <label>Others(Please Specify)</label>
@@ -241,14 +201,16 @@
                             <h3 class="form-title">4.E Others Details</h3>
                             <div class="farmer-details">
                                 <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" id=""
+                                    <input type="text" class="form-control" formControlName="educationQualification"
                                         placeholder="Edicational Qualification">
                                 </div>
                                 <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" id="" placeholder="Occupation">
+                                    <input type="text" class="form-control" formControlName="occupation"
+                                        placeholder="Occupation">
                                 </div>
                                 <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" id="" placeholder="Annual Income">
+                                    <input type="text" class="form-control" formControlName="annualIncome"
+                                        placeholder="Annual Income">
                                 </div>
                             </div>
                         </div>
@@ -258,81 +220,77 @@
                             <h3 class="form-title">5.A Address as per officially valid document</h3>
                             <div class="display-flex">
                                 <div class="flex-1">
-                                    <input type="text" class="form-control" id="" placeholder="Address line-1">
+                                    <input type="text" class="form-control" formControlName="address1"
+                                        placeholder="Address line-1">
                                 </div>
                                 <div class="flex-1">
-                                    <input type="text" class="form-control" id="" placeholder="Address line-2">
-                                </div>
-                            </div>
-                            <div class="display-flex">
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" id="" placeholder="Tahsil/Taluka/Mandal">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" id="" placeholder="District/City">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" id="" placeholder="Pincode">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" id="" placeholder="State">
+                                    <input type="text" class="form-control" formControlName="address2"
+                                        placeholder="Address line-2">
                                 </div>
                             </div>
                             <div class="display-flex">
                                 <div class="flex-1">
-                                    <input type="text" class="form-control" id="" placeholder="Landmark">
+                                    <input type="text" class="form-control" formControlName="taluk"
+                                        placeholder="Tahsil/Taluka/Mandal">
                                 </div>
                                 <div class="flex-1">
-                                    <input type="text" class="form-control" id="" placeholder="Phone No.">
+                                    <input type="text" class="form-control" formControlName="city"
+                                        placeholder="District/City">
                                 </div>
                                 <div class="flex-1">
-                                    <input type="text" class="form-control" id="" placeholder="Mobile 1">
+                                    <input type="text" class="form-control" formControlName="pinCode"
+                                        placeholder="pin code">
                                 </div>
                                 <div class="flex-1">
-                                    <input type="text" class="form-control" id="" placeholder="Mobile 2">
+                                    <input type="text" class="form-control" formControlName="state" placeholder="State">
                                 </div>
                             </div>
                             <div class="display-flex">
                                 <div class="flex-1">
-                                    <input type="text" class="form-control" id=""
+                                    <input type="text" class="form-control" formControlName="landmark"
+                                        placeholder="Landmark">
+                                </div>
+                                <div class="flex-1">
+                                    <input type="text" class="form-control" formControlName="phoneNumber"
+                                        placeholder="Phone No.">
+                                </div>
+                                <div class="flex-1">
+                                    <input type="text" class="form-control" formControlName="mobile1"
+                                        placeholder="Mobile 1">
+                                </div>
+                                <div class="flex-1">
+                                    <input type="text" class="form-control" formControlName="mobile2"
+                                        placeholder="Mobile 2">
+                                </div>
+                            </div>
+                            <div class="display-flex">
+                                <div class="flex-1">
+                                    <input type="text" class="form-control" formControlName="yrsInAddress"
                                         placeholder="No. of years in present address">
                                 </div>
                                 <div class="flex-1">
-                                    <input type="text" class="form-control" id=""
+                                    <input type="text" class="form-control" formControlName="yrsInCity"
                                         placeholder="No. of years in city/village">
                                 </div>
                                 <div class="flex-2">
-                                    <input type="text" class="form-control" id="" placeholder="Email Address">
+                                    <input type="text" class="form-control" formControlName="email"
+                                        placeholder="Email Address">
                                 </div>
                             </div>
                         </div>
                         <div class="form-details-inner">
                             <h3 class="form-title">5.B Property status</h3>
                             <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio" for="own">
-                                    <input class="form-check-input" type="radio" name="Property" id="own"
-                                        checked><span>Own</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="parental">
-                                    <input class="form-check-input" type="radio" name="Property"
-                                        id="parental"><span>Parental</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="rented">
-                                    <input class="form-check-input" type="radio" name="Property"
-                                        id="rented"><span>Rented</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="leased">
-                                    <input class="form-check-input" type="radio" name="Property"
-                                        id="leased"><span>Leased</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="company_provided">
-                                    <input class="form-check-input" type="radio" name="Property"
-                                        id="company_provided"><span>Company provided</span>
+                                <label class="form-check-label form-check bordered-radio"
+                                    *ngFor="let indStat of propertyStatusList" for="{{indStat.displayValue}}">
+                                    <input class="form-check-input" type="radio" formControlName="propertyStatus"
+                                        value="{{indStat.displayValue}}"
+                                        id="{{indStat.displayValue}}"><span>{{indStat.displayName}}</span>
                                 </label>
                             </div>
                             <div class="farmer-details">
                                 <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" id=""
+                                    <input type="text" class="form-control" formControlName="monthlyRent"
                                         placeholder="Monthly Rent (If rented)">
                                 </div>
                             </div>
@@ -340,13 +298,11 @@
                         <div class="form-details-inner">
                             <h3 class="form-title">5.B Communication/Permanent address</h3>
                             <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio" for="same_above">
-                                    <input class="form-check-input" type="radio" name="Property" id="same_above"
-                                        checked><span>Same as above</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="different_address">
-                                    <input class="form-check-input" type="radio" name="Property"
-                                        id="different_address"><span>Different address</span>
+                                <label class="form-check-label form-check bordered-radio"
+                                    *ngFor="let indStat of addressStatusList" for="{{indStat.displayValue}}">
+                                    <input class="form-check-input" type="radio" formControlName="commOrPerAddress"
+                                        value="{{indStat.displayValue}}"
+                                        id="{{indStat.displayValue}}"><span>{{indStat.displayName}}</span>
                                 </label>
                             </div>
                         </div>
@@ -373,36 +329,42 @@
                                         <path class="b"
                                             d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
                                     </svg></a></h3>
-                            <div class="display-flex">
-                                <div class="flex-2">
-                                    <input type="text" class="form-control" id="" placeholder="Name">
-                                </div>
-                                <select class="flex-1 form-select">
-                                    <option selected="selected">Relation</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                                <select class="flex-1 form-select">
-                                    <option selected>Education</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                                <select class="flex-1 form-select">
-                                    <option selected>Occupation</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                                <select class="flex-1 form-select">
-                                    <option selected>Dependency</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                                <div class="flex-1 add-another">
-                                    <a href="#">+ Add Another</a>
+                            <div class="mb-2" formArrayName="familyMembers"
+                                *ngFor="let item of getFamilyMembersControls(); let i = index;">
+                                <div class="display-flex" [formGroupName]="i">
+                                    <div class="flex-2">
+                                        <input type="text" class="form-control" formControlName="name"
+                                            placeholder="Name">
+                                    </div>
+                                    <select class="flex-1 form-select" formControlName="relation">
+                                        <option selected>Relation</option>
+                                        <option *ngFor="let indVal of relationList" value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
+                                    <select class="flex-1 form-select" formControlName="education">
+                                        <option selected>Education</option>
+                                        <option *ngFor="let indVal of educationList" value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
+                                    <select class="flex-1 form-select" formControlName="occupation">
+                                        <option selected>Occupation</option>
+                                        <option *ngFor="let indVal of occupationList" value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
+                                    <select class="flex-1 form-select" formControlName="dependency">
+                                        <option selected>Dependency</option>
+                                        <option *ngFor="let indVal of dependencyList" value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
+                                    <div *ngIf="getFamilyMembersControls().length!=1  && i!=getFamilyMembersControls().length-1"
+                                        class="flex-1 add-another ">
+                                        <a class="text-danger" href="javascript:void(0);"
+                                            (click)="removeFamilyMembers(i)">-
+                                            Remove</a>
+                                    </div>
+                                    <div *ngIf="i==getFamilyMembersControls().length-1" class="flex-1 add-another">
+                                        <a href="javascript:void(0);" (click)="addFamilyMembers()">+ Add Another</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -426,289 +388,52 @@
                                     <path class="b"
                                         d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
                                 </svg></a></h3>
-                        <div class="display-flex family-members">
-                            <div class="flex-1 lable-top">
-                                <label>Property Type</label>
-                                <input type="text" class="form-control" placeholder="House">
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Upload pictures</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
+                        <div class="mb-2" formArrayName="propertyOwnership"
+                            *ngFor="let item of getPropertyOwnershipControls(); let i = index;">
+                            <div class="display-flex family-members" [formGroupName]="i">
+                                <div class="flex-1 lable-top">
+                                    <label>Property Type</label>
+                                    <input type="text" class="form-control" placeholder="House">
+                                </div>
+                                <div class="flex-1 lable-top">
+                                    <label>Upload pictures</label>
+                                    <div class="fileUpload">
+                                        <span></span><img src="../../../assets/images/photo-camera.png"><input
+                                            type="file" class="form-control uploadlogo" />
+                                    </div>
+                                </div>
+                                <div class="flex-1 lable-top">
+                                    <label>Ownership Type</label>
+                                    <select class="form-select">
+                                        <option selected>select</option>
+                                        <option *ngFor="let indVal of ownershipTypeList"
+                                            value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
+                                </div>
+                                <div class="flex-1 lable-top">
+                                    <label>Particular</label>
+                                    <select class="form-select">
+                                        <option selected>select</option>
+                                        <option *ngFor="let indVal of particularList" value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
+                                </div>
+                                <div class="flex-1 lable-top">
+                                    <label>Cumulative value</label>
+                                    <input type="text" name="" class="form-control">
                                 </div>
                             </div>
-                            <div class="flex-1 lable-top">
-                                <label>Ownership Type</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Perticular</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Cummulative value</label>
-                                <input type="text" name="" class="form-control">
-                            </div>
-                        </div>
-                        <div class="display-flex family-members">
-                            <div class="flex-1 lable-top">
-                                <label>Property Type</label>
-                                <input type="text" class="form-control" placeholder="House">
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Upload pictures</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
+
+                            <div class="row justify-content-end">
+                                <div class="col-auto add-another"
+                                    *ngIf="getPropertyOwnershipControls().length!=1  && i!=getPropertyOwnershipControls().length-1">
+                                    <a class="text-danger" href="javascript:void(0);"
+                                        (click)="removePropertyOwnership(i)">- Remove</a>
                                 </div>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Ownership Type</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Perticular</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Cummulative value</label>
-                                <input type="text" name="" class="form-control">
-                            </div>
-                        </div>
-                        <div class="display-flex family-members">
-                            <div class="flex-1 lable-top">
-                                <label>Property Type</label>
-                                <input type="text" class="form-control" placeholder="House">
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Upload pictures</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
+                                <div class="col-auto add-another" *ngIf="i==getPropertyOwnershipControls().length-1">
+                                    <a href="javascript:void(0);" (click)="addPropertyOwnership()">+ Add More</a>
                                 </div>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Ownership Type</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Perticular</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Cummulative value</label>
-                                <input type="text" name="" class="form-control">
-                            </div>
-                        </div>
-                        <div class="display-flex family-members">
-                            <div class="flex-1 lable-top">
-                                <label>Property Type</label>
-                                <input type="text" class="form-control" placeholder="House">
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Upload pictures</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Ownership Type</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Perticular</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Cummulative value</label>
-                                <input type="text" name="" class="form-control">
-                            </div>
-                        </div>
-                        <div class="display-flex family-members">
-                            <div class="flex-1 lable-top">
-                                <label>Property Type</label>
-                                <input type="text" class="form-control" placeholder="House">
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Upload pictures</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Ownership Type</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Perticular</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Cummulative value</label>
-                                <input type="text" name="" class="form-control">
-                            </div>
-                        </div>
-                        <div class="display-flex family-members">
-                            <div class="flex-1 lable-top">
-                                <label>Property Type</label>
-                                <input type="text" class="form-control" placeholder="House">
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Upload pictures</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Ownership Type</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Perticular</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Cummulative value</label>
-                                <input type="text" name="" class="form-control">
-                            </div>
-                        </div>
-                        <div class="display-flex family-members">
-                            <div class="flex-1 lable-top">
-                                <label>Property Type</label>
-                                <input type="text" class="form-control" placeholder="House">
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Upload pictures</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Ownership Type</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Perticular</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Cummulative value</label>
-                                <input type="text" name="" class="form-control">
-                            </div>
-                        </div>
-                        <div class="display-flex family-members">
-                            <div class="flex-1 lable-top">
-                                <label>Property Type</label>
-                                <input type="text" class="form-control" placeholder="House">
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Upload pictures</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Ownership Type</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Perticular</label>
-                                <select class="form-select">
-                                    <option selected>select</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Sister</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 lable-top">
-                                <label>Cummulative value</label>
-                                <input type="text" name="" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row justify-content-end">
-                            <div class="col-auto add-another">
-                                <a href="#">+ Add More</a>
                             </div>
                         </div>
                     </div>
@@ -733,64 +458,36 @@
                                             d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
                                     </svg></a></h3>
                             <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio" for="featured-phone">
-                                    <input class="form-check-input" type="radio" name="Phone" id="featured-phone"
-                                        checked><span>Feature Phone</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="smart_phone">
-                                    <input class="form-check-input" type="radio" name="Phone"
-                                        id="smart_phone"><span>Smart Phone</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="personal_phone">
-                                    <input class="form-check-input" type="radio" name="Phone"
-                                        id="personal_phone"><span>No Personal Phone</span>
+                                <label class="form-check-label form-check bordered-radio"
+                                    *ngFor="let indType of phoneTypeList" for="{{indType.displayValue}}">
+                                    <input class="form-check-input" type="radio" formControlName="phoneType"
+                                        value="{{indType.displayValue}}"
+                                        id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                 </label>
                             </div>
-
                         </div>
                         <div class="form-details-inner">
                             <h3 class="form-title">8B. Who is operating the phone in your family?</h3>
                             <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio" for="check-mostly">
-                                    <input class="form-check-input" type="radio" name="family" id="check-mostly"
-                                        checked><span>I check mostly</span>
+                                <label class="form-check-label form-check bordered-radio"
+                                    *ngFor="let indType of phoneOperatingList" for="{{indType.displayValue}}">
+                                    <input class="form-check-input" type="radio" formControlName="phoneOperating"
+                                        value="{{indType.displayValue}}"
+                                        id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                 </label>
-                                <label class="form-check-label form-check bordered-radio" for="somebody_else">
-                                    <input class="form-check-input" type="radio" name="family"
-                                        id="somebody_else"><span>Somebody else</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="shared_phone">
-                                    <input class="form-check-input" type="radio" name="family"
-                                        id="shared_phone"><span>Shared phone</span>
-                                </label>
+
                             </div>
                         </div>
                         <div class="form-details-inner">
                             <h3 class="form-title">8C. Where all do you seek advice on cultivation?</h3>
                             <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-check" for="farmer_family">
-                                    <input class="form-check-input" type="checkbox" name="cultivation"
-                                        id="farmer_family" checked><span>Neighbouring farmer/family</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="company_doctor">
-                                    <input class="form-check-input" type="checkbox" name="cultivation"
-                                        id="company_doctor" checked><span>Company Doctor</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="tv_program">
-                                    <input class="form-check-input" type="checkbox" name="cultivation"
-                                        id="tv_program"><span>TV Program</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="kvk">
-                                    <input class="form-check-input" type="checkbox" name="cultivation"
-                                        id="kvk"><span>KVK</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="youtube">
-                                    <input class="form-check-input" type="checkbox" name="cultivation"
-                                        id="youtube"><span>Youtube</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="facebook">
-                                    <input class="form-check-input" type="checkbox" name="cultivation"
-                                        id="facebook"><span>Facebook</span>
+                                <label class="form-check-label form-check bordered-check"
+                                    *ngFor="let indStat of cultivationAdviceList" for="{{indStat.displayValue}}">
+                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"
+                                        (click)="
+                                        selectCultivationAdvice($event, 'cultivationAdvice', indStat.displayValue)
+                                      "
+                                        [checked]="this.demographicInfoForm.controls['cultivationAdvice'].value?.includes(indStat.displayValue)"><span>{{indStat.displayName}}</span>
                                 </label>
                                 <div class="lable-top">
                                     <label>Mention other(if any)</label>
@@ -802,21 +499,13 @@
                         <div class="form-details-inner">
                             <h3 class="form-title">8D. What medium do you use to seek advice?</h3>
                             <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-check" for="sms">
-                                    <input class="form-check-input" type="checkbox" name="Seek Advice" id="sms"
-                                        checked><span>SMS</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="whatsapp">
-                                    <input class="form-check-input" type="checkbox" name="Seek Advice" id="whatsapp"
-                                        checked><span>Whatsapp</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="Telephone_Call">
-                                    <input class="form-check-input" type="checkbox" name="Seek Advice"
-                                        id="Telephone_Call"><span>Telephone Call</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="Physical_visits">
-                                    <input class="form-check-input" type="checkbox" name="Seek Advice"
-                                        id="Physical_visits"><span>Physical visits</span>
+                                <label class="form-check-label form-check bordered-check"
+                                    *ngFor="let indStat of adviceMediumList" for="{{indStat.displayValue}}">
+                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"
+                                        (click)="
+                                        selectCultivationAdvice($event, 'adviceMedium', indStat.displayValue)
+                                      "
+                                        [checked]="this.demographicInfoForm.controls['adviceMedium'].value?.includes(indStat.displayValue)"><span>{{indStat.displayName}}</span>
                                 </label>
                                 <div class="lable-top">
                                     <label>Mention other(if any)</label>
@@ -847,26 +536,12 @@
                                         d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
                                 </svg></a></h3>
                         <div class="farmer-details">
-                            <label class="form-check-label form-check bordered-check" for="shop">
-                                <input class="form-check-input" type="checkbox" name="household" id="shop"
-                                    checked><span>Shop</span>
-                            </label>
-                            <label class="form-check-label form-check bordered-check" for="Govt_Service">
-                                <input class="form-check-input" type="checkbox" name="household" id="Govt_Service">
-                                <span>Govt. Service</span>
-                            </label>
-                            <label class="form-check-label form-check bordered-check" for="Private_Service">
-                                <input class="form-check-input" type="checkbox" name="household" id="Private_Service">
-                                <span>Private Service/ Self employed</span>
-                            </label>
-                            <label class="form-check-label form-check bordered-check" for="Renting_Heavy">
-                                <input class="form-check-input" type="checkbox" name="household" id="Renting_Heavy">
-                                <span>Renting Heavy farm machinery or equipment</span>
-                            </label>
-                            <label class="form-check-label form-check bordered-check" for="Dairy_Income">
-                                <input class="form-check-input" type="checkbox" name="household" id="Dairy_Income"
-                                    checked>
-                                <span>Dairy Income machinery or equipment</span>
+                            <label class="form-check-label form-check bordered-check"
+                                *ngFor="let indStat of sourceOfIncomeList" for="{{indStat.displayValue}}">
+                                <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}" (click)="
+                                    selectCultivationAdvice($event, 'sourceOfIncome', indStat.displayValue)
+                                  "
+                                    [checked]="this.demographicInfoForm.controls['sourceOfIncome'].value?.includes(indStat.displayValue)"><span>{{indStat.displayName}}</span>
                             </label>
                             <div class="lable-top">
                                 <label>Mention other(if any)</label>
@@ -896,22 +571,13 @@
                                             d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
                                     </svg></a></h3>
                             <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio" for="very_muchinterested">
-                                    <input class="form-check-input" type="radio" name="agriculture"
-                                        id="very_muchinterested" checked><span>Very much Interested</span>
+                                <label class="form-check-label form-check bordered-radio"
+                                    *ngFor="let indType of agriculturalInterestList" for="{{indType.displayValue}}">
+                                    <input class="form-check-input" type="radio" formControlName="agriculturalInterest"
+                                        value="{{indType.displayValue}}"
+                                        id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                 </label>
-                                <label class="form-check-label form-check bordered-radio" for="Intersted">
-                                    <input class="form-check-input" type="radio" name="agriculture"
-                                        id="Intersted"><span>Intersted</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="may_be">
-                                    <input class="form-check-input" type="radio" name="agriculture"
-                                        id="may_be"><span>May be</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-radio" for="Not_Interested">
-                                    <input class="form-check-input" type="radio" name="agriculture"
-                                        id="Not_Interested"><span>Not Interest</span>
-                                </label>
+
                             </div>
 
                         </div>
@@ -919,38 +585,19 @@
                             <h3 class="form-title">10B. Is the younger generation in your family open to experiment with
                                 innovative ways in farming?</h3>
                             <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio" for="mulch">
-                                    <input class="form-check-input" type="radio" name="Innovative ways" id="mulch"
-                                        checked><span>Mulch</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="Mulch">
-                                    <input class="form-check-input" type="checkbox" name="Innovative ways"
-                                        id="Mulch"><span>Mulch</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="Solar_Pump">
-                                    <input class="form-check-input" type="checkbox" name="Innovative ways"
-                                        id="Solar_Pump"><span>Solar Pump</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="Fertilizers">
-                                    <input class="form-check-input" type="checkbox" name="Innovative ways"
-                                        id="Fertilizers"><span>Water Soluble Fertilizers</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="IoT/Drone">
-                                    <input class="form-check-input" type="checkbox" name="Innovative ways"
-                                        id="IoT/Drone"><span>IoT/Drone</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="Weather_Updates">
-                                    <input class="form-check-input" type="checkbox" name="Innovative ways"
-                                        id="Weather_Updates"><span>Weather Updates</span>
-                                </label>
-                                <label class="form-check-label form-check bordered-check" for="sops">
-                                    <input class="form-check-input" type="checkbox" name="Innovative ways"
-                                        id="sops"><span>SOPs</span>
+                                <label class="form-check-label form-check bordered-check"
+                                    *ngFor="let indStat of innovativeWaysFarmingList" for="{{indStat.displayValue}}">
+                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"
+                                        (click)="
+                                        selectCultivationAdvice($event, 'innovativeWaysFarming', indStat.displayValue)
+                                      "
+                                        [checked]="this.demographicInfoForm.controls['innovativeWaysFarming'].value?.includes(indStat.displayValue)"><span>{{indStat.displayName}}</span>
                                 </label>
                             </div>
 
                         </div>
                     </div>
+                    <button class="btn btn-primary" type="submit">save</button>
                 </form>
             </div>
         </div>
