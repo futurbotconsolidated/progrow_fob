@@ -19,9 +19,19 @@ export class FieldInfoComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.setGeoLocation.bind(this));
+    }
+  }
+
+  setGeoLocation(position: { coords: { latitude: any; longitude: any } }) {
+    const {
+      coords: { latitude, longitude },
+    } = position;
+
     let map = new L.Map('map', {
-        center: new L.LatLng(51.505, -0.04),
-        zoom: 13,
+        center: new L.LatLng(latitude, longitude),
+        zoom: 18,
       }),
       drawnItems = L.featureGroup().addTo(map);
     L.tileLayer(
@@ -46,11 +56,15 @@ export class FieldInfoComponent implements OnInit {
       })
     );
 
-    map.on(L.Draw.Event.CREATED, function (event: any) {
+    map.on(L.Draw.Event.CREATED, (event: any) => {
       var layer = event.layer;
       console.log(layer._bounds);
-
+      this.addFieldArray();
       drawnItems.addLayer(layer);
     });
+  }
+
+  addFieldArray() {
+    console.log('created Fields');
   }
 }

@@ -12,6 +12,11 @@ import { authCodeFlowConfig } from './shared/authCodeFlowConfig';
 })
 export class AppComponent {
   title = 'FRCM-angular';
+
+  onActivate(event: any) {
+    window.scroll(0, 0);
+  }
+
   constructor(public oauthService: OAuthService, private router: Router) {
     this.oauthService.configure(authCodeFlowConfig);
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
@@ -36,7 +41,7 @@ export class AppComponent {
 
   get token() {
     let claims: any = this.oauthService.getIdentityClaims();
-    console.log(claims);
+    // console.log(claims);
 
     return claims ? claims : null;
   }

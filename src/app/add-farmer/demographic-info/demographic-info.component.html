@@ -358,9 +358,13 @@
                                     </select>
                                     <div *ngIf="getFamilyMembersControls().length!=1  && i!=getFamilyMembersControls().length-1"
                                         class="flex-1 add-another ">
-                                        <a class="text-danger" href="javascript:void(0);"
+                                        <!-- <a class="text-danger" href="javascript:void(0);"
                                             (click)="removeFamilyMembers(i)">-
-                                            Remove</a>
+                                            Remove</a> -->
+
+                                        <a href="javascript:void(0)" class="delete-item "
+                                            (click)="removeFamilyMembers(i)"><i
+                                                class="fa fa-trash-o text-danger"></i></a>
                                     </div>
                                     <div *ngIf="i==getFamilyMembersControls().length-1" class="flex-1 add-another">
                                         <a href="javascript:void(0);" (click)="addFamilyMembers()">+ Add Another</a>
@@ -428,8 +432,13 @@
                             <div class="row justify-content-end">
                                 <div class="col-auto add-another"
                                     *ngIf="getPropertyOwnershipControls().length!=1  && i!=getPropertyOwnershipControls().length-1">
-                                    <a class="text-danger" href="javascript:void(0);"
-                                        (click)="removePropertyOwnership(i)">- Remove</a>
+                                    <!-- <a class="text-danger" href="javascript:void(0);"
+                                        (click)="removePropertyOwnership(i)">- Remove</a> -->
+
+                                    <a href="javascript:void(0)" class="delete-item "
+                                        (click)="removePropertyOwnership(i)"><i
+                                            class="fa fa-trash-o text-danger"></i></a>
+
                                 </div>
                                 <div class="col-auto add-another" *ngIf="i==getPropertyOwnershipControls().length-1">
                                     <a href="javascript:void(0);" (click)="addPropertyOwnership()">+ Add More</a>
