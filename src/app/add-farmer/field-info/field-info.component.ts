@@ -1,11 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder,
+  FormArray,
+} from '@angular/forms';
 
 import 'leaflet';
 declare const L: any;
 import 'leaflet-draw';
 import '../../../../node_modules/leaflet-draw/dist/leaflet.draw-src.js';
-
+import {
+  season,
+  irrigationSystem,
+  waterSource,
+} from '../../shared/modal/global-field-values';
 @Component({
   selector: 'app-field-info',
   templateUrl: './field-info.component.html',
@@ -13,10 +23,26 @@ import '../../../../node_modules/leaflet-draw/dist/leaflet.draw-src.js';
 })
 export class FieldInfoComponent implements OnInit {
   fieldInfoForm = new FormGroup({});
+  fieldDetails!: FormArray;
 
-  constructor() {}
+  plannedSeasonList = <any>[];
+  irrigationSystemList = <any>[];
+  waterSourceList = <any>[];
 
-  ngOnInit(): void {}
+  constructor(private formBuilder: FormBuilder) {
+    this.fieldInfoForm = this.formBuilder.group({
+      plannedSeason: new FormControl('rabi_2021', [Validators.required]),
+      plannedCrops: new FormControl('', [Validators.required]),
+      fieldDetails: new FormArray([this.createFieldDetails()]),
+      // innovativeWaysFarming: [Array()],
+    });
+  }
+
+  ngOnInit(): void {
+    this.plannedSeasonList = season;
+    this.irrigationSystemList = irrigationSystem;
+    this.waterSourceList = waterSource;
+  }
 
   ngAfterViewInit(): void {
     if (navigator.geolocation) {
@@ -59,12 +85,38 @@ export class FieldInfoComponent implements OnInit {
     map.on(L.Draw.Event.CREATED, (event: any) => {
       var layer = event.layer;
       console.log(layer._bounds);
-      this.addFieldArray();
+      this.addFieldDetail();
       drawnItems.addLayer(layer);
+    });
+
+    map.on(L.Draw.Event.DELETED, (event: any) => {
+      var layer = event.layer;
+      console.log(layer._bounds, 'DELETED');
+      // this.removeFieldDetail();
     });
   }
 
-  addFieldArray() {
-    console.log('created Fields');
+  createFieldDetails(): FormGroup {
+    return this.formBuilder.group({
+      fieldId: new FormControl('', [Validators.required]),
+      fieldArea: new FormControl('', [Validators.required]),
+      irrigationSystem: new FormControl('Relation', [Validators.required]),
+      waterSource: new FormControl('Education', [Validators.required]),
+      crop: new FormControl('', [Validators.required]),
+      expectedProduce: new FormControl('', [Validators.required]),
+    });
+  }
+
+  getFieldDetailsControls() {
+    return (this.fieldInfoForm.get('fieldDetails') as FormArray).controls;
+  }
+
+  addFieldDetail(): void {
+    this.fieldDetails = this.fieldInfoForm.get('fieldDetails') as FormArray;
+    this.fieldDetails.push(this.createFieldDetails());
+  }
+
+  removeFieldDetail(index: any) {
+    this.fieldDetails.removeAt(index);
   }
 }

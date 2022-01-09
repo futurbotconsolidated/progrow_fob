@@ -75,17 +75,16 @@
                             <div class="row align-items-center planned-season-deatils">
                                 <div class="col-md-3">
                                     <h3 class="form-title">A. Planned Season</h3>
-                                    <select class="form-select">
-                                        <option selected>Rabi 2021</option>
-                                        <option>Rabi 2021</option>
-                                        <option>Rabi 2021</option>
-                                        <option>Rabi 2021</option>
+                                    <select class="form-select" formControlName="plannedSeason">
+                                        <option *ngFor="let indVal of plannedSeasonList"
+                                            value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-8">
                                     <h3 class="form-title">B. Planned Crops</h3>
-                                    <input type="text" class="form-control" id="planned_copy"
-                                        placeholder="Enter comma separated crop names here…">
+                                    <input type="text" class="form-control" formControlName="plannedCrops"
+                                        id="planned_copy" placeholder="Enter comma separated crop names here…">
                                 </div>
                             </div>
                         </div>
@@ -125,7 +124,7 @@
                                                     transform="translate(-0.326 -0.326)" />
                                             </svg></a></span>
                                 </div>
-                                <div class="display-flex align-normal">
+                                <!-- <div class="display-flex align-normal">
                                     <div class="col-md-1 lable-top">
                                         <label>Field ID</label>
                                         <input type="text" class="form-control text-center" placeholder="1">
@@ -266,45 +265,60 @@
                                                     class="fa fa-trash-o"></i></a>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
                         <div class="form-details-inner">
-                            <div class="row field-details">
-                                <div class="display-flex align-normal">
+                            <div class="row field-details" formArrayName="fieldDetails"
+                                *ngFor="let item of getFieldDetailsControls(); let i = index;">
+                                <div class="display-flex align-normal mb-3" [formGroupName]="i">
                                     <div class="col-md-1 lable-top">
                                         <label>Field ID</label>
-                                        <input type="text" class="form-control text-center" placeholder="2">
+                                        <input type="text" class="form-control  text-center" formControlName="fieldId"
+                                            placeholder="{{i+1}}">
                                     </div>
                                     <div class="display-flex-1">
                                         <div class="col-md-2 lable-top">
                                             <label>Area</label>
-                                            <input type="text" class="form-control" placeholder="5000 Hectares">
+                                            <input type="text" class="form-control" formControlName="fieldArea"
+                                                placeholder="5000 Hectares">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label>Irrigation System</label>
-                                            <select class="form-select">
+                                            <!-- <select class="form-select">
                                                 <option selected>Surface irrigation</option>
                                                 <option>Surface irrigation</option>
                                                 <option>Surface irrigation</option>
+                                            </select> -->
+                                            <select class="form-select" formControlName="irrigationSystem">
+                                                <option *ngFor="let indVal of irrigationSystemList"
+                                                    value="{{indVal.displayValue}}">
+                                                    {{indVal.displayName}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label>Water Sources</label>
-                                            <select class="form-select">
+                                            <!-- <select class="form-select">
                                                 <option selected>Pond</option>
                                                 <option>Pond</option>
                                                 <option>Pond</option>
+                                            </select> -->
+                                            <select class="form-select" formControlName="waterSource">
+                                                <option *ngFor="let indVal of waterSourceList"
+                                                    value="{{indVal.displayValue}}">
+                                                    {{indVal.displayName}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label>Crop</label>
-                                            <input type="text" name="" class="form-control" placeholder="Mustard">
+                                            <input type="text" name="" class="form-control" formControlName="crop"
+                                                placeholder="Mustard">
                                         </div>
-                                        <div class="col-md-2 lable-top">
+                                        <div class="col-md-3 lable-top">
                                             <label>Expected Produce (Kg)</label>
-                                            <input type="text" name="" class="form-control" placeholder="1000">
+                                            <input type="text" name="" class="form-control"
+                                                formControlName="expectedProduce" placeholder="1000">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label>Soil Quality</label>
@@ -409,7 +423,12 @@
                                             </div>
                                         </div>
                                         <div class="col-auto add-another">
-                                            <a href="javascript:void(0)">+ Add</a>
+                                            <a *ngIf="getFieldDetailsControls().length!=1  && i!=getFieldDetailsControls().length-1"
+                                                href="javascript:void(0)" class="delete-item "
+                                                (click)="removeFieldDetail(i)"><i
+                                                    class="fa fa-trash-o text-danger"></i></a>
+                                            <a *ngIf="i==getFieldDetailsControls().length-1" href="javascript:void(0)"
+                                                (click)="addFieldDetail()">+ Add</a>
                                         </div>
                                     </div>
                                 </div>

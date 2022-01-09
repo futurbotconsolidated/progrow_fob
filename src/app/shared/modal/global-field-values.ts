@@ -269,6 +269,7 @@ export const waterSource = [
 export const season = [
   { id: 1, displayName: 'Rabi 2021', displayValue: 'rabi_2021' },
 ];
+
 export const cropLoanProduct = [
   {
     id: 1,
