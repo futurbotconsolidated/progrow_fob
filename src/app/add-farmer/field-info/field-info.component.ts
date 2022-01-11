@@ -24,7 +24,7 @@ import {
 export class FieldInfoComponent implements OnInit {
   fieldInfoForm = new FormGroup({});
   fieldDetails!: FormArray;
-
+  historicalFieldDetails!: FormArray;
   plannedSeasonList = <any>[];
   irrigationSystemList = <any>[];
   waterSourceList = <any>[];
@@ -34,6 +34,8 @@ export class FieldInfoComponent implements OnInit {
       plannedSeason: new FormControl('rabi_2021', [Validators.required]),
       plannedCrops: new FormControl('', [Validators.required]),
       fieldDetails: new FormArray([this.createFieldDetails()]),
+      historicalFieldDetails: new FormArray([this.createHistoFieldDetails()]),
+
       // innovativeWaysFarming: [Array()],
     });
   }
@@ -107,7 +109,7 @@ export class FieldInfoComponent implements OnInit {
     });
   }
 
-  getFieldDetailsControls() {
+  getPlannedFieldDetailsControls() {
     return (this.fieldInfoForm.get('fieldDetails') as FormArray).controls;
   }
 
@@ -118,5 +120,31 @@ export class FieldInfoComponent implements OnInit {
 
   removeFieldDetail(index: any) {
     this.fieldDetails.removeAt(index);
+  }
+
+  createHistoFieldDetails(): FormGroup {
+    return this.formBuilder.group({
+      fieldId: new FormControl('', [Validators.required]),
+      fieldArea: new FormControl('', [Validators.required]),
+      irrigationSystem: new FormControl('Relation', [Validators.required]),
+      waterSource: new FormControl('Education', [Validators.required]),
+      crop: new FormControl('', [Validators.required]),
+    });
+  }
+
+  getHistoFieldDetailsControls() {
+    return (this.fieldInfoForm.get('historicalFieldDetails') as FormArray)
+      .controls;
+  }
+
+  addHistoFieldDetail(): void {
+    this.historicalFieldDetails = this.fieldInfoForm.get(
+      'historicalFieldDetails'
+    ) as FormArray;
+    this.historicalFieldDetails.push(this.createFieldDetails());
+  }
+
+  removeHistoFieldDetail(index: any) {
+    this.historicalFieldDetails.removeAt(index);
   }
 }
