@@ -283,6 +283,202 @@ export const otherBanks = [
   { id: 1, displayName: 'Axis', displayValue: 'axis' },
 ];
 
+// START: Corp Market plan
+
+export const seedProcure = [
+  {
+    id: 1,
+    displayName: 'Locally from village',
+    displayValue: 'locally_from_village',
+    defaultValue: 'locally_from_village',
+  },
+  {
+    id: 2,
+    displayName: 'Hybrid variety seeds from input supplier',
+    displayValue: 'hybrid_variety_seeds_from_input_supplier',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: 'FPO seed outlet',
+    displayValue: 'fpo_seed_outlet',
+    defaultValue: false,
+  },
+  {
+    id: 4,
+    displayName: 'KVK',
+    displayValue: 'kvk',
+    defaultValue: false,
+  },
+  {
+    id: 5,
+    displayName: 'Last year produce',
+    displayValue: 'last_year_produce',
+    defaultValue: false,
+  },
+];
+
+export const varietyComparison = [
+  {
+    id: 1,
+    displayName: 'High Yield',
+    displayValue: 'high_yield',
+    defaultValue: 'high_yield',
+  },
+  {
+    id: 2,
+    displayName: 'No change in Yield',
+    displayValue: 'no_change_in_yield',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: 'Disease resistant',
+    displayValue: 'disease_resistant',
+    defaultValue: false,
+  },
+  {
+    id: 4,
+    displayName: 'Stress Tolerant',
+    displayValue: 'stress_tolerant',
+    defaultValue: false,
+  },
+  {
+    id: 5,
+    displayName: 'Less Irrigation',
+    displayValue: 'less_irrigation',
+    defaultValue: false,
+  },
+];
+
+export const fertilizerPurchase = [
+  {
+    id: 1,
+    displayName: 'Village Shop',
+    displayValue: 'village_shop',
+    defaultValue: 'village_shop',
+  },
+  {
+    id: 2,
+    displayName: 'Local Mandi',
+    displayValue: 'local_mandi',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: 'Government outlet',
+    displayValue: 'government_outlet',
+    defaultValue: false,
+  },
+];
+
+export const pesticideQuality = [
+  {
+    id: 1,
+    displayName: 'Very satisfied',
+    displayValue: 'very_satisfied',
+    defaultValue: 'very_satisfied',
+  },
+  {
+    id: 2,
+    displayName: 'Quite satisfied',
+    displayValue: 'quite_satisfied',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: 'Not so satisfied',
+    displayValue: 'not_so_satisfied',
+    defaultValue: false,
+  },
+  {
+    id: 4,
+    displayName: 'Very dissatisfied',
+    displayValue: 'very_dissatisfied',
+    defaultValue: false,
+  },
+];
+
+export const fertilizerAdvise = [
+  {
+    id: 1,
+    displayName: 'Self-advised',
+    displayValue: 'self_advised',
+    defaultValue: 'self_advised',
+  },
+  {
+    id: 2,
+    displayName: 'advised by fertilizer shop owner',
+    displayValue: 'shop_owner',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: 'advised by KVK',
+    displayValue: 'advised_by_kvk',
+    defaultValue: false,
+  },
+];
+
+export const farmGateGrading = [
+  {
+    id: 1,
+    displayName: 'Yes',
+    displayValue: 'yes',
+    defaultValue: 'yes',
+  },
+  {
+    id: 2,
+    displayName: 'No',
+    displayValue: 'no',
+    defaultValue: false,
+  },
+];
+
+export const durationReceivingMoney = [
+  {
+    id: 1,
+    displayName: 'On the spot at farm gate',
+    displayValue: 'on_spot',
+    defaultValue: 'on_spot',
+  },
+  {
+    id: 2,
+    displayName: 'Less than 7 days',
+    displayValue: 'less_than_7_days',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: '10 to 15 days',
+    displayValue: 'ten_to_fifteen_days',
+    defaultValue: false,
+  },
+  {
+    id: 4,
+    displayName: '15 to 30 days',
+    displayValue: 'fifteen_to_thirty_days',
+    defaultValue: false,
+  },
+];
+
+export const warehouseProduce = [
+  {
+    id: 1,
+    displayName: 'Yes',
+    displayValue: 'yes',
+    defaultValue: 'yes',
+  },
+  {
+    id: 2,
+    displayName: 'No',
+    displayValue: 'no',
+    defaultValue: false,
+  },
+];
+
+// END : Corp Market plan
+
 let a = {
   addressProofType: [
     {
