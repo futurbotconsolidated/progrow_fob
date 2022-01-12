@@ -479,6 +479,230 @@ export const warehouseProduce = [
 
 // END : Corp Market plan
 
+// START : Produce Aggregator
+export const verticals = [
+  {
+    id: 1,
+    displayName: 'Working capital cycle requirement',
+    displayValue: 'working_capital_cycle_requirement',
+    defaultValue: 'working_capital_cycle_requirement',
+  },
+  {
+    id: 2,
+    displayName: 'Crop advisory on taking high quality yield',
+    displayValue: 'crop_advisory_on_taking_high_quality_yield',
+    defaultValue: false,
+  },
+  {
+    id: 2,
+    displayName: 'Access to good quality Agri inputs',
+    displayValue: 'access_to_good_quality_agri_inputs',
+    defaultValue: false,
+  },
+  {
+    id: 2,
+    displayName: 'Market linkage with produce aggregation',
+    displayValue: 'market_linkage_with_produce_aggregation',
+    defaultValue: false,
+  },
+  {
+    id: 2,
+    displayName: 'Food Processing and Branding',
+    displayValue: 'food_rocessing_and_randing',
+    defaultValue: false,
+  },
+  {
+    id: 2,
+    displayName: 'Warehousing',
+    displayValue: 'warehousing',
+    defaultValue: false,
+  },
+];
+
+export const associatedWithFPO = [
+  {
+    id: 1,
+    displayName: 'On demand access to financing',
+    displayValue: 'On demand access to financing',
+    defaultValue: 'On demand access to financing',
+  },
+  {
+    id: 2,
+    displayName: 'On demand access to fertilizer',
+    displayValue: 'On demand access to fertilizer',
+    defaultValue: false,
+  },
+  {
+    id: 1,
+    displayName: 'On demand access to pesticide',
+    displayValue: 'On demand access to pesticide',
+    defaultValue: false,
+  },
+  {
+    id: 2,
+    displayName: 'On demand access to seeds',
+    displayValue: 'On demand access to seeds',
+    defaultValue: false,
+  },
+  {
+    id: 1,
+    displayName: 'Convenience to sale of produce',
+    displayValue: 'Convenience to sale of produce',
+    defaultValue: false,
+  },
+  {
+    id: 2,
+    displayName: 'Reducing number of middlemen while selling produce',
+    displayValue: 'Reducing number of middlemen while selling produce',
+    defaultValue: false,
+  },
+  {
+    id: 1,
+    displayName: 'Marketing / Branding of produce',
+    displayValue: 'Marketing / Branding of produce',
+    defaultValue: false,
+  },
+  {
+    id: 2,
+    displayName:
+      'Lower price of Inputs and Raw materials incl. fertilizer, pesticide, seeds etc.',
+    displayValue:
+      'Lower price of Inputs and Raw materials incl. fertilizer, pesticide, seeds etc.',
+    defaultValue: false,
+  },
+  {
+    id: 1,
+    displayName: 'Transporting produce',
+    displayValue: 'Transporting produce',
+    defaultValue: false,
+  },
+  {
+    id: 2,
+    displayName: 'Receiving money at farm gate only without worrying on sale',
+    displayValue: 'Receiving money at farm gate only without worrying on sale',
+    defaultValue: false,
+  },
+  {
+    id: 1,
+    displayName: 'Access to technology and Cultivation advisory',
+    displayValue: 'Access to technology and Cultivation advisory',
+    defaultValue: false,
+  },
+  {
+    id: 2,
+    displayName: 'Social factors: Caste, Creed, Colour, Religion',
+    displayValue: 'Social factors: Caste, Creed, Colour, Religion',
+    defaultValue: false,
+  },
+];
+
+export const enrolFPO = [
+  {
+    id: 1,
+    displayName: 1,
+    displayValue: 'One',
+    defaultValue: 1,
+  },
+  {
+    id: 2,
+    displayName: 2,
+    displayValue: 'two',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: 3,
+    displayValue: 'three',
+    defaultValue: false,
+  },
+  {
+    id: 4,
+    displayName: 4,
+    displayValue: 'four',
+    defaultValue: false,
+  },
+  {
+    id: 5,
+    displayName: 5,
+    displayValue: 'five',
+    defaultValue: false,
+  },
+  {
+    id: 6,
+    displayName: 6,
+    displayValue: 'six',
+    defaultValue: false,
+  },
+  {
+    id: 7,
+    displayName: 7,
+    displayValue: 'seven',
+    defaultValue: false,
+  },
+  {
+    id: 8,
+    displayName: 8,
+    displayValue: 'eight',
+    defaultValue: false,
+  },
+  {
+    id: 9,
+    displayName: 9,
+    displayValue: 'nine',
+    defaultValue: false,
+  },
+  {
+    id: 10,
+    displayName: 10,
+    displayValue: 'ten',
+    defaultValue: false,
+  },
+];
+
+export const followSuggestions = [
+  {
+    id: 1,
+    displayName: 'Yes',
+    displayValue: 'yes',
+    defaultValue: 'yes',
+  },
+  {
+    id: 2,
+    displayName: 'No',
+    displayValue: 'no',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: 'May be',
+    displayValue: 'may_be',
+    defaultValue: false,
+  },
+];
+
+export const consolidateLoans = [
+  {
+    id: 1,
+    displayName: 'Yes',
+    displayValue: 'yes1',
+    defaultValue: 'yes1',
+  },
+  {
+    id: 2,
+    displayName: 'No',
+    displayValue: 'no1',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: 'May be',
+    displayValue: 'may_be1',
+    defaultValue: false,
+  },
+];
+
+// END : Produce Aggregator
+
 let a = {
   addressProofType: [
     {
