@@ -858,3 +858,27 @@ let a = {
     },
   ],
 };
+
+/* START : Technology Adoption */
+export const technologyAdoptionBoolean = [
+  {
+    id: 1,
+    displayName: 'Yes',
+    displayValue: 'yes',
+    defaultValue: 'yes',
+  },
+  {
+    id: 2,
+    displayName: 'No',
+    displayValue: 'no',
+    defaultValue: false,
+  },
+  {
+    id: 2,
+    displayName: 'May be',
+    displayValue: 'may_be',
+    defaultValue: false,
+  },
+];
+export const technologiesOpinion = [{}];
+/* END : Technology Adoption */
