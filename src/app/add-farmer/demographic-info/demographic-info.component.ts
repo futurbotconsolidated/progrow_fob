@@ -16,7 +16,7 @@ import {
   education,
   occupation,
   dependency,
-  ownershipType,
+  ownerShipType,
   particular,
   phoneType,
   phoneOperating,
@@ -109,7 +109,7 @@ export class DemographicInfoComponent implements OnInit {
     this.occupationList = occupation;
     this.educationList = education;
     this.dependencyList = dependency;
-    this.ownershipTypeList = ownershipType;
+    this.ownershipTypeList = ownerShipType;
     this.particularList = particular;
     this.phoneTypeList = phoneType;
     this.phoneOperatingList = phoneOperating;

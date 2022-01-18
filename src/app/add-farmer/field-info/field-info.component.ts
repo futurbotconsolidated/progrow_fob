@@ -15,6 +15,7 @@ import {
   season,
   irrigationSystem,
   waterSource,
+  ownerShipType,
 } from '../../shared/modal/global-field-values';
 @Component({
   selector: 'app-field-info',
@@ -25,9 +26,11 @@ export class FieldInfoComponent implements OnInit {
   fieldInfoForm = new FormGroup({});
   fieldDetails!: FormArray;
   historicalFieldDetails!: FormArray;
+  fieldOwnership!: FormArray;
   plannedSeasonList = <any>[];
   irrigationSystemList = <any>[];
   waterSourceList = <any>[];
+  ownerShipTypeList = <any>[];
 
   constructor(private formBuilder: FormBuilder) {
     this.fieldInfoForm = this.formBuilder.group({
@@ -37,6 +40,7 @@ export class FieldInfoComponent implements OnInit {
       historicalCrops: new FormControl('', [Validators.required]),
       fieldDetails: new FormArray([]),
       historicalFieldDetails: new FormArray([this.createHistoFieldDetails()]),
+      fieldOwnership: new FormArray([]),
 
       // innovativeWaysFarming: [Array()],
     });
@@ -46,6 +50,7 @@ export class FieldInfoComponent implements OnInit {
     this.plannedSeasonList = season;
     this.irrigationSystemList = irrigationSystem;
     this.waterSourceList = waterSource;
+    this.ownerShipTypeList = ownerShipType;
   }
 
   ngAfterViewInit(): void {
@@ -90,6 +95,7 @@ export class FieldInfoComponent implements OnInit {
       var layer = event.layer;
       console.log(layer._bounds);
       this.addFieldDetail();
+      // this.addFieldOwnershipDetail();
       drawnItems.addLayer(layer);
     });
 
@@ -143,10 +149,32 @@ export class FieldInfoComponent implements OnInit {
     this.historicalFieldDetails = this.fieldInfoForm.get(
       'historicalFieldDetails'
     ) as FormArray;
-    this.historicalFieldDetails.push(this.createFieldDetails());
+    this.historicalFieldDetails.push(this.createHistoFieldDetails());
   }
 
   removeHistoFieldDetail(index: any) {
     this.historicalFieldDetails.removeAt(index);
+  }
+
+  createFieldOwnershipDetails(): FormGroup {
+    return this.formBuilder.group({
+      fieldOwnId: new FormControl('', [Validators.required]),
+      ownerType: new FormArray([]),
+      fieldOwnCoOwner: new FormControl('', [Validators.required]),
+      fieldOwnCoPh: new FormControl('', [Validators.required]),
+    });
+  }
+
+  getFieldOwnershipDetailsControls() {
+    return (this.fieldInfoForm.get('fieldOwnership') as FormArray).controls;
+  }
+
+  addFieldOwnershipDetail(): void {
+    this.fieldOwnership = this.fieldInfoForm.get('fieldOwnership') as FormArray;
+    this.fieldOwnership.push(this.createFieldOwnershipDetails());
+  }
+
+  removeFieldOwnershipDetail(index: any) {
+    this.fieldOwnership.removeAt(index);
   }
 }
