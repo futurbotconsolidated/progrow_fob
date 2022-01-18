@@ -880,5 +880,4 @@ export const technologyAdoptionBoolean = [
     defaultValue: false,
   },
 ];
-export const technologiesOpinion = [{}];
 /* END : Technology Adoption */
