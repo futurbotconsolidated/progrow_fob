@@ -10,7 +10,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.appService.getAllFarmersData().subscribe((res: any) => {
-      console.log(res, 'log from dashboard');
+      console.log(res.data, 'log from dashboard');
     });
   }
 }

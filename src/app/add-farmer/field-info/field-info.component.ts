@@ -27,6 +27,7 @@ export class FieldInfoComponent implements OnInit {
   fieldDetails!: FormArray;
   historicalFieldDetails!: FormArray;
   fieldOwnership!: FormArray;
+  enumerate!: FormArray;
   plannedSeasonList = <any>[];
   irrigationSystemList = <any>[];
   waterSourceList = <any>[];
@@ -41,7 +42,7 @@ export class FieldInfoComponent implements OnInit {
       fieldDetails: new FormArray([]),
       historicalFieldDetails: new FormArray([this.createHistoFieldDetails()]),
       fieldOwnership: new FormArray([]),
-
+      enumerate: new FormArray([]),
       // innovativeWaysFarming: [Array()],
     });
   }
@@ -95,7 +96,8 @@ export class FieldInfoComponent implements OnInit {
       var layer = event.layer;
       console.log(layer._bounds);
       this.addFieldDetail();
-      // this.addFieldOwnershipDetail();
+      this.addFieldOwnershipDetail();
+      this.addEnumerate();
       drawnItems.addLayer(layer);
     });
 
@@ -159,7 +161,7 @@ export class FieldInfoComponent implements OnInit {
   createFieldOwnershipDetails(): FormGroup {
     return this.formBuilder.group({
       fieldOwnId: new FormControl('', [Validators.required]),
-      ownerType: new FormArray([]),
+      ownerType: new FormControl([]),
       fieldOwnCoOwner: new FormControl('', [Validators.required]),
       fieldOwnCoPh: new FormControl('', [Validators.required]),
     });
@@ -176,5 +178,27 @@ export class FieldInfoComponent implements OnInit {
 
   removeFieldOwnershipDetail(index: any) {
     this.fieldOwnership.removeAt(index);
+  }
+
+  createEnumerate(): FormGroup {
+    return this.formBuilder.group({
+      fieldId: new FormControl('', [Validators.required]),
+      waterSource: new FormControl('', [Validators.required]),
+      boreDepth: new FormControl('', [Validators.required]),
+      pumpDepth: new FormControl('', [Validators.required]),
+    });
+  }
+
+  getEnumerateControls() {
+    return (this.fieldInfoForm.get('enumerate') as FormArray).controls;
+  }
+
+  addEnumerate(): void {
+    this.enumerate = this.fieldInfoForm.get('enumerate') as FormArray;
+    this.enumerate.push(this.createEnumerate());
+  }
+
+  removeEnumerate(index: any) {
+    this.enumerate.removeAt(index);
   }
 }
