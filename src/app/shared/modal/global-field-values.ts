@@ -250,9 +250,9 @@ export const dependency = [
 export const propertyType = [
   { id: 1, displayName: 'House', displayValue: 'house' },
 ];
-export const ownershipType = [
-  { id: 1, displayName: 'Owned', displayValue: 'owned' },
-];
+// export const ownershipType = [
+//   { id: 1, displayName: 'Owned', displayValue: 'owned' },
+// ];
 export const particular = [{ id: 1, displayName: '', displayValue: '' }];
 
 export const irrigationSystem = [
@@ -265,6 +265,19 @@ export const irrigationSystem = [
 export const waterSource = [
   { id: 1, displayName: 'Pond', displayValue: 'pond' },
   { id: 1, displayName: 'Well', displayValue: 'well' },
+];
+export const ownerShipType = [
+  {
+    id: 1,
+    displayName: 'Leased (Joint/Self)',
+    displayValue: 'Leased (Joint/Self)',
+  },
+  {
+    id: 2,
+    displayName: 'Owned (Joint/Self)',
+    displayValue: 'Owned (Joint/Self)',
+  },
+  { id: 3, displayName: 'Share Cropping', displayValue: 'Share Cropping' },
 ];
 export const season = [
   { id: 1, displayName: 'Rabi 2021', displayValue: 'rabi_2021' },

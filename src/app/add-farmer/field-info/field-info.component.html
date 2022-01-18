@@ -642,18 +642,20 @@
                                     <path class="b"
                                         d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
                                 </svg></a></h3>
-                        <div class="row align-items-center form-details-inner">
+                        <div class="row align-items-center form-details-inner" formArrayName="fieldOwnership"
+                            *ngFor="let item of getFieldOwnershipDetailsControls(); let i = index;" [formGroupName]="i">
 
                             <div class="col-md-1 lable-top">
                                 <label for="field_id">Field ID</label>
-                                <input class="form-control" id="field_id" placeholder="1">
+                                <input class="form-control" id="field_id" formControlName="fieldOwnId" placeholder="1">
                             </div>
-                            <div class="col-md-3">
-                                <label class="form-check-label form-check bordered-radio" for="leased">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="leased">Leased (Joint/Self)</label>
+                            <div class="col-md-3" *ngFor="let indGen of ownerShipTypeList">
+                                <label class="form-check-label form-check bordered-radio" for="{{indGen.displayValue}}">
+                                    <input class="form-check-input" type="radio" formControlName="ownerType"
+                                        value="{{indGen.displayValue}}"
+                                        id="{{indGen.displayValue}}">{{indGen.displayName}}</label>
                             </div>
-                            <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                                 <label class="form-check-label form-check bordered-radio" for="owned">
                                     <input class="form-check-input" type="radio" name="flexRadioDefault"
                                         id="owned">Owned (Joint/Self)</label>
@@ -662,20 +664,22 @@
                                 <label class="form-check-label form-check bordered-radio" for="share_cropping">
                                     <input class="form-check-input" type="radio" name="flexRadioDefault"
                                         id="share_cropping">Share Cropping</label>
-                            </div>
+                            </div> -->
                             <div class="col-md-7 lable-top mt-3">
                                 <label>Co-owner details</label>
-                                <input class="form-control" id="" placeholder="Name/Add">
+                                <input class="form-control" id="fieldOwnCoOwner" formControlName="fieldOwnCoOwner"
+                                    placeholder="Name/Add">
                             </div>
                             <div class="col-md-3 lable-top mt-3">
                                 <label>Phone number</label>
-                                <input class="form-control" id="" placeholder="9876543210">
+                                <input class="form-control" id="fieldOwnCoPh" formControlName="fieldOwnCoPh"
+                                    placeholder="9876543210">
                             </div>
                             <div class="col-auto add-another">
                                 <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload documents</a>
                             </div>
                         </div>
-                        <div class="row align-items-center form-details-inner">
+                        <!-- <div class="row align-items-center form-details-inner">
                             <div class="col-md-1 lable-top">
                                 <label for="field_id">Field ID</label>
                                 <input class="form-control" id="field_id" placeholder="2">
@@ -698,7 +702,7 @@
                             <div class="col-auto add-another">
                                 <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload documents</a>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                     <div class="form-details">
