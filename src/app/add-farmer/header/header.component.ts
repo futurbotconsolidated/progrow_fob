@@ -8,7 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private oauthService: OAuthService, public router: Router) {}
+  constructor(private oauthService: OAuthService, public router: Router) {
+    router.events.subscribe((url: any) => console.log(url));
+  }
 
   ngOnInit(): void {}
   logOut() {
