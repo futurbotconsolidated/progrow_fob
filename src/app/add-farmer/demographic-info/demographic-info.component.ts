@@ -6,6 +6,7 @@ import {
   FormBuilder,
   FormArray,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   religion,
   gender,
@@ -26,6 +27,7 @@ import {
   sourceOfIncome,
   innovativeWaysFarming,
 } from '../../shared/modal/global-field-values';
+import { AddFarmerService } from '../add-farmer.service';
 
 @Component({
   selector: 'app-demographic-info',
@@ -56,7 +58,13 @@ export class DemographicInfoComponent implements OnInit {
   propertyOwnership!: FormArray;
   demographicInfoForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  nextRoute: any;
+
+  constructor(
+    public router: Router,
+    private formBuilder: FormBuilder,
+    private addFarmerService: AddFarmerService
+  ) {
     this.demographicInfoForm = this.formBuilder.group({
       firstName: new FormControl('', [Validators.required]),
       PANnumber: new FormControl('', [Validators.required]),
@@ -96,6 +104,12 @@ export class DemographicInfoComponent implements OnInit {
         Validators.required,
       ]),
       innovativeWaysFarming: [Array()],
+    });
+
+    this.addFarmerService.getMessage().subscribe((data) => {
+      this.nextRoute = data.routeName;
+      this.validateAndNext();
+      console.log(this.nextRoute);
     });
   }
 
@@ -192,6 +206,11 @@ export class DemographicInfoComponent implements OnInit {
       // @ts-ignore: Object is possibly 'null'.
       this.demographicInfoForm.get(formCtlName).markAsDirty();
     }
+  }
+
+  validateAndNext() {
+    console.log('called');
+    this.router.navigate([this.nextRoute]);
   }
 
   onSubmit() {

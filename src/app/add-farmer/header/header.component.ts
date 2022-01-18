@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -8,11 +9,43 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private oauthService: OAuthService, public router: Router) {
-    router.events.subscribe((url: any) => console.log(url));
-  }
+  constructor(
+    private oauthService: OAuthService,
+    public router: Router,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {}
+
+  routeNavigate() {
+    console.log(this.router.url);
+    if (this.router.url === '/add/questionary') {
+      this.router.navigate(['/add/concept-cards']);
+    } else if (this.router.url === '/add/concept-cards') {
+      this.router.navigate(['/add/demographic-info']);
+    } else if (this.router.url === '/add/demographic-info') {
+      this.router.navigate(['/add/field-info']);
+    } else if (this.router.url === '/add/field-info') {
+      this.router.navigate(['/add/financial-planning']);
+    } else if (this.router.url === '/add/financial-planning') {
+      this.router.navigate(['/add/crop-market-plan']);
+    } else if (this.router.url === '/add/crop-market-plan') {
+      this.router.navigate(['/add/produce-aggregator']);
+    } else if (this.router.url === '/add/produce-aggregator') {
+      this.router.navigate(['/add/technology-adoption']);
+    } else if (this.router.url === '/add/technology-adoption') {
+      this.router.navigate(['/add/co-applicant']);
+    } else if (this.router.url === '/add/co-applicant') {
+      this.router.navigate(['/add/info-declaration']);
+    } else {
+      this.router.navigate(['/add/questionary']);
+    }
+  }
+
+  back(): void {
+    this.location.back();
+  }
+
   logOut() {
     this.oauthService.logOut();
     this.router.navigate(['/']);
