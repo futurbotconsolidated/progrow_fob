@@ -41,6 +41,13 @@ export class TechnologyAdoptionComponent implements OnInit {
   }
   ngOnInit(): void {
     this.technologyAdoptionBooleanList = technologyAdoptionBoolean;
+
+    let techAdopt: any = localStorage.getItem('technology-adoption');
+    if (techAdopt) {
+      techAdopt = JSON.parse(techAdopt);
+      this.technologyAdoptionForm.patchValue(techAdopt);
+      console.log(techAdopt);
+    }
   }
 
   saveData() {

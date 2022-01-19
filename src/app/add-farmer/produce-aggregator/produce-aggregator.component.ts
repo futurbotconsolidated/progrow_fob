@@ -53,6 +53,13 @@ export class ProduceAggregatorComponent implements OnInit {
     this.enrolFPOList = enrolFPO;
     this.followSuggestionsList = followSuggestions;
     this.consolidateLoansList = consolidateLoans;
+
+    let prodAggregator: any = localStorage.getItem('produce-aggregator');
+    if (prodAggregator) {
+      prodAggregator = JSON.parse(prodAggregator);
+      this.produceAggregatorForm.patchValue(prodAggregator);
+      console.log(prodAggregator);
+    }
   }
 
   selectCultivationAdvice(event: any, formCtlName: any, formVal: any) {

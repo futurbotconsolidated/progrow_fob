@@ -23,7 +23,14 @@ export class CoApplicantComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let coApp: any = localStorage.getItem('co-applicant');
+    if (coApp) {
+      coApp = JSON.parse(coApp);
+      this.coApplicantForm.patchValue(coApp);
+      console.log(coApp);
+    }
+  }
 
   saveData() {
     let url = `/add/${this.nextRoute}`;

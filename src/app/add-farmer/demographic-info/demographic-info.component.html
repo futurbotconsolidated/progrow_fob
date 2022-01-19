@@ -399,7 +399,8 @@
                             <div class="display-flex family-members" [formGroupName]="i">
                                 <div class="flex-1 lable-top">
                                     <label>Property Type</label>
-                                    <input type="text" class="form-control" placeholder="House">
+                                    <input type="text" class="form-control" formControlName='propertyType'
+                                        placeholder="House">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Upload pictures</label>
@@ -410,7 +411,7 @@
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Ownership Type</label>
-                                    <select class="form-select">
+                                    <select class="form-select" formControlName="ownershipType">
                                         <option selected>select</option>
                                         <option *ngFor="let indVal of ownershipTypeList"
                                             value="{{indVal.displayValue}}">
@@ -419,7 +420,7 @@
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Particular</label>
-                                    <select class="form-select">
+                                    <select class="form-select" formControlName="particular">
                                         <option selected>select</option>
                                         <option *ngFor="let indVal of particularList" value="{{indVal.displayValue}}">
                                             {{indVal.displayName}}</option>
@@ -427,7 +428,7 @@
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Cumulative value</label>
-                                    <input type="text" name="" class="form-control">
+                                    <input type="text" name="" class="form-control" formControlName="cumulativeValue">
                                 </div>
                             </div>
 
@@ -608,7 +609,6 @@
 
                         </div>
                     </div>
-                    <button class="btn btn-primary" type="submit">save</button>
                 </form>
             </div>
         </div>

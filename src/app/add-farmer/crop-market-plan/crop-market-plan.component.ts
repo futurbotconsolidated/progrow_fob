@@ -71,6 +71,13 @@ export class CropMarketPlanComponent implements OnInit {
     this.warehouseProduceList = warehouseProduce;
 
     console.log(this.fertilizerAdviseList, '----fertilizerAdviseList');
+
+    let cropPlan: any = localStorage.getItem('crop-market-planing');
+    if (cropPlan) {
+      cropPlan = JSON.parse(cropPlan);
+      this.cropMarketPlanForm.patchValue(cropPlan);
+      console.log(cropPlan);
+    }
   }
 
   selectCultivationAdvice(event: any, formCtlName: any, formVal: any) {

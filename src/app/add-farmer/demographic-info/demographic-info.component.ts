@@ -145,29 +145,43 @@ export class DemographicInfoComponent implements OnInit {
     this.sourceOfIncomeList = sourceOfIncome;
     this.agriculturalInterestList = agriculturalInterest;
     this.innovativeWaysFarmingList = innovativeWaysFarming;
+    // ----------------------- auto save --------------------
+    // this.demographicInfoForm.valueChanges
+    //   .pipe(
+    //     tap(() => {
+    //       this.saveStatus = SaveStatus.Saving;
+    //     })
+    //   )
+    //   .subscribe(async (value) => {
+    //     console.log(value);
+    //     this.saveStatus = SaveStatus.Saved;
+    //     await sleep(2000);
+    //     if (this.saveStatus === SaveStatus.Saved) {
+    //       this.saveStatus = SaveStatus.Idle;
+    //     }
+    //   });
 
-    this.demographicInfoForm.valueChanges
-      .pipe(
-        tap(() => {
-          this.saveStatus = SaveStatus.Saving;
-        })
-      )
-      .subscribe(async (value) => {
-        console.log(value);
-        this.saveStatus = SaveStatus.Saved;
-        await sleep(2000);
-        if (this.saveStatus === SaveStatus.Saved) {
-          this.saveStatus = SaveStatus.Idle;
-        }
-      });
+    let demoInfo: any = localStorage.getItem('demographic-info');
+    if (demoInfo) {
+      demoInfo = JSON.parse(demoInfo);
+      this.demographicInfoForm.patchValue(demoInfo);
+      console.log(demoInfo);
+
+      // this.familyMembers = this.demographicInfoForm.get(
+      //   'familyMembers'
+      // ) as FormArray;
+      // demoInfo.familyMembers.forEach((x: any) => {
+      //   this.familyMembers.push(this.formBuilder.group(x));
+      // });
+    }
   }
   createPropertyOwnership(): FormGroup {
     return this.formBuilder.group({
       propertyType: new FormControl('', [Validators.required]),
-      propertyPic: new FormControl('Relation', [Validators.required]),
-      ownershipType: new FormControl('Education', [Validators.required]),
-      particular: new FormControl('Occupation', [Validators.required]),
-      cumulativeValue: new FormControl('Dependency', [Validators.required]),
+      propertyPic: new FormControl('', [Validators.required]),
+      ownershipType: new FormControl('', [Validators.required]),
+      particular: new FormControl('', [Validators.required]),
+      cumulativeValue: new FormControl('', [Validators.required]),
     });
   }
 

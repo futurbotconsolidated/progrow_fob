@@ -9,12 +9,19 @@ import { AddFarmerService } from '../add-farmer.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
+  nextButtonHide: boolean = true;
   constructor(
     private oauthService: OAuthService,
     public router: Router,
     private location: Location,
     private addFarmerService: AddFarmerService
-  ) {}
+  ) {
+    if (this.router.url === '/add/info-declaration') {
+      this.nextButtonHide = false;
+    } else {
+      this.nextButtonHide = true;
+    }
+  }
 
   ngOnInit(): void {}
 

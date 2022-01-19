@@ -41,6 +41,13 @@ export class FinancialPlanningComponent implements OnInit {
 
   ngOnInit(): void {
     this.cropLoanProductList = cropLoanProduct;
+
+    let finPlan: any = localStorage.getItem('financial-planing');
+    if (finPlan) {
+      finPlan = JSON.parse(finPlan);
+      this.financialForm.patchValue(finPlan);
+      console.log(finPlan);
+    }
   }
 
   createLoanReqPlaned(): FormGroup {

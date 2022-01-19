@@ -12,7 +12,7 @@
     </div>
     <div class="step-next">
         <a (click)="back()" class="btn btn-back">Back</a>
-        <a (click)="routeNavigate()" class="btn btn-next active">Next </a>
+        <a *ngIf="nextButtonHide" (click)="routeNavigate()" class="btn btn-next active">Next </a>
         <a (click)="logOut()" class="btn btn-primary active" style="margin-left: 10px;">Logout </a>
     </div>
 </header>

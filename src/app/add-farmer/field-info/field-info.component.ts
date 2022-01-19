@@ -64,8 +64,14 @@ export class FieldInfoComponent implements OnInit {
     this.irrigationSystemList = irrigationSystem;
     this.waterSourceList = waterSource;
     this.ownerShipTypeList = ownerShipType;
-  }
 
+    let fieldInfo: any = localStorage.getItem('field-info');
+    if (fieldInfo) {
+      fieldInfo = JSON.parse(fieldInfo);
+      this.fieldInfoForm.patchValue(fieldInfo);
+      console.log(fieldInfo);
+    }
+  }
   ngAfterViewInit(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.setGeoLocation.bind(this));
