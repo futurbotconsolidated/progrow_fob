@@ -5,6 +5,7 @@ import {
   Validators,
   FormBuilder,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   verticals,
   associatedWithFPO,
@@ -12,6 +13,7 @@ import {
   followSuggestions,
   consolidateLoans,
 } from '../../shared/modal/global-field-values';
+import { AddFarmerService } from '../add-farmer.service';
 @Component({
   selector: 'app-produce-aggregator',
   templateUrl: './produce-aggregator.component.html',
@@ -24,14 +26,25 @@ export class ProduceAggregatorComponent implements OnInit {
   enrolFPOList = <any>[];
   followSuggestionsList = <any>[];
   consolidateLoansList = <any>[];
+  nextRoute: any;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private addFarmerService: AddFarmerService,
+    public router: Router
+  ) {
     this.produceAggregatorForm = this.formBuilder.group({
       verticals: [Array()],
       associatedWithFPO: [Array()],
       enrolFPO: new FormControl('one', [Validators.required]),
       followSuggestions: new FormControl('yes', [Validators.required]),
       consolidateLoans: new FormControl('yes1', [Validators.required]),
+    });
+
+    this.addFarmerService.getMessage().subscribe((data) => {
+      this.nextRoute = data.routeName;
+      this.saveData();
+      console.log(this.nextRoute);
     });
   }
   ngOnInit(): void {
@@ -63,5 +76,15 @@ export class ProduceAggregatorComponent implements OnInit {
       // @ts-ignore: Object is possibly 'null'.
       this.produceAggregatorForm.get(formCtlName).markAsDirty();
     }
+  }
+
+  saveData() {
+    let url = `/add/${this.nextRoute}`;
+    console.log(url);
+    localStorage.setItem(
+      'produce-aggregator',
+      JSON.stringify(this.produceAggregatorForm.value)
+    );
+    this.router.navigate([url]);
   }
 }

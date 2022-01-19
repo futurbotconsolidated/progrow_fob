@@ -237,8 +237,13 @@ export class DemographicInfoComponent implements OnInit {
   }
 
   validateAndNext() {
-    console.log('called');
-    this.router.navigate([this.nextRoute]);
+    let url = `/add/${this.nextRoute}`;
+    console.log(this.demographicInfoForm.value);
+    localStorage.setItem(
+      'demographic-info',
+      JSON.stringify(this.demographicInfoForm.value)
+    );
+    this.router.navigate([url]);
   }
 
   onSubmit() {

@@ -5,6 +5,7 @@ import {
   Validators,
   FormBuilder,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   seedProcure,
   varietyComparison,
@@ -15,6 +16,7 @@ import {
   warehouseProduce,
   pesticideQuality,
 } from '../../shared/modal/global-field-values';
+import { AddFarmerService } from '../add-farmer.service';
 @Component({
   selector: 'app-crop-market-plan',
   templateUrl: './crop-market-plan.component.html',
@@ -22,6 +24,7 @@ import {
 })
 export class CropMarketPlanComponent implements OnInit {
   cropMarketPlanForm = new FormGroup({});
+  nextRoute: any;
 
   seedProcureList = <any>[];
   varietyComparisonList = <any>[];
@@ -32,7 +35,11 @@ export class CropMarketPlanComponent implements OnInit {
   durationReceivingMoneyList = <any>[];
   warehouseProduceList = <any>[];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private addFarmerService: AddFarmerService,
+    public router: Router
+  ) {
     this.cropMarketPlanForm = this.formBuilder.group({
       seedProcure: [Array()], //checkbox
       varietyComparison: new FormControl('high_yield', [Validators.required]), //radio
@@ -44,6 +51,12 @@ export class CropMarketPlanComponent implements OnInit {
       farmGateGrading: new FormControl('yes', [Validators.required]),
       durationReceivingMoney: new FormControl('on_spot', [Validators.required]),
       warehouseProduce: new FormControl('yes', [Validators.required]),
+    });
+
+    this.addFarmerService.getMessage().subscribe((data) => {
+      this.nextRoute = data.routeName;
+      this.saveData();
+      console.log(this.nextRoute);
     });
   }
 
@@ -81,5 +94,15 @@ export class CropMarketPlanComponent implements OnInit {
       // @ts-ignore: Object is possibly 'null'.
       this.cropMarketPlanForm.get(formCtlName).markAsDirty();
     }
+  }
+
+  saveData() {
+    let url = `/add/${this.nextRoute}`;
+    console.log(url);
+    localStorage.setItem(
+      'crop-market-planing',
+      JSON.stringify(this.cropMarketPlanForm.value)
+    );
+    this.router.navigate([url]);
   }
 }

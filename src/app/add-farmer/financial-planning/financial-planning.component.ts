@@ -6,7 +6,9 @@ import {
   FormBuilder,
   FormArray,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { cropLoanProduct } from '../../shared/modal/global-field-values';
+import { AddFarmerService } from '../add-farmer.service';
 @Component({
   selector: 'app-financial-planning',
   templateUrl: './financial-planning.component.html',
@@ -16,13 +18,24 @@ export class FinancialPlanningComponent implements OnInit {
   cropLoanProductList: any = [];
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
+  nextRoute: any;
 
   financialForm = new FormGroup({});
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private addFarmerService: AddFarmerService,
+    public router: Router
+  ) {
     this.financialForm = this.formBuilder.group({
       loanReqPlaned: new FormArray([]),
       bankDetails: new FormArray([this.createBankDetails()]),
+    });
+
+    this.addFarmerService.getMessage().subscribe((data) => {
+      this.nextRoute = data.routeName;
+      this.saveData();
+      console.log(this.nextRoute);
     });
   }
 
@@ -73,5 +86,15 @@ export class FinancialPlanningComponent implements OnInit {
 
   removeBankDetails(index: any) {
     this.bankDetails.removeAt(index);
+  }
+
+  saveData() {
+    let url = `/add/${this.nextRoute}`;
+    console.log(url);
+    localStorage.setItem(
+      'financial-planing',
+      JSON.stringify(this.financialForm.value)
+    );
+    this.router.navigate([url]);
   }
 }

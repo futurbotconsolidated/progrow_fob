@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-
+import { AddFarmerService } from '../add-farmer.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -12,7 +12,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private oauthService: OAuthService,
     public router: Router,
-    private location: Location
+    private location: Location,
+    private addFarmerService: AddFarmerService
   ) {}
 
   ngOnInit(): void {}
@@ -24,19 +25,19 @@ export class HeaderComponent implements OnInit {
     } else if (this.router.url === '/add/concept-cards') {
       this.router.navigate(['/add/demographic-info']);
     } else if (this.router.url === '/add/demographic-info') {
-      this.router.navigate(['/add/field-info']);
+      this.addFarmerService.sendMessage('field-info');
     } else if (this.router.url === '/add/field-info') {
-      this.router.navigate(['/add/financial-planning']);
+      this.addFarmerService.sendMessage('financial-planning');
     } else if (this.router.url === '/add/financial-planning') {
-      this.router.navigate(['/add/crop-market-plan']);
+      this.addFarmerService.sendMessage('crop-market-plan');
     } else if (this.router.url === '/add/crop-market-plan') {
-      this.router.navigate(['/add/produce-aggregator']);
+      this.addFarmerService.sendMessage('produce-aggregator');
     } else if (this.router.url === '/add/produce-aggregator') {
-      this.router.navigate(['/add/technology-adoption']);
+      this.addFarmerService.sendMessage('technology-adoption');
     } else if (this.router.url === '/add/technology-adoption') {
-      this.router.navigate(['/add/co-applicant']);
+      this.addFarmerService.sendMessage('co-applicant');
     } else if (this.router.url === '/add/co-applicant') {
-      this.router.navigate(['/add/info-declaration']);
+      this.addFarmerService.sendMessage('info-declaration');
     } else {
       this.router.navigate(['/add/questionary']);
     }

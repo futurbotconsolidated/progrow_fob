@@ -6,6 +6,7 @@ import {
   FormBuilder,
   FormArray,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import 'leaflet';
 declare const L: any;
@@ -17,12 +18,14 @@ import {
   waterSource,
   ownerShipType,
 } from '../../shared/modal/global-field-values';
+import { AddFarmerService } from '../add-farmer.service';
 @Component({
   selector: 'app-field-info',
   templateUrl: './field-info.component.html',
   styleUrls: ['./field-info.component.css'],
 })
 export class FieldInfoComponent implements OnInit {
+  nextRoute: any;
   fieldInfoForm = new FormGroup({});
   fieldDetails!: FormArray;
   historicalFieldDetails!: FormArray;
@@ -33,7 +36,11 @@ export class FieldInfoComponent implements OnInit {
   waterSourceList = <any>[];
   ownerShipTypeList = <any>[];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private addFarmerService: AddFarmerService,
+    public router: Router
+  ) {
     this.fieldInfoForm = this.formBuilder.group({
       historicalSeason: new FormControl('rabi_2021', [Validators.required]),
       plannedSeason: new FormControl('rabi_2021', [Validators.required]),
@@ -43,7 +50,12 @@ export class FieldInfoComponent implements OnInit {
       historicalFieldDetails: new FormArray([this.createHistoFieldDetails()]),
       fieldOwnership: new FormArray([]),
       enumerate: new FormArray([]),
-      // innovativeWaysFarming: [Array()],
+    });
+
+    this.addFarmerService.getMessage().subscribe((data) => {
+      this.nextRoute = data.routeName;
+      this.saveData();
+      console.log(this.nextRoute);
     });
   }
 
@@ -200,5 +212,15 @@ export class FieldInfoComponent implements OnInit {
 
   removeEnumerate(index: any) {
     this.enumerate.removeAt(index);
+  }
+
+  saveData() {
+    let url = `/add/${this.nextRoute}`;
+    console.log(url);
+    localStorage.setItem(
+      'field-info',
+      JSON.stringify(this.fieldInfoForm.value)
+    );
+    this.router.navigate([url]);
   }
 }
