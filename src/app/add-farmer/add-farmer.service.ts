@@ -18,4 +18,9 @@ export class AddFarmerService {
   getMessage(): Observable<any> {
     return this.subject.asObservable();
   }
+
+  save(formValue: any) {
+    console.log(formValue);
+    return formValue;
+  }
 }

@@ -3,6 +3,7 @@
     <article class="right-sec">
         <app-header></app-header>
         <div class="main-sec">
+            <div class="text-center">{{ saveStatus }}</div>
             <div class="demographic-info-form">
                 <form [formGroup]="demographicInfoForm" (ngSubmit)="onSubmit()">
                     <div class="demographic-info-left">
@@ -10,7 +11,8 @@
                             <h3 class="form-title">1. Identity proof</h3>
                             <div class="farmer-details">
                                 <div class="farmer-details-inner lable-top">
-                                    <label for="PANnumber">PAN Card number</label>
+                                    <label for="PANnumber">PAN Card number
+                                    </label>
                                     <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber"
                                         placeholder="ABWRT0987T">
                                 </div>

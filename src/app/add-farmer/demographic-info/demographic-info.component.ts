@@ -7,6 +7,7 @@ import {
   FormArray,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { debounceTime, of, switchMap, tap } from 'rxjs';
 import {
   religion,
   gender,
@@ -28,6 +29,16 @@ import {
   innovativeWaysFarming,
 } from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
+
+enum SaveStatus {
+  Saving = 'Saving...',
+  Saved = 'Saved.',
+  Idle = '',
+}
+
+function sleep(ms: number): Promise<any> {
+  return new Promise((res) => setTimeout(res, ms));
+}
 
 @Component({
   selector: 'app-demographic-info',
@@ -59,6 +70,8 @@ export class DemographicInfoComponent implements OnInit {
   demographicInfoForm: FormGroup;
 
   nextRoute: any;
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
+    SaveStatus.Idle;
 
   constructor(
     public router: Router,
@@ -132,6 +145,21 @@ export class DemographicInfoComponent implements OnInit {
     this.sourceOfIncomeList = sourceOfIncome;
     this.agriculturalInterestList = agriculturalInterest;
     this.innovativeWaysFarmingList = innovativeWaysFarming;
+
+    this.demographicInfoForm.valueChanges
+      .pipe(
+        tap(() => {
+          this.saveStatus = SaveStatus.Saving;
+        })
+      )
+      .subscribe(async (value) => {
+        console.log(value);
+        this.saveStatus = SaveStatus.Saved;
+        await sleep(2000);
+        if (this.saveStatus === SaveStatus.Saved) {
+          this.saveStatus = SaveStatus.Idle;
+        }
+      });
   }
   createPropertyOwnership(): FormGroup {
     return this.formBuilder.group({
