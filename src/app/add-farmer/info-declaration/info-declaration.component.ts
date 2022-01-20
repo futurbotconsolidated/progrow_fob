@@ -37,13 +37,17 @@ export class InfoDeclarationComponent implements OnInit {
     let coAppInfo: any = localStorage.getItem('co-applicant');
 
     let obj = {
-      'demographic-info': JSON.parse(demoInfo),
-      'field-info': JSON.parse(fieldInfo),
-      'crop-market-planing': JSON.parse(cropInfo),
-      'financial-planing': JSON.parse(finInfo),
-      'produce-aggregator': JSON.parse(prodInfo),
-      'technology-adoption': JSON.parse(techAdoptionInfo),
-      'co-applicant': JSON.parse(coAppInfo),
+      bd_id: 1,
+      pan_number: JSON.parse(demoInfo).PANnumber,
+      mobile: JSON.parse(demoInfo).phoneNumber,
+      demographic_info: JSON.parse(demoInfo),
+      field_info: JSON.parse(fieldInfo),
+      crop_market_plan: JSON.parse(cropInfo),
+      financial_planning: JSON.parse(finInfo),
+      produce_aggregator: JSON.parse(prodInfo),
+      technology_adoption: JSON.parse(techAdoptionInfo),
+      co_applicant_details: JSON.parse(coAppInfo),
+      is_required_yn: true,
     };
 
     console.log(obj);
