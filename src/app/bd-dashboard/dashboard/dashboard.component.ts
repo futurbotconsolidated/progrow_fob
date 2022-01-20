@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AppService } from '../../app.service';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { CommonService } from '../../shared/common.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,18 +8,22 @@ import { OAuthService } from 'angular-oauth2-oidc';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  /* START: Variables */
   userInfo: any;
+
+  allFarmersData = [] as any;
+  /* END: Variables */
+
   constructor(
-    private appService: AppService,
-    public oauthService: OAuthService
+    public oauthService: OAuthService,
+    public commonService: CommonService
   ) {
     this.userInfo = this.oauthService.getIdentityClaims();
-
-    console.log(this.userInfo);
   }
 
   ngOnInit(): void {
-    this.appService.getAllFarmersData().subscribe((res: any) => {
+    this.commonService.getAllFarmersData().subscribe((res: any) => {
+      this.allFarmersData = res.data;
       console.log(res, 'log from dashboards');
     });
   }

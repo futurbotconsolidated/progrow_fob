@@ -12,7 +12,7 @@
         <div class="pro-img"><span>SS</span></div>
         <div class="pro-name">
           <p>Welcome</p>
-          <h3>Saryu Sirohi</h3>
+          <h3>{{ userInfo["custom:full_name"] }}</h3>
         </div>
       </div>
     </header>
@@ -37,7 +37,7 @@
               <path
                 d="M19,7h5V9H19Zm-2,5h7v2H17Zm3,5h4v2H20ZM2,22a8,8,0,1,1,16,0H16A6,6,0,1,0,4,22Zm8-9a6,6,0,1,1,6-6A6,6,0,0,1,10,13Zm0-2A4,4,0,1,0,6,7,4,4,0,0,0,10,11Z"
               /></svg
-            ><span>{{ userInfo.first_name || "Karan Shukla" }}</span>
+            ><span>{{ userInfo["custom:full_name"] }}</span>
           </li>
           <li>
             <svg
@@ -131,7 +131,7 @@
                   />
                 </g>
               </g></svg
-            ><span>Farmers Covered : {{ userInfo.farmers_covered || 5 }}</span>
+            ><span>Farmers Covered : {{ this.allFarmersData.length }}</span>
           </li>
           <li>
             <svg
@@ -264,7 +264,7 @@
                 </li>
               </ul>
               <div class="show-result">
-                <p>5 Results</p>
+                <p>{{ allFarmersData.length }} Results</p>
               </div>
             </div>
             <div>
@@ -286,39 +286,20 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr routerLink="/edit/summary">
+                        <tr
+                          routerLink="/edit/summary"
+                          *ngFor="let x of allFarmersData"
+                        >
                           <td>FA0000143</td>
-                          <td>Rishabh Sharma</td>
-                          <td>10 Jan 1980</td>
-                          <td>Chandan Village, Rajasthan</td>
-                          <td>100%</td>
-                        </tr>
-                        <tr>
-                          <td>FA0000143</td>
-                          <td>Rishabh Sharma</td>
-                          <td>10 Jan 1980</td>
-                          <td>Chandan Village, Rajasthan</td>
-                          <td>100%</td>
-                        </tr>
-                        <tr>
-                          <td>FA0000143</td>
-                          <td>Rishabh Sharma</td>
-                          <td>10 Jan 1980</td>
-                          <td>Chandan Village, Rajasthan</td>
-                          <td>100%</td>
-                        </tr>
-                        <tr>
-                          <td>FA0000143</td>
-                          <td>Rishabh Sharma</td>
-                          <td>10 Jan 1980</td>
-                          <td>Chandan Village, Rajasthan</td>
-                          <td>100%</td>
-                        </tr>
-                        <tr>
-                          <td>FA0000143</td>
-                          <td>Rishabh Sharma</td>
-                          <td>10 Jan 1980</td>
-                          <td>Chandan Village, Rajasthan</td>
+                          <td>
+                            {{ x.demographic_info["farmerDetails"].firstName }}
+                            {{ x.demographic_info["farmerDetails"].middleName }}
+                            {{ x.demographic_info["farmerDetails"].lastName }}
+                          </td>
+                          <td>{{ x.demographic_info["farmerDetails"].dob }}</td>
+                          <td>
+                            {{ x.demographic_info["address"].addressLine1 }}
+                          </td>
                           <td>100%</td>
                         </tr>
                       </tbody>
