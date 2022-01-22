@@ -13,18 +13,30 @@ export class CommonService {
   token: any;
   headers = new HttpHeaders();
 
+  /* START API Base and Endpoints */
   private baseUrl = environment.baseUrl;
   private endPoints = environment.endPoints;
+  /* END:: API Base and Endpoints */
 
   constructor(private http: HttpClient, public oauthService: OAuthService) {
     this.token = this.oauthService.getIdToken();
   }
 
-  getAllFarmersData() {
+  /* START: API Calls */
+  getExistingFarmers() {
     headers = headers.set('Bd-id', '1');
     headers = headers.set('Authorization', this.token || '');
     return this.http.get(this.baseUrl + this.endPoints.getAllFarmers, {
       headers,
     });
   }
+
+  getFarmersPipeline() {
+    headers = headers.set('Bd-id', '1');
+    headers = headers.set('Authorization', this.token || '');
+    return this.http.get(this.baseUrl + this.endPoints.getAllFarmers, {
+      headers,
+    });
+  }
+  /* END: API Calls */
 }
