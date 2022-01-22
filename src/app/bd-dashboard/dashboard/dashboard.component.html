@@ -59,7 +59,7 @@
               <path
                 d="M3,3H21a1,1,0,0,1,1,1V20a1,1,0,0,1-1,1H3a1,1,0,0,1-1-1V4A1,1,0,0,1,3,3ZM20,7.238l-7.928,7.1L4,7.216V19H20ZM4.511,5l7.55,6.662L19.5,5Z"
               /></svg
-            ><span>{{ userInfo.email }}</span>
+            ><span>{{ userInfo?.email }}</span>
           </li>
           <li>
             <svg
@@ -153,7 +153,7 @@
               <path
                 d="M2,3.993A1,1,0,0,1,2.992,3H21.008A.993.993,0,0,1,22,3.993V20.007a1,1,0,0,1-.992.993H2.992A.993.993,0,0,1,2,20.007ZM4,5V19H20V5ZM6,7h6v6H6ZM8,9v2h2V9ZM6,15H18v2H6Zm8-8h4V9H14Zm0,4h4v2H14Z"
               /></svg
-            ><span>{{ userInfo.bd_id || "BD0000085" }}</span>
+            ><span>{{ userInfo?.bd_id || "BD0000085" }}</span>
           </li>
           <li>
             <svg
@@ -173,7 +173,7 @@
               <path
                 d="M7,4V20H17V4ZM6,2H18a1,1,0,0,1,1,1V21a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V3A1,1,0,0,1,6,2Zm6,15a1,1,0,1,1-1,1A1,1,0,0,1,12,17Z"
               /></svg
-            ><span>{{ userInfo.phone || "9876543210" }}</span>
+            ><span>{{ userInfo?.phone || "9876543210" }}</span>
           </li>
         </ul>
       </div>
@@ -313,13 +313,17 @@
                         >
                           <td>FA0000143</td>
                           <td>
-                            {{ x.demographic_info["farmerDetails"].firstName }}
-                            {{ x.demographic_info["farmerDetails"].middleName }}
-                            {{ x.demographic_info["farmerDetails"].lastName }}
+                            {{ x.demographic_info["farmerDetails"]?.firstName }}
+                            {{
+                              x.demographic_info["farmerDetails"]?.middleName
+                            }}
+                            {{ x.demographic_info["farmerDetails"]?.lastName }}
                           </td>
-                          <td>{{ x.demographic_info["farmerDetails"].dob }}</td>
                           <td>
-                            {{ x.demographic_info["address"].addressLine1 }}
+                            {{ x.demographic_info["farmerDetails"]?.dob }}
+                          </td>
+                          <td>
+                            {{ x.demographic_info["address"]?.addressLine1 }}
                           </td>
                           <td>100%</td>
                         </tr>
@@ -333,7 +337,10 @@
                   role="tabpanel"
                 >
                   <div>
-                    <img src="../images/map-img.png" alt="" width="100%" />
+                    <div class="p-3">
+                      <div class="map" id="map" class="match-parent"></div>
+                    </div>
+                    <!-- <img src="../images/map-img.png" alt="" width="100%" /> -->
                   </div>
                 </div>
               </div>

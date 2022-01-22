@@ -1,0 +1,10 @@
+/* START: MAP ****************************************** */
+.map {
+  background-color: #f3f3f3;
+}
+html,
+body,
+#map {
+  width: 100% !important;
+  height: 100% !important;
+}
