@@ -72,8 +72,48 @@ export class DashboardComponent implements OnInit {
 
     // geojson coordinates
     map.on('load', () => {
-      console.log('aaaaaaaa');
       useData.forEach((elem: any, index: number) => {
+        // prepare popup
+        const popupDescription = `<div class="field_popup" style="width:260px;">
+           <div class="row">
+             <div class="col-md-6 text-left">
+               <label class="fw-bold">Owner Name</label>
+               <p class="text-capitalize">###</p>
+             </div>
+             <div class="col-md-6 text-left">
+               <label class="fw-bold">Land Record Id</label>
+               <p class="text-capitalize">###</p>
+             </div>
+           </div>
+           <div class="row">
+             <div class="col-md-6 text-left">
+               <label class="fw-bold">Land Document</label>
+               <p class="text-capitalize">
+                 <a href="https://bhunaksha.raj.nic.in/08/plotreportRJ.jsp?state=08&giscode=1508804350166906168001&plotno=673" target="_blank">Download</a>
+               </p>
+             </div>
+             <div class="col-md-6 text-left">
+               <label class="fw-bold">Visit Land</label>
+               <p class="text-capitalize">
+                 <a href="https://maps.google.com?q=${
+                   elem['geometry'].coordinates[0][0][1]
+                 },${elem['geometry'].coordinates[0][0][0]}
+                 " target="_blank">Take Me</a>
+               </p>
+             </div>
+           </div>
+           <div class="row">
+             <div class="col-md-6">
+               <label class="fw-bold">Farm Size</label>
+               <p>${Number(elem['area-Ha'])?.toFixed(2)} Ha</p>
+             </div>
+             <div class="col-md-6">
+               <label class="fw-bold">FRCM Score</label>
+               <p>${Number(elem['aggregate_frcm_score'])?.toFixed(2)}</p>
+             </div>
+           </div>
+         </div>`;
+
         elem['geometry'].coordinates.forEach((h: any, i: number) => {
           // Add Source
           map.addSource(`figure${i}_${index}`, {
@@ -98,6 +138,26 @@ export class DashboardComponent implements OnInit {
               'fill-opacity': 0.8,
             },
           });
+
+          // When a click event occurs on a feature in the places layer, open a popup at the
+          // location of the feature, with description HTML from its properties.
+          map.on('click', `figure${i}_${index}`, (e) => {
+            new mapboxgl.Popup()
+              .setLngLat(h[0])
+              .setHTML(popupDescription)
+              .setMaxWidth('400px')
+              .addTo(map);
+          });
+
+          // Change the cursor to a pointer when the mouse is over the places layer.
+          map.on('mouseenter', `figure${i}_${index}`, () => {
+            map.getCanvas().style.cursor = 'pointer';
+          });
+
+          // Change it back to a pointer when it leaves.
+          map.on('mouseleave', `figure${i}_${index}`, () => {
+            map.getCanvas().style.cursor = '';
+          });
         });
 
         if (index == useData.length - 1) {
@@ -117,7 +177,11 @@ export class DashboardComponent implements OnInit {
     this.commonService.getExistingFarmers().subscribe(
       (res: any) => {
         this.spinner.hide();
-        this.allExistingFarmers = res.data;
+        if (res.message != 'Success' || !res.status) {
+          alert('Failed to fetch existing farmers data, please try again...');
+        } else {
+          this.allExistingFarmers = res.data;
+        }
       },
       (error: any) => {
         this.spinner.hide();
@@ -131,7 +195,11 @@ export class DashboardComponent implements OnInit {
     this.commonService.getFarmersPipeline().subscribe(
       (res: any) => {
         this.spinner.hide();
-        this.allPipelineFarmers = res.data;
+        if (res.message != 'Success' || !res.status) {
+          alert('Failed to fetch farmers pipeline data, please try again...');
+        } else {
+          this.allPipelineFarmers = res.data;
+        }
       },
       (error: any) => {
         this.spinner.hide();

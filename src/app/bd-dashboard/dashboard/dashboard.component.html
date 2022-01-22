@@ -313,17 +313,15 @@
                         >
                           <td>FA0000143</td>
                           <td>
-                            {{ x.demographic_info["farmerDetails"]?.firstName }}
-                            {{
-                              x.demographic_info["farmerDetails"]?.middleName
-                            }}
-                            {{ x.demographic_info["farmerDetails"]?.lastName }}
+                            {{ x.farmerDetails?.firstName }}
+                            {{ x.farmerDetails?.middleName }}
+                            {{ x.farmerDetails?.lastName }}
                           </td>
                           <td>
-                            {{ x.demographic_info["farmerDetails"]?.dob }}
+                            {{ x.farmerDetails?.dob }}
                           </td>
                           <td>
-                            {{ x.demographic_info["address"]?.addressLine1 }}
+                            {{ x.address?.addressLine1 }}
                           </td>
                           <td>100%</td>
                         </tr>
