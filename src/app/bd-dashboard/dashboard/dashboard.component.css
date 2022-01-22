@@ -6,7 +6,8 @@
 }
 html,
 body,
-#map {
-  width: 100% !important;
-  height: 100% !important;
+#existing_farmers_mapbox,
+#farms_pipeline_mapbox {
+  width: 100%;
+  height: 100%;
 }

@@ -53,10 +53,13 @@ export class DashboardComponent implements OnInit {
   overlayMap(type: string) {
     this.spinner.show();
     this.overlayData.length = 0; // clear data
+    let mapViewType = '';
     let useData = [] as any;
     if (type == 'EXISTING_FARMS_MAP_VIEW') {
+      mapViewType = 'existing_farmers_mapbox';
       useData = mapData['features'];
     } else if (type == 'FARMS_PIPELINE_MAP_VIEW') {
+      mapViewType = 'farms_pipeline_mapbox';
       useData = mapData['features'];
     }
     //  Start Overlay Code
@@ -64,7 +67,7 @@ export class DashboardComponent implements OnInit {
     const map = new mapboxgl.Map({
       accessToken:
         'pk.eyJ1IjoicHVybmFyYW0iLCJhIjoiY2tpenBvZWpsMDNlaTMzcWpiZ2liZjEydiJ9.Mdj1w5dXDfCGCpIH5MlI2g',
-      container: 'map', // container ID
+      container: mapViewType, // container ID
       style: 'mapbox://styles/mapbox/satellite-v9?optimize=true', // style URL
       zoom: 14, // starting zoom
       center: [71.43395031003963, 27.04756708332954],
