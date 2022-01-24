@@ -433,37 +433,11 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Chandan</td>
-                          <td>2 - 5 Ha</td>
-                          <td>Mustard</td>
-                          <td>80-100</td>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              class="btn btn_add_farmer"
-                              >Add Farmer</a
-                            >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Chandan</td>
-                          <td>2 - 5 Ha</td>
-                          <td>Mustard</td>
-                          <td>80-100</td>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              class="btn btn_add_farmer"
-                              >Add Farmer</a
-                            >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Chandan</td>
-                          <td>2 - 5 Ha</td>
-                          <td>Mustard</td>
-                          <td>80-100</td>
+                        <tr *ngFor="let x of allPipelineFarmers">
+                          <td>{{ x.area_of_interest }}</td>
+                          <td>{{ x.farm_size }}</td>
+                          <td>{{ x.crop_type }}</td>
+                          <td>{{ x.frcm_score }}</td>
                           <td>
                             <a
                               href="javascript:void(0);"

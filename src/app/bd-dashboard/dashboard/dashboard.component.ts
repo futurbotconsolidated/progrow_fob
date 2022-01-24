@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
     } else if (type == 'EXISTING_FARMS_MAP_VIEW') {
       this.overlayMap('EXISTING_FARMS_MAP_VIEW');
     } else if (type == 'FARMS_PIPELINE_LIST_VIEW') {
-      if (!this.allPipelineFarmers) this.getFarmersPipeline();
+      this.getFarmersPipeline();
     } else if (type == 'FARMS_PIPELINE_MAP_VIEW') {
       this.overlayMap('FARMS_PIPELINE_MAP_VIEW');
     }
@@ -194,6 +194,42 @@ export class DashboardComponent implements OnInit {
   }
 
   getFarmersPipeline() {
+    // Other Variables
+    const farmersPipeline = [
+      {
+        area_of_interest: 'Chandan',
+        farm_size: '2 - 4 Ha',
+        crop_type: 'Mustard',
+        frcm_score: '80-100',
+      },
+      {
+        area_of_interest: 'Chandan',
+        farm_size: '4 - 6 Ha',
+        crop_type: 'Cumin',
+        frcm_score: '60-80',
+      },
+      {
+        area_of_interest: 'Chandan',
+        farm_size: '6 - 8 Ha',
+        crop_type: 'Mustard',
+        frcm_score: '80-100',
+      },
+      {
+        area_of_interest: 'Chandan',
+        farm_size: '2 - 4 Ha',
+        crop_type: 'Cumin',
+        frcm_score: '60-80',
+      },
+      {
+        area_of_interest: 'Chandan',
+        farm_size: '4 - 6 Ha',
+        crop_type: 'Mustard',
+        frcm_score: '60-100',
+      },
+    ];
+
+    this.allPipelineFarmers = farmersPipeline;
+    return;
     this.spinner.show();
     this.commonService.getFarmersPipeline().subscribe(
       (res: any) => {
