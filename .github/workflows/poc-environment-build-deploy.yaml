@@ -107,8 +107,8 @@ jobs:
     - name: Deploy
       env:
         new_ami: ${{ steps.get-ami-id.outputs.new_ami }}
-        launch_template_id: ${{ env.AUTOSCALING_ID }}
-        asg_name: ${{ env.LAUNCH_TEMPLATE_ID }}
+        launch_template_id: ${{ env.LAUNCH_TEMPLATE_ID }}
+        asg_name: ${{ env.AUTOSCALING_ID }}
       run: |
         echo $new_ami
         chmod 755 ./bake-scripts/*
