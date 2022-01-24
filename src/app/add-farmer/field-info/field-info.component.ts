@@ -17,6 +17,7 @@ import {
   irrigationSystem,
   waterSource,
   ownerShipType,
+  cropCycleOnReports,
 } from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 @Component({
@@ -27,7 +28,7 @@ import { AddFarmerService } from '../add-farmer.service';
 export class FieldInfoComponent implements OnInit {
   nextRoute: any;
   fieldInfoForm = new FormGroup({});
-  fieldDetails!: FormArray;
+  plannedFieldDetails!: FormArray;
   historicalFieldDetails!: FormArray;
   fieldOwnership!: FormArray;
   enumerate!: FormArray;
@@ -35,7 +36,9 @@ export class FieldInfoComponent implements OnInit {
   irrigationSystemList = <any>[];
   waterSourceList = <any>[];
   ownerShipTypeList = <any>[];
-
+  cropCycleOnReportsList = <any>[];
+  field_boundary: any;
+  count = 0;
   constructor(
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
@@ -46,10 +49,11 @@ export class FieldInfoComponent implements OnInit {
       plannedSeason: new FormControl('rabi_2021', [Validators.required]),
       plannedCrops: new FormControl('', [Validators.required]),
       historicalCrops: new FormControl('', [Validators.required]),
-      fieldDetails: new FormArray([]),
-      historicalFieldDetails: new FormArray([this.createHistoFieldDetails()]),
+      plannedFieldDetails: new FormArray([]),
+      historicalFieldDetails: new FormArray([]),
       fieldOwnership: new FormArray([]),
       enumerate: new FormArray([]),
+      cropCycleOnReports: new FormControl('high_yield', [Validators.required]), //radio
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {
@@ -64,8 +68,9 @@ export class FieldInfoComponent implements OnInit {
     this.irrigationSystemList = irrigationSystem;
     this.waterSourceList = waterSource;
     this.ownerShipTypeList = ownerShipType;
+    this.cropCycleOnReportsList = cropCycleOnReports;
 
-    let fieldInfo: any = localStorage.getItem('field-info');
+    let fieldInfo: any = localStorage.getItem('field-info-form');
     if (fieldInfo) {
       fieldInfo = JSON.parse(fieldInfo);
       this.fieldInfoForm.patchValue(fieldInfo);
@@ -112,16 +117,26 @@ export class FieldInfoComponent implements OnInit {
 
     map.on(L.Draw.Event.CREATED, (event: any) => {
       var layer = event.layer;
-      console.log(layer._bounds);
-      this.addFieldDetail();
+      this.field_boundary = {
+        type: 'field-boundary',
+        geometry: {
+          coordinates: event.layer._latlngs,
+          type: event.layerType,
+        },
+      };
+      this.count++;
+      this.addPlannedFieldDetails();
+      this.addHistoFieldDetail();
       this.addFieldOwnershipDetail();
       this.addEnumerate();
+
       drawnItems.addLayer(layer);
     });
 
     map.on(L.Draw.Event.DELETED, (event: any) => {
       var layer = event.layer;
       console.log(layer._bounds, 'DELETED');
+      this.count--;
       // this.removeFieldDetail();
     });
   }
@@ -138,16 +153,19 @@ export class FieldInfoComponent implements OnInit {
   }
 
   getPlannedFieldDetailsControls() {
-    return (this.fieldInfoForm.get('fieldDetails') as FormArray).controls;
+    return (this.fieldInfoForm.get('plannedFieldDetails') as FormArray)
+      .controls;
   }
 
-  addFieldDetail(): void {
-    this.fieldDetails = this.fieldInfoForm.get('fieldDetails') as FormArray;
-    this.fieldDetails.push(this.createFieldDetails());
+  addPlannedFieldDetails(): void {
+    this.plannedFieldDetails = this.fieldInfoForm.get(
+      'plannedFieldDetails'
+    ) as FormArray;
+    this.plannedFieldDetails.push(this.createFieldDetails());
   }
 
-  removeFieldDetail(index: any) {
-    this.fieldDetails.removeAt(index);
+  removePlannedFieldDetails(index: any) {
+    this.plannedFieldDetails.removeAt(index);
   }
 
   createHistoFieldDetails(): FormGroup {
@@ -222,11 +240,44 @@ export class FieldInfoComponent implements OnInit {
 
   saveData() {
     let url = `/add/${this.nextRoute}`;
-    console.log(url);
+    let formValue = this.fieldInfoForm.value;
+    let fieldArr = [];
+    console.log(this.count);
+    let obj;
+    for (var i = 0; i < this.count; i++) {
+      obj = {
+        field_boundary: this.field_boundary,
+        field_area_ha: '20',
+        field_address: 'test',
+        planned_season_detail: {
+          plannedSeason: this.fieldInfoForm.value.plannedSeason,
+          plannedCrops: this.fieldInfoForm.value.plannedCrops,
+          plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[0],
+        },
+        historical_season_detail: {
+          historicalSeason: this.fieldInfoForm.value.historicalSeason,
+          historicalCrops: this.fieldInfoForm.value.historicalCrops,
+          historicalFieldDetails:
+            this.fieldInfoForm.value.historicalFieldDetails[0],
+        },
+        field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[0],
+        enumerate_planned_season: this.fieldInfoForm.value.enumerate[0],
+        undertaking_cultivation: {
+          uc: this.fieldInfoForm.value.cropCycleOnReports,
+        },
+        is_required_yn: true,
+      };
+      fieldArr.push(obj);
+    }
+    console.log(fieldArr);
+
+    localStorage.setItem('field-info', JSON.stringify(fieldArr));
     localStorage.setItem(
-      'field-info',
+      'field-info-form',
       JSON.stringify(this.fieldInfoForm.value)
     );
     this.router.navigate([url]);
   }
+
+  ngOnDestroy() {}
 }

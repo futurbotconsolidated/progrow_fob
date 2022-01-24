@@ -41,13 +41,13 @@ export class CropMarketPlanComponent implements OnInit {
     public router: Router
   ) {
     this.cropMarketPlanForm = this.formBuilder.group({
-      seedProcure: [Array()], //checkbox
-      varietyComparison: new FormControl('high_yield', [Validators.required]), //radio
-      fertilizerPurchase: [Array()], //checkbox
+      seedProcure: [Array()],
+      varietyComparison: new FormControl('high_yield', [Validators.required]),
+      fertilizerPurchase: [Array()],
       pesticideQuality: new FormControl('very_satisfied', [
         Validators.required,
-      ]), //radio
-      fertilizerAdvise: [Array()], //checkbox
+      ]),
+      fertilizerAdvise: [Array()],
       farmGateGrading: new FormControl('yes', [Validators.required]),
       durationReceivingMoney: new FormControl('on_spot', [Validators.required]),
       warehouseProduce: new FormControl('yes', [Validators.required]),

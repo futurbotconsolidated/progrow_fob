@@ -27,6 +27,7 @@ import {
   adviceMedium,
   sourceOfIncome,
   innovativeWaysFarming,
+  addressProofType,
 } from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 
@@ -64,6 +65,7 @@ export class DemographicInfoComponent implements OnInit {
   adviceMediumList = <any>[];
   sourceOfIncomeList = <any>[];
   innovativeWaysFarmingList = <any>[];
+  addressProofList: any = [];
 
   familyMembers!: FormArray;
   propertyOwnership!: FormArray;
@@ -79,6 +81,7 @@ export class DemographicInfoComponent implements OnInit {
     private addFarmerService: AddFarmerService
   ) {
     this.demographicInfoForm = this.formBuilder.group({
+      addressProof: new FormControl('voter_id', [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
       PANnumber: new FormControl('', [Validators.required]),
       middleName: new FormControl('', [Validators.required]),
@@ -127,6 +130,7 @@ export class DemographicInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.addressProofList = addressProofType;
     this.religionList = religion;
     this.genderList = gender;
     this.casteList = caste;
@@ -161,7 +165,7 @@ export class DemographicInfoComponent implements OnInit {
     //     }
     //   });
 
-    let demoInfo: any = localStorage.getItem('demographic-info');
+    let demoInfo: any = localStorage.getItem('demographic-info-form');
     if (demoInfo) {
       demoInfo = JSON.parse(demoInfo);
       this.demographicInfoForm.patchValue(demoInfo);
@@ -252,15 +256,52 @@ export class DemographicInfoComponent implements OnInit {
 
   validateAndNext() {
     let url = `/add/${this.nextRoute}`;
-    console.log(this.demographicInfoForm.value);
-    localStorage.setItem(
-      'demographic-info',
-      JSON.stringify(this.demographicInfoForm.value)
-    );
-    this.router.navigate([url]);
-  }
+    let formValue = this.demographicInfoForm.value;
+    let obj = {
+      profileImg: 'imgUrl',
+      identityProof: {
+        panNumber: this.demographicInfoForm.value.PANnumber,
+        panImg: 'imgUrl',
+      },
+      addressProof: {
+        selectedIdProof: this.demographicInfoForm.value.addressProof,
+        selectedIdProofFrontImg: 'imgUrl',
+        selectedIdProofBackImg: 'imgUrl',
+      },
+      farmerDetails: {
+        firstName: this.demographicInfoForm.value.firstName,
+        middleName: this.demographicInfoForm.value.middleName,
+        lastName: this.demographicInfoForm.value.lastName,
+        dob: this.demographicInfoForm.value.dob,
+      },
+      address: {
+        addressLine1: this.demographicInfoForm.value.address1,
+        addressLine2: this.demographicInfoForm.value.address2,
+        pincode: this.demographicInfoForm.value.pinCode,
+        mobileNumber: this.demographicInfoForm.value.phoneNumber,
+      },
+      otherDetails: {
+        educationalQualification:
+          this.demographicInfoForm.value.educationalQualification,
+        occupation: this.demographicInfoForm.value.occupation,
+        fpoName: this.demographicInfoForm.value.annualIncome,
+      },
+      familyMembers: this.demographicInfoForm.value.familyMembers,
+      propertyOwnership: this.demographicInfoForm.value.propertyOwnership,
+      phoneType: this.demographicInfoForm.value.phoneType,
+      phoneUsedBy: this.demographicInfoForm.value.phoneOperating,
+      cultivationAdvice: this.demographicInfoForm.value.cultivationAdvice,
+      adviceMedium: this.demographicInfoForm.value.adviceMedium,
+      sourceOfIncome: this.demographicInfoForm.value.sourceOfIncome,
+      agricultureChildrenInterested:
+        this.demographicInfoForm.value.agriculturalInterest,
+      innovativeFarmingWays:
+        this.demographicInfoForm.value.innovativeWaysFarming,
+    };
+    console.log(obj);
+    localStorage.setItem('demographic-info', JSON.stringify(obj));
+    localStorage.setItem('demographic-info-form', JSON.stringify(formValue));
 
-  onSubmit() {
-    console.log(this.demographicInfoForm.value);
+    this.router.navigate([url]);
   }
 }

@@ -694,6 +694,27 @@ export const followSuggestions = [
   },
 ];
 
+export const cropCycleOnReports = [
+  {
+    id: 1,
+    displayName: 'Yes',
+    displayValue: 'yes',
+    defaultValue: 'yes',
+  },
+  {
+    id: 2,
+    displayName: 'No',
+    displayValue: 'no',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: 'May be',
+    displayValue: 'may_be',
+    defaultValue: false,
+  },
+];
+
 export const consolidateLoans = [
   {
     id: 1,

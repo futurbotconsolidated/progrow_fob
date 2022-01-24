@@ -5,7 +5,7 @@
         <div class="main-sec">
             <div class="text-center">{{ saveStatus }}</div>
             <div class="demographic-info-form">
-                <form [formGroup]="demographicInfoForm" (ngSubmit)="onSubmit()">
+                <form [formGroup]="demographicInfoForm">
                     <div class="demographic-info-left">
                         <div class="left-info">
                             <h3 class="form-title">1. Identity proof</h3>
@@ -69,7 +69,10 @@
                         <div class="farmer-details">
                             <div class="farmer-details-inner lable-top">
                                 <label>Select ID</label>
-                                <input type="text" class="form-control" id="" placeholder="Adhar card">
+                                <select class="flex-1 form-select" formControlName="addressProof">
+                                    <option *ngFor="let indVal of addressProofList" value="{{indVal.displayValue}}">
+                                        {{indVal.displayName}}</option>
+                                </select>
                             </div>
                             <div class="farmer-details-inner lable-top">
                                 <label for="PANimage_front">Image front and back</label>
@@ -204,7 +207,7 @@
                             <div class="farmer-details">
                                 <div class="farmer-details-inner">
                                     <input type="text" class="form-control" formControlName="educationQualification"
-                                        placeholder="Edicational Qualification">
+                                        placeholder="Educational Qualification">
                                 </div>
                                 <div class="farmer-details-inner">
                                     <input type="text" class="form-control" formControlName="occupation"

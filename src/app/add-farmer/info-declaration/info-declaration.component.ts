@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AddFarmerService } from '../add-farmer.service';
 @Component({
   selector: 'app-info-declaration',
@@ -12,7 +13,10 @@ export class InfoDeclarationComponent implements OnInit {
   });
   canSubmit: boolean;
 
-  constructor(private addFarmerService: AddFarmerService) {
+  constructor(
+    private addFarmerService: AddFarmerService,
+    private router: Router
+  ) {
     this.canSubmit = false;
   }
 
@@ -38,8 +42,8 @@ export class InfoDeclarationComponent implements OnInit {
 
     let obj = {
       bd_id: 1,
-      pan_number: JSON.parse(demoInfo).PANnumber,
-      mobile: JSON.parse(demoInfo).phoneNumber,
+      pan_number: JSON.parse(demoInfo).identityProof.panNumber,
+      mobile: JSON.parse(demoInfo).address.mobileNumber,
       demographic_info: JSON.parse(demoInfo),
       field_info: JSON.parse(fieldInfo),
       crop_market_plan: JSON.parse(cropInfo),
@@ -54,7 +58,8 @@ export class InfoDeclarationComponent implements OnInit {
 
     this.addFarmerService.registerFarmer(obj).subscribe((res: any) => {
       console.log(res);
-      localStorage.clear();
+      // localStorage.clear();
+      // this.router.navigate(['/']);
     });
   }
 }
