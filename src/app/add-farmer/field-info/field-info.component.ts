@@ -76,6 +76,40 @@ export class FieldInfoComponent implements OnInit {
       this.fieldInfoForm.patchValue(fieldInfo);
       console.log(fieldInfo);
     }
+    // let map_info: any = localStorage.getItem('field-info');
+    // console.log(JSON.parse(map_info));
+    // map_info = JSON.parse(map_info);
+
+    // if (map_info.length > 0) {
+    //   console.log(map_info.field_boundary);
+    //   map_info.forEach((el: any) => {
+    //     let arr = el.field_boundary.geometry.coordinates;
+    //     console.log(arr[0]);
+
+    //     let latArr: any = [];
+    //     let lngArr: any = [];
+    //     arr[0].forEach((x: any) => {
+    //       console.log(x);
+
+    //       latArr.push(x.lat);
+
+    //       lngArr.push(x.lng);
+    //     });
+    //     console.log(latArr, lngArr);
+    //   });
+    // }
+    // drawnItems = L.featureGroup().addTo(map);
+
+    // var drawnItems = new L.FeatureGroup();
+    // map.addLayer(drawnItems);
+
+    // drawnItems.addLayer(
+    //   new L.Illustrate.Pointer(L.latLng(41.7868010411136, -87.60601043701172), [
+    //     new L.Point(0, 0),
+    //     new L.Point(100, -100),
+    //     new L.Point(400, -100)
+    //   ])
+    // );
   }
   ngAfterViewInit(): void {
     if (navigator.geolocation) {
@@ -117,6 +151,8 @@ export class FieldInfoComponent implements OnInit {
 
     map.on(L.Draw.Event.CREATED, (event: any) => {
       var layer = event.layer;
+      console.log('getLatLngs', layer.getLatLngs());
+
       this.field_boundary = {
         type: 'field-boundary',
         geometry: {
@@ -138,6 +174,12 @@ export class FieldInfoComponent implements OnInit {
       console.log(layer._bounds, 'DELETED');
       this.count--;
       // this.removeFieldDetail();
+    });
+
+    map.on('draw:editvertex', (e: any) => {
+      var poly = e.poly;
+      var latlngs = poly.getLatLngs(); // here the polygon latlngs
+      console.log('latlngs', latlngs);
     });
   }
 

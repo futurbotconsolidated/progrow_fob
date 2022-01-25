@@ -27,9 +27,9 @@ export class HeaderComponent implements OnInit {
 
   routeNavigate() {
     console.log(this.router.url);
-    if (this.router.url === '/add/questionary') {
-      this.router.navigate(['/add/concept-cards']);
-    } else if (this.router.url === '/add/concept-cards') {
+    if (this.router.url === '/add/concept-cards') {
+      this.router.navigate(['/add/questionary']);
+    } else if (this.router.url === '/add/questionary') {
       this.router.navigate(['/add/demographic-info']);
     } else if (this.router.url === '/add/demographic-info') {
       this.addFarmerService.sendMessage('field-info');

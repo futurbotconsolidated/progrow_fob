@@ -56,6 +56,29 @@ export const gender = [
   },
 ];
 
+export const q1 = [
+  {
+    id: 1,
+    displayName: 'Yes',
+    displayValue: 'yes',
+  },
+  {
+    id: 2,
+    displayName: 'No',
+    displayValue: 'no',
+  },
+  {
+    id: 3,
+    displayName: 'May be',
+    displayValue: 'may_be',
+  },
+  {
+    id: 3,
+    displayName: 'Never',
+    displayValue: 'never',
+  },
+];
+
 export const commOrPerAddress = [
   {
     id: 1,
