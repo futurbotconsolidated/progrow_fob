@@ -137,8 +137,8 @@ export class DashboardComponent implements OnInit {
             source: `figure${i}_${index}`,
             layout: {},
             paint: {
-              'fill-color': 'red',
-              'fill-opacity': 0.8,
+              'fill-outline-color': 'red',
+              'fill-opacity': 0.4,
             },
           });
 

@@ -278,7 +278,6 @@ export class DemographicInfoComponent implements OnInit {
       //   `please enter values for ${invalid.join(',')}`,
       //   'Error!'
       // );
-      console.log('a');
 
       this.toastr.error('please enter values for required fields', 'Error!');
     } else {
