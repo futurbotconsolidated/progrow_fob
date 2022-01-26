@@ -1,623 +1,880 @@
 <div class="main-farmer">
-    <app-sidenav></app-sidenav>
-    <article class="right-sec">
-        <app-header></app-header>
-        <div class="main-sec">
-            <div class="text-center">{{ saveStatus }}</div>
-            <div class="demographic-info-form">
-                <form [formGroup]="demographicInfoForm">
-                    <div class="demographic-info-left">
-                        <div class="left-info">
-                            <h3 class="form-title">1. Identity proof</h3>
-                            <div class="farmer-details">
-                                <div class="farmer-details-inner lable-top">
-                                    <label for="PANnumber">PAN Card number
-                                    </label>
-                                    <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber"
-                                        placeholder="ABWRT0987T">
-                                </div>
-                                <div class="farmer-details-inner lable-top">
-                                    <label>PAN Card image</label>
-                                    <div class="fileUpload">
-                                        <span></span><img src="../../../assets/images/photo-camera.png"><input
-                                            type="file" class="form-control uploadlogo" />
-                                    </div>
+  <app-sidenav></app-sidenav>
+  <article class="right-sec">
+    <app-header></app-header>
+    <div class="main-sec">
+      <div class="text-center">{{ saveStatus }}</div>
+      <div class="demographic-info-form">
+        <form [formGroup]="demographicInfoForm">
+          <div class="demographic-info-left">
+            <div class="left-info">
+              <h3 class="form-title">1. Identity proof</h3>
+              <div class="farmer-details">
+                <div class="farmer-details-inner lable-top">
+                  <label for="PANnumber">PAN Card number </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="PANnumber"
+                    formControlName="PANnumber"
+                    placeholder="ABWRT0987T"
+                  />
+                </div>
+                <div class="farmer-details-inner lable-top">
+                  <label>PAN Card image</label>
+                  <div class="fileUpload">
+                    <span></span
+                    ><img src="../../../assets/images/photo-camera.png" /><input
+                      type="file"
+                      class="form-control uploadlogo"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="profile-picture">
+              <h4>Profile Picture</h4>
+              <div class="update-profile">
+                <div class="pro-img">
+                  <img
+                    class="profile-pic"
+                    src="../../../assets/images/farmer-profile-img.jpg"
+                  />
+                </div>
+                <div class="pro-update">
+                  <a class="avatar" href="javascript:void(0)"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <defs>
+                        <style>
+                          .a {
+                            fill: none;
+                          }
+                        </style>
+                      </defs>
+                      <path class="a" d="M0,0H24V24H0Z" />
+                      <path
+                        d="M9.827,21.763,14.31,14l3.532,6.117a10.023,10.023,0,0,1-8.015,1.646ZM7.89,21.12A10.028,10.028,0,0,1,2.458,15h8.965L7.89,21.119ZM2.05,13A9.964,9.964,0,0,1,4.633,5.239L9.112,13ZM6.159,3.883a10.021,10.021,0,0,1,8.014-1.646L9.69,10,6.159,3.883Zm9.951-1A10.028,10.028,0,0,1,21.542,9H12.577L16.11,2.881ZM21.95,11a9.964,9.964,0,0,1-2.583,7.761L14.888,11h7.064Z"
+                      /></svg
+                    ><span>Retake</span
+                    ><input class="file-upload" type="file" accept="image/*"
+                  /></a>
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="profile-picture">
-                            <h4>Profile Picture</h4>
-                            <div class="update-profile">
-                                <div class="pro-img"><img class="profile-pic"
-                                        src="../../../assets/images/farmer-profile-img.jpg"></div>
-                                <div class="pro-update">
-                                    <a class="avatar" href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
-                                            width="24" height="24" viewBox="0 0 24 24">
-                                            <defs>
-                                                <style>
-                                                    .a {
-                                                        fill: none;
-                                                    }
-                                                </style>
-                                            </defs>
-                                            <path class="a" d="M0,0H24V24H0Z" />
-                                            <path
-                                                d="M9.827,21.763,14.31,14l3.532,6.117a10.023,10.023,0,0,1-8.015,1.646ZM7.89,21.12A10.028,10.028,0,0,1,2.458,15h8.965L7.89,21.119ZM2.05,13A9.964,9.964,0,0,1,4.633,5.239L9.112,13ZM6.159,3.883a10.021,10.021,0,0,1,8.014-1.646L9.69,10,6.159,3.883Zm9.951-1A10.028,10.028,0,0,1,21.542,9H12.577L16.11,2.881ZM21.95,11a9.964,9.964,0,0,1-2.583,7.761L14.888,11h7.064Z" />
-                                        </svg><span>Retake</span><input class="file-upload" type="file"
-                                            accept="image/*" /></a>
+                  <a href="javascript:void(0)"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <defs>
+                        <style>
+                          .a {
+                            fill: none;
+                          }
+                        </style>
+                      </defs>
+                      <path class="a" d="M0,0H24V24H0Z" />
+                      <path
+                        d="M7,6V3A1,1,0,0,1,8,2h8a1,1,0,0,1,1,1V6h5V8H20V21a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V8H2V6Zm6.414,8,1.768-1.768-1.414-1.414L12,12.586l-1.768-1.768L8.818,12.232,10.586,14,8.818,15.768l1.414,1.414L12,15.414l1.768,1.768,1.414-1.414ZM9,4V6h6V4Z"
+                      /></svg
+                    ><span>Delete</span></a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <h3 class="form-title">2. Address proof</h3>
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label>Select ID</label>
+                <select
+                  class="flex-1 form-select"
+                  formControlName="addressProof"
+                >
+                  <option
+                    *ngFor="let indVal of addressProofList"
+                    value="{{ indVal.displayValue }}"
+                  >
+                    {{ indVal.displayName }}
+                  </option>
+                </select>
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <label for="PANimage_front">Image front and back</label>
+                <div class="fileUpload">
+                  <span></span
+                  ><img src="../../../assets/images/photo-camera.png" /><input
+                    type="file"
+                    class="form-control uploadlogo"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <h3 class="form-title">3. Others Details</h3>
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label>Passport</label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <label for="PANimage_front">Image front and back</label>
+                <div class="fileUpload">
+                  <span></span
+                  ><img src="../../../assets/images/photo-camera.png" /><input
+                    type="file"
+                    class="form-control uploadlogo"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label>NREGA</label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <label for="PANimage_front">Image front and back</label>
+                <div class="fileUpload">
+                  <span></span
+                  ><img src="../../../assets/images/photo-camera.png" /><input
+                    type="file"
+                    class="form-control uploadlogo"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <div class="form-details-inner">
+              <h3 class="form-title">4.A Farmer details</h3>
+              <div class="farmer-details">
+                <div class="small-input">
+                  <select class="form-select">
+                    <option selected>Mr.</option>
+                    <option>Mrs.</option>
+                  </select>
+                </div>
+                <div class="farmer-details">
+                  <div class="farmer-details-inner lable-top">
+                    <label>First Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="firstName"
+                      placeholder=""
+                    />
+                  </div>
+                  <div class="farmer-details-inner lable-top">
+                    <label>Middle Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="middleName"
+                      placeholder=""
+                    />
+                  </div>
+                  <div class="farmer-details-inner lable-top">
+                    <label>Last Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="lastName"
+                      placeholder=""
+                    />
+                  </div>
+                  <div class="farmer-details-inner lable-top">
+                    <label>Date Of Birth</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="dob"
+                      placeholder="Date of Birth"
+                      value=""
+                      onfocus="(this.type='date')"
+                      onblur="(this.type='text')"
+                    />
+                    <!-- <span><img src="../../../assets/images/date-icon.png"></span> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4.B Gender</h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-radio"
+                  *ngFor="let indGen of genderList"
+                  for="{{ indGen.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="gender"
+                    value="{{ indGen.displayValue }}"
+                    id="{{ indGen.displayValue }}"
+                  /><span>{{ indGen.displayName }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4.C Religion</h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-radio"
+                  *ngFor="let indReligion of religionList"
+                  for="{{ indReligion.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="religion"
+                    value="{{ indReligion.displayValue }}"
+                    id="{{ indReligion.displayValue }}"
+                  /><span>{{ indReligion.displayName }}</span>
+                </label>
+                <div class="farmer-details-inner lable-top flex-2">
+                  <label>Others(Please Specify)</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4.D Caste/Tribe</h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-radio"
+                  *ngFor="let indCaste of casteList"
+                  for="{{ indCaste.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="caste"
+                    value="{{ indCaste.displayValue }}"
+                    id="{{ indCaste.displayValue }}"
+                  /><span>{{ indCaste.displayName }}</span>
+                </label>
+                <div class="farmer-details-inner lable-top">
+                  <label>Others(Please Specify)</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4.E Others Details</h3>
+              <div class="farmer-details">
+                <div class="farmer-details-inner lable-top">
+                  <label>Educational Qualification</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="educationQualification"
+                    placeholder=""
+                  />
+                </div>
+                <div class="farmer-details-inner lable-top">
+                  <label>Occupation</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="occupation"
+                    placeholder=""
+                  />
+                </div>
+                <div class="farmer-details-inner lable-top">
+                  <label>Annual Income</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="annualIncome"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                5.A Address as per officially valid document
+              </h3>
+              <div class="display-flex">
+                <div class="flex-1 label-top">
+                  <label>Address line-1</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="address1"
+                    placeholder=""
+                  />
+                </div>
+                <div class="flex-1 label-top">
+                  <label for="">Address line-2</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="address2"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <div class="display-flex">
+                <div class="flex-1 label-top">
+                  <label for="">Tahsil/Taluka/Mandal</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="taluk"
+                    placeholder=""
+                  />
+                </div>
+                <div class="flex-1 label-top">
+                  <label for="">District/City</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="city"
+                    placeholder=""
+                  />
+                </div>
+                <div class="flex-1 label-top">
+                  <label for="">Pin Code</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="pinCode"
+                    placeholder=""
+                  />
+                </div>
+                <div class="flex-1 label-top">
+                  <label for="">State</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="state"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <div class="display-flex">
+                <div class="flex-1 label-top">
+                  <label for="">Landmark</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="landmark"
+                    placeholder=""
+                  />
+                </div>
+                <div class="flex-1 label-top">
+                  <label for="">Phone No.</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="phoneNumber"
+                    placeholder=""
+                  />
+                </div>
+                <div class="flex-1 label-top">
+                  <label for="">Mobile 1</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="mobile1"
+                    placeholder=""
+                  />
+                </div>
+                <div class="flex-1 label-top">
+                  <label for="">Mobile 2</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="mobile2"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <div class="display-flex">
+                <div class="flex-1 label-top">
+                  <label for="">No. of years in present address</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="yrsInAddress"
+                    placeholder=""
+                  />
+                </div>
+                <div class="flex-1 label-top">
+                  <label for="">No. of years in city/village</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="yrsInCity"
+                    placeholder=""
+                  />
+                </div>
+                <div class="flex-2 label-top">
+                  <label for="">Email Address</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="email"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">5.B Property status</h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-radio"
+                  *ngFor="let indStat of propertyStatusList"
+                  for="{{ indStat.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="propertyStatus"
+                    value="{{ indStat.displayValue }}"
+                    id="{{ indStat.displayValue }}"
+                  /><span>{{ indStat.displayName }}</span>
+                </label>
+              </div>
+              <div class="farmer-details">
+                <div class="farmer-details-inner label-top">
+                  <label for="">Monthly Rent (If rented)</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="monthlyRent"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">5.B Communication/Permanent address</h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-radio"
+                  *ngFor="let indStat of addressStatusList"
+                  for="{{ indStat.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="commOrPerAddress"
+                    value="{{ indStat.displayValue }}"
+                    id="{{ indStat.displayValue }}"
+                  /><span>{{ indStat.displayName }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
 
-                                    <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                            height="24" viewBox="0 0 24 24">
-                                            <defs>
-                                                <style>
-                                                    .a {
-                                                        fill: none;
-                                                    }
-                                                </style>
-                                            </defs>
-                                            <path class="a" d="M0,0H24V24H0Z" />
-                                            <path
-                                                d="M7,6V3A1,1,0,0,1,8,2h8a1,1,0,0,1,1,1V6h5V8H20V21a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V8H2V6Zm6.414,8,1.768-1.768-1.414-1.414L12,12.586l-1.768-1.768L8.818,12.232,10.586,14,8.818,15.768l1.414,1.414L12,15.414l1.768,1.768,1.414-1.414ZM9,4V6h6V4Z" />
-                                        </svg><span>Delete</span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-details">
-                        <h3 class="form-title">2. Address proof</h3>
-                        <div class="farmer-details">
-                            <div class="farmer-details-inner lable-top">
-                                <label>Select ID</label>
-                                <select class="flex-1 form-select" formControlName="addressProof">
-                                    <option *ngFor="let indVal of addressProofList" value="{{indVal.displayValue}}">
-                                        {{indVal.displayName}}</option>
-                                </select>
-                            </div>
-                            <div class="farmer-details-inner lable-top">
-                                <label for="PANimage_front">Image front and back</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-details">
-                        <h3 class="form-title">3. Others Details</h3>
-                        <div class="farmer-details">
-                            <div class="farmer-details-inner lable-top">
-                                <label>Passport</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="farmer-details-inner lable-top">
-                                <label for="PANimage_front">Image front and back</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="farmer-details">
-                            <div class="farmer-details-inner lable-top">
-                                <label>NREGA</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="farmer-details-inner lable-top">
-                                <label for="PANimage_front">Image front and back</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-details">
-                        <div class="form-details-inner">
-                            <h3 class="form-title">4.A Farmer details <a href="javascript:void(0)"
-                                    class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
-
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
-                            <div class="farmer-details">
-                                <div class="small-input">
-                                    <select class="form-select">
-                                        <option selected>Mr.</option>
-                                        <option>Mrs.</option>
-                                    </select>
-                                </div>
-                                <div class="farmer-details">
-                                    <div class="farmer-details-inner lable-top">
-                                        <label>First Name</label>
-                                        <input type="text" class="form-control" formControlName="firstName"
-                                            placeholder="First Name">
-                                    </div>
-                                    <div class="farmer-details-inner lable-top">
-                                        <label>Middle Name</label>
-                                        <input type="text" class="form-control" formControlName="middleName"
-                                            placeholder="Middle Name">
-                                    </div>
-                                    <div class="farmer-details-inner lable-top">
-                                        <label>Last Name</label>
-                                        <input type="text" class="form-control" formControlName="lastName"
-                                            placeholder="Last Name">
-                                    </div>
-                                    <div class="farmer-details-inner lable-top">
-                                        <label>Date Of Birth</label>
-                                        <input type="text" class="form-control" formControlName="dob"
-                                            placeholder="Date of Birth" value="Date of Birth"
-                                            onfocus="(this.type='date')" onblur="(this.type='text')">
-                                        <!-- <span><img src="../../../assets/images/date-icon.png"></span> -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">4.B Gender</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indGen of genderList" for="{{indGen.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="gender"
-                                        value="{{indGen.displayValue}}"
-                                        id="{{indGen.displayValue}}"><span>{{indGen.displayName}}</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">4.C Religion</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indReligion of religionList" for="{{indReligion.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="religion"
-                                        value="{{indReligion.displayValue}}"
-                                        id="{{indReligion.displayValue}}"><span>{{indReligion.displayName}}</span>
-                                </label>
-                                <div class="farmer-details-inner lable-top flex-2">
-                                    <label>Others(Please Specify)</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">4.D Caste/Tribe</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indCaste of casteList" for="{{indCaste.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="caste"
-                                        value="{{indCaste.displayValue}}"
-                                        id="{{indCaste.displayValue}}"><span>{{indCaste.displayName}}</span>
-                                </label>
-                                <div class="farmer-details-inner lable-top">
-                                    <label>Others(Please Specify)</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">4.E Others Details</h3>
-                            <div class="farmer-details">
-                                <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" formControlName="educationQualification"
-                                        placeholder="Educational Qualification">
-                                </div>
-                                <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" formControlName="occupation"
-                                        placeholder="Occupation">
-                                </div>
-                                <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" formControlName="annualIncome"
-                                        placeholder="Annual Income">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-details">
-                        <div class="form-details-inner">
-                            <h3 class="form-title">5.A Address as per officially valid document</h3>
-                            <div class="display-flex">
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="address1"
-                                        placeholder="Address line-1">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="address2"
-                                        placeholder="Address line-2">
-                                </div>
-                            </div>
-                            <div class="display-flex">
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="taluk"
-                                        placeholder="Tahsil/Taluka/Mandal">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="city"
-                                        placeholder="District/City">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="pinCode"
-                                        placeholder="pin code">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="state" placeholder="State">
-                                </div>
-                            </div>
-                            <div class="display-flex">
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="landmark"
-                                        placeholder="Landmark">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="phoneNumber"
-                                        placeholder="Phone No.">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="mobile1"
-                                        placeholder="Mobile 1">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="mobile2"
-                                        placeholder="Mobile 2">
-                                </div>
-                            </div>
-                            <div class="display-flex">
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="yrsInAddress"
-                                        placeholder="No. of years in present address">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="yrsInCity"
-                                        placeholder="No. of years in city/village">
-                                </div>
-                                <div class="flex-2">
-                                    <input type="text" class="form-control" formControlName="email"
-                                        placeholder="Email Address">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">5.B Property status</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indStat of propertyStatusList" for="{{indStat.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="propertyStatus"
-                                        value="{{indStat.displayValue}}"
-                                        id="{{indStat.displayValue}}"><span>{{indStat.displayName}}</span>
-                                </label>
-                            </div>
-                            <div class="farmer-details">
-                                <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" formControlName="monthlyRent"
-                                        placeholder="Monthly Rent (If rented)">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">5.B Communication/Permanent address</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indStat of addressStatusList" for="{{indStat.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="commOrPerAddress"
-                                        value="{{indStat.displayValue}}"
-                                        id="{{indStat.displayValue}}"><span>{{indStat.displayName}}</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="form-details">
-                        <div class="row align-items-center">
-                            <h3 class="form-title">6. How many members in the family? Record for each member.<a
-                                    href="javascript:void(0)" class="comment-icon"><svg
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
-
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
-                            <div class="mb-2" formArrayName="familyMembers"
-                                *ngFor="let item of getFamilyMembersControls(); let i = index;">
-                                <div class="display-flex" [formGroupName]="i">
-                                    <div class="flex-2">
-                                        <input type="text" class="form-control" formControlName="name"
-                                            placeholder="Name">
-                                    </div>
-                                    <select class="flex-1 form-select" formControlName="relation">
-                                        <option selected>Relation</option>
-                                        <option *ngFor="let indVal of relationList" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
-                                    </select>
-                                    <select class="flex-1 form-select" formControlName="education">
-                                        <option selected>Education</option>
-                                        <option *ngFor="let indVal of educationList" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
-                                    </select>
-                                    <select class="flex-1 form-select" formControlName="occupation">
-                                        <option selected>Occupation</option>
-                                        <option *ngFor="let indVal of occupationList" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
-                                    </select>
-                                    <select class="flex-1 form-select" formControlName="dependency">
-                                        <option selected>Dependency</option>
-                                        <option *ngFor="let indVal of dependencyList" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
-                                    </select>
-                                    <div *ngIf="getFamilyMembersControls().length!=1  && i!=getFamilyMembersControls().length-1"
-                                        class="flex-1 add-another ">
-                                        <!-- <a class="text-danger" href="javascript:void(0);"
+          <div class="form-details">
+            <div class="row align-items-center">
+              <h3 class="form-title">
+                6. How many members in the family? Record for each member.
+              </h3>
+              <div
+                class="mb-2"
+                formArrayName="familyMembers"
+                *ngFor="let item of getFamilyMembersControls(); let i = index"
+              >
+                <div class="display-flex" [formGroupName]="i">
+                  <div class="flex-2 label-top">
+                    <label>Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="name"
+                      placeholder=""
+                    />
+                  </div>
+                  <select class="flex-1 form-select" formControlName="relation">
+                    <option selected>Relation</option>
+                    <option
+                      *ngFor="let indVal of relationList"
+                      value="{{ indVal.displayValue }}"
+                    >
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
+                  <select
+                    class="flex-1 form-select"
+                    formControlName="education"
+                  >
+                    <option selected>Education</option>
+                    <option
+                      *ngFor="let indVal of educationList"
+                      value="{{ indVal.displayValue }}"
+                    >
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
+                  <select
+                    class="flex-1 form-select"
+                    formControlName="occupation"
+                  >
+                    <option selected>Occupation</option>
+                    <option
+                      *ngFor="let indVal of occupationList"
+                      value="{{ indVal.displayValue }}"
+                    >
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
+                  <select
+                    class="flex-1 form-select"
+                    formControlName="dependency"
+                  >
+                    <option selected>Dependency</option>
+                    <option
+                      *ngFor="let indVal of dependencyList"
+                      value="{{ indVal.displayValue }}"
+                    >
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="
+                      getFamilyMembersControls().length != 1 &&
+                      i != getFamilyMembersControls().length - 1
+                    "
+                    class="flex-1 add-another"
+                  >
+                    <!-- <a class="text-danger" href="javascript:void(0);"
                                             (click)="removeFamilyMembers(i)">-
                                             Remove</a> -->
 
-                                        <a href="javascript:void(0)" class="delete-item "
-                                            (click)="removeFamilyMembers(i)"><i
-                                                class="fa fa-trash-o text-danger"></i></a>
-                                    </div>
-                                    <div *ngIf="i==getFamilyMembersControls().length-1" class="flex-1 add-another">
-                                        <a href="javascript:void(0);" (click)="addFamilyMembers()">+ Add Another</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-details">
-                        <h3 class="form-title">7. Property Ownership <a href="javascript:void(0)"
-                                class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
+                    <a
+                      href="javascript:void(0)"
+                      class="delete-item"
+                      (click)="removeFamilyMembers(i)"
+                      ><i class="fa fa-trash-o text-danger"></i
+                    ></a>
+                  </div>
+                  <div
+                    *ngIf="i == getFamilyMembersControls().length - 1"
+                    class="flex-1 add-another"
+                  >
+                    <a href="javascript:void(0);" (click)="addFamilyMembers()"
+                      >+ Add Another</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <h3 class="form-title">7. Property Ownership</h3>
+            <div
+              class="mb-2"
+              formArrayName="propertyOwnership"
+              *ngFor="let item of getPropertyOwnershipControls(); let i = index"
+            >
+              <div class="display-flex family-members" [formGroupName]="i">
+                <div class="flex-1 lable-top">
+                  <label>Property Type</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="propertyType"
+                    placeholder="House"
+                  />
+                </div>
+                <div class="flex-1 lable-top">
+                  <label>Upload pictures</label>
+                  <div class="fileUpload">
+                    <span></span
+                    ><img src="../../../assets/images/photo-camera.png" /><input
+                      type="file"
+                      class="form-control uploadlogo"
+                    />
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label>Ownership Type</label>
+                  <select class="form-select" formControlName="ownershipType">
+                    <option selected>select</option>
+                    <option
+                      *ngFor="let indVal of ownershipTypeList"
+                      value="{{ indVal.displayValue }}"
+                    >
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label>Particular</label>
+                  <select class="form-select" formControlName="particular">
+                    <option selected>select</option>
+                    <option
+                      *ngFor="let indVal of particularList"
+                      value="{{ indVal.displayValue }}"
+                    >
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label>Cumulative value</label>
+                  <input
+                    type="text"
+                    name=""
+                    class="form-control"
+                    formControlName="cumulativeValue"
+                  />
+                </div>
+              </div>
 
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
-                        <div class="mb-2" formArrayName="propertyOwnership"
-                            *ngFor="let item of getPropertyOwnershipControls(); let i = index;">
-                            <div class="display-flex family-members" [formGroupName]="i">
-                                <div class="flex-1 lable-top">
-                                    <label>Property Type</label>
-                                    <input type="text" class="form-control" formControlName='propertyType'
-                                        placeholder="House">
-                                </div>
-                                <div class="flex-1 lable-top">
-                                    <label>Upload pictures</label>
-                                    <div class="fileUpload">
-                                        <span></span><img src="../../../assets/images/photo-camera.png"><input
-                                            type="file" class="form-control uploadlogo" />
-                                    </div>
-                                </div>
-                                <div class="flex-1 lable-top">
-                                    <label>Ownership Type</label>
-                                    <select class="form-select" formControlName="ownershipType">
-                                        <option selected>select</option>
-                                        <option *ngFor="let indVal of ownershipTypeList"
-                                            value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
-                                    </select>
-                                </div>
-                                <div class="flex-1 lable-top">
-                                    <label>Particular</label>
-                                    <select class="form-select" formControlName="particular">
-                                        <option selected>select</option>
-                                        <option *ngFor="let indVal of particularList" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
-                                    </select>
-                                </div>
-                                <div class="flex-1 lable-top">
-                                    <label>Cumulative value</label>
-                                    <input type="text" name="" class="form-control" formControlName="cumulativeValue">
-                                </div>
-                            </div>
-
-                            <div class="row justify-content-end">
-                                <div class="col-auto add-another"
-                                    *ngIf="getPropertyOwnershipControls().length!=1  && i!=getPropertyOwnershipControls().length-1">
-                                    <!-- <a class="text-danger" href="javascript:void(0);"
+              <div class="row justify-content-end">
+                <div
+                  class="col-auto add-another"
+                  *ngIf="
+                    getPropertyOwnershipControls().length != 1 &&
+                    i != getPropertyOwnershipControls().length - 1
+                  "
+                >
+                  <!-- <a class="text-danger" href="javascript:void(0);"
                                         (click)="removePropertyOwnership(i)">- Remove</a> -->
 
-                                    <a href="javascript:void(0)" class="delete-item "
-                                        (click)="removePropertyOwnership(i)"><i
-                                            class="fa fa-trash-o text-danger"></i></a>
-
-                                </div>
-                                <div class="col-auto add-another" *ngIf="i==getPropertyOwnershipControls().length-1">
-                                    <a href="javascript:void(0);" (click)="addPropertyOwnership()">+ Add More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-details">
-                        <div class="form-details-inner">
-                            <h3 class="form-title">8A. What type of phone do you own? <a href="javascript:void(0)"
-                                    class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
-
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indType of phoneTypeList" for="{{indType.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="phoneType"
-                                        value="{{indType.displayValue}}"
-                                        id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">8B. Who is operating the phone in your family?</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indType of phoneOperatingList" for="{{indType.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="phoneOperating"
-                                        value="{{indType.displayValue}}"
-                                        id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
-                                </label>
-
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">8C. Where all do you seek advice on cultivation?</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-check"
-                                    *ngFor="let indStat of cultivationAdviceList" for="{{indStat.displayValue}}">
-                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"
-                                        (click)="
-                                        selectCultivationAdvice($event, 'cultivationAdvice', indStat.displayValue)
-                                      "
-                                        [checked]="this.demographicInfoForm.controls['cultivationAdvice'].value?.includes(indStat.displayValue)"><span>{{indStat.displayName}}</span>
-                                </label>
-                                <div class="lable-top">
-                                    <label>Mention other(if any)</label>
-                                    <input class="form-control" type="text">
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">8D. What medium do you use to seek advice?</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-check"
-                                    *ngFor="let indStat of adviceMediumList" for="{{indStat.displayValue}}">
-                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"
-                                        (click)="
-                                        selectCultivationAdvice($event, 'adviceMedium', indStat.displayValue)
-                                      "
-                                        [checked]="this.demographicInfoForm.controls['adviceMedium'].value?.includes(indStat.displayValue)"><span>{{indStat.displayName}}</span>
-                                </label>
-                                <div class="lable-top">
-                                    <label>Mention other(if any)</label>
-                                    <input class="form-control" type="text">
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div class="form-details">
-                        <h3 class="form-title">9. Does your household have any source of income other than
-                            agriculture?<a href="javascript:void(0)" class="comment-icon"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
-                        <div class="farmer-details">
-                            <label class="form-check-label form-check bordered-check"
-                                *ngFor="let indStat of sourceOfIncomeList" for="{{indStat.displayValue}}">
-                                <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}" (click)="
-                                    selectCultivationAdvice($event, 'sourceOfIncome', indStat.displayValue)
-                                  "
-                                    [checked]="this.demographicInfoForm.controls['sourceOfIncome'].value?.includes(indStat.displayValue)"><span>{{indStat.displayName}}</span>
-                            </label>
-                            <div class="lable-top">
-                                <label>Mention other(if any)</label>
-                                <input class="form-control" type="text">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="form-details">
-                        <div class="form-details-inner">
-                            <h3 class="form-title">10A. How interested are your children in agriculture? <a
-                                    href="javascript:void(0)" class="comment-icon"><svg
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
-
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indType of agriculturalInterestList" for="{{indType.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="agriculturalInterest"
-                                        value="{{indType.displayValue}}"
-                                        id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
-                                </label>
-
-                            </div>
-
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">10B. Is the younger generation in your family open to experiment with
-                                innovative ways in farming?</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-check"
-                                    *ngFor="let indStat of innovativeWaysFarmingList" for="{{indStat.displayValue}}">
-                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"
-                                        (click)="
-                                        selectCultivationAdvice($event, 'innovativeWaysFarming', indStat.displayValue)
-                                      "
-                                        [checked]="this.demographicInfoForm.controls['innovativeWaysFarming'].value?.includes(indStat.displayValue)"><span>{{indStat.displayName}}</span>
-                                </label>
-                            </div>
-
-                        </div>
-                    </div>
-                </form>
+                  <a
+                    href="javascript:void(0)"
+                    class="delete-item"
+                    (click)="removePropertyOwnership(i)"
+                    ><i class="fa fa-trash-o text-danger"></i
+                  ></a>
+                </div>
+                <div
+                  class="col-auto add-another"
+                  *ngIf="i == getPropertyOwnershipControls().length - 1"
+                >
+                  <a href="javascript:void(0);" (click)="addPropertyOwnership()"
+                    >+ Add More</a
+                  >
+                </div>
+              </div>
             </div>
-        </div>
-    </article>
+          </div>
+          <div class="form-details">
+            <div class="form-details-inner">
+              <h3 class="form-title">8A. What type of phone do you own?</h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-radio"
+                  *ngFor="let indType of phoneTypeList"
+                  for="{{ indType.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="phoneType"
+                    value="{{ indType.displayValue }}"
+                    id="{{ indType.displayValue }}"
+                  /><span>{{ indType.displayName }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                8B. Who is operating the phone in your family?
+              </h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-radio"
+                  *ngFor="let indType of phoneOperatingList"
+                  for="{{ indType.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="phoneOperating"
+                    value="{{ indType.displayValue }}"
+                    id="{{ indType.displayValue }}"
+                  /><span>{{ indType.displayName }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                8C. Where all do you seek advice on cultivation?
+              </h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-check"
+                  *ngFor="let indStat of cultivationAdviceList"
+                  for="{{ indStat.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="{{ indStat.displayValue }}"
+                    (click)="
+                      selectCultivationAdvice(
+                        $event,
+                        'cultivationAdvice',
+                        indStat.displayValue
+                      )
+                    "
+                    [checked]="
+                      this.demographicInfoForm.controls[
+                        'cultivationAdvice'
+                      ].value?.includes(indStat.displayValue)
+                    "
+                  /><span>{{ indStat.displayName }}</span>
+                </label>
+                <div class="lable-top">
+                  <label>Mention other(if any)</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                8D. What medium do you use to seek advice?
+              </h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-check"
+                  *ngFor="let indStat of adviceMediumList"
+                  for="{{ indStat.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="{{ indStat.displayValue }}"
+                    (click)="
+                      selectCultivationAdvice(
+                        $event,
+                        'adviceMedium',
+                        indStat.displayValue
+                      )
+                    "
+                    [checked]="
+                      this.demographicInfoForm.controls[
+                        'adviceMedium'
+                      ].value?.includes(indStat.displayValue)
+                    "
+                  /><span>{{ indStat.displayName }}</span>
+                </label>
+                <div class="lable-top">
+                  <label>Mention other(if any)</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <h3 class="form-title">
+              9. Does your household have any source of income other than
+              agriculture?
+            </h3>
+            <div class="farmer-details">
+              <label
+                class="form-check-label form-check bordered-check"
+                *ngFor="let indStat of sourceOfIncomeList"
+                for="{{ indStat.displayValue }}"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="{{ indStat.displayValue }}"
+                  (click)="
+                    selectCultivationAdvice(
+                      $event,
+                      'sourceOfIncome',
+                      indStat.displayValue
+                    )
+                  "
+                  [checked]="
+                    this.demographicInfoForm.controls[
+                      'sourceOfIncome'
+                    ].value?.includes(indStat.displayValue)
+                  "
+                /><span>{{ indStat.displayName }}</span>
+              </label>
+              <div class="lable-top">
+                <label>Mention other(if any)</label>
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                10A. How interested are your children in agriculture?
+              </h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-radio"
+                  *ngFor="let indType of agriculturalInterestList"
+                  for="{{ indType.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="agriculturalInterest"
+                    value="{{ indType.displayValue }}"
+                    id="{{ indType.displayValue }}"
+                  /><span>{{ indType.displayName }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                10B. Is the younger generation in your family open to experiment
+                with innovative ways in farming?
+              </h3>
+              <div class="farmer-details">
+                <label
+                  class="form-check-label form-check bordered-check"
+                  *ngFor="let indStat of innovativeWaysFarmingList"
+                  for="{{ indStat.displayValue }}"
+                >
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="{{ indStat.displayValue }}"
+                    (click)="
+                      selectCultivationAdvice(
+                        $event,
+                        'innovativeWaysFarming',
+                        indStat.displayValue
+                      )
+                    "
+                    [checked]="
+                      this.demographicInfoForm.controls[
+                        'innovativeWaysFarming'
+                      ].value?.includes(indStat.displayValue)
+                    "
+                  /><span>{{ indStat.displayName }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </article>
 </div>
