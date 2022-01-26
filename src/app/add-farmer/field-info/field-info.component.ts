@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import 'leaflet';
+// import 'leaflet';
 declare const L: any;
 import 'leaflet-draw';
 import '../../../../node_modules/leaflet-draw/dist/leaflet.draw-src.js';
@@ -125,11 +125,17 @@ export class FieldInfoComponent implements OnInit {
     let map = new L.Map('map', {
         center: new L.LatLng(latitude, longitude),
         zoom: 18,
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+          // optional
+          title: 'Show me the fullscreen !',
+          titleCancel: 'Exit fullscreen mode',
+        },
       }),
       drawnItems = L.featureGroup().addTo(map);
     L.tileLayer(
       'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
-      { maxZoom: 18, attribution: 'google' }
+      { maxZoom: 19, attribution: 'google' }
     ).addTo(map);
 
     map.addControl(
@@ -180,6 +186,13 @@ export class FieldInfoComponent implements OnInit {
       var poly = e.poly;
       var latlngs = poly.getLatLngs(); // here the polygon latlngs
       console.log('latlngs', latlngs);
+    });
+
+    map.on('enterFullscreen', function () {
+      if (window.console) window.console.log('enterFullscreen');
+    });
+    map.on('exitFullscreen', function () {
+      if (window.console) window.console.log('exitFullscreen');
     });
   }
 

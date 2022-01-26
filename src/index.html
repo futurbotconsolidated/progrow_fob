@@ -1,108 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Farmer OnBoarding</title>
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link
-      href="assets/css/bootstrap.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link rel="stylesheet" type="text/css" href="assets/custom-css/style.css" />
-    <link rel="stylesheet" type="text/css" href="assets/custom-css/BD.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="assets/custom-css/profile.css"
-    />
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+<head>
+  <meta charset="utf-8" />
+  <title>Farmer OnBoarding</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="assets/custom-css/style.css" />
+  <link rel="stylesheet" type="text/css" href="assets/custom-css/BD.css" />
+  <link rel="stylesheet" type="text/css" href="assets/custom-css/profile.css" />
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 
-    <!-- START : links for leaflet  -->
-    <script src="./assets/leaflet/libs/leaflet-src.js"></script>
-    <link rel="stylesheet" href="./assets/leaflet/libs/leaflet.css" />
+  <!-- START : links for leaflet  -->
 
-    <script src="./assets/leaflet/Leaflet.draw.js"></script>
-    <script src="./assets/leaflet/Leaflet.Draw.Event.js"></script>
-    <link rel="stylesheet" href="./assets/leaflet/leaflet.draw.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
+  <link rel="stylesheet" href="./assets/custom-css/Control.FullScreen.css" />
+  <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
+  <script src="./assets/js/Control.FullScreen.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
 
-    <script src="./assets/leaflet/Toolbar.js"></script>
-    <script src="./assets/leaflet/Tooltip.js"></script>
+  <!-- END : links for leaflet  -->
 
-    <script src="./assets/leaflet/ext/GeometryUtil.js"></script>
-    <script src="./assets/leaflet/ext/LatLngUtil.js"></script>
-    <script src="./assets/leaflet/ext/LineUtil.Intersect.js"></script>
-    <script src="./assets/leaflet/ext/Polygon.Intersect.js"></script>
-    <script src="./assets/leaflet/ext/Polyline.Intersect.js"></script>
-    <script src="./assets/leaflet/ext/TouchEvents.js"></script>
+  <!-- START: Mapbox -->
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" />
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css" />
 
-    <script src="./assets/leaflet/draw/DrawToolbar.js"></script>
-    <script src="./assets/leaflet/draw/handler/Draw.Feature.js"></script>
-    <script src="./assets/leaflet/draw/handler/Draw.SimpleShape.js"></script>
-    <script src="./assets/leaflet/draw/handler/Draw.Polyline.js"></script>
-    <script src="./assets/leaflet/draw/handler/Draw.Marker.js"></script>
-    <script src="./assets/leaflet/draw/handler/Draw.Circle.js"></script>
-    <script src="./assets/leaflet/draw/handler/Draw.CircleMarker.js"></script>
-    <script src="./assets/leaflet/draw/handler/Draw.Polygon.js"></script>
-    <script src="./assets/leaflet/draw/handler/Draw.Rectangle.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+  <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
+  <!-- END: Mapbox -->
+</head>
 
-    <script src="./assets/leaflet/edit/EditToolbar.js"></script>
-    <script src="./assets/leaflet/edit/handler/EditToolbar.Edit.js"></script>
-    <script src="./assets/leaflet/edit/handler/EditToolbar.Delete.js"></script>
+<body>
+  <app-root>
+    <!-- Loading div will be replaced by Angular once it's done initializing. -->
+    <div class="authenticating-loader">
+      <div>Initializing...</div>
+    </div>
+  </app-root>
 
-    <script src="./assets/leaflet/Control.Draw.js"></script>
+  <script type="text/javascript" src="assets/js/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+</body>
 
-    <script src="./assets/leaflet/edit/handler/Edit.Poly.js"></script>
-    <script src="./assets/leaflet/edit/handler/Edit.SimpleShape.js"></script>
-    <script src="./assets/leaflet/edit/handler/Edit.Rectangle.js"></script>
-    <script src="./assets/leaflet/edit/handler/Edit.Marker.js"></script>
-    <script src="./assets/leaflet/edit/handler/Edit.CircleMarker.js"></script>
-    <script src="./assets/leaflet/edit/handler/Edit.Circle.js"></script>
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
-    <!-- END : links for leaflet  -->
-
-    <!-- START: Mapbox -->
-    <link
-      rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css"
-    />
-
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
-    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js"></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
-    <!-- END: Mapbox -->
-  </head>
-
-  <body>
-    <app-root>
-      <!-- Loading div will be replaced by Angular once it's done initializing. -->
-      <div class="authenticating-loader">
-        <div>Initializing...</div>
-      </div>
-    </app-root>
-
-    <script type="text/javascript" src="assets/js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-  </body>
 </html>

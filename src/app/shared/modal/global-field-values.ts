@@ -303,8 +303,8 @@ export const ownerShipType = [
   { id: 3, displayName: 'Share Cropping', displayValue: 'Share Cropping' },
 ];
 export const season = [
-  { id: 1, displayName: 'Kharif 2021', displayValue: 'kharif_2021' },
-  { id: 2, displayName: 'Rabi 2020', displayValue: 'rabi_2020' },
+  { id: 1, displayName: 'Kharif 2022', displayValue: 'kharif_2022' },
+  { id: 2, displayName: 'Rabi 2021', displayValue: 'rabi_2021' },
 ];
 
 export const cropLoanProduct = [
