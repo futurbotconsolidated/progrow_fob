@@ -24,6 +24,7 @@
     "jquery": "^3.6.0",
     "leaflet": "^1.7.1",
     "leaflet-draw": "^1.0.4",
+    "leaflet.fullscreen": "^2.2.0",
     "mapbox-gl": "^2.6.1",
     "ngx-spinner": "^13.0.0",
     "rxjs": "~7.4.0",
