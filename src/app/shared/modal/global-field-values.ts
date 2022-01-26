@@ -156,9 +156,9 @@ export const propertyStatus = [
 
 /// Dropdown values
 export const addressProofType = [
-  { id: 1, displayName: 'Voter ID', displayValue: 'voter_id' },
-  { id: 1, displayName: 'PAN Card', displayValue: 'pan_card' },
-  { id: 1, displayName: 'Aadhar ID', displayValue: 'aadhar_id' },
+  { id: 1, displayName: 'Aadhaar ID', displayValue: 'aadhaar_id' },
+  { id: 2, displayName: 'Driving Licence ', displayValue: 'driving_licence' },
+  { id: 3, displayName: 'Voter ID', displayValue: 'voter_id' },
 ];
 export const salutation = [
   {
@@ -272,6 +272,7 @@ export const dependency = [
 ];
 export const propertyType = [
   { id: 1, displayName: 'House', displayValue: 'house' },
+  { id: 2, displayName: 'Land', displayValue: 'land' },
 ];
 // export const ownershipType = [
 //   { id: 1, displayName: 'Owned', displayValue: 'owned' },

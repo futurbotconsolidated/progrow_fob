@@ -28,6 +28,7 @@ import {
   sourceOfIncome,
   innovativeWaysFarming,
   addressProofType,
+  propertyType,
 } from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 
@@ -66,6 +67,7 @@ export class DemographicInfoComponent implements OnInit {
   sourceOfIncomeList = <any>[];
   innovativeWaysFarmingList = <any>[];
   addressProofList: any = [];
+  propertyTypeList: any = [];
 
   familyMembers!: FormArray;
   propertyOwnership!: FormArray;
@@ -81,7 +83,7 @@ export class DemographicInfoComponent implements OnInit {
     private addFarmerService: AddFarmerService
   ) {
     this.demographicInfoForm = this.formBuilder.group({
-      addressProof: new FormControl('voter_id', [Validators.required]),
+      addressProof: new FormControl('', [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
       PANnumber: new FormControl('', [Validators.required]),
       middleName: new FormControl('', [Validators.required]),
@@ -131,6 +133,7 @@ export class DemographicInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.addressProofList = addressProofType;
+    this.propertyTypeList = propertyType;
     this.religionList = religion;
     this.genderList = gender;
     this.casteList = caste;
@@ -208,10 +211,10 @@ export class DemographicInfoComponent implements OnInit {
   createFamilyMembers(): FormGroup {
     return this.formBuilder.group({
       name: new FormControl('', [Validators.required]),
-      relation: new FormControl('Relation', [Validators.required]),
-      education: new FormControl('Education', [Validators.required]),
-      occupation: new FormControl('Occupation', [Validators.required]),
-      dependency: new FormControl('Dependency', [Validators.required]),
+      relation: new FormControl('', [Validators.required]),
+      education: new FormControl('', [Validators.required]),
+      occupation: new FormControl('', [Validators.required]),
+      dependency: new FormControl('', [Validators.required]),
     });
   }
 

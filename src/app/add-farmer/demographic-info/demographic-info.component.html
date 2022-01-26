@@ -97,6 +97,7 @@
                   class="flex-1 form-select"
                   formControlName="addressProof"
                 >
+                  <option value="">...</option>
                   <option
                     *ngFor="let indVal of addressProofList"
                     value="{{ indVal.displayValue }}"
@@ -164,7 +165,7 @@
                 </div>
                 <div class="farmer-details">
                   <div class="farmer-details-inner lable-top">
-                    <label>First Name</label>
+                    <label class="required">First Name</label>
                     <input
                       type="text"
                       class="form-control"
@@ -182,7 +183,7 @@
                     />
                   </div>
                   <div class="farmer-details-inner lable-top">
-                    <label>Last Name</label>
+                    <label class="required">Last Name</label>
                     <input
                       type="text"
                       class="form-control"
@@ -196,7 +197,7 @@
                       type="text"
                       class="form-control"
                       formControlName="dob"
-                      placeholder="Date of Birth"
+                      placeholder=""
                       value=""
                       onfocus="(this.type='date')"
                       onblur="(this.type='text')"
@@ -317,7 +318,7 @@
                 5.A Address as per officially valid document
               </h3>
               <div class="display-flex">
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label>Address line-1</label>
                   <input
                     type="text"
@@ -326,7 +327,7 @@
                     placeholder=""
                   />
                 </div>
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label for="">Address line-2</label>
                   <input
                     type="text"
@@ -337,7 +338,7 @@
                 </div>
               </div>
               <div class="display-flex">
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label for="">Tahsil/Taluka/Mandal</label>
                   <input
                     type="text"
@@ -346,7 +347,7 @@
                     placeholder=""
                   />
                 </div>
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label for="">District/City</label>
                   <input
                     type="text"
@@ -355,7 +356,7 @@
                     placeholder=""
                   />
                 </div>
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label for="">Pin Code</label>
                   <input
                     type="text"
@@ -364,7 +365,7 @@
                     placeholder=""
                   />
                 </div>
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label for="">State</label>
                   <input
                     type="text"
@@ -375,7 +376,7 @@
                 </div>
               </div>
               <div class="display-flex">
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label for="">Landmark</label>
                   <input
                     type="text"
@@ -384,8 +385,8 @@
                     placeholder=""
                   />
                 </div>
-                <div class="flex-1 label-top">
-                  <label for="">Phone No.</label>
+                <div class="flex-1 lable-top">
+                  <label for="" class="required">Phone No.</label>
                   <input
                     type="text"
                     class="form-control"
@@ -393,7 +394,7 @@
                     placeholder=""
                   />
                 </div>
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label for="">Mobile 1</label>
                   <input
                     type="text"
@@ -402,7 +403,7 @@
                     placeholder=""
                   />
                 </div>
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label for="">Mobile 2</label>
                   <input
                     type="text"
@@ -413,7 +414,7 @@
                 </div>
               </div>
               <div class="display-flex">
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label for="">No. of years in present address</label>
                   <input
                     type="text"
@@ -422,7 +423,7 @@
                     placeholder=""
                   />
                 </div>
-                <div class="flex-1 label-top">
+                <div class="flex-1 lable-top">
                   <label for="">No. of years in city/village</label>
                   <input
                     type="text"
@@ -431,7 +432,7 @@
                     placeholder=""
                   />
                 </div>
-                <div class="flex-2 label-top">
+                <div class="flex-2 lable-top">
                   <label for="">Email Address</label>
                   <input
                     type="text"
@@ -460,7 +461,7 @@
                 </label>
               </div>
               <div class="farmer-details">
-                <div class="farmer-details-inner label-top">
+                <div class="farmer-details-inner lable-top">
                   <label for="">Monthly Rent (If rented)</label>
                   <input
                     type="text"
@@ -502,7 +503,7 @@
                 *ngFor="let item of getFamilyMembersControls(); let i = index"
               >
                 <div class="display-flex" [formGroupName]="i">
-                  <div class="flex-2 label-top">
+                  <div class="flex-2 lable-top">
                     <label>Name</label>
                     <input
                       type="text"
@@ -511,51 +512,65 @@
                       placeholder=""
                     />
                   </div>
-                  <select class="flex-1 form-select" formControlName="relation">
-                    <option selected>Relation</option>
-                    <option
-                      *ngFor="let indVal of relationList"
-                      value="{{ indVal.displayValue }}"
+                  <div class="flex-1 lable-top">
+                    <label>Relation</label>
+                    <select class="form-select" formControlName="relation">
+                      <option value="">...</option>
+                      <option
+                        *ngFor="let indVal of relationList"
+                        value="{{ indVal.displayValue }}"
+                      >
+                        {{ indVal.displayName }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Education</label>
+                    <select
+                      class="flex-1 form-select"
+                      formControlName="education"
                     >
-                      {{ indVal.displayName }}
-                    </option>
-                  </select>
-                  <select
-                    class="flex-1 form-select"
-                    formControlName="education"
-                  >
-                    <option selected>Education</option>
-                    <option
-                      *ngFor="let indVal of educationList"
-                      value="{{ indVal.displayValue }}"
+                      <option value="">...</option>
+                      <option
+                        *ngFor="let indVal of educationList"
+                        value="{{ indVal.displayValue }}"
+                      >
+                        {{ indVal.displayName }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Occupation</label>
+
+                    <select
+                      class="flex-1 form-select"
+                      formControlName="occupation"
                     >
-                      {{ indVal.displayName }}
-                    </option>
-                  </select>
-                  <select
-                    class="flex-1 form-select"
-                    formControlName="occupation"
-                  >
-                    <option selected>Occupation</option>
-                    <option
-                      *ngFor="let indVal of occupationList"
-                      value="{{ indVal.displayValue }}"
+                      <option value="">...</option>
+                      <option
+                        *ngFor="let indVal of occupationList"
+                        value="{{ indVal.displayValue }}"
+                      >
+                        {{ indVal.displayName }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Dependency</label>
+
+                    <select
+                      class="flex-1 form-select"
+                      formControlName="dependency"
                     >
-                      {{ indVal.displayName }}
-                    </option>
-                  </select>
-                  <select
-                    class="flex-1 form-select"
-                    formControlName="dependency"
-                  >
-                    <option selected>Dependency</option>
-                    <option
-                      *ngFor="let indVal of dependencyList"
-                      value="{{ indVal.displayValue }}"
-                    >
-                      {{ indVal.displayName }}
-                    </option>
-                  </select>
+                      <option value="">...</option>
+                      <option
+                        *ngFor="let indVal of dependencyList"
+                        value="{{ indVal.displayValue }}"
+                      >
+                        {{ indVal.displayName }}
+                      </option>
+                    </select>
+                  </div>
                   <div
                     *ngIf="
                       getFamilyMembersControls().length != 1 &&
@@ -596,12 +611,15 @@
               <div class="display-flex family-members" [formGroupName]="i">
                 <div class="flex-1 lable-top">
                   <label>Property Type</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="propertyType"
-                    placeholder="House"
-                  />
+                  <select class="form-select" formControlName="propertyType">
+                    <option value="">...</option>
+                    <option
+                      *ngFor="let indVal of propertyTypeList"
+                      value="{{ indVal.displayValue }}"
+                    >
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
                 </div>
                 <div class="flex-1 lable-top">
                   <label>Upload pictures</label>
@@ -616,7 +634,7 @@
                 <div class="flex-1 lable-top">
                   <label>Ownership Type</label>
                   <select class="form-select" formControlName="ownershipType">
-                    <option selected>select</option>
+                    <option value="">...</option>
                     <option
                       *ngFor="let indVal of ownershipTypeList"
                       value="{{ indVal.displayValue }}"
@@ -628,7 +646,7 @@
                 <div class="flex-1 lable-top">
                   <label>Particular</label>
                   <select class="form-select" formControlName="particular">
-                    <option selected>select</option>
+                    <option value="">...</option>
                     <option
                       *ngFor="let indVal of particularList"
                       value="{{ indVal.displayValue }}"
