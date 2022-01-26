@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -25,7 +26,9 @@ import { AddFarmerService } from './add-farmer/add-farmer.service';
     FormsModule,
     HttpClientModule,
     NgxSpinnerModule,
+    ToastrModule,
     OAuthModule.forRoot(),
+    ToastrModule.forRoot(),
   ],
   bootstrap: [AppComponent],
   providers: [OAuthService, AddFarmerService],

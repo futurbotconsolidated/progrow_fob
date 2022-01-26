@@ -92,7 +92,7 @@
             <h3 class="form-title">2. Address proof</h3>
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
-                <label>Select ID</label>
+                <label class="required">Select ID</label>
                 <select
                   class="flex-1 form-select"
                   formControlName="addressProof"
@@ -105,6 +105,14 @@
                     {{ indVal.displayName }}
                   </option>
                 </select>
+                <div
+                  *ngIf="isSubmitted && f['addressProof'].errors"
+                  class="form-text text-danger"
+                >
+                  <small *ngIf="f['addressProof'].errors['required']">
+                    Address Proof is required</small
+                  >
+                </div>
               </div>
               <div class="farmer-details-inner lable-top">
                 <label for="PANimage_front">Image front and back</label>
@@ -172,6 +180,14 @@
                       formControlName="firstName"
                       placeholder=""
                     />
+                    <div
+                      *ngIf="isSubmitted && f['firstName'].errors"
+                      class="form-text text-danger"
+                    >
+                      <small *ngIf="f['firstName'].errors['required']">
+                        First Name is required</small
+                      >
+                    </div>
                   </div>
                   <div class="farmer-details-inner lable-top">
                     <label>Middle Name</label>
@@ -190,6 +206,14 @@
                       formControlName="lastName"
                       placeholder=""
                     />
+                    <div
+                      *ngIf="isSubmitted && f['lastName'].errors"
+                      class="form-text text-danger"
+                    >
+                      <small *ngIf="f['lastName'].errors['required']">
+                        Last Name is required</small
+                      >
+                    </div>
                   </div>
                   <div class="farmer-details-inner lable-top">
                     <label>Date Of Birth</label>
@@ -339,40 +363,72 @@
               </div>
               <div class="display-flex">
                 <div class="flex-1 lable-top">
-                  <label for="">Tahsil/Taluka/Mandal</label>
+                  <label class="required">Tahsil/Taluka/Mandal</label>
                   <input
                     type="text"
                     class="form-control"
                     formControlName="taluk"
                     placeholder=""
                   />
+                  <div
+                    *ngIf="isSubmitted && f['taluk'].errors"
+                    class="form-text text-danger"
+                  >
+                    <small *ngIf="f['taluk'].errors['required']">
+                      Taluk is required</small
+                    >
+                  </div>
                 </div>
                 <div class="flex-1 lable-top">
-                  <label for="">District/City</label>
+                  <label class="required">District/City</label>
                   <input
                     type="text"
                     class="form-control"
                     formControlName="city"
                     placeholder=""
                   />
+                  <div
+                    *ngIf="isSubmitted && f['city'].errors"
+                    class="form-text text-danger"
+                  >
+                    <small *ngIf="f['city'].errors['required']">
+                      City is required</small
+                    >
+                  </div>
                 </div>
                 <div class="flex-1 lable-top">
-                  <label for="">Pin Code</label>
+                  <label class="required">Pin Code</label>
                   <input
                     type="text"
                     class="form-control"
                     formControlName="pinCode"
                     placeholder=""
                   />
+                  <div
+                    *ngIf="isSubmitted && f['pinCode'].errors"
+                    class="form-text text-danger"
+                  >
+                    <small *ngIf="f['pinCode'].errors['required']">
+                      PinCode is required</small
+                    >
+                  </div>
                 </div>
                 <div class="flex-1 lable-top">
-                  <label for="">State</label>
+                  <label class="required">State</label>
                   <input
                     type="text"
                     class="form-control"
                     formControlName="state"
                     placeholder=""
                   />
+                  <div
+                    *ngIf="isSubmitted && f['state'].errors"
+                    class="form-text text-danger"
+                  >
+                    <small *ngIf="f['state'].errors['required']">
+                      State is required</small
+                    >
+                  </div>
                 </div>
               </div>
               <div class="display-flex">
@@ -386,13 +442,21 @@
                   />
                 </div>
                 <div class="flex-1 lable-top">
-                  <label for="" class="required">Phone No.</label>
+                  <label class="required">Phone No.</label>
                   <input
                     type="text"
                     class="form-control"
                     formControlName="phoneNumber"
                     placeholder=""
                   />
+                  <div
+                    *ngIf="isSubmitted && f['phoneNumber'].errors"
+                    class="form-text text-danger"
+                  >
+                    <small *ngIf="f['phoneNumber'].errors['required']">
+                      Phone No. is required</small
+                    >
+                  </div>
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">Mobile 1</label>
@@ -476,7 +540,7 @@
               <h3 class="form-title">5.B Communication/Permanent address</h3>
               <div class="farmer-details">
                 <label
-                  class="form-check-label form-check bordered-radio"
+                  class="form-check-label form-check bordered-radio required"
                   *ngFor="let indStat of addressStatusList"
                   for="{{ indStat.displayValue }}"
                 >
@@ -488,6 +552,14 @@
                     id="{{ indStat.displayValue }}"
                   /><span>{{ indStat.displayName }}</span>
                 </label>
+                <div
+                  *ngIf="isSubmitted && f['commOrPerAddress'].errors"
+                  class="form-text text-danger"
+                >
+                  <small *ngIf="f['commOrPerAddress'].errors['required']">
+                    Field is required</small
+                  >
+                </div>
               </div>
             </div>
           </div>

@@ -7,6 +7,8 @@ import {
   FormArray,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, of, switchMap, tap } from 'rxjs';
 import {
   religion,
@@ -48,6 +50,8 @@ function sleep(ms: number): Promise<any> {
   styleUrls: ['./demographic-info.component.css'],
 })
 export class DemographicInfoComponent implements OnInit {
+  isSubmitted = false;
+
   religionList = <any>[];
   genderList = <any>[];
   casteList = <any>[];
@@ -80,54 +84,47 @@ export class DemographicInfoComponent implements OnInit {
   constructor(
     public router: Router,
     private formBuilder: FormBuilder,
-    private addFarmerService: AddFarmerService
+    private addFarmerService: AddFarmerService,
+    private toastr: ToastrService
   ) {
     this.demographicInfoForm = this.formBuilder.group({
       addressProof: new FormControl('', [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
-      PANnumber: new FormControl('', [Validators.required]),
-      middleName: new FormControl('', [Validators.required]),
+      PANnumber: new FormControl(''),
+      middleName: new FormControl(''),
       lastName: new FormControl('', [Validators.required]),
-      dob: new FormControl('', [Validators.required]),
-      gender: new FormControl('male', [Validators.required]),
-      religion: new FormControl('hindu', [Validators.required]),
-      caste: new FormControl('sc', [Validators.required]),
-      educationQualification: new FormControl('', [Validators.required]),
-      occupation: new FormControl('', [Validators.required]),
-      annualIncome: new FormControl('', [Validators.required]),
-      address1: new FormControl('', [Validators.required]),
-      address2: new FormControl('', [Validators.required]),
+      dob: new FormControl(''),
+      gender: new FormControl('male'),
+      religion: new FormControl('hindu'),
+      caste: new FormControl('sc'),
+      educationQualification: new FormControl(''),
+      occupation: new FormControl(''),
+      annualIncome: new FormControl(''),
+      address1: new FormControl(''),
+      address2: new FormControl(''),
       taluk: new FormControl('', [Validators.required]),
       city: new FormControl('', [Validators.required]),
       pinCode: new FormControl('', [Validators.required]),
       state: new FormControl('', [Validators.required]),
-      landmark: new FormControl('', [Validators.required]),
+      landmark: new FormControl(''),
       phoneNumber: new FormControl('', [Validators.required]),
-      mobile1: new FormControl('', [Validators.required]),
-      mobile2: new FormControl('', [Validators.required]),
-      yrsInAddress: new FormControl('', [Validators.required]),
-      yrsInCity: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
-      propertyStatus: new FormControl('own', [Validators.required]),
-      monthlyRent: new FormControl('', [Validators.required]),
+      mobile1: new FormControl(''),
+      mobile2: new FormControl(''),
+      yrsInAddress: new FormControl(''),
+      yrsInCity: new FormControl(''),
+      email: new FormControl(''),
+      propertyStatus: new FormControl('own'),
+      monthlyRent: new FormControl(''),
       commOrPerAddress: new FormControl('same_above', [Validators.required]),
       familyMembers: new FormArray([this.createFamilyMembers()]),
       propertyOwnership: new FormArray([this.createPropertyOwnership()]),
-      phoneType: new FormControl('feature_phone', [Validators.required]),
-      phoneOperating: new FormControl('i_check_mostly', [Validators.required]),
+      phoneType: new FormControl('feature_phone'),
+      phoneOperating: new FormControl('i_check_mostly'),
       cultivationAdvice: [Array()],
       adviceMedium: [Array()],
       sourceOfIncome: [Array()],
-      agriculturalInterest: new FormControl('very_much_interested', [
-        Validators.required,
-      ]),
+      agriculturalInterest: new FormControl('very_much_interested'),
       innovativeWaysFarming: [Array()],
-    });
-
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      this.validateAndNext();
-      console.log(this.nextRoute);
     });
   }
 
@@ -182,13 +179,23 @@ export class DemographicInfoComponent implements OnInit {
       // });
     }
   }
+  ngAfterViewInit(): void {
+    this.addFarmerService.getMessage().subscribe((data) => {
+      this.nextRoute = data.routeName;
+      this.validateAndNext();
+    });
+  }
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.demographicInfoForm.controls;
+  }
   createPropertyOwnership(): FormGroup {
     return this.formBuilder.group({
-      propertyType: new FormControl('', [Validators.required]),
-      propertyPic: new FormControl('', [Validators.required]),
-      ownershipType: new FormControl('', [Validators.required]),
-      particular: new FormControl('', [Validators.required]),
-      cumulativeValue: new FormControl('', [Validators.required]),
+      propertyType: new FormControl(''),
+      propertyPic: new FormControl(''),
+      ownershipType: new FormControl(''),
+      particular: new FormControl(''),
+      cumulativeValue: new FormControl(''),
     });
   }
 
@@ -210,11 +217,11 @@ export class DemographicInfoComponent implements OnInit {
 
   createFamilyMembers(): FormGroup {
     return this.formBuilder.group({
-      name: new FormControl('', [Validators.required]),
-      relation: new FormControl('', [Validators.required]),
-      education: new FormControl('', [Validators.required]),
-      occupation: new FormControl('', [Validators.required]),
-      dependency: new FormControl('', [Validators.required]),
+      name: new FormControl(''),
+      relation: new FormControl(''),
+      education: new FormControl(''),
+      occupation: new FormControl(''),
+      dependency: new FormControl(''),
     });
   }
 
@@ -258,53 +265,71 @@ export class DemographicInfoComponent implements OnInit {
   }
 
   validateAndNext() {
-    let url = `/add/${this.nextRoute}`;
-    let formValue = this.demographicInfoForm.value;
-    let obj = {
-      profileImg: 'imgUrl',
-      identityProof: {
-        panNumber: this.demographicInfoForm.value.PANnumber,
-        panImg: 'imgUrl',
-      },
-      addressProof: {
-        selectedIdProof: this.demographicInfoForm.value.addressProof,
-        selectedIdProofFrontImg: 'imgUrl',
-        selectedIdProofBackImg: 'imgUrl',
-      },
-      farmerDetails: {
-        firstName: this.demographicInfoForm.value.firstName,
-        middleName: this.demographicInfoForm.value.middleName,
-        lastName: this.demographicInfoForm.value.lastName,
-        dob: this.demographicInfoForm.value.dob,
-      },
-      address: {
-        addressLine1: this.demographicInfoForm.value.address1,
-        addressLine2: this.demographicInfoForm.value.address2,
-        pincode: this.demographicInfoForm.value.pinCode,
-        mobileNumber: this.demographicInfoForm.value.phoneNumber,
-      },
-      otherDetails: {
-        educationalQualification:
-          this.demographicInfoForm.value.educationalQualification,
-        occupation: this.demographicInfoForm.value.occupation,
-        fpoName: this.demographicInfoForm.value.annualIncome,
-      },
-      familyMembers: this.demographicInfoForm.value.familyMembers,
-      propertyOwnership: this.demographicInfoForm.value.propertyOwnership,
-      phoneType: this.demographicInfoForm.value.phoneType,
-      phoneUsedBy: this.demographicInfoForm.value.phoneOperating,
-      cultivationAdvice: this.demographicInfoForm.value.cultivationAdvice,
-      adviceMedium: this.demographicInfoForm.value.adviceMedium,
-      sourceOfIncome: this.demographicInfoForm.value.sourceOfIncome,
-      agricultureChildrenInterested:
-        this.demographicInfoForm.value.agriculturalInterest,
-      innovativeFarmingWays:
-        this.demographicInfoForm.value.innovativeWaysFarming,
-    };
-    console.log(obj);
-    localStorage.setItem('demographic-info', JSON.stringify(obj));
-    localStorage.setItem('demographic-info-form', JSON.stringify(formValue));
+    this.isSubmitted = true;
+    if (this.demographicInfoForm.invalid) {
+      const invalid = [];
+      const controls = this.demographicInfoForm.controls;
+      for (const name in controls) {
+        if (controls[name].invalid) {
+          invalid.push(name);
+        }
+      }
+      // this.toastr.error(
+      //   `please enter values for ${invalid.join(',')}`,
+      //   'Error!'
+      // );
+      console.log('a');
 
-    this.router.navigate([url]);
+      this.toastr.error('please enter values for required fields', 'Error!');
+    } else {
+      let formValue = this.demographicInfoForm.value;
+      let obj = {
+        profileImg: 'imgUrl',
+        identityProof: {
+          panNumber: this.demographicInfoForm.value.PANnumber,
+          panImg: 'imgUrl',
+        },
+        addressProof: {
+          selectedIdProof: this.demographicInfoForm.value.addressProof,
+          selectedIdProofFrontImg: 'imgUrl',
+          selectedIdProofBackImg: 'imgUrl',
+        },
+        farmerDetails: {
+          firstName: this.demographicInfoForm.value.firstName,
+          middleName: this.demographicInfoForm.value.middleName,
+          lastName: this.demographicInfoForm.value.lastName,
+          dob: this.demographicInfoForm.value.dob,
+        },
+        address: {
+          addressLine1: this.demographicInfoForm.value.address1,
+          addressLine2: this.demographicInfoForm.value.address2,
+          pincode: this.demographicInfoForm.value.pinCode,
+          mobileNumber: this.demographicInfoForm.value.phoneNumber,
+        },
+        otherDetails: {
+          educationalQualification:
+            this.demographicInfoForm.value.educationalQualification,
+          occupation: this.demographicInfoForm.value.occupation,
+          fpoName: this.demographicInfoForm.value.annualIncome,
+        },
+        familyMembers: this.demographicInfoForm.value.familyMembers,
+        propertyOwnership: this.demographicInfoForm.value.propertyOwnership,
+        phoneType: this.demographicInfoForm.value.phoneType,
+        phoneUsedBy: this.demographicInfoForm.value.phoneOperating,
+        cultivationAdvice: this.demographicInfoForm.value.cultivationAdvice,
+        adviceMedium: this.demographicInfoForm.value.adviceMedium,
+        sourceOfIncome: this.demographicInfoForm.value.sourceOfIncome,
+        agricultureChildrenInterested:
+          this.demographicInfoForm.value.agriculturalInterest,
+        innovativeFarmingWays:
+          this.demographicInfoForm.value.innovativeWaysFarming,
+      };
+      console.log(obj);
+      localStorage.setItem('demographic-info', JSON.stringify(obj));
+      localStorage.setItem('demographic-info-form', JSON.stringify(formValue));
+
+      let url = `/add/${this.nextRoute}`;
+      this.router.navigate([url]);
+    }
   }
 }
