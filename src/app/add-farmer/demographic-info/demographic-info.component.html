@@ -308,21 +308,33 @@
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
                   <label>Educational Qualification</label>
-                  <input
-                    type="text"
-                    class="form-control"
+                  <select
+                    class="flex-1 form-select"
                     formControlName="educationQualification"
-                    placeholder=""
-                  />
+                  >
+                    <option value="">...</option>
+                    <option
+                      *ngFor="let indVal of educationList"
+                      value="{{ indVal.displayValue }}"
+                    >
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
                 </div>
                 <div class="farmer-details-inner lable-top">
                   <label>Occupation</label>
-                  <input
-                    type="text"
-                    class="form-control"
+                  <select
+                    class="flex-1 form-select"
                     formControlName="occupation"
-                    placeholder=""
-                  />
+                  >
+                    <option value="">...</option>
+                    <option
+                      *ngFor="let indVal of occupationList"
+                      value="{{ indVal.displayValue }}"
+                    >
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
                 </div>
                 <div class="farmer-details-inner lable-top">
                   <label>Annual Income</label>
@@ -351,6 +363,7 @@
                     placeholder=""
                   />
                 </div>
+
                 <div class="flex-1 lable-top">
                   <label for="">Address line-2</label>
                   <input
@@ -363,13 +376,43 @@
               </div>
               <div class="display-flex">
                 <div class="flex-1 lable-top">
-                  <label class="required">Tahsil/Taluka/Mandal</label>
+                  <label class="required">Pin Code</label>
                   <input
                     type="text"
                     class="form-control"
-                    formControlName="taluk"
+                    formControlName="pinCode"
                     placeholder=""
+                    minlength="6"
+                    maxlength="6"
+                    (keyup)="getPinCodeData($event)"
                   />
+                  <div
+                    *ngIf="isSubmitted && f['pinCode'].errors"
+                    class="form-text text-danger"
+                  >
+                    <small *ngIf="f['pinCode'].errors['required']">
+                      PinCode is required</small
+                    >
+                    <small *ngIf="f['pinCode'].errors['minlength']">
+                      Should be 6 digits</small
+                    >
+                    <small *ngIf="f['pinCode'].errors['maxlength']">
+                      Should be 6 digits</small
+                    >
+                  </div>
+                </div>
+
+                <div class="flex-1 lable-top">
+                  <label class="required">Tahsil/Taluka/Mandal</label>
+                  <select class="form-select" formControlName="taluk">
+                    <option value="">...</option>
+                    <option
+                      *ngFor="let indVal of pinCodeAPIData"
+                      value="{{ indVal.Name }}"
+                    >
+                      {{ indVal.Name }}
+                    </option>
+                  </select>
                   <div
                     *ngIf="isSubmitted && f['taluk'].errors"
                     class="form-text text-danger"
@@ -386,6 +429,7 @@
                     class="form-control"
                     formControlName="city"
                     placeholder=""
+                    readonly
                   />
                   <div
                     *ngIf="isSubmitted && f['city'].errors"
@@ -396,23 +440,7 @@
                     >
                   </div>
                 </div>
-                <div class="flex-1 lable-top">
-                  <label class="required">Pin Code</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="pinCode"
-                    placeholder=""
-                  />
-                  <div
-                    *ngIf="isSubmitted && f['pinCode'].errors"
-                    class="form-text text-danger"
-                  >
-                    <small *ngIf="f['pinCode'].errors['required']">
-                      PinCode is required</small
-                    >
-                  </div>
-                </div>
+
                 <div class="flex-1 lable-top">
                   <label class="required">State</label>
                   <input
@@ -420,6 +448,7 @@
                     class="form-control"
                     formControlName="state"
                     placeholder=""
+                    readonly
                   />
                   <div
                     *ngIf="isSubmitted && f['state'].errors"
@@ -448,6 +477,7 @@
                     class="form-control"
                     formControlName="phoneNumber"
                     placeholder=""
+                    minlength="10"
                     maxlength="10"
                   />
                   <div
@@ -498,7 +528,7 @@
                     class="form-control"
                     formControlName="yrsInAddress"
                     placeholder=""
-                    maxlength="10"
+                    maxlength="3"
                   />
                   <div
                     *ngIf="isSubmitted && f['yrsInAddress'].errors"
@@ -516,7 +546,7 @@
                     class="form-control"
                     formControlName="yrsInCity"
                     placeholder=""
-                    maxlength="10"
+                    maxlength="3"
                   />
                   <div
                     *ngIf="isSubmitted && f['yrsInCity'].errors"

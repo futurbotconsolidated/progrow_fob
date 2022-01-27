@@ -8,6 +8,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from '../../shared/common.service';
 
 import { debounceTime, of, switchMap, tap } from 'rxjs';
 import {
@@ -73,6 +75,8 @@ export class DemographicInfoComponent implements OnInit {
   addressProofList: any = [];
   propertyTypeList: any = [];
 
+  pinCodeAPIData: any = [];
+
   familyMembers!: FormArray;
   propertyOwnership!: FormArray;
   demographicInfoForm: FormGroup;
@@ -85,7 +89,9 @@ export class DemographicInfoComponent implements OnInit {
     public router: Router,
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public commonService: CommonService,
+    private spinner: NgxSpinnerService
   ) {
     this.demographicInfoForm = this.formBuilder.group({
       addressProof: new FormControl('', [Validators.required]),
@@ -104,14 +110,18 @@ export class DemographicInfoComponent implements OnInit {
       address2: new FormControl(''),
       taluk: new FormControl('', [Validators.required]),
       city: new FormControl('', [Validators.required]),
-      pinCode: new FormControl('', [Validators.required]),
+      pinCode: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(6),
+      ]),
       state: new FormControl('', [Validators.required]),
       landmark: new FormControl(''),
       phoneNumber: new FormControl('', [
         Validators.required,
         Validators.pattern('^[0-9]*$'),
       ]),
-      mobile1: new FormControl('', [Validators.pattern('^[0-9]*$')]),
+      mobile1: new FormControl('', [Validators.pattern('^[0-9]*$')]), //
       mobile2: new FormControl(''),
       yrsInAddress: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       yrsInCity: new FormControl('', [Validators.pattern('^[0-9]*$')]),
@@ -264,6 +274,38 @@ export class DemographicInfoComponent implements OnInit {
     if (this.demographicInfoForm.controls[formCtlName].pristine) {
       // @ts-ignore: Object is possibly 'null'.
       this.demographicInfoForm.get(formCtlName).markAsDirty();
+    }
+  }
+  getPinCodeData(event: any) {
+    // clear values
+    this.demographicInfoForm.patchValue({
+      city: '',
+      state: '',
+    });
+    this.pinCodeAPIData.length = 0;
+
+    // check length and proceed
+    if (event && event.target.value.trim().length == 6) {
+      this.spinner.show();
+      this.commonService.getPinCodeData(event.target.value.trim()).subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res && res[0].Status != 'Success') {
+            alert('Failed to fetch PinCode Details, please try again...');
+          } else {
+            this.pinCodeAPIData = res[0].PostOffice;
+
+            this.demographicInfoForm.patchValue({
+              city: this.pinCodeAPIData[0].District,
+              state: this.pinCodeAPIData[0].State,
+            });
+          }
+        },
+        (error: any) => {
+          this.spinner.hide();
+          alert('Failed to fetch PinCode Details, please try againn...');
+        }
+      );
     }
   }
 

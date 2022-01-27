@@ -38,5 +38,9 @@ export class CommonService {
       headers,
     });
   }
+
+  getPinCodeData(data: any) {
+    return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
+  }
   /* END: API Calls */
 }
