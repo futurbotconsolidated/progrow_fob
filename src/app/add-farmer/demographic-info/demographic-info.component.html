@@ -448,6 +448,7 @@
                     class="form-control"
                     formControlName="phoneNumber"
                     placeholder=""
+                    maxlength="10"
                   />
                   <div
                     *ngIf="isSubmitted && f['phoneNumber'].errors"
@@ -455,6 +456,9 @@
                   >
                     <small *ngIf="f['phoneNumber'].errors['required']">
                       Phone No. is required</small
+                    >
+                    <small *ngIf="f['phoneNumber'].errors['pattern']">
+                      Only Numbers are allowed</small
                     >
                   </div>
                 </div>
@@ -465,7 +469,16 @@
                     class="form-control"
                     formControlName="mobile1"
                     placeholder=""
+                    maxlength="10"
                   />
+                  <div
+                    *ngIf="isSubmitted && f['mobile1'].errors"
+                    class="form-text text-danger"
+                  >
+                    <small *ngIf="f['mobile1'].errors['pattern']">
+                      Only Numbers are allowed</small
+                    >
+                  </div>
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">Mobile 2</label>
@@ -485,7 +498,16 @@
                     class="form-control"
                     formControlName="yrsInAddress"
                     placeholder=""
+                    maxlength="10"
                   />
+                  <div
+                    *ngIf="isSubmitted && f['yrsInAddress'].errors"
+                    class="form-text text-danger"
+                  >
+                    <small *ngIf="f['yrsInAddress'].errors['pattern']">
+                      Only Numbers are allowed</small
+                    >
+                  </div>
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in city/village</label>
@@ -494,7 +516,16 @@
                     class="form-control"
                     formControlName="yrsInCity"
                     placeholder=""
+                    maxlength="10"
                   />
+                  <div
+                    *ngIf="isSubmitted && f['yrsInCity'].errors"
+                    class="form-text text-danger"
+                  >
+                    <small *ngIf="f['yrsInCity'].errors['pattern']">
+                      Only Numbers are allowed</small
+                    >
+                  </div>
                 </div>
                 <div class="flex-2 lable-top">
                   <label for="">Email Address</label>
@@ -504,6 +535,14 @@
                     formControlName="email"
                     placeholder=""
                   />
+                  <div
+                    *ngIf="isSubmitted && f['email'].errors"
+                    class="form-text text-danger"
+                  >
+                    <small *ngIf="f['email'].errors['email']">
+                      Email address is invalid</small
+                    >
+                  </div>
                 </div>
               </div>
             </div>
