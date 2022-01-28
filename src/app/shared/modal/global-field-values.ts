@@ -321,6 +321,19 @@ export const otherBanks = [
   { id: 1, displayName: 'Axis', displayValue: 'axis' },
 ];
 
+export const crops = [
+  { id: 1, displayName: 'Mustard', displayValue: 'Mustard' },
+  { id: 1, displayName: 'Cumin', displayValue: 'Cumin' },
+  { id: 1, displayName: 'Gram', displayValue: 'Gram' },
+  { id: 1, displayName: 'Isabgol', displayValue: 'Isabgol' },
+];
+
+export const soilQuality = [
+  { id: 1, displayName: 'Poor', displayValue: 'Poor' },
+  { id: 2, displayName: 'Fair', displayValue: 'Fair' },
+  { id: 3, displayName: 'Good', displayValue: 'Good' },
+];
+
 // START: Corp Market plan
 
 export const seedProcure = [

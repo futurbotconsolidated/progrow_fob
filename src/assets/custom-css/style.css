@@ -613,6 +613,45 @@ tbody {
   height: 20px;
   margin-bottom: 4px;
 }
+
+/* rating for li tag  */
+
+.ratings li {
+  display: block;
+  text-decoration: none;
+  color: #000;
+  line-height: 1;
+  font-size: 12px;
+  text-align: center;
+  margin: 0 4px;
+}
+.ratings .star-rate li span {
+  margin-top: 2px;
+}
+.ratings .star-rate i {
+  color: #bababa;
+  font-size: 18px;
+  margin: 0 4px;
+}
+.ratings .star-rate li.active i {
+  color: #fdab2a;
+}
+.ratings .star-rate {
+  margin: 0px 14px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.ratings li span {
+  display: block;
+}
+
+.ratings li svg {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 4px;
+}
+/* end  */
 .delete-item i {
   font-size: 25px;
   margin: 10px;

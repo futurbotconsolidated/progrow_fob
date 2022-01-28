@@ -18,6 +18,8 @@ import {
   waterSource,
   ownerShipType,
   cropCycleOnReports,
+  crops,
+  soilQuality,
 } from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 @Component({
@@ -26,6 +28,11 @@ import { AddFarmerService } from '../add-farmer.service';
   styleUrls: ['./field-info.component.css'],
 })
 export class FieldInfoComponent implements OnInit {
+  SoilQualityStar: any[] = soilQuality;
+  selectedSoilQualityStar: any;
+  selectedWaterQualityStar: any;
+  selectedYieldQualityStar: any;
+
   nextRoute: any;
   fieldInfoForm = new FormGroup({});
   plannedFieldDetails!: FormArray;
@@ -37,6 +44,10 @@ export class FieldInfoComponent implements OnInit {
   waterSourceList = <any>[];
   ownerShipTypeList = <any>[];
   cropCycleOnReportsList = <any>[];
+  soilQualityList = <any>[];
+
+  cropsList = <any>[];
+
   field_boundary: any;
   count = 0;
   constructor(
@@ -69,6 +80,8 @@ export class FieldInfoComponent implements OnInit {
     this.waterSourceList = waterSource;
     this.ownerShipTypeList = ownerShipType;
     this.cropCycleOnReportsList = cropCycleOnReports;
+    this.cropsList = crops;
+    this.soilQualityList = soilQuality;
 
     let fieldInfo: any = localStorage.getItem('field-info-form');
     if (fieldInfo) {
@@ -185,7 +198,15 @@ export class FieldInfoComponent implements OnInit {
     map.on('draw:editvertex', (e: any) => {
       var poly = e.poly;
       var latlngs = poly.getLatLngs(); // here the polygon latlngs
-      console.log('latlngs', latlngs);
+      this.field_boundary = {
+        type: 'field-boundary',
+        geometry: {
+          coordinates: latlngs,
+          type: e.layerType,
+        },
+      };
+
+      console.log('latlngs', this.field_boundary);
     });
 
     map.on('enterFullscreen', function () {
@@ -203,7 +224,12 @@ export class FieldInfoComponent implements OnInit {
       irrigationSystem: new FormControl('Relation', [Validators.required]),
       waterSource: new FormControl('Education', [Validators.required]),
       crop: new FormControl('', [Validators.required]),
-      expectedProduce: new FormControl('', [Validators.required]),
+      soilQuality: new FormControl(' ', [Validators.required]),
+      expectedProduce: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+        Validators.minLength(5),
+      ]),
     });
   }
 
@@ -332,6 +358,36 @@ export class FieldInfoComponent implements OnInit {
       JSON.stringify(this.fieldInfoForm.value)
     );
     this.router.navigate([url]);
+  }
+
+  SoilQualityRating(soilQualityStar: any) {
+    this.selectedSoilQualityStar = soilQualityStar.displayValue;
+    console.log('Value of SoilQualityStar', soilQualityStar);
+  }
+
+  WaterQualityRating(waterQualityStar: any) {
+    this.selectedWaterQualityStar = waterQualityStar.displayValue;
+    console.log('Value of waterQualityStar', waterQualityStar);
+  }
+
+  YieldQualityRating(yieldQualityStar: any) {
+    this.selectedYieldQualityStar = yieldQualityStar.displayValue;
+    console.log('Value of yieldQualityStar', yieldQualityStar);
+  }
+
+  validateNo(e: any): boolean {
+    const charCode = e.which ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
+  numbersOnlyValidator(event: any) {
+    const pattern = /^[0-9\-]*$/;
+    if (!pattern.test(event.target.value)) {
+      event.target.value = event.target.value.replace(/[^0-9\-]/g, '');
+    }
   }
 
   ngOnDestroy() {}
