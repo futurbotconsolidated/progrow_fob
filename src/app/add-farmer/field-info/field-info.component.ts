@@ -221,8 +221,8 @@ export class FieldInfoComponent implements OnInit {
     return this.formBuilder.group({
       fieldId: new FormControl('', [Validators.required]),
       fieldArea: new FormControl('', [Validators.required]),
-      irrigationSystem: new FormControl('Relation', [Validators.required]),
-      waterSource: new FormControl('Education', [Validators.required]),
+      irrigationSystem: new FormControl('', [Validators.required]),
+      waterSource: new FormControl('', [Validators.required]),
       crop: new FormControl('', [Validators.required]),
       soilQuality: new FormControl(' ', [Validators.required]),
       expectedProduce: new FormControl('', [
@@ -253,8 +253,8 @@ export class FieldInfoComponent implements OnInit {
     return this.formBuilder.group({
       fieldId: new FormControl('', [Validators.required]),
       fieldArea: new FormControl('', [Validators.required]),
-      irrigationSystem: new FormControl('Relation', [Validators.required]),
-      waterSource: new FormControl('Education', [Validators.required]),
+      irrigationSystem: new FormControl('', [Validators.required]),
+      waterSource: new FormControl('', [Validators.required]),
       crop: new FormControl('', [Validators.required]),
     });
   }
