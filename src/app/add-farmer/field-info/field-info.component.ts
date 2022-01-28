@@ -57,7 +57,7 @@ export class FieldInfoComponent implements OnInit {
   ) {
     this.fieldInfoForm = this.formBuilder.group({
       historicalSeason: new FormControl('rabi_2021', [Validators.required]),
-      plannedSeason: new FormControl('rabi_2021', [Validators.required]),
+      plannedSeason: new FormControl('kharif_2022', [Validators.required]),
       plannedCrops: new FormControl('', [Validators.required]),
       historicalCrops: new FormControl('', [Validators.required]),
       plannedFieldDetails: new FormArray([]),
