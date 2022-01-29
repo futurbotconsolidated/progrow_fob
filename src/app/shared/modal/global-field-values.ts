@@ -33,7 +33,13 @@ export const religion = [
   {
     id: 6,
     displayName: 'Buddhist',
-    displayValue: 'Buddhist',
+    displayValue: 'buddhist',
+    defaultValue: false,
+  },
+  {
+    id: 7,
+    displayName: 'Others',
+    displayValue: 'others',
     defaultValue: false,
   },
 ];
@@ -117,6 +123,12 @@ export const caste = [
     id: 4,
     displayName: 'General',
     displayValue: 'general',
+    defaultValue: false,
+  },
+  {
+    id: 5,
+    displayName: 'Others',
+    displayValue: 'others',
     defaultValue: false,
   },
 ];
