@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
+import { validatePANNumber } from '../../shared/custom-validators';
+
 declare var $: any;
 
 import {
@@ -111,7 +113,7 @@ export class DemographicInfoComponent implements OnInit {
       addressProofFrontImage: new FormControl('', [Validators.required]),
       addressProofBackImage: new FormControl('', [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
-      PANnumber: new FormControl(''),
+      PANnumber: new FormControl('', [validatePANNumber]),
       PANFrontImage: new FormControl(''),
       passportNumber: new FormControl(''),
       passportFrontImage: new FormControl(''),
@@ -148,6 +150,14 @@ export class DemographicInfoComponent implements OnInit {
       yrsInAddress: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       yrsInCity: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       email: new FormControl('', [Validators.email]),
+
+      permAddressLine1: new FormControl(''),
+      permAddressLine2: new FormControl(''),
+      permTaluk: new FormControl(''),
+      permCity: new FormControl(''),
+      permPincode: new FormControl(''),
+      permState: new FormControl(''),
+
       propertyStatus: new FormControl('own'),
       monthlyRent: new FormControl(''),
       commOrPerAddress: new FormControl('same_above', [Validators.required]),
@@ -156,8 +166,11 @@ export class DemographicInfoComponent implements OnInit {
       phoneType: new FormControl('feature_phone'),
       phoneOperating: new FormControl('i_check_mostly'),
       cultivationAdvice: [Array()],
+      cultivationAdviceOther: new FormControl(''),
       adviceMedium: [Array()],
+      adviceMediumOther: new FormControl(''),
       sourceOfIncome: [Array()],
+      sourceOfIncomeOther: new FormControl(''),
       agriculturalInterest: new FormControl('very_much_interested'),
       innovativeWaysFarming: [Array()],
     });
@@ -375,6 +388,16 @@ export class DemographicInfoComponent implements OnInit {
     const reader = new FileReader();
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
+
+      if (file.size > 300000) {
+        this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
+        return;
+      }
+      if (file.type.split('/')[0] != 'image') {
+        this.toastr.error('Only Image files are allowed.', 'Error!');
+        return;
+      }
+
       reader.readAsDataURL(file);
       reader.onload = () => {
         const imageSrc = reader.result;
@@ -470,19 +493,8 @@ export class DemographicInfoComponent implements OnInit {
   validateAndNext() {
     this.isSubmitted = true;
     if (this.demographicInfoForm.invalid) {
-      // const invalid = [];
-      // const controls = this.demographicInfoForm.controls;
-      // for (const name in controls) {
-      //   if (controls[name].invalid) {
-      //     invalid.push(name);
-      //   }
-      // }
-      // this.toastr.error(
-      //   `please enter values for ${invalid.join(',')}`,
-      //   'Error!'
-      // );
-
       this.toastr.error('please enter values for required fields', 'Error!');
+      return;
     } else {
       const formValue = this.demographicInfoForm.value;
       const obj = {
@@ -518,14 +530,19 @@ export class DemographicInfoComponent implements OnInit {
         phoneType: formValue.phoneType,
         phoneUsedBy: formValue.phoneOperating,
         cultivationAdvice: formValue.cultivationAdvice,
+        cultivationAdviceOther: formValue.cultivationAdviceOther,
         adviceMedium: formValue.adviceMedium,
+        adviceMediumOther: formValue.adviceMediumOther,
         sourceOfIncome: formValue.sourceOfIncome,
+        sourceOfIncomeOther: formValue.sourceOfIncomeOther,
         agricultureChildrenInterested: formValue.agriculturalInterest,
         innovativeFarmingWays: formValue.innovativeWaysFarming,
       };
       console.log(obj);
       localStorage.setItem('demographic-info', JSON.stringify(obj));
       localStorage.setItem('demographic-info-form', JSON.stringify(formValue));
+
+      // console.log(JSON.stringify(obj).length, JSON.stringify(formValue).length);
 
       const url = `/add/${this.nextRoute}`;
       this.router.navigate([url]);

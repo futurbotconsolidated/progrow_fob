@@ -14,8 +14,8 @@
                   <label for="PANnumber">PAN Card number </label>
                   <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber"
                     placeholder="ABWRT0987T" />
-                  <div *ngIf="isSubmitted && f['PANnumber'].errors" class="form-text text-danger">
-                    <small *ngIf="f['PANnumber'].errors['pattern']">
+                  <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
+                    <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
                       Please enter valid PAN Number</small>
                   </div>
                 </div>
@@ -378,6 +378,62 @@
                     Field is required</small>
                 </div>
               </div>
+              <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='different_address'">
+                <div class="flex-1 lable-top">
+                  <label>Address line-1</label>
+                  <input type="text" class="form-control" formControlName="permAddressLine1" placeholder="" />
+                </div>
+
+                <div class="flex-1 lable-top">
+                  <label for="">Address line-2</label>
+                  <input type="text" class="form-control" formControlName="permAddressLine2" placeholder="" />
+                </div>
+              </div>
+              <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='different_address'">
+                <div class="flex-1 lable-top">
+                  <label class="required">Pin Code</label>
+                  <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6"
+                    maxlength="6" (keyup)="getPinCodeData($event)" />
+                  <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permPincode'].errors['required']">
+                      PinCode is required</small>
+                    <small *ngIf="f['permPincode'].errors['minlength']">
+                      Should be 6 digits</small>
+                    <small *ngIf="f['permPincode'].errors['maxlength']">
+                      Should be 6 digits</small>
+                  </div>
+                </div>
+
+                <div class="flex-1 lable-top">
+                  <label class="required">Tahsil/Taluka/Mandal</label>
+                  <select class="form-select" formControlName="permTaluk">
+                    <option value="">...</option>
+                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.Name }}">
+                      {{ indVal.Name }}
+                    </option>
+                  </select>
+                  <div *ngIf="isSubmitted && f['permTaluk'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permTaluk'].errors['required']">
+                      Taluk is required</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">District/City</label>
+                  <input type="text" class="form-control" formControlName="permCity" placeholder="" readonly />
+                  <div *ngIf="isSubmitted && f['permCity'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permCity'].errors['required']">
+                      City is required</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">State</label>
+                  <input type="text" class="form-control" formControlName="permState" placeholder="" readonly />
+                  <div *ngIf="isSubmitted && f['permState'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permState'].errors['required']">
+                      State is required</small>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -561,7 +617,7 @@
                 </label>
                 <div class="lable-top">
                   <label>Mention other(if any)</label>
-                  <input class="form-control" type="text" />
+                  <input class="form-control" type="text" formControlName="cultivationAdviceOther" />
                 </div>
               </div>
             </div>
@@ -586,7 +642,7 @@
                 </label>
                 <div class="lable-top">
                   <label>Mention other(if any)</label>
-                  <input class="form-control" type="text" />
+                  <input class="form-control" type="text" formControlName="adviceMediumOther" />
                 </div>
               </div>
             </div>
@@ -613,7 +669,7 @@
               </label>
               <div class="lable-top">
                 <label>Mention other(if any)</label>
-                <input class="form-control" type="text" />
+                <input class="form-control" type="text" formControlName="sourceOfIncomeOther" />
               </div>
             </div>
           </div>
