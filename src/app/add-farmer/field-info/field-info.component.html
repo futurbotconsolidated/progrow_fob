@@ -145,12 +145,12 @@
                                             <label>Soil Quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
-                                                    <a *ngFor="let soilQualityStar of soilQualityList"
+                                                    <a *ngFor="let soilQualityStar of soilQualityList; let i = index"
                                                         href="javascript:void(0)"
                                                         (click)="SoilQualityRating(soilQualityStar)"
                                                         [ngClass]="{'active': (soilQualityStar.displayValue == selectedSoilQualityStar)}"><i
                                                             class="fa fa-star"
-                                                            id="{{soilQualityStar.displayValue}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
+                                                            id="{{soilQualityStar.displayValue+i}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
                                                 </div>
                                                 <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">

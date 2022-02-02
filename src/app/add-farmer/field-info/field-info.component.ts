@@ -210,6 +210,8 @@ export class FieldInfoComponent implements OnInit {
     );
 
     map.on(L.Draw.Event.CREATED, (event: any) => {
+      console.log('Event.CREATED', event);
+
       var layer = event.layer;
       console.log('getLatLngs', layer.getLatLngs());
       let ob = {
@@ -226,9 +228,14 @@ export class FieldInfoComponent implements OnInit {
       this.addHistoFieldDetail();
       this.addFieldOwnershipDetail();
       this.addEnumerate();
-      layer.bindPopup(`Field ID : ${this.count} <br/> Area : `).openPopup();
 
       drawnItems.addLayer(layer);
+      var area = L.GeometryUtil.geodesicArea(layer.getLatLngs());
+      console.log(L.GeometryUtil.geodesicArea(layer.getLatLngs()));
+
+      layer
+        .bindPopup(`Field ID : ${this.count} <br/> Area : ${area}`)
+        .openPopup();
     });
 
     map.on(L.Draw.Event.DELETED, (event: any) => {
@@ -262,9 +269,19 @@ export class FieldInfoComponent implements OnInit {
     map.on('locationfound', function (e: any) {
       if (window.console) window.console.log('locationfound');
       locationlayerGroup.clearLayers();
-      var radius = e.accuracy / 2;
-      var circle1 = L.circle(e.latlng, radius).addTo(locationlayerGroup);
-      circle1.setStyle({ color: 'red' });
+      var circleOptions = {
+        color: '#FFFFFF',
+        weight: 0,
+        opacity: 0,
+        fill: true,
+        fillColor: '#1A73E9',
+        fillOpacity: 0.25,
+      };
+      var circle = L.circle(e.latlng, 15, circleOptions).addTo(
+        locationlayerGroup
+      );
+      var myIcon = L.divIcon({ className: 'my-current-loc-icon' });
+      L.marker(e.latlng, { icon: myIcon }).addTo(locationlayerGroup);
     });
 
     console.log(this.selectedCoordinates);
