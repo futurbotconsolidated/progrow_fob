@@ -1,82 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Farmer OnBoarding</title>
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link
-      href="assets/css/bootstrap.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link rel="stylesheet" type="text/css" href="assets/custom-css/style.css" />
-    <link rel="stylesheet" type="text/css" href="assets/custom-css/BD.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="assets/custom-css/profile.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="assets/custom-css/global.css"
-    />
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+<head>
+  <meta charset="utf-8" />
+  <title>Farmer OnBoarding</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="assets/custom-css/style.css" />
+  <link rel="stylesheet" type="text/css" href="assets/custom-css/BD.css" />
+  <link rel="stylesheet" type="text/css" href="assets/custom-css/profile.css" />
+  <link rel="stylesheet" type="text/css" href="assets/custom-css/global.css" />
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 
-    <!-- START : links for leaflet  -->
+  <!-- START : links for leaflet  -->
 
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@latest/dist/leaflet.css"
-    />
-    <link rel="stylesheet" href="./assets/custom-css/Control.FullScreen.css" />
-    <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
-    <script src="./assets/js/Control.FullScreen.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
+  <link rel="stylesheet" href="./assets/custom-css/Control.FullScreen.css" />
+  <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
+  <script src="./assets/js/Control.FullScreen.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
 
-    <!-- END : links for leaflet  -->
+  <!-- END : links for leaflet  -->
 
-    <!-- START: Mapbox -->
-    <link
-      rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css"
-    />
+  <!-- START: Mapbox -->
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" />
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css" />
 
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
-    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js"></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
-    <!-- END: Mapbox -->
-  </head>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+  <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
+  <!-- END: Mapbox -->
+  <!-- Load Esri Leaflet from CDN -->
+  <script src="https://unpkg.com/esri-leaflet"></script>
+  <!-- Esri Leaflet Geocoder -->
+  <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.1.1/dist/esri-leaflet-geocoder.css"
+    integrity="sha512-IM3Hs+feyi40yZhDH6kV8vQMg4Fh20s9OzInIIAc4nx7aMYMfo+IenRUekoYsHZqGkREUgx0VvlEsgm7nCDW9g=="
+    crossorigin="">
+  <script src="https://unpkg.com/esri-leaflet-geocoder@3.1.1/dist/esri-leaflet-geocoder.js"
+    integrity="sha512-enHceDibjfw6LYtgWU03hke20nVTm+X5CRi9ity06lGQNtC9GkBNl/6LoER6XzSudGiXy++avi1EbIg9Ip4L1w=="
+    crossorigin=""></script>
+  <!-- Easy Button -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
-  <body>
-    <app-root>
-      <!-- Loading div will be replaced by Angular once it's done initializing. -->
-      <div class="authenticating-loader">
-        <div>Initializing...</div>
-      </div>
-    </app-root>
+</head>
 
-    <script type="text/javascript" src="assets/js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-  </body>
+<body>
+  <app-root>
+    <!-- Loading div will be replaced by Angular once it's done initializing. -->
+    <div class="authenticating-loader">
+      <div>Initializing...</div>
+    </div>
+  </app-root>
+
+  <script type="text/javascript" src="assets/js/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+</body>
+
 </html>

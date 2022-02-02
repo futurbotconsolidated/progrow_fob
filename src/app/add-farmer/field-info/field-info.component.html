@@ -53,7 +53,9 @@
                         <div class="form-details-inner">
                             <div class="row field-details">
                                 <div class="field-tooltip">
-                                    <h3 class="form-title">C. Field Details</h3><span><a href="#"
+                                    <h3 class="form-title">C. Field Details</h3>
+                                    <!-- <span> -->
+                                    <!-- <a href="#"
                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                             title="Irrigation System">Irrigation System<svg
                                                 xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -83,7 +85,7 @@
                                                 <path
                                                     d="M10.326,2a8.326,8.326,0,1,0,8.326,8.326A8.329,8.329,0,0,0,10.326,2Zm.833,12.489H9.493v-6h1.665Zm0-7.661H9.493V5.163h1.665Z"
                                                     transform="translate(-0.326 -0.326)" />
-                                            </svg></a></span>
+                                            </svg></a></span> -->
                                 </div>
                             </div>
                         </div>
@@ -99,9 +101,10 @@
                                     </div>
                                     <div class="display-flex-1">
                                         <div class="col-md-2 lable-top">
-                                            <label>Area</label>
-                                            <input type="text" class="form-control" formControlName="fieldArea"
-                                                placeholder="5000 Hectares">
+                                            <label>Area (In Hectares)</label>
+                                            <input type="text" class="form-control" maxlength="3"
+                                                (keypress)="validateNo($event)" formControlName="fieldArea"
+                                                placeholder="50">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label>Irrigation System</label>
@@ -246,14 +249,14 @@
                                                     </svg><span>Add Comment</span></a>
                                             </div>
                                         </div>
-                                        <div class="col-auto add-another">
+                                        <!-- <div class="col-auto add-another">
                                             <a *ngIf="getPlannedFieldDetailsControls().length!=1  && i!=getPlannedFieldDetailsControls().length-1"
                                                 href="javascript:void(0)" class="delete-item "
                                                 (click)="removePlannedFieldDetails(i)"><i
                                                     class="fa fa-trash-o text-danger"></i></a>
                                             <a *ngIf="i==getPlannedFieldDetailsControls().length-1"
                                                 href="javascript:void(0)" (click)="addPlannedFieldDetails()">+ Add</a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +284,13 @@
                                             d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
                                     </svg></a> -->
                             </h3>
-                            <div class="row align-items-center planned-season-deatils">
+
+                        </div>
+
+                        <div class="form-details-inner">
+                            <div class="row field-details" formArrayName="historicalFieldDetails"
+                                *ngFor="let item of getHistoFieldDetailsControls(); let i = index;">
+                                <!-- <div class="row align-items-center planned-season-deatils"> -->
                                 <div class="col-md-3">
                                     <h3 class="form-title">A. Historical Season</h3>
                                     <select class="form-select" formControlName="historicalSeason">
@@ -296,24 +305,20 @@
                                     <input type="text" class="form-control" formControlName="historicalCrops"
                                         id="planned_copy" placeholder="Enter comma separated crop names here…">
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="form-details-inner">
-                            <div class="row field-details" formArrayName="historicalFieldDetails"
-                                *ngFor="let item of getHistoFieldDetailsControls(); let i = index;">
+                                <!-- </div> -->
                                 <h3 class="form-title">C. Field Details</h3>
-                                <div class="display-flex align-normal mb-3" [formGroupName]="i">
+                                <div class="display-flex align-normal mb-3">
                                     <div class="col-md-1 lable-top">
                                         <label>Field ID</label>
                                         <input type="text" formControlName="fieldId" class="form-control text-center"
-                                            placeholder="{{i+1}}">
+                                            placeholder="1">
                                     </div>
                                     <div class="display-flex-1">
                                         <div class="col-md-2 lable-top">
-                                            <label>Area</label>
-                                            <input type="text" class="form-control" formControlName="fieldArea"
-                                                placeholder="5000 Hectares">
+                                            <label>Area (In Hectares)</label>
+                                            <input type="text" class="form-control" maxlength="3"
+                                                (keypress)="validateNo($event)" formControlName="fieldArea"
+                                                placeholder="50">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label>Irrigation System</label>
@@ -348,8 +353,8 @@
                                                 <div class="star-rate">
                                                     <a *ngFor="let soilQualityStar of soilQualityList"
                                                         href="javascript:void(0)"
-                                                        (click)="SoilQualityRating(soilQualityStar)"
-                                                        [ngClass]="{'active': (soilQualityStar.displayValue == selectedSoilQualityStar)}"><i
+                                                        (click)="HistoSoilQualityRating(soilQualityStar)"
+                                                        [ngClass]="{'active': (soilQualityStar.displayValue == selectedHistoSoilQualityStar)}"><i
                                                             class="fa fa-star"
                                                             id="{{soilQualityStar.displayValue}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
                                                 </div>
@@ -382,8 +387,8 @@
                                                 <div class="star-rate">
                                                     <a *ngFor="let waterQualityStar of soilQualityList"
                                                         href="javascript:void(0)"
-                                                        (click)="WaterQualityRating(waterQualityStar)"
-                                                        [ngClass]="{'active': (waterQualityStar.displayValue == selectedWaterQualityStar)}"><i
+                                                        (click)="HistoWaterQualityRating(waterQualityStar)"
+                                                        [ngClass]="{'active': (waterQualityStar.displayValue == selectedHistoWaterQualityStar)}"><i
                                                             class="fa fa-star"
                                                             id="{{waterQualityStar.displayValue}}"></i><span>{{waterQualityStar.displayValue}}</span></a>
                                                 </div>
@@ -416,12 +421,12 @@
                                                 <div class="star-rate">
                                                     <a *ngFor="let yieldQualityStar of soilQualityList"
                                                         href="javascript:void(0)"
-                                                        (click)="YieldQualityRating(yieldQualityStar)"
-                                                        [ngClass]="{'active': (yieldQualityStar.displayValue == selectedYieldQualityStar)}"><i
+                                                        (click)="HistoYieldQualityRating(yieldQualityStar)"
+                                                        [ngClass]="{'active': (yieldQualityStar.displayValue == selectedHistoYieldQualityStar)}"><i
                                                             class="fa fa-star"
                                                             id="{{yieldQualityStar.displayValue}}"></i><span>{{yieldQualityStar.displayValue}}</span></a>
                                                 </div>
-                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
                                                         <defs>
                                                             <style>
@@ -441,7 +446,7 @@
                                                         <path class="c"
                                                             d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
                                                             transform="translate(4 13.776)" />
-                                                    </svg><span>Add Comment</span></a>
+                                                    </svg><span>Add Comment</span></a> -->
                                             </div>
                                         </div>
                                         <!-- <div class="col-auto">
@@ -470,7 +475,7 @@
                                     </div>
                                     <div class="display-flex-1">
                                         <div class="col-md-2 lable-top">
-                                            <label>Area</label>
+                                            <label>Area (In Hectares)</label>
                                             <input type="text" class="form-control" placeholder="5000 Hectares">
                                         </div>
                                         <div class="col-md-2 lable-top">
@@ -807,7 +812,7 @@
                             <div class="col-md-2 lable-top">
                                 <label>When last done</label>
                                 <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                    value="Date of Birth" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                             </div>
                             <div class="col-md-3 lable-top">
                                 <label>Have you received the last test result?</label>
@@ -835,7 +840,7 @@
                             <div class="col-md-2 lable-top">
                                 <label>When last done</label>
                                 <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                    value="Date of Birth" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                             </div>
                             <div class="col-md-3 lable-top">
                                 <label>Have you received the last test result?</label>
