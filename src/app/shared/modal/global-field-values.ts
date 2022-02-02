@@ -96,7 +96,7 @@ export const commOrPerAddress = [
     id: 2,
     displayName: 'Different address',
     displayValue: 'different_address',
-    defaultValue: false,
+    defaultValue: 'different_address',
   },
 ];
 
