@@ -33,6 +33,10 @@ export class FieldInfoComponent implements OnInit {
   selectedWaterQualityStar: any;
   selectedYieldQualityStar: any;
 
+  selectedHistoSoilQualityStar: any;
+  selectedHistoWaterQualityStar: any;
+  selectedHistoYieldQualityStar: any;
+
   nextRoute: any;
   fieldInfoForm = new FormGroup({});
   plannedFieldDetails!: FormArray;
@@ -45,7 +49,8 @@ export class FieldInfoComponent implements OnInit {
   ownerShipTypeList = <any>[];
   cropCycleOnReportsList = <any>[];
   soilQualityList = <any>[];
-
+  selectedCoordinates = <any>[];
+  drawnCoordinates = <any>[];
   cropsList = <any>[];
 
   field_boundary: any;
@@ -56,10 +61,8 @@ export class FieldInfoComponent implements OnInit {
     public router: Router
   ) {
     this.fieldInfoForm = this.formBuilder.group({
-      historicalSeason: new FormControl('rabi_2021', [Validators.required]),
       plannedSeason: new FormControl('kharif_2022', [Validators.required]),
       plannedCrops: new FormControl('', [Validators.required]),
-      historicalCrops: new FormControl('', [Validators.required]),
       plannedFieldDetails: new FormArray([]),
       historicalFieldDetails: new FormArray([]),
       fieldOwnership: new FormArray([]),
@@ -82,50 +85,45 @@ export class FieldInfoComponent implements OnInit {
     this.cropCycleOnReportsList = cropCycleOnReports;
     this.cropsList = crops;
     this.soilQualityList = soilQuality;
-
+    this.selectedCoordinates = [];
     let fieldInfo: any = localStorage.getItem('field-info-form');
+    // let mapInfo = <any>[];
+    // mapInfo = localStorage.getItem('field-info');
+    // let m = JSON.parse(mapInfo);
+    // m.forEach((el: any) => {
+    //   console.log(el.field_boundary.geometry.coordinates[0]);
+    // });
     if (fieldInfo) {
       fieldInfo = JSON.parse(fieldInfo);
       this.fieldInfoForm.patchValue(fieldInfo);
       console.log(fieldInfo);
     }
-    // let map_info: any = localStorage.getItem('field-info');
-    // console.log(JSON.parse(map_info));
-    // map_info = JSON.parse(map_info);
 
-    // if (map_info.length > 0) {
-    //   console.log(map_info.field_boundary);
-    //   map_info.forEach((el: any) => {
-    //     let arr = el.field_boundary.geometry.coordinates;
-    //     console.log(arr[0]);
+    let map_info: any = localStorage.getItem('field-info');
+    map_info = JSON.parse(map_info);
 
-    //     let latArr: any = [];
-    //     let lngArr: any = [];
-    //     arr[0].forEach((x: any) => {
-    //       console.log(x);
+    if (map_info) {
+      map_info.forEach((el: any) => {
+        this.addPlannedFieldDetails();
+        // this.addHistoFieldDetail();
+        this.addFieldOwnershipDetail();
+        this.addEnumerate();
+        let arr = el.field_boundary.geometry.coordinates;
+        let co: any = [];
+        arr[0].forEach((x: any) => {
+          co.push([x.lat, x.lng]);
+        });
+        this.selectedCoordinates.push(co);
+      });
+    }
+    console.log(this.selectedCoordinates);
 
-    //       latArr.push(x.lat);
-
-    //       lngArr.push(x.lng);
-    //     });
-    //     console.log(latArr, lngArr);
-    //   });
-    // }
-    // drawnItems = L.featureGroup().addTo(map);
-
-    // var drawnItems = new L.FeatureGroup();
-    // map.addLayer(drawnItems);
-
-    // drawnItems.addLayer(
-    //   new L.Illustrate.Pointer(L.latLng(41.7868010411136, -87.60601043701172), [
-    //     new L.Point(0, 0),
-    //     new L.Point(100, -100),
-    //     new L.Point(400, -100)
-    //   ])
-    // );
+    // this.drawMap('','');
   }
   ngAfterViewInit(): void {
     if (navigator.geolocation) {
+      console.log(this);
+
       navigator.geolocation.getCurrentPosition(this.setGeoLocation.bind(this));
     }
   }
@@ -135,6 +133,10 @@ export class FieldInfoComponent implements OnInit {
       coords: { latitude, longitude },
     } = position;
 
+    this.drawMap(latitude, longitude);
+  }
+
+  drawMap(latitude: any, longitude: any) {
     let map = new L.Map('map', {
         center: new L.LatLng(latitude, longitude),
         zoom: 18,
@@ -150,11 +152,45 @@ export class FieldInfoComponent implements OnInit {
       'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
       { maxZoom: 19, attribution: 'google' }
     ).addTo(map);
+    var searchControl = L.esri.Geocoding.geosearch({
+      position: 'topright',
+      placeholder: 'Enter an address or place e.g. 1 York St',
+      useMapBounds: false,
+      providers: [
+        L.esri.Geocoding.arcgisOnlineProvider({
+          apikey:
+            'AAPKb10821df102a46a4b930958d7a6a06593sdla7i0cMWoosp7XXlYflDTAxsZMUq-oKvVOaom9B8CokPvJFd-sE88vOQ2B_rC', // replace with your api key - https://developers.arcgis.com
+          nearby: {
+            lat: 0,
+            lng: 0,
+          },
+        }),
+      ],
+    }).addTo(map);
+
+    var results = L.layerGroup().addTo(map);
+
+    searchControl.on('results', function (data: any) {
+      results.clearLayers();
+      //L.markerClusterGroup();
+      for (var i = data.results.length - 1; i >= 0; i--) {
+        results.addLayer(L.marker(data.results[i].latlng));
+      }
+    });
+
+    L.easyButton(
+      '<span><i style="margin-top: 2px; margin-left: -1px;" class="fa fa-compass fa-2x"></i></span>',
+      function (btn: any, map: any) {
+        if (window.console) window.console.log('easyButton');
+        map.locate({ setView: true, watch: false, enableHighAccuracy: true });
+      }
+    ).addTo(map);
 
     map.addControl(
       new L.Control.Draw({
         edit: {
           featureGroup: drawnItems,
+          remove: true,
           poly: {
             allowIntersection: false,
           },
@@ -164,6 +200,11 @@ export class FieldInfoComponent implements OnInit {
             allowIntersection: false,
             showArea: false,
           },
+          polyline: false,
+          circle: false,
+          rectangle: false,
+          marker: false,
+          circlemarker: false,
         },
       })
     );
@@ -171,19 +212,21 @@ export class FieldInfoComponent implements OnInit {
     map.on(L.Draw.Event.CREATED, (event: any) => {
       var layer = event.layer;
       console.log('getLatLngs', layer.getLatLngs());
-
-      this.field_boundary = {
+      let ob = {
         type: 'field-boundary',
         geometry: {
           coordinates: event.layer._latlngs,
           type: event.layerType,
         },
       };
+      this.drawnCoordinates.push(ob);
+
       this.count++;
       this.addPlannedFieldDetails();
       this.addHistoFieldDetail();
       this.addFieldOwnershipDetail();
       this.addEnumerate();
+      layer.bindPopup(`Field ID : ${this.count} <br/> Area : `).openPopup();
 
       drawnItems.addLayer(layer);
     });
@@ -215,6 +258,25 @@ export class FieldInfoComponent implements OnInit {
     map.on('exitFullscreen', function () {
       if (window.console) window.console.log('exitFullscreen');
     });
+    var locationlayerGroup = L.layerGroup().addTo(map);
+    map.on('locationfound', function (e: any) {
+      if (window.console) window.console.log('locationfound');
+      locationlayerGroup.clearLayers();
+      var radius = e.accuracy / 2;
+      var circle1 = L.circle(e.latlng, radius).addTo(locationlayerGroup);
+      circle1.setStyle({ color: 'red' });
+    });
+
+    console.log(this.selectedCoordinates);
+
+    if (this.selectedCoordinates) {
+      var polygon = L.polygon(this.selectedCoordinates).addTo(map);
+      // zoom the map to the polygon
+      polygon.bindPopup(`${this.selectedCoordinates.length}`).openPopup();
+      map.fitBounds(polygon.getBounds());
+    } else {
+      console.log('no lat lng');
+    }
   }
 
   createFieldDetails(): FormGroup {
@@ -225,6 +287,8 @@ export class FieldInfoComponent implements OnInit {
       waterSource: new FormControl('', [Validators.required]),
       crop: new FormControl('', [Validators.required]),
       soilQuality: new FormControl(' ', [Validators.required]),
+      waterQuality: new FormControl(' ', [Validators.required]),
+      yieldQuality: new FormControl(' ', [Validators.required]),
       expectedProduce: new FormControl('', [
         Validators.required,
         Validators.pattern('^[0-9]*$'),
@@ -251,11 +315,16 @@ export class FieldInfoComponent implements OnInit {
 
   createHistoFieldDetails(): FormGroup {
     return this.formBuilder.group({
+      historicalSeason: new FormControl('', [Validators.required]),
+      historicalCrops: new FormControl('', [Validators.required]),
       fieldId: new FormControl('', [Validators.required]),
       fieldArea: new FormControl('', [Validators.required]),
       irrigationSystem: new FormControl('', [Validators.required]),
       waterSource: new FormControl('', [Validators.required]),
       crop: new FormControl('', [Validators.required]),
+      soilQuality: new FormControl(' ', [Validators.required]),
+      waterQuality: new FormControl(' ', [Validators.required]),
+      yieldQuality: new FormControl(' ', [Validators.required]),
     });
   }
 
@@ -327,7 +396,7 @@ export class FieldInfoComponent implements OnInit {
     let obj;
     for (var i = 0; i < this.count; i++) {
       obj = {
-        field_boundary: this.field_boundary,
+        field_boundary: this.drawnCoordinates[i],
         field_area_ha: '20',
         field_address: 'test',
         planned_season_detail: {
@@ -362,16 +431,36 @@ export class FieldInfoComponent implements OnInit {
 
   SoilQualityRating(soilQualityStar: any) {
     this.selectedSoilQualityStar = soilQualityStar.displayValue;
-    console.log('Value of SoilQualityStar', soilQualityStar);
+    // let a = (this.fieldInfoForm.get('plannedFieldDetails') as FormArray)
+    //   .controls;
+    // console.log(a);
+
+    // a.get('soilQuality').patchValue(soilQualityStar.displayValue);
+    console.log('Value of SoilQualityStar', soilQualityStar.displayValue);
   }
 
   WaterQualityRating(waterQualityStar: any) {
     this.selectedWaterQualityStar = waterQualityStar.displayValue;
-    console.log('Value of waterQualityStar', waterQualityStar);
+    console.log('Value of waterQualityStar', waterQualityStar.displayValue);
   }
 
   YieldQualityRating(yieldQualityStar: any) {
     this.selectedYieldQualityStar = yieldQualityStar.displayValue;
+    console.log('Value of yieldQualityStar', yieldQualityStar.displayValue);
+  }
+
+  HistoSoilQualityRating(soilQualityStar: any) {
+    this.selectedHistoSoilQualityStar = soilQualityStar.displayValue;
+    console.log('Value of SoilQualityStar', soilQualityStar);
+  }
+
+  HistoWaterQualityRating(waterQualityStar: any) {
+    this.selectedHistoWaterQualityStar = waterQualityStar.displayValue;
+    console.log('Value of waterQualityStar', waterQualityStar);
+  }
+
+  HistoYieldQualityRating(yieldQualityStar: any) {
+    this.selectedHistoYieldQualityStar = yieldQualityStar.displayValue;
     console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 
