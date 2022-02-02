@@ -90,6 +90,7 @@ export class DemographicInfoComponent implements OnInit {
   propertyTypeList: any = [];
 
   pinCodeAPIData: any = [];
+  permPinCodeAPIData: any = [];
 
   familyMembers!: FormArray;
   propertyOwnership!: FormArray;
@@ -456,14 +457,29 @@ export class DemographicInfoComponent implements OnInit {
       };
     }
   }
+  removeImage(event: any, type: string) {
+    if (type == 'FARMER_PROFILE') {
+      this.demographicInfoForm.patchValue({
+        profileImg: '',
+      });
+    }
+  }
 
-  getPinCodeData(event: any) {
+  getPinCodeData(event: any, type: string) {
     // clear values
-    this.demographicInfoForm.patchValue({
-      city: '',
-      state: '',
-    });
-    this.pinCodeAPIData.length = 0;
+    if (type === 'ADDRESS') {
+      this.demographicInfoForm.patchValue({
+        city: '',
+        state: '',
+      });
+      this.pinCodeAPIData.length = 0;
+    } else if (type === 'PERMANENT_ADDRESS') {
+      this.demographicInfoForm.patchValue({
+        permCity: '',
+        permState: '',
+      });
+      this.permPinCodeAPIData.length = 0;
+    }
 
     // check length and proceed
     if (event && event.target.value.trim().length == 6) {
@@ -474,12 +490,21 @@ export class DemographicInfoComponent implements OnInit {
           if (res && res[0].Status != 'Success') {
             alert('Failed to fetch PinCode Details, please try again...');
           } else {
-            this.pinCodeAPIData = res[0].PostOffice;
+            if (type === 'ADDRESS') {
+              this.pinCodeAPIData = res[0].PostOffice;
 
-            this.demographicInfoForm.patchValue({
-              city: this.pinCodeAPIData[0].District,
-              state: this.pinCodeAPIData[0].State,
-            });
+              this.demographicInfoForm.patchValue({
+                city: this.pinCodeAPIData[0].District,
+                state: this.pinCodeAPIData[0].State,
+              });
+            } else if (type === 'PERMANENT_ADDRESS') {
+              this.permPinCodeAPIData = res[0].PostOffice;
+
+              this.demographicInfoForm.patchValue({
+                permCity: this.permPinCodeAPIData[0].District,
+                permState: this.permPinCodeAPIData[0].State,
+              });
+            }
           }
         },
         (error: any) => {

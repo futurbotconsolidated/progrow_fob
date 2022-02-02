@@ -50,8 +50,8 @@
                         d="M9.827,21.763,14.31,14l3.532,6.117a10.023,10.023,0,0,1-8.015,1.646ZM7.89,21.12A10.028,10.028,0,0,1,2.458,15h8.965L7.89,21.119ZM2.05,13A9.964,9.964,0,0,1,4.633,5.239L9.112,13ZM6.159,3.883a10.021,10.021,0,0,1,8.014-1.646L9.69,10,6.159,3.883Zm9.951-1A10.028,10.028,0,0,1,21.542,9H12.577L16.11,2.881ZM21.95,11a9.964,9.964,0,0,1-2.583,7.761L14.888,11h7.064Z" />
                     </svg><span>Retake</span></a>
 
-                  <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                      viewBox="0 0 24 24">
+                  <a (click)="removeImage($event,'FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                      height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -249,7 +249,7 @@
                 <div class="flex-1 lable-top">
                   <label class="required">Pin Code</label>
                   <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6"
-                    maxlength="6" (keyup)="getPinCodeData($event)" />
+                    maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" />
                   <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
                     <small *ngIf="f['pinCode'].errors['required']">
                       PinCode is required</small>
@@ -393,7 +393,7 @@
                 <div class="flex-1 lable-top">
                   <label class="required">Pin Code</label>
                   <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6"
-                    maxlength="6" (keyup)="getPinCodeData($event)" />
+                    maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
                   <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
                     <small *ngIf="f['permPincode'].errors['required']">
                       PinCode is required</small>
@@ -408,7 +408,7 @@
                   <label class="required">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="permTaluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.Name }}">
+                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.Name }}">
                       {{ indVal.Name }}
                     </option>
                   </select>
@@ -763,7 +763,7 @@
       </div>
       <div class="modal-footer p-2">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary btn-sm">Save</button>
+        <!-- <button type="button" class="btn btn-primary btn-sm">Save</button> -->
       </div>
     </div>
   </div>

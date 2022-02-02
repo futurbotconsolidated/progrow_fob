@@ -33,10 +33,10 @@ export class AddFarmerService {
     return this.subject.asObservable();
   }
 
-  save(formValue: any) {
-    console.log(formValue);
-    return formValue;
-  }
+  // save(formValue: any) {
+  //   console.log(formValue);
+  //   return formValue;
+  // }
 
   registerFarmer(data: any) {
     headers = headers.set('Authorization', this.token || '');
