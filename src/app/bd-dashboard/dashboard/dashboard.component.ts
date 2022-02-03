@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { Router } from '@angular/router';
 import * as mapboxgl from 'mapbox-gl';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
@@ -22,6 +23,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     public oauthService: OAuthService,
+    public router: Router,
     public commonService: CommonService,
     private spinner: NgxSpinnerService
   ) {
@@ -247,4 +249,8 @@ export class DashboardComponent implements OnInit {
     );
   }
   /* END: API Function Calls */
+  logOut() {
+    this.oauthService.logOut();
+    this.router.navigate(['/']);
+  }
 }

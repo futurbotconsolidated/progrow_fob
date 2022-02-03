@@ -144,7 +144,8 @@ header {
   padding: 0 10px;
   line-height: 40px;
 }
-.step-next .btn.active {
+.step-next .btn.active,
+.logout-div .btn.active {
   background: #2eadc4;
   color: #fff;
 }

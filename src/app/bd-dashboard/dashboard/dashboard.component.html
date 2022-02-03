@@ -8,11 +8,16 @@
   </aside>
   <article class="right-sec">
     <header>
-      <div class="bd-header">
+      <div class="bd-header col-sm-10 col-md-10 col-xl-11">
         <div class="pro-img"><span>SS</span></div>
         <div class="pro-name">
           <p>Welcome</p>
           <h3>{{ userInfo["custom:full_name"] }}</h3>
+        </div>
+      </div>
+      <div class="bd-header-right col-sm-2 col-md-2 col-xl-1">
+        <div class="logout-div">
+          <a (click)="logOut()" class="btn btn-primary active" style="margin-left: 10px;">Logout </a>
         </div>
       </div>
     </header>
