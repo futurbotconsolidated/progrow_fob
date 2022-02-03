@@ -12,7 +12,8 @@
         <div class="pro-img"><span>SS</span></div>
         <div class="pro-name">
           <p>Welcome</p>
-          <h3>{{ userInfo["custom:full_name"] }}</h3>
+          <!-- <h3>{{ userInfo["custom:full_name"] }}</h3> -->
+          <h3>Ramesh Kumar</h3>
         </div>
       </div>
       <div class="bd-header-right col-sm-2 col-md-2 col-xl-1">
@@ -39,7 +40,8 @@
               <path
                 d="M19,7h5V9H19Zm-2,5h7v2H17Zm3,5h4v2H20ZM2,22a8,8,0,1,1,16,0H16A6,6,0,1,0,4,22Zm8-9a6,6,0,1,1,6-6A6,6,0,0,1,10,13Zm0-2A4,4,0,1,0,6,7,4,4,0,0,0,10,11Z" />
             </svg>
-            <span>{{ userInfo["custom:full_name"] }}</span>
+            <!-- <span>{{ userInfo["custom:full_name"] }}</span> -->
+            <span>Ramesh Kumar</span>
           </li>
           <li>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -222,7 +224,7 @@
                             {{ x.farmerDetails?.lastName }}
                           </td>
                           <td>
-                            {{ x.farmerDetails?.dob }}
+                            {{ x.registrationDate }}
                           </td>
                           <td>
                             {{ x.address?.addressLine1 }}
