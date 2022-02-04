@@ -257,9 +257,8 @@ export class FieldInfoComponent implements OnInit {
 
     map.on(L.Draw.Event.DELETED, (event: any) => {
       var layer = event.layer;
-      console.log(layer._bounds, 'DELETED');
       this.count--;
-      // this.removeFieldDetail();
+      // this.removePlannedFieldDetails();
     });
 
     map.on('draw:editvertex', (e: any) => {
@@ -303,7 +302,7 @@ export class FieldInfoComponent implements OnInit {
 
     console.log(this.selectedCoordinates);
 
-    if (this.selectedCoordinates) {
+    if (this.selectedCoordinates.length > 0) {
       var polygon = L.polygon(this.selectedCoordinates).addTo(map);
       // zoom the map to the polygon
       polygon.bindPopup(`${this.selectedCoordinates.length}`).openPopup();
