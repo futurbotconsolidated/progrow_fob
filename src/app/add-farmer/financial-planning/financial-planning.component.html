@@ -332,11 +332,13 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10"
+                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10"
+                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
@@ -356,11 +358,13 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10"
+                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10"
+                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
@@ -389,11 +393,13 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10"
+                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10"
+                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
@@ -413,11 +419,13 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10"
+                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10"
+                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
@@ -463,19 +471,23 @@
                                     <tbody>
                                         <tr>
                                             <td>Household – Grocery/Repairs</td>
-                                            <td><input type="text" class="form-control" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Health** - Doctors Expense/ Medical Treatment</td>
-                                            <td><input type="text" class="form-control" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Education**</td>
-                                            <td><input type="text" class="form-control" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Rental paying**</td>
-                                            <td><input type="text" class="form-control" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -491,15 +503,18 @@
                                     <tbody>
                                         <tr>
                                             <td>House Electricity**</td>
-                                            <td><input type="text" class="form-control" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Interest Payments**</td>
-                                            <td><input type="text" class="form-control" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Others, please specify</td>
-                                            <td><input type="text" class="form-control" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -644,7 +659,8 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Amount</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Date</label>
@@ -700,7 +716,8 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Premium paid</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Settlement amount credited?</label>
@@ -744,7 +761,8 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Premium paid</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Settlement amount credited?</label>
