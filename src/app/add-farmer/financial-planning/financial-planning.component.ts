@@ -29,7 +29,7 @@ export class FinancialPlanningComponent implements OnInit {
     public router: Router
   ) {
     this.financialForm = this.formBuilder.group({
-      loanReqPlaned: new FormArray([this.createLoanReqPlaned()]),
+      loanReqPlaned: new FormArray([]),
       bankDetails: new FormArray([this.createBankDetails()]),
     });
 
@@ -50,6 +50,14 @@ export class FinancialPlanningComponent implements OnInit {
       this.financialForm.patchValue(finPlan);
       console.log(finPlan);
     }
+
+    let fieldInfo: any = localStorage.getItem('field-info');
+    if (fieldInfo) {
+      fieldInfo = JSON.parse(fieldInfo);
+      fieldInfo.forEach((element: any) => {
+        this.addLoanReqPlaned();
+      });
+    }
   }
 
   numbersOnlyValidator(event: any) {
@@ -67,21 +75,9 @@ export class FinancialPlanningComponent implements OnInit {
     return true;
   }
 
-  ngAfterContentInit() {
-    let fieldInfo: any = localStorage.getItem('field-info');
-    if (fieldInfo) {
-      fieldInfo = JSON.parse(fieldInfo);
-      fieldInfo.forEach((element: any) => {
-        this.createLoanReqPlaned();
-        console.log(fieldInfo);
-      });
-    }
-    console.log(this.financialForm);
-  }
+  ngAfterContentInit() {}
 
   createLoanReqPlaned(): FormGroup {
-    console.log('called');
-
     return this.formBuilder.group({
       fieldId: new FormControl('', [Validators.required]),
       cropLoanProduct: new FormControl('', [Validators.required]),
