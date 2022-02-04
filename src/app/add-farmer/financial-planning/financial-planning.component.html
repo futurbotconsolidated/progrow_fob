@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Amount</label>
-                                    <input type="text" class="form-control" maxlength="12"
+                                    <input type="text" class="form-control" maxlength="10"
                                         (input)="numbersOnlyValidator($event)" formControlName="hectares"
                                         placeholder="INR 3,50,000.00">
                                 </div>
@@ -340,8 +340,8 @@
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Date of Birth"
-                                                value="Date of Birth" onfocus="(this.type='date')"
+                                            <input type="text" class="form-control" id="" placeholder="Pick a date"
+                                                value="Pick a date" onfocus="(this.type='date')"
                                                 onblur="(this.type='text')">
                                         </div>
                                     </div>
@@ -364,8 +364,8 @@
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Date of Birth"
-                                                value="Date of Birth" onfocus="(this.type='date')"
+                                            <input type="text" class="form-control" id="" placeholder="Pick a date"
+                                                value="Pick a date" onfocus="(this.type='date')"
                                                 onblur="(this.type='text')">
                                         </div>
                                     </div>
@@ -397,8 +397,8 @@
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Date of Birth"
-                                                value="Date of Birth" onfocus="(this.type='date')"
+                                            <input type="text" class="form-control" id="" placeholder="Pick a date"
+                                                value="Pick a date" onfocus="(this.type='date')"
                                                 onblur="(this.type='text')">
                                         </div>
                                     </div>
@@ -421,8 +421,8 @@
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Date of Birth"
-                                                value="Date of Birth" onfocus="(this.type='date')"
+                                            <input type="text" class="form-control" id="" placeholder="Pick a date"
+                                                value="Pick a date" onfocus="(this.type='date')"
                                                 onblur="(this.type='text')">
                                         </div>
                                     </div>
@@ -528,13 +528,15 @@
                                             d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
                                     </svg></a></h3>
                             <div class="display-flex">
-                                <div class="flex-1">
-                                    <label class="form-check-label form-check bordered-radio" for="SBI">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="SBI"><span>SBI</span>
+                                <div class="flex-1" *ngFor="let indType of kccLoanList">
+                                    <label class="form-check-label form-check bordered-radio"
+                                        for="{{indType.displayValue}}">
+                                        <input class="form-check-input" type="radio" formControlName="availKccLoan"
+                                            value="{{indType.displayValue}}"
+                                            id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                     </label>
                                 </div>
-                                <div class="flex-1">
+                                <!-- <div class="flex-1">
                                     <label class="form-check-label form-check bordered-radio" for="BoB">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault"
                                             id="BoB"><span>BoB</span>
@@ -557,7 +559,7 @@
                                         <input class="form-check-input" type="radio" name="flexRadioDefault"
                                             id="NABARD"><span>NABARD</span>
                                     </label>
-                                </div>
+                                </div> -->
                                 <div class="flex-1">
                                     <div class="lable-top">
                                         <label>Otheres</label>
@@ -576,21 +578,23 @@
                             <div class="display-flex">
                                 <div class="flex-1 lable-top">
                                     <label>Credited Amount</label>
-                                    <input type="text" class="form-control" id="" placeholder="INR 5,00,000">
+                                    <input type="text" class="form-control" id="" maxlength="10"
+                                        (input)="numbersOnlyValidator($event)" placeholder="INR 5,00,000">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="text" class="form-control" id="" placeholder="Date of Birth"
-                                        value="Date of Birth" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control" id="" placeholder="Pick a date"
+                                        value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Repayment Amount</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="text" class="form-control" id="" placeholder="Date of Birth"
-                                        value="Date of Birth" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control" id="" placeholder="Pick a date"
+                                        value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                             </div>
                         </div>
@@ -600,7 +604,9 @@
                             <div class="row align-items-center">
                                 <div class="col-md-4 lable-top">
                                     <label>Credited Amount</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (input)="numbersOnlyValidator($event)" formControlName="creditedAmount" id=""
+                                        placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -628,12 +634,13 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Credited Amount</label>
-                                    <input type="text" class="form-control" id="" placeholder="INR 5,00,000">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (input)="numbersOnlyValidator($event)" id="" placeholder="INR 5,00,000">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="text" class="form-control" id="" placeholder="Date of Birth"
-                                        value="Date of Birth" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control" id="" placeholder="Pick a date"
+                                        value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Amount</label>
@@ -641,8 +648,8 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="text" class="form-control" id="" placeholder="Date of Birth"
-                                        value="Date of Birth" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control" id="" placeholder="Pick a date"
+                                        value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                             </div>
                         </div>
@@ -670,12 +677,13 @@
                             <div class="row align-items-center">
                                 <div class="col-md-2 lable-top">
                                     <label>Amount paid</label>
-                                    <input type="text" class="form-control" id="" placeholder="INR 5,00,000">
+                                    <input type="text" class="form-control" id="" maxlength="10"
+                                        (input)="numbersOnlyValidator($event)" placeholder="INR 5,00,000">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Date of payment</label>
-                                    <input type="text" class="form-control" id="" placeholder="Date of Birth"
-                                        value="Date of Birth" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control" id="" placeholder="Pick a date"
+                                        value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                             </div>
                         </div>
@@ -780,7 +788,8 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Premium paid</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Settlement amount credited?</label>
@@ -1204,7 +1213,8 @@
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label for="">Account Number</label>
-                                    <input type="text" class="form-control" formControlName="accountNum">
+                                    <input type="text" class="form-control" maxlength="14"
+                                        (input)="numbersOnlyValidator($event)" formControlName="accountNum">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label for="">IFSC Code</label>

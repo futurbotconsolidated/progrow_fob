@@ -7,7 +7,11 @@ import {
   FormArray,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { cropLoanProduct, crops } from '../../shared/modal/global-field-values';
+import {
+  cropLoanProduct,
+  crops,
+  availKCCLoan,
+} from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 @Component({
   selector: 'app-financial-planning',
@@ -20,6 +24,7 @@ export class FinancialPlanningComponent implements OnInit {
   bankDetails!: FormArray;
   nextRoute: any;
   cropsList = <any>[];
+  kccLoanList = <any>[];
 
   financialForm = new FormGroup({});
 
@@ -31,6 +36,8 @@ export class FinancialPlanningComponent implements OnInit {
     this.financialForm = this.formBuilder.group({
       loanReqPlaned: new FormArray([]),
       bankDetails: new FormArray([this.createBankDetails()]),
+      availKccLoan: new FormControl('SBI', [Validators.required]), //radio creditedAmount
+      creditedAmount: new FormControl('', [Validators.required]),
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {
@@ -43,7 +50,7 @@ export class FinancialPlanningComponent implements OnInit {
   ngOnInit(): void {
     this.cropLoanProductList = cropLoanProduct;
     this.cropsList = crops;
-
+    this.kccLoanList = availKCCLoan;
     let finPlan: any = localStorage.getItem('financial-planing');
     if (finPlan) {
       finPlan = JSON.parse(finPlan);

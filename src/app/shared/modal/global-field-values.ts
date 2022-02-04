@@ -787,6 +787,16 @@ export const consolidateLoans = [
 
 // END : Produce Aggregator
 
+// START : Financial Planning
+
+export const availKCCLoan = [
+  { id: 1, displayName: 'SBI', displayValue: 'SBI' },
+  { id: 2, displayName: 'BoB', displayValue: 'BoB' },
+  { id: 3, displayName: 'PNB', displayValue: 'PNB' },
+  { id: 3, displayName: 'RRB', displayValue: 'RRB' },
+  { id: 3, displayName: 'NABARD', displayValue: 'NABARD' },
+];
+
 let a = {
   addressProofType: [
     {
