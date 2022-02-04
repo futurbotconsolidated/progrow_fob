@@ -7,7 +7,7 @@ import {
   FormArray,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { cropLoanProduct } from '../../shared/modal/global-field-values';
+import { cropLoanProduct, crops } from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 @Component({
   selector: 'app-financial-planning',
@@ -19,6 +19,7 @@ export class FinancialPlanningComponent implements OnInit {
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
   nextRoute: any;
+  cropsList = <any>[];
 
   financialForm = new FormGroup({});
 
@@ -28,7 +29,7 @@ export class FinancialPlanningComponent implements OnInit {
     public router: Router
   ) {
     this.financialForm = this.formBuilder.group({
-      loanReqPlaned: new FormArray([]),
+      loanReqPlaned: new FormArray([this.createLoanReqPlaned()]),
       bankDetails: new FormArray([this.createBankDetails()]),
     });
 
@@ -41,6 +42,7 @@ export class FinancialPlanningComponent implements OnInit {
 
   ngOnInit(): void {
     this.cropLoanProductList = cropLoanProduct;
+    this.cropsList = crops;
 
     let finPlan: any = localStorage.getItem('financial-planing');
     if (finPlan) {
@@ -50,7 +52,36 @@ export class FinancialPlanningComponent implements OnInit {
     }
   }
 
+  numbersOnlyValidator(event: any) {
+    const pattern = /^[0-9\-]*$/;
+    if (!pattern.test(event.target.value)) {
+      event.target.value = event.target.value.replace(/[^0-9\-]/g, '');
+    }
+  }
+
+  validateNo(e: any): boolean {
+    const charCode = e.which ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
+  ngAfterContentInit() {
+    let fieldInfo: any = localStorage.getItem('field-info');
+    if (fieldInfo) {
+      fieldInfo = JSON.parse(fieldInfo);
+      fieldInfo.forEach((element: any) => {
+        this.createLoanReqPlaned();
+        console.log(fieldInfo);
+      });
+    }
+    console.log(this.financialForm);
+  }
+
   createLoanReqPlaned(): FormGroup {
+    console.log('called');
+
     return this.formBuilder.group({
       fieldId: new FormControl('', [Validators.required]),
       cropLoanProduct: new FormControl('', [Validators.required]),

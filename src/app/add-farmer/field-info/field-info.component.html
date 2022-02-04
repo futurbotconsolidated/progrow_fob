@@ -141,18 +141,18 @@
                                                 class="form-control" formControlName="expectedProduce"
                                                 placeholder="1000">
                                         </div>
-                                        <div class="col-md-3 lable-top">
+                                        <div class="col-md-2 lable-top">
                                             <label>Soil Quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
-                                                    <a *ngFor="let soilQualityStar of soilQualityList; let i = index"
+                                                    <a *ngFor="let soilQualityStar of soilQualityList; "
                                                         href="javascript:void(0)"
                                                         (click)="SoilQualityRating(soilQualityStar)"
                                                         [ngClass]="{'active': (soilQualityStar.displayValue == selectedSoilQualityStar)}"><i
                                                             class="fa fa-star"
-                                                            id="{{soilQualityStar.displayValue+i}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
+                                                            id="{{soilQualityStar.displayValue}}{{i}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
                                                 </div>
-                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
                                                         <defs>
                                                             <style>
@@ -172,7 +172,7 @@
                                                         <path class="c"
                                                             d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
                                                             transform="translate(4 13.776)" />
-                                                    </svg><span>Add Comment</span></a>
+                                                    </svg><span>Add Comment</span></a> -->
                                             </div>
                                         </div>
                                         <div class="col-md-3 lable-top">
@@ -192,7 +192,7 @@
                                                     <a href="javascript:void(0)"><i
                                                             class="fa fa-star"></i><span>Good</span></a> -->
                                                 </div>
-                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
                                                         <defs>
                                                             <style>
@@ -212,7 +212,7 @@
                                                         <path class="c"
                                                             d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
                                                             transform="translate(4 13.776)" />
-                                                    </svg><span>Add Comment</span></a>
+                                                    </svg><span>Add Comment</span></a> -->
                                             </div>
                                         </div>
                                         <div class="col-md-3 lable-top">
@@ -226,7 +226,7 @@
                                                             class="fa fa-star"
                                                             id="{{yieldQualityStar.displayValue}}"></i><span>{{yieldQualityStar.displayValue}}</span></a>
                                                 </div>
-                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
                                                         <defs>
                                                             <style>
@@ -246,7 +246,7 @@
                                                         <path class="c"
                                                             d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
                                                             transform="translate(4 13.776)" />
-                                                    </svg><span>Add Comment</span></a>
+                                                    </svg><span>Add Comment</span></a> -->
                                             </div>
                                         </div>
                                         <!-- <div class="col-auto add-another">
@@ -288,7 +288,7 @@
                         </div>
 
                         <div class="form-details-inner">
-                            <div class="row field-details" formArrayName="historicalFieldDetails"
+                            <div class="row field-details " formArrayName="historicalFieldDetails"
                                 *ngFor="let item of getHistoFieldDetailsControls(); let i = index;">
                                 <!-- <div class="row align-items-center planned-season-deatils"> -->
                                 <div class="col-md-3">
@@ -300,7 +300,7 @@
                                             {{indVal.displayName}}</option>
                                     </select>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <h3 class="form-title">B. Historical Crops</h3>
                                     <input type="text" class="form-control" formControlName="historicalCrops"
                                         id="planned_copy" placeholder="Enter comma separated crop names here…">
@@ -347,7 +347,7 @@
                                                     {{indVal.displayName}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-3 lable-top">
+                                        <div class="col-md-2 lable-top">
                                             <label>Soil Quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
@@ -358,7 +358,7 @@
                                                             class="fa fa-star"
                                                             id="{{soilQualityStar.displayValue}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
                                                 </div>
-                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
                                                         <defs>
                                                             <style>
@@ -378,10 +378,10 @@
                                                         <path class="c"
                                                             d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
                                                             transform="translate(4 13.776)" />
-                                                    </svg><span>Add Comment</span></a>
+                                                    </svg><span>Add Comment</span></a> -->
                                             </div>
                                         </div>
-                                        <div class="col-md-3 lable-top">
+                                        <div class="col-md-2 lable-top">
                                             <label>Perceived Water Quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
@@ -392,7 +392,7 @@
                                                             class="fa fa-star"
                                                             id="{{waterQualityStar.displayValue}}"></i><span>{{waterQualityStar.displayValue}}</span></a>
                                                 </div>
-                                                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
+                                                <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
                                                         <defs>
                                                             <style>
@@ -412,10 +412,10 @@
                                                         <path class="c"
                                                             d="M4.864-9.856v3.312H1.632v1.536H4.864V-1.7h1.7V-5.008H9.792V-6.544H6.56V-9.856Z"
                                                             transform="translate(4 13.776)" />
-                                                    </svg><span>Add Comment</span></a>
+                                                    </svg><span>Add Comment</span></a> -->
                                             </div>
                                         </div>
-                                        <div class="col-md-3 lable-top">
+                                        <div class="col-md-2 lable-top">
                                             <label>Perceived Yield Quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
@@ -463,6 +463,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <hr>
                             </div>
                         </div>
 
