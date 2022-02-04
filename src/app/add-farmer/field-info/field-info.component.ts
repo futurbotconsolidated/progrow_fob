@@ -105,7 +105,7 @@ export class FieldInfoComponent implements OnInit {
     if (map_info) {
       map_info.forEach((el: any) => {
         this.addPlannedFieldDetails();
-        // this.addHistoFieldDetail();
+        this.addHistoFieldDetail();
         this.addFieldOwnershipDetail();
         this.addEnumerate();
         let arr = el.field_boundary.geometry.coordinates;
@@ -153,13 +153,18 @@ export class FieldInfoComponent implements OnInit {
     //   { maxZoom: 19, attribution: 'google' }
     // ).addTo(map);
 
-var mapboxAccessToken = 'pk.eyJ1IjoicHVybmFyYW0iLCJhIjoiY2tpenBvZWpsMDNlaTMzcWpiZ2liZjEydiJ9.Mdj1w5dXDfCGCpIH5MlI2g';
-L.tileLayer('http://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
-    id: 'mapbox/satellite-v9',
-    attribution: '',
-    tileSize: 512,
-    zoomOffset: -1
-}).addTo(map);
+    var mapboxAccessToken =
+      'pk.eyJ1IjoicHVybmFyYW0iLCJhIjoiY2tpenBvZWpsMDNlaTMzcWpiZ2liZjEydiJ9.Mdj1w5dXDfCGCpIH5MlI2g';
+    L.tileLayer(
+      'http://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' +
+        mapboxAccessToken,
+      {
+        id: 'mapbox/satellite-v9',
+        attribution: '',
+        tileSize: 512,
+        zoomOffset: -1,
+      }
+    ).addTo(map);
 
     var searchControl = L.esri.Geocoding.geosearch({
       position: 'topright',
@@ -239,12 +244,14 @@ L.tileLayer('http://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token
       this.addEnumerate();
 
       drawnItems.addLayer(layer);
-      var area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);      
+      var area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
       console.log(area_sq_meter);
-      var area_hec = (area_sq_meter/10000).toFixed(2);
+      var area_hec = (area_sq_meter / 10000).toFixed(2);
 
       layer
-        .bindPopup(`Field ID : ${this.count} <br/> Area : ${area_hec} (Hectare)`)
+        .bindPopup(
+          `Field ID : ${this.count} <br/> Area : ${area_hec} (Hectare)`
+        )
         .openPopup();
     });
 
