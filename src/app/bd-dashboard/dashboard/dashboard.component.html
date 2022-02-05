@@ -216,7 +216,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr routerLink="/edit/summary" *ngFor="let x of allExistingFarmers">
+                        <tr routerLink="/edit/summary/{{x.farmerId}}" *ngFor="let x of allExistingFarmers">
                           <td>FA0000143</td>
                           <td>
                             {{ x.farmerDetails?.firstName }}

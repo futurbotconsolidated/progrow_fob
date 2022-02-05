@@ -39,6 +39,14 @@ export class CommonService {
     });
   }
 
+  getFarmerDetailsById(id: any) {
+    headers = headers.set('Farmer-Id', String(id));
+    headers = headers.set('Authorization', this.token || '');
+    return this.http.get(this.baseUrl + this.endPoints.getFarmer, {
+      headers,
+    });
+  }
+
   getPinCodeData(data: any) {
     return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }

@@ -14,7 +14,7 @@ import { EditDeclarationComponent } from './edit-declaration/edit-declaration.co
 
 const routes: Routes = [
   {
-    path: 'summary',
+    path: 'summary/:farmerid',
     component: SummaryComponent,
   },
   {
