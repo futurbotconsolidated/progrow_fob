@@ -516,7 +516,7 @@ input.form-control,
 .ques-radio:last-child {
   margin-right: 0px;
 }
-.ques-radio label input:checked ~ span.yes {
+/* .ques-radio label input:checked ~ span.yes {
   color: #000;
   border-color: #92c77d;
   background: #def5d6 0% 0% no-repeat padding-box;
@@ -535,7 +535,7 @@ input.form-control,
   color: #000;
   border-color: #d3912a;
   background: #ffd99d;
-}
+} */
 .face-smiley input[type="radio"]:checked + label {
   border: 1px solid #fff;
   text-align: center;

@@ -234,7 +234,7 @@ header.profile-header {
   margin-bottom: 0;
   line-height: 16px;
 }
-span.yes {
+/*span.yes {
   background: #def5d6 0% 0% no-repeat padding-box;
   border: 1px solid #92c77d;
   border-radius: 5px;
@@ -257,7 +257,7 @@ span.no {
   justify-content: center;
   align-items: center;
   font-size: 12px;
-}
+} */
 .farmer-expenditure ul li {
   background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: 0px 4px 10px #005eaf14;
