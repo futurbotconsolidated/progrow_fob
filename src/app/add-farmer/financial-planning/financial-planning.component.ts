@@ -7,7 +7,11 @@ import {
   FormArray,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { cropLoanProduct } from '../../shared/modal/global-field-values';
+import {
+  cropLoanProduct,
+  crops,
+  availKCCLoan,
+} from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 @Component({
   selector: 'app-financial-planning',
@@ -19,6 +23,8 @@ export class FinancialPlanningComponent implements OnInit {
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
   nextRoute: any;
+  cropsList = <any>[];
+  kccLoanList = <any>[];
 
   financialForm = new FormGroup({});
 
@@ -30,6 +36,8 @@ export class FinancialPlanningComponent implements OnInit {
     this.financialForm = this.formBuilder.group({
       loanReqPlaned: new FormArray([]),
       bankDetails: new FormArray([this.createBankDetails()]),
+      availKccLoan: new FormControl('SBI', [Validators.required]), //radio creditedAmount
+      creditedAmount: new FormControl('', [Validators.required]),
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {
@@ -41,14 +49,40 @@ export class FinancialPlanningComponent implements OnInit {
 
   ngOnInit(): void {
     this.cropLoanProductList = cropLoanProduct;
-
+    this.cropsList = crops;
+    this.kccLoanList = availKCCLoan;
     let finPlan: any = localStorage.getItem('financial-planing');
     if (finPlan) {
       finPlan = JSON.parse(finPlan);
       this.financialForm.patchValue(finPlan);
       console.log(finPlan);
     }
+
+    let fieldInfo: any = localStorage.getItem('field-info');
+    if (fieldInfo) {
+      fieldInfo = JSON.parse(fieldInfo);
+      fieldInfo.forEach((element: any) => {
+        this.addLoanReqPlaned();
+      });
+    }
   }
+
+  numbersOnlyValidator(event: any) {
+    const pattern = /^[0-9\-]*$/;
+    if (!pattern.test(event.target.value)) {
+      event.target.value = event.target.value.replace(/[^0-9\-]/g, '');
+    }
+  }
+
+  validateNo(e: any): boolean {
+    const charCode = e.which ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
+  ngAfterContentInit() {}
 
   createLoanReqPlaned(): FormGroup {
     return this.formBuilder.group({
