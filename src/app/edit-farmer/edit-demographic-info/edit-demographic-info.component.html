@@ -21,7 +21,28 @@
                         <h4 class="summery-heading"><span>Family and Relationship</span><a href="javascript:void(0)">
                                 <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
-                            <li>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Relation</th>
+                                        <th>Education</th>
+                                        <th>Occupation</th>
+                                        <th>Dependency</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of demographicDisp?.familyMembers">
+                                        <td>{{x.name}}</td>
+                                        <td>{{x.relation}}</td>
+                                        <td>{{x.education}}</td>
+                                        <td>{{x.occupation}}</td>
+                                        <td>{{x.dependency}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <li>
                                 <h5>Name</h5>
                                 <p> Akhilesh Sharma</p>
                             </li>
@@ -40,7 +61,7 @@
                             <li>
                                 <h5>Dependency</h5>
                                 <p>Yes</p>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>

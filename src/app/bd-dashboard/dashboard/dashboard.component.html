@@ -210,6 +210,7 @@
                         <tr>
                           <th>URN</th>
                           <th>Farmer Name</th>
+                          <th>Mobile</th>
                           <th>Date of Registration</th>
                           <th>Address</th>
                           <th>Status</th>
@@ -217,11 +218,14 @@
                       </thead>
                       <tbody>
                         <tr routerLink="/edit/summary/{{x.farmerId}}" *ngFor="let x of allExistingFarmers">
-                          <td>FA0000143</td>
+                          <td>{{x.farmerId}}</td>
                           <td>
                             {{ x.farmerDetails?.firstName }}
                             {{ x.farmerDetails?.middleName }}
                             {{ x.farmerDetails?.lastName }}
+                          </td>
+                          <td>
+                            {{ x.address?.mobileNumber }}
                           </td>
                           <td>
                             {{ x.registrationDate }}
