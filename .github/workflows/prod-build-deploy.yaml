@@ -1,0 +1,130 @@
+name: Production Build Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release
+      
+env:
+  PIPELINE_TYPE: COMPONENT
+  AWS_REGION: ap-south-1
+  AWS_GITHUB_ROLE_ARN: arn:aws:iam::642184908700:role/Developer-ProGrowGithubRole
+  PYTHON_VERSION: 3.9.8
+  AMI_NAME: "fob2-ui-${{ github.run_number }}"
+  AUTOSCALING_ID: "terraform-20220206041306983800000001"
+  LAUNCH_TEMPLATE_ID: "lt-01209f33c4189e5b1"
+
+jobs:
+  component-build:
+    name: Build Angular
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    # Make npm build faster using caching
+    - name: Identify Depedency cache directory
+      id: npm-cache-dir
+      run: |
+        echo "::set-output name=dir::$(npm config get cache)"
+
+    - name: Cache npm dependency
+      uses: actions/cache@v2
+      id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+      with:
+        path: ${{ steps.npm-cache-dir.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install Dependencies
+      #if:  steps.npm-cache.outputs.cache-hit != 'true'
+      run: |
+        npm ci
+    
+    - name: Component Build
+      run: |
+        npm run build -- --prod
+
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v2
+      with:
+        name: deploy_dist
+        path: dist/fob2-angular
+
+    # Required to create AMI and deploy
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ env.AWS_GITHUB_ROLE_ARN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    # Required to deploy AMI
+    - name: Setup Python for deployment
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install Boto3 for deployment
+      run: |
+        pip install --upgrade pip setuptools wheel boto3
+    
+    # validate Packer templates
+    - name: Validate Packer Template
+      uses: hashicorp/packer-github-actions@master
+      with:
+        command: validate
+        arguments: -syntax-only
+
+    # Create AMI
+    - name: Build AMI
+      uses: hashicorp/packer-github-actions@master
+      with:
+        command: build
+        arguments: "-color=false -on-error=abort"
+      env:
+        PACKER_LOG: 1
+
+    # Get AMI ID
+    - name: Get AMI ID
+      id: get-ami-id
+      run: |
+        export AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
+        echo $AMI_ID
+        echo "::set-output name=new_ami::$AMI_ID"
+
+    # Deploy AMI
+    - name: Deploy
+      env:
+        new_ami: ${{ steps.get-ami-id.outputs.new_ami }}
+        launch_template_id: ${{ env.LAUNCH_TEMPLATE_ID }}
+        asg_name: ${{ env.AUTOSCALING_ID }}
+      run: |
+        echo $new_ami
+        chmod 755 ./bake-scripts/*
+        ./bake-scripts/00-update-ami.py
+
+  # server-build:
+  #   needs: [component-build]
+  #   name: Build Server
+  #   runs-on: ubuntu-latest
+  #   # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+
+  #   steps:
+  #   - name: Check Files
+  #     run: |
+  #       ls -lrt
