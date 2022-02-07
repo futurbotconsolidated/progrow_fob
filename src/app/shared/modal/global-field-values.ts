@@ -797,6 +797,12 @@ export const availKCCLoan = [
   { id: 3, displayName: 'NABARD', displayValue: 'NABARD' },
 ];
 
+export const houseLoan = [
+  { id: 1, displayName: 'SBI', displayValue: 'Yes' },
+  { id: 2, displayName: 'BoB', displayValue: 'No' },
+  { id: 3, displayName: 'PNB', displayValue: 'MayBe' },
+];
+
 let a = {
   addressProofType: [
     {

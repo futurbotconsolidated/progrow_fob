@@ -145,12 +145,14 @@
                                             <label>Soil Quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
-                                                    <a *ngFor="let soilQualityStar of soilQualityList; "
-                                                        href="javascript:void(0)" formControlName="soilQuality"
+                                                    <a *ngFor="let soilQualityStar of soilQualityList;  let i = index;"
+                                                        href="javascript:void(0)"
                                                         (click)="SoilQualityRating(soilQualityStar)"
                                                         [ngClass]="{'active': (soilQualityStar.displayValue == selectedSoilQualityStar)}"><i
                                                             class="fa fa-star"
-                                                            id="{{soilQualityStar.displayValue}}{{i}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
+                                                            id="{{i}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
+                                                    <input type="text" formControlName="soilQuality" hidden>
+
                                                 </div>
                                                 <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
@@ -180,11 +182,13 @@
                                             <div class="ratings">
                                                 <div class="star-rate">
                                                     <a *ngFor="let waterQualityStar of soilQualityList"
-                                                        href="javascript:void(0)" formControlName="waterQuality"
+                                                        href="javascript:void(0)"
                                                         (click)="WaterQualityRating(waterQualityStar)"
                                                         [ngClass]="{'active': (waterQualityStar.displayValue == selectedWaterQualityStar)}"><i
                                                             class="fa fa-star"
                                                             id="{{waterQualityStar.displayValue}}"></i><span>{{waterQualityStar.displayValue}}</span></a>
+                                                    <input type="text" formControlName="waterQuality" hidden>
+
                                                     <!-- <a href="javascript:void(0)" class="active"><i
                                                             class="fa fa-star"></i><span>Poor</span></a>
                                                     <a href="javascript:void(0)"><i
@@ -220,11 +224,13 @@
                                             <div class="ratings">
                                                 <div class="star-rate">
                                                     <a *ngFor="let yieldQualityStar of soilQualityList"
-                                                        href="javascript:void(0)" formControlName="yieldQuality"
+                                                        href="javascript:void(0)"
                                                         (click)="YieldQualityRating(yieldQualityStar)"
                                                         [ngClass]="{'active': (yieldQualityStar.displayValue == selectedYieldQualityStar)}"><i
                                                             class="fa fa-star"
                                                             id="{{yieldQualityStar.displayValue}}"></i><span>{{yieldQualityStar.displayValue}}</span></a>
+                                                    <input type="text" formControlName="yieldQuality" hidden>
+
                                                 </div>
                                                 <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
@@ -357,6 +363,8 @@
                                                             [ngClass]="{'active': (soilQualityStar.displayValue == selectedHistoSoilQualityStar)}"><i
                                                                 class="fa fa-star"
                                                                 id="{{soilQualityStar.displayValue}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
+                                                        <input type="text" formControlName="soilQuality" hidden>
+
                                                     </div>
                                                     <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
@@ -391,6 +399,8 @@
                                                             [ngClass]="{'active': (waterQualityStar.displayValue == selectedHistoWaterQualityStar)}"><i
                                                                 class="fa fa-star"
                                                                 id="{{waterQualityStar.displayValue}}"></i><span>{{waterQualityStar.displayValue}}</span></a>
+                                                        <input type="text" formControlName="waterQuality" hidden>
+
                                                     </div>
                                                     <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
@@ -425,6 +435,8 @@
                                                             [ngClass]="{'active': (yieldQualityStar.displayValue == selectedHistoYieldQualityStar)}"><i
                                                                 class="fa fa-star"
                                                                 id="{{yieldQualityStar.displayValue}}"></i><span>{{yieldQualityStar.displayValue}}</span></a>
+                                                        <input type="text" formControlName="yieldQuality" hidden>
+
                                                     </div>
                                                     <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">

@@ -96,6 +96,29 @@ export class FieldInfoComponent implements OnInit {
     if (fieldInfo) {
       fieldInfo = JSON.parse(fieldInfo);
       this.fieldInfoForm.patchValue(fieldInfo);
+      let taskListArrays = this.fieldInfoForm.get(
+        'plannedFieldDetails'
+      ) as FormArray;
+
+      taskListArrays.patchValue(fieldInfo.plannedFieldDetails);
+
+      // this.fieldInfoForm.patchValue(
+      //   'plannedFieldDetails',
+      //   new FormControl(fieldInfo.plannedFieldDetails)
+      // );
+      // this.fieldInfoForm.patchValue(
+      //   'historicalFieldDetails',
+      //   new FormControl(fieldInfo.historicalFieldDetails)
+      // );
+      // this.fieldInfoForm.patchValue(
+      //   'fieldOwnership',
+      //   new FormControl(fieldInfo.fieldOwnership)
+      // );
+      // this.fieldInfoForm.patchValue(
+      //   'enumerate',
+      //   new FormControl(fieldInfo.enumerate)
+      // );
+
       console.log(fieldInfo);
     }
 
@@ -435,16 +458,16 @@ export class FieldInfoComponent implements OnInit {
         planned_season_detail: {
           plannedSeason: this.fieldInfoForm.value.plannedSeason,
           plannedCrops: this.fieldInfoForm.value.plannedCrops,
-          plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[0],
+          plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
         },
         historical_season_detail: {
           historicalSeason: this.fieldInfoForm.value.historicalSeason,
           historicalCrops: this.fieldInfoForm.value.historicalCrops,
           historicalFieldDetails:
-            this.fieldInfoForm.value.historicalFieldDetails[0],
+            this.fieldInfoForm.value.historicalFieldDetails[i],
         },
-        field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[0],
-        enumerate_planned_season: this.fieldInfoForm.value.enumerate[0],
+        field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
+        enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
         undertaking_cultivation: {
           uc: this.fieldInfoForm.value.cropCycleOnReports,
         },
