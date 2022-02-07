@@ -52,6 +52,11 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  routePage() {
+    localStorage.clear();
+    this.router.navigate(['/add/concept-cards']);
+  }
+
   overlayMap(type: string) {
     this.spinner.show();
     this.overlayData.length = 0; // clear data

@@ -811,35 +811,50 @@
                                     <path class="b"
                                         d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
                                 </svg></a></h3>
-                        <div class="row align-items-center form-details-inner">
-                            <div class="col-md-2 lable-top">
-                                <label>Type of test</label>
-                                <input type="text" class="form-control" id="" placeholder="Water Test">
-                            </div>
-                            <div class="col-md-2 lable-top">
-                                <label>Yes/No</label>
-                                <select class="form-select">
-                                    <option selected>Yes</option>
-                                    <option>No</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 lable-top">
-                                <label>When last done</label>
-                                <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                    value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
-                            </div>
-                            <div class="col-md-3 lable-top">
-                                <label>Have you received the last test result?</label>
-                                <select class="form-select">
-                                    <option selected>Yes</option>
-                                    <option>No</option>
-                                </select>
+                        <div class="mb-3" formArrayName="testType"
+                            *ngFor="let item of getTestTypeControls(); let i = index;">
+                            <div class="row align-items-center form-details-inner" [formGroupName]="i">
+                                <div class="col-md-2 lable-top">
+                                    <label>Type of test</label>
+                                    <input type="text" class="form-control" formControlName="typeOfTest"
+                                        placeholder="Water Test">
+                                </div>
+                                <div class="col-md-2 lable-top">
+                                    <label>Yes/No</label>
+                                    <select class="form-select" formControlName="yesNo">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of yesNoList" value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 lable-top">
+                                    <label>When last done</label>
+                                    <input type="text" class="form-control" formControlName="lastDone"
+                                        placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')">
+                                </div>
+                                <div class="col-md-3 lable-top">
+                                    <label>Have you received the last test result?</label>
+                                    <select class="form-select" formControlName="testResult">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of yesNoList" value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto add-another">
+                                    <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
+                                </div>
                             </div>
                             <div class="col-auto add-another">
-                                <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
+                                <a *ngIf="getTestTypeControls().length!=1  && i!=getTestTypeControls().length-1"
+                                    href="javascript:void(0)" class="delete-item " (click)="removeTestType(i)"><i
+                                        class="fa fa-trash-o text-danger"></i></a>
+                                <a *ngIf="i==getTestTypeControls().length-1" href="javascript:void(0)"
+                                    (click)="addTestType()">+ Add</a>
                             </div>
                         </div>
-                        <div class="row align-items-center form-details-inner">
+
+                        <!-- <div class="row align-items-center form-details-inner">
                             <div class="col-md-2 lable-top">
                                 <label>Type of test</label>
                                 <input type="text" class="form-control" id="" placeholder="Soil Test">
@@ -866,7 +881,7 @@
                             <div class="col-auto add-another">
                                 <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                     <div class="form-details">

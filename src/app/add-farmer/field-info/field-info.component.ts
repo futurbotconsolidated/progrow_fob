@@ -20,6 +20,7 @@ import {
   cropCycleOnReports,
   crops,
   soilQuality,
+  yesNo,
 } from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 @Component({
@@ -43,6 +44,8 @@ export class FieldInfoComponent implements OnInit {
   historicalFieldDetails!: FormArray;
   fieldOwnership!: FormArray;
   enumerate!: FormArray;
+  testType!: FormArray;
+
   plannedSeasonList = <any>[];
   irrigationSystemList = <any>[];
   waterSourceList = <any>[];
@@ -52,7 +55,7 @@ export class FieldInfoComponent implements OnInit {
   selectedCoordinates = <any>[];
   drawnCoordinates = <any>[];
   cropsList = <any>[];
-
+  yesNoList = <any>[];
   field_boundary: any;
   count = 0;
   constructor(
@@ -66,6 +69,7 @@ export class FieldInfoComponent implements OnInit {
       plannedFieldDetails: new FormArray([]),
       historicalFieldDetails: new FormArray([]),
       fieldOwnership: new FormArray([]),
+      testType: new FormArray([this.createTestType()]),
       enumerate: new FormArray([]),
       cropCycleOnReports: new FormControl('high_yield', [Validators.required]), //radio
     });
@@ -85,6 +89,8 @@ export class FieldInfoComponent implements OnInit {
     this.cropCycleOnReportsList = cropCycleOnReports;
     this.cropsList = crops;
     this.soilQualityList = soilQuality;
+    this.yesNoList = yesNo;
+
     this.selectedCoordinates = [];
     let fieldInfo: any = localStorage.getItem('field-info-form');
     // let mapInfo = <any>[];
@@ -452,6 +458,28 @@ export class FieldInfoComponent implements OnInit {
     this.enumerate.removeAt(index);
   }
 
+  createTestType(): FormGroup {
+    return this.formBuilder.group({
+      typeOfTest: new FormControl('', [Validators.required]),
+      yesNo: new FormControl('', [Validators.required]),
+      lastDone: new FormControl('', [Validators.required]),
+      testResult: new FormControl('', [Validators.required]),
+    });
+  }
+
+  getTestTypeControls() {
+    return (this.fieldInfoForm.get('testType') as FormArray).controls;
+  }
+
+  addTestType(): void {
+    this.testType = this.fieldInfoForm.get('testType') as FormArray;
+    this.testType.push(this.createTestType());
+  }
+
+  removeTestType(index: any) {
+    this.testType.removeAt(index);
+  }
+
   saveData() {
     let url = `/add/${this.nextRoute}`;
     let formValue = this.fieldInfoForm.value;
@@ -476,6 +504,7 @@ export class FieldInfoComponent implements OnInit {
         },
         field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
         enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
+        testOnFields: this.fieldInfoForm.value.testType[i],
         undertaking_cultivation: {
           uc: this.fieldInfoForm.value.cropCycleOnReports,
         },

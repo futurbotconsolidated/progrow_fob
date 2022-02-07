@@ -76,7 +76,7 @@ export const q1 = [
   {
     id: 3,
     displayName: 'May be',
-    displayValue: 'may_be',
+    displayValue: 'May be',
   },
   {
     id: 3,
@@ -248,7 +248,7 @@ export const agriculturalInterest = [
     displayValue: 'very_much_interested',
   },
   { id: 2, displayName: 'Interested', displayValue: 'interested' },
-  { id: 3, displayName: 'May be', displayValue: 'may_be' },
+  { id: 3, displayName: 'May be', displayValue: 'May be' },
   { id: 4, displayName: 'Not Interested', displayValue: 'not_interested' },
 ];
 
@@ -344,6 +344,11 @@ export const soilQuality = [
   { id: 1, displayName: 'Poor', displayValue: 'Poor' },
   { id: 2, displayName: 'Fair', displayValue: 'Fair' },
   { id: 3, displayName: 'Good', displayValue: 'Good' },
+];
+
+export const yesNo = [
+  { id: 1, displayName: 'Yes', displayValue: 'Yes' },
+  { id: 2, displayName: 'No', displayValue: 'No' },
 ];
 
 // START: Corp Market plan
@@ -738,7 +743,7 @@ export const followSuggestions = [
   {
     id: 3,
     displayName: 'May be',
-    displayValue: 'may_be',
+    displayValue: 'May be',
     defaultValue: false,
   },
 ];
@@ -759,7 +764,7 @@ export const cropCycleOnReports = [
   {
     id: 3,
     displayName: 'May be',
-    displayValue: 'may_be',
+    displayValue: 'May be',
     defaultValue: false,
   },
 ];
@@ -976,7 +981,7 @@ export const technologyAdoptionBoolean = [
   {
     id: 2,
     displayName: 'May be',
-    displayValue: 'may_be',
+    displayValue: 'May be',
     defaultValue: false,
   },
 ];
