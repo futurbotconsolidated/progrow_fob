@@ -11,6 +11,7 @@ import {
   cropLoanProduct,
   crops,
   availKCCLoan,
+  houseLoan,
 } from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 @Component({
@@ -25,6 +26,7 @@ export class FinancialPlanningComponent implements OnInit {
   nextRoute: any;
   cropsList = <any>[];
   kccLoanList = <any>[];
+  houseLoanList = <any>[];
 
   financialForm = new FormGroup({});
 
@@ -35,6 +37,7 @@ export class FinancialPlanningComponent implements OnInit {
   ) {
     this.financialForm = this.formBuilder.group({
       loanReqPlaned: new FormArray([]),
+      ownerType: new FormControl([]),
       bankDetails: new FormArray([this.createBankDetails()]),
       availKccLoan: new FormControl('SBI', [Validators.required]), //radio creditedAmount
       creditedAmount: new FormControl('', [Validators.required]),
@@ -51,6 +54,8 @@ export class FinancialPlanningComponent implements OnInit {
     this.cropLoanProductList = cropLoanProduct;
     this.cropsList = crops;
     this.kccLoanList = availKCCLoan;
+    this.houseLoanList = houseLoan;
+
     let finPlan: any = localStorage.getItem('financial-planing');
     if (finPlan) {
       finPlan = JSON.parse(finPlan);

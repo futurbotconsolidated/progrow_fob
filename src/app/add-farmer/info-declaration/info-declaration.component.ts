@@ -58,7 +58,7 @@ export class InfoDeclarationComponent implements OnInit {
 
     this.addFarmerService.registerFarmer(obj).subscribe((res: any) => {
       console.log(res);
-      // localStorage.clear();
+      localStorage.clear();
       this.router.navigate(['/']);
     });
   }

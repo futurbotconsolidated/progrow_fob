@@ -96,6 +96,29 @@ export class FieldInfoComponent implements OnInit {
     if (fieldInfo) {
       fieldInfo = JSON.parse(fieldInfo);
       this.fieldInfoForm.patchValue(fieldInfo);
+      let taskListArrays = this.fieldInfoForm.get(
+        'plannedFieldDetails'
+      ) as FormArray;
+
+      taskListArrays.patchValue(fieldInfo.plannedFieldDetails);
+
+      // this.fieldInfoForm.patchValue(
+      //   'plannedFieldDetails',
+      //   new FormControl(fieldInfo.plannedFieldDetails)
+      // );
+      // this.fieldInfoForm.patchValue(
+      //   'historicalFieldDetails',
+      //   new FormControl(fieldInfo.historicalFieldDetails)
+      // );
+      // this.fieldInfoForm.patchValue(
+      //   'fieldOwnership',
+      //   new FormControl(fieldInfo.fieldOwnership)
+      // );
+      // this.fieldInfoForm.patchValue(
+      //   'enumerate',
+      //   new FormControl(fieldInfo.enumerate)
+      // );
+
       console.log(fieldInfo);
     }
 
@@ -110,8 +133,8 @@ export class FieldInfoComponent implements OnInit {
         this.addEnumerate();
         let arr = el.field_boundary.geometry.coordinates;
         let co: any = [];
-        arr[0].forEach((x: any) => {
-          co.push([x.lat, x.lng]);
+        arr.forEach((x: any) => {
+          co.push([x[0], x[1]]);
         });
         this.selectedCoordinates.push(co);
       });
@@ -227,11 +250,19 @@ export class FieldInfoComponent implements OnInit {
       console.log('Event.CREATED', event);
 
       var layer = event.layer;
+      let drawnLatLng: any[] = [];
+      let arr = layer.getLatLngs();
+      let co: any = [];
+      arr[0].forEach((x: any) => {
+        drawnLatLng.push([x.lat, x.lng]);
+      });
+      // drawnLatLng.push(co);
+
       console.log('getLatLngs', layer.getLatLngs());
       let ob = {
         type: 'field-boundary',
         geometry: {
-          coordinates: event.layer._latlngs,
+          coordinates: drawnLatLng,
           type: event.layerType,
         },
       };
@@ -435,16 +466,16 @@ export class FieldInfoComponent implements OnInit {
         planned_season_detail: {
           plannedSeason: this.fieldInfoForm.value.plannedSeason,
           plannedCrops: this.fieldInfoForm.value.plannedCrops,
-          plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[0],
+          plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
         },
         historical_season_detail: {
           historicalSeason: this.fieldInfoForm.value.historicalSeason,
           historicalCrops: this.fieldInfoForm.value.historicalCrops,
           historicalFieldDetails:
-            this.fieldInfoForm.value.historicalFieldDetails[0],
+            this.fieldInfoForm.value.historicalFieldDetails[i],
         },
-        field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[0],
-        enumerate_planned_season: this.fieldInfoForm.value.enumerate[0],
+        field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
+        enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
         undertaking_cultivation: {
           uc: this.fieldInfoForm.value.cropCycleOnReports,
         },
