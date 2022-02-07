@@ -9,11 +9,12 @@
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile kcc-details">
                             <p><span>Do you think that you require help in farm yield
-                                    improvisation?</span><span><b>Yes</b></span></p>
+                                    improvisation?</span><span><b>
+                                        {{techAdoptionDisp?.farmYieldImprovisation}}</b></span></p>
                             <p><span> Model farm case studies are available to support claims. Does it help to provide
-                                    confidence?</span><span><b>Yes</b></span></p>
+                                    confidence?</span><span><b> {{techAdoptionDisp?.farmCaseStudies}}</b></span></p>
                             <p><span> Would you be comfortable to pay for technology if there is definite margin of
-                                    improvement? </span><span><b>Yes</b></span></p>
+                                    improvement? </span><span><b> {{techAdoptionDisp?.payForTechnology}}</b></span></p>
 
                         </div>
                     </div>
@@ -46,9 +47,11 @@
                         <h4 class="summery-heading"><span>Comment</span><a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile">
-                            <p><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></p>
+                            <p>
+                                <span>
+                                    {{techAdoptionDisp?.payForTechnologyComment}}
+                                </span>
+                            </p>
                         </div>
                     </div>
                 </div>
