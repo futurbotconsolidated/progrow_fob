@@ -8,14 +8,19 @@
                         <h4 class="summery-heading"><span>Input sourcing</span><a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile kcc-details">
-                            <p><span>Where do you procure the seed for different crops?</span><span><b>Locally from
-                                        village, KVK, Hybrid variety seeds from input supplier</b></span></p>
+                            <p><span>Where do you procure the seed for different crops?</span><span><b>
+                                        {{cropMrktPlanDisp?.seedProcure?.join(',')}}</b></span></p>
+
                             <p><span>If used hybrid variety seeds, what difference do you observe in comparison to local
-                                    varieties?</span><span><b>High Yield</b></span></p>
+                                    varieties?</span><span><b>{{cropMrktPlanDisp?.varietyComparison}}</b></span></p>
+
                             <p><span>Where do you purchase your fertilizers and pesticides from for the cultivation
-                                    cycle?</span><span><b>Village Shop, Local Mandi</b></span></p>
+                                    cycle?</span><span><b>{{cropMrktPlanDisp?.fertilizerPurchase?.join(',')}}</b></span>
+                            </p>
+
                             <p><span>How satisfied are you with the fertilizer and pesticide quality/service from the
-                                    local input supplier?</span><span><b>Very satisfied </b></span></p>
+                                    local input supplier?</span><span><b>{{cropMrktPlanDisp?.pesticideQuality}}
+                                    </b></span></p>
                         </div>
                     </div>
                 </div>
