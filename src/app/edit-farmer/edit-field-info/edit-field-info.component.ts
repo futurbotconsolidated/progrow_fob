@@ -53,18 +53,22 @@ export class EditFieldInfoComponent implements OnInit {
         // this.addFieldOwnershipDetail();
         // this.addEnumerate();
 
-        let arr = JSON.parse(el.field_boundary);
+        let arr = el.field_boundary.geometry.coordinates;
         let co: any = [];
-        // console.log(JSON.parse(arr['geometry'].coordinates));
+        arr.forEach((x: any) => {
+          co.push([x[0], x[1]]);
+        });
 
-        // arr['geometry'].coordinates.forEach((x: any) => {
-        //   co.push([x[0], x[1]]);
-        // });
-        // this.selectedCoordinates.push(co);
+        this.selectedCoordinates.push(co);
       });
       console.log(this.selectedCoordinates);
       this.spinner.hide();
     }
+  }
+
+  cleanString(str: any) {
+    str = str.replace("'", '"');
+    return str;
   }
 
   setGeoLocation(position: { coords: { latitude: any; longitude: any } }) {
