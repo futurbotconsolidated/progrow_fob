@@ -177,6 +177,15 @@ header.profile-header {
   font-weight: 400;
   margin-bottom: 4px;
 }
+
+.actual-facts ul table th {
+  font-size: 14px;
+  letter-spacing: 0.14px;
+  color: #727272;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
 .actual-facts ul {
   display: flex;
   flex-wrap: wrap;

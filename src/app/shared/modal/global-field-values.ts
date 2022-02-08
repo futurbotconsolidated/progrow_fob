@@ -57,8 +57,8 @@ export const gender = [
   },
   {
     id: 3,
-    displayName: 'Third-Gender',
-    displayValue: 'third_gender',
+    displayName: 'Other',
+    displayValue: 'other',
   },
 ];
 
@@ -76,7 +76,7 @@ export const q1 = [
   {
     id: 3,
     displayName: 'May be',
-    displayValue: 'may_be',
+    displayValue: 'May be',
   },
   {
     id: 3,
@@ -248,7 +248,7 @@ export const agriculturalInterest = [
     displayValue: 'very_much_interested',
   },
   { id: 2, displayName: 'Interested', displayValue: 'interested' },
-  { id: 3, displayName: 'May be', displayValue: 'may_be' },
+  { id: 3, displayName: 'May be', displayValue: 'May be' },
   { id: 4, displayName: 'Not Interested', displayValue: 'not_interested' },
 ];
 
@@ -289,7 +289,7 @@ export const propertyType = [
 // export const ownershipType = [
 //   { id: 1, displayName: 'Owned', displayValue: 'owned' },
 // ];
-export const particular = [{ id: 1, displayName: '', displayValue: '' }];
+export const particular = [{ id: 1, displayName: 'ABC', displayValue: 'ABC' }];
 
 export const irrigationSystem = [
   {
@@ -344,6 +344,11 @@ export const soilQuality = [
   { id: 1, displayName: 'Poor', displayValue: 'Poor' },
   { id: 2, displayName: 'Fair', displayValue: 'Fair' },
   { id: 3, displayName: 'Good', displayValue: 'Good' },
+];
+
+export const yesNo = [
+  { id: 1, displayName: 'Yes', displayValue: 'Yes' },
+  { id: 2, displayName: 'No', displayValue: 'No' },
 ];
 
 // START: Corp Market plan
@@ -738,7 +743,7 @@ export const followSuggestions = [
   {
     id: 3,
     displayName: 'May be',
-    displayValue: 'may_be',
+    displayValue: 'May be',
     defaultValue: false,
   },
 ];
@@ -759,7 +764,7 @@ export const cropCycleOnReports = [
   {
     id: 3,
     displayName: 'May be',
-    displayValue: 'may_be',
+    displayValue: 'May be',
     defaultValue: false,
   },
 ];
@@ -795,6 +800,12 @@ export const availKCCLoan = [
   { id: 3, displayName: 'PNB', displayValue: 'PNB' },
   { id: 3, displayName: 'RRB', displayValue: 'RRB' },
   { id: 3, displayName: 'NABARD', displayValue: 'NABARD' },
+];
+
+export const houseLoan = [
+  { id: 1, displayName: 'SBI', displayValue: 'Yes' },
+  { id: 2, displayName: 'BoB', displayValue: 'No' },
+  { id: 3, displayName: 'PNB', displayValue: 'MayBe' },
 ];
 
 let a = {
@@ -970,7 +981,7 @@ export const technologyAdoptionBoolean = [
   {
     id: 2,
     displayName: 'May be',
-    displayValue: 'may_be',
+    displayValue: 'May be',
     defaultValue: false,
   },
 ];

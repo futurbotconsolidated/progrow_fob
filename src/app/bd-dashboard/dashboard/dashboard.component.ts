@@ -52,6 +52,11 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  routePage() {
+    localStorage.clear();
+    this.router.navigate(['/add/concept-cards']);
+  }
+
   overlayMap(type: string) {
     this.spinner.show();
     this.overlayData.length = 0; // clear data
@@ -173,6 +178,9 @@ export class DashboardComponent implements OnInit {
 
     map.addControl(new mapboxgl.NavigationControl()); // Add map controls
     map.addControl(new mapboxgl.FullscreenControl()); // Add map full screen
+    setTimeout(function() {
+      map.resize(); 
+    }, 500);
   }
   /* END: Non-API Function Calls */
 

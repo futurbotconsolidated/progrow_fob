@@ -6,19 +6,23 @@
                 <div class="step-next profile-next">
                     <a href="/bd/dashboard" class="btn btn-back">Back </a>
                 </div>
-                <div class="farmer-pro"><img src="../../../assets/images/farmer-profile-img.jpg"></div>
+                <div class="farmer-pro">
+                    <img src="" alt="">
+                    <!-- <img src="../../../assets/images/farmer-profile-img.jpg"> -->
+                </div>
                 <div class="p">
-                    <span class="profile-rating">4.1 <i class="fa fa-star"></i></span>
-                    <span class="profile-name">Rishabh Sharma</span>
+                    <!-- <span class="profile-rating">4.1 <i class="fa fa-star"></i></span> -->
+                    <span class="profile-name">{{demographicDisp?.farmerDetails['firstName']}}
+                        {{demographicDisp?.farmerDetails['middleName']}}
+                        {{demographicDisp?.farmerDetails['lastName']}}</span>
                 </div>
                 <div class="edit-picture-gap profile-date"><img src="../../../assets/images/profile-date.svg"
-                        alt=""><span>10th Jan
-                        1980</span></div>
+                        alt=""><span> {{demographicDisp?.farmerDetails['dob']}}</span></div>
                 <div class="edit-picture-gap gender"><img src="../../../assets/images/profile-gender.svg"
-                        alt=""><span>Male</span>
+                        alt=""><span>N/A</span>
                 </div>
                 <div class="edit-picture-gap phone-num"><img src="../../../assets/images/profile-phone.svg"
-                        alt=""><span>9876543210</span></div>
+                        alt=""><span>{{demographicDisp?.address['mobileNumber']}}</span></div>
             </div>
             <div class="pro-right">
                 <div class="language">
@@ -38,12 +42,13 @@
             <ul>
                 <li>
                     <span><img src="../../../assets/images/profile-religion.svg" alt=""></span>
-                    <div><span><b>Religion: </b>Hindu</span><br><span><b>Caste:</b> Rajput</span></div>
+                    <div><span><b>Religion: </b>N/A</span><br><span><b>Caste:</b> N/A</span></div>
                 </li>
                 <li>
                     <span><img src="../../../assets/images/profile-address.svg" alt=""></span>
-                    <div><span><b>KYC Valid Address: </b> 88, Runjhun Heights, Chinchwad Alwar -
-                            383445</span><br><span><b>Communication Address:</b> 28, Hadapsar, Simla - 485807</span>
+                    <div><span><b>KYC Valid Address: </b> {{demographicDisp?.address['addressLine1']}}
+                            {{demographicDisp?.address['addressLine2']}} </span>
+                        <br><span><b>Communication Address:</b>N/A</span>
                     </div>
                 </li>
             </ul>

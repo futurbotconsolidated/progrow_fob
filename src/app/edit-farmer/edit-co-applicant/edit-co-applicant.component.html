@@ -25,31 +25,31 @@
                         <ul class="d-flex-profile">
                             <li>
                                 <h5>Name</h5>
-                                <p> Lokesh Sharma</p>
+                                <p> {{coApplicantDisp?.fname}}{{coApplicantDisp?.mname}}{{coApplicantDisp?.lname}}</p>
                             </li>
                             <li>
                                 <h5>Gender</h5>
-                                <p>Male</p>
+                                <p>{{coApplicantDisp?.gender}}</p>
                             </li>
                             <li>
                                 <h5>Religion</h5>
-                                <p>Hindu</p>
+                                <p>{{coApplicantDisp?.religion}}</p>
                             </li>
                             <li>
                                 <h5>Caste/Tribe</h5>
-                                <p> Rajput</p>
+                                <p>{{coApplicantDisp?.caste}}</p>
                             </li>
                             <li>
                                 <h5>Education</h5>
-                                <p>10th</p>
+                                <p>{{coApplicantDisp?.educationQualification}}</p>
                             </li>
                             <li>
                                 <h5>Occupation</h5>
-                                <p>Self employeed</p>
+                                <p>{{coApplicantDisp?.occupation}}</p>
                             </li>
                             <li>
                                 <h5>Annual Income</h5>
-                                <p>INR 2,00,000.00</p>
+                                <p>INR {{coApplicantDisp?.annualIncome}}</p>
                             </li>
 
                         </ul>
@@ -63,8 +63,7 @@
                         <h4 class="summery-heading"><span>Income Streams</span><a href="javascript:void(0)">
                                 <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile">
-                            <p>1. Agriculture</p>
-                            <p>2. Shop</p>
+                            <p>N/A</p>
                         </div>
                     </div>
                 </div>
@@ -74,26 +73,30 @@
                         <h4 class="summery-heading"><span>Property ownership</span><a href="javascript:void(0)">
                                 <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
-                            <li>
-                                <h5>Type</h5>
-                                <p> House</p>
-                            </li>
-                            <li>
-                                <h5>Photo</h5>
-                                <p><a href="javascript:void(0);">View</a></p>
-                            </li>
-                            <li>
-                                <h5>Ownership Type</h5>
-                                <p>Own</p>
-                            </li>
-                            <li>
-                                <h5>Perticular</h5>
-                                <p> Student</p>
-                            </li>
-                            <li>
-                                <h5>Value</h5>
-                                <p>INR 50,0000.00</p>
-                            </li>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Photo</th>
+                                        <th>Ownership Type</th>
+                                        <th>Perticular</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of coApplicantDisp?.propertyOwnership">
+                                        <td>{{x.propertyType}}</td>
+                                        <td>
+                                            <p><a href="javascript:void(0);">View</a></p>
+                                        </td>
+                                        <td>{{x.ownershipType}}</td>
+                                        <td>{{x.particular}}</td>
+                                        <td>INR {{x.cumulativeValue}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
 
                         </ul>
                     </div>

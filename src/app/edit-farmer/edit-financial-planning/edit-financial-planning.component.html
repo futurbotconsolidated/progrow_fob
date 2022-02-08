@@ -8,7 +8,40 @@
                         <h4 class="summery-heading"><span>Crop Loan</span><a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
-                            <li>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Filed Id
+                                        </th>
+                                        <th>
+                                            Loan Product
+                                        </th>
+                                        <th>
+                                            Area
+                                        </th>
+                                        <th>
+                                            Required Amount
+                                        </th>
+                                        <th>
+                                            Crop
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of financialInfo?.loanReqPlaned">
+                                        <td>{{x.fieldId}}</td>
+                                        <td>{{x.cropLoanProduct}}</td>
+                                        <td>{{x.hectares}}</td>
+                                        <td>{{x.plannedCultivationArea}}</td>
+                                        <td>{{x.crop}} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                            <!-- <li>
                                 <h5>Filed Id:</h5>
                                 <p> ABC123</p>
                             </li>
@@ -27,7 +60,7 @@
                             <li>
                                 <h5>Crop:</h5>
                                 <p>Mustard</p>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>

@@ -5,336 +5,553 @@
         <div class="main-sec">
             <div class="co-applicant-form">
                 <form [formGroup]="coApplicantForm">
-                    <div class="demographic-info-left">
-                        <div class="left-info">
-                            <h3 class="form-title">1. Identity proof</h3>
-                            <div class="farmer-details">
-                                <div class="farmer-details-inner lable-top">
-                                    <label for="PANnumber">PAN Card number</label>
-                                    <input type="text" class="form-control" formControlName="PANnumber">
-                                </div>
-                                <div class="farmer-details-inner lable-top">
-                                    <label>PAN Card image</label>
-                                    <div class="fileUpload">
-                                        <span></span><img src="../../../assets/images/photo-camera.png"><input
-                                            type="file" class="form-control uploadlogo" />
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="profile-picture">
-                            <h4>Co-Applicant Picture</h4>
-                            <div class="update-profile">
-                                <div class="pro-img"><img class="profile-pic"
-                                        src="../../../assets/images/tap-to-click.png"></div>
-                                <div class="pro-update">
-                                    <a href="javascript:void(0)"><span>Tap to click</span><input class="file-upload"
-                                            type="file" accept="image/*" /></a>
-                                </div>
-                            </div>
-                        </div>
+                  <!-- Co-Applicant 1 start -->
+                  <div class="form-details co-app-detail">
+                    <h2 class="form-title">Co-Applicant 1</h2>
+                  </div>
+            <div class="co-applicant-left">
+            <div class="left-info">
+              <h3 class="form-title">1. Identity proof</h3>
+              <div class="farmer-details">
+                <div class="farmer-details-inner lable-top">
+                  <label for="PANnumber">PAN Card number </label>
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber"
+                    placeholder="ABWRT0987T" />
+                  <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
+                    <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
+                      Please enter valid PAN Number</small>
+                  </div>
+                </div>
+                <div class="farmer-details-inner lable-top">
+                  <button type="button" class="btn btn-secondary btn-sm h-100" data-bs-toggle="modal"
+                    (click)="openFileModalPopup('PAN')"> Upload PAN Card <i class="fa fa-picture-o fa-lg"
+                      aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="profile-picture">
+              <h4>Profile Picture</h4>
+              <div class="update-profile">
+                <div class="pro-img">
+                  <img class="profile-pic" [hidden]="!coApplicantForm.value.profileImg"
+                    src="{{coApplicantForm.value.profileImg}}" />
+                </div>
+                <div class="pro-update">
+                  <a class="avatar" (click)="openFileModalPopup('FARMER_PROFILE')"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                      <defs>
+                        <style>
+                          .a {
+                            fill: none;
+                          }
+                        </style>
+                      </defs>
+                      <path class="a" d="M0,0H24V24H0Z" />
+                      <path
+                        d="M9.827,21.763,14.31,14l3.532,6.117a10.023,10.023,0,0,1-8.015,1.646ZM7.89,21.12A10.028,10.028,0,0,1,2.458,15h8.965L7.89,21.119ZM2.05,13A9.964,9.964,0,0,1,4.633,5.239L9.112,13ZM6.159,3.883a10.021,10.021,0,0,1,8.014-1.646L9.69,10,6.159,3.883Zm9.951-1A10.028,10.028,0,0,1,21.542,9H12.577L16.11,2.881ZM21.95,11a9.964,9.964,0,0,1-2.583,7.761L14.888,11h7.064Z" />
+                    </svg><span>Retake</span></a>
+                  <a (click)="removeImage($event,'FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                      height="24" viewBox="0 0 24 24">
+                      <defs>
+                        <style>
+                          .a {
+                            fill: none;
+                          }
+                        </style>
+                      </defs>
+                      <path class="a" d="M0,0H24V24H0Z" />
+                      <path
+                        d="M7,6V3A1,1,0,0,1,8,2h8a1,1,0,0,1,1,1V6h5V8H20V21a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V8H2V6Zm6.414,8,1.768-1.768-1.414-1.414L12,12.586l-1.768-1.768L8.818,12.232,10.586,14,8.818,15.768l1.414,1.414L12,15.414l1.768,1.768,1.414-1.414ZM9,4V6h6V4Z" />
+                    </svg><span>Delete</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <h3 class="form-title">2. Address proof</h3>
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label class="required">Select ID</label>
+                <select class="flex-1 form-select" formControlName="addressProof">
+                  <option value="">...</option>
+                  <option *ngFor="let indVal of addressProofList" value="{{ indVal.displayValue }}">
+                    {{ indVal.displayName }}
+                  </option>
+                </select>
+                <div *ngIf="isSubmitted && f['addressProof'].errors" class="form-text text-danger">
+                  <small *ngIf="f['addressProof'].errors['required']">
+                    Address Proof is required</small>
+                </div>
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <button type="button" class="btn btn-secondary btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('ADDRESS_PROOF')">
+                  Upload Address Proof <i class="fa fa-picture-o fa-lg" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <h3 class="form-title">3. Others Details</h3>
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label>Passport Number</label>
+                <input type="text" class="form-control" formControlName="passportNumber" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <button type="button" class="btn btn-secondary btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('PASSPORT')">
+                  Upload Passport <i class="fa fa-picture-o fa-lg" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label>NREGA Number</label>
+                <input type="text" class="form-control" formControlName="NREGANumber" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <button type="button" class="btn btn-secondary btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('NREGA')">Upload
+                  NREGA <i class="fa fa-picture-o fa-lg" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <div class="form-details-inner">
+              <h3 class="form-title">4.A Farmer details</h3>
+              <div class="farmer-details">
+                <div class="small-input">
+                  <select class="form-select">
+                    <option selected>Mr.</option>
+                    <option>Mrs.</option>
+                  </select>
+                </div>
+                <div class="farmer-details">
+                  <div class="farmer-details-inner lable-top">
+                    <label class="required">First Name</label>
+                    <input type="text" class="form-control" formControlName="firstName" placeholder="" />
+                    <div *ngIf="isSubmitted && f['firstName'].errors" class="form-text text-danger">
+                      <small *ngIf="f['firstName'].errors['required']">
+                        First Name is required</small>
                     </div>
-                    <div class="form-details">
-                        <h3 class="form-title">2. Address proof</h3>
-                        <div class="farmer-details">
-                            <div class="farmer-details-inner lable-top">
-                                <label>Select ID</label>
-                                <select class="flex-1 form-select" formControlName="addressProof">
-                                    <option *ngFor="let indVal of addressProofList" value="{{indVal.displayValue}}">
-                                        {{indVal.displayName}}</option>
-                                </select>
-                            </div>
-                            <div class="farmer-details-inner lable-top">
-                                <label for="PANimage_front">Image front and back</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                        </div>
+                  </div>
+                  <div class="farmer-details-inner lable-top">
+                    <label>Middle Name</label>
+                    <input type="text" class="form-control" formControlName="middleName" placeholder="" />
+                  </div>
+                  <div class="farmer-details-inner lable-top">
+                    <label class="required">Last Name</label>
+                    <input type="text" class="form-control" formControlName="lastName" placeholder="" />
+                    <div *ngIf="isSubmitted && f['lastName'].errors" class="form-text text-danger">
+                      <small *ngIf="f['lastName'].errors['required']">
+                        Last Name is required</small>
                     </div>
-                    <div class="form-details">
-                        <h3 class="form-title">3. Others Details</h3>
-                        <div class="farmer-details">
-                            <div class="farmer-details-inner lable-top">
-                                <label>Passport</label>
-                                <input type="text" class="form-control" formControlName="passport">
-                            </div>
-                            <div class="farmer-details-inner lable-top">
-                                <label for="PANimage_front">Image front and back</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="farmer-details">
-                            <div class="farmer-details-inner lable-top">
-                                <label>NREGA</label>
-                                <input type="text" class="form-control" formControlName="nrega">
-                            </div>
-                            <div class="farmer-details-inner lable-top">
-                                <label for="PANimage_front">Image front and back</label>
-                                <div class="fileUpload">
-                                    <span></span><img src="../../../assets/images/photo-camera.png"><input type="file"
-                                        class="form-control uploadlogo" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-details">
-                        <div class="form-details-inner">
-                            <h3 class="form-title">4.A Co-Applicant details <a href="javascript:void(0)"
-                                    class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
+                  </div>
+                  <div class="farmer-details-inner lable-top">
+                    <label>Date Of Birth</label>
+                    <input type="text" class="form-control" formControlName="dob" placeholder="" value=""
+                      onfocus="(this.type='date')" onblur="(this.type='text')" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4.B Gender</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of genderList"
+                  for="{{ indGen.displayValue }}">
+                  <input class="form-check-input" type="radio" formControlName="gender"
+                    value="{{ indGen.displayValue }}" id="{{ indGen.displayValue }}" /><span>{{ indGen.displayName
+                    }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4.C Religion</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of religionList"
+                  for="{{ indReligion.displayValue }}">
+                  <input class="form-check-input" type="radio" formControlName="religion"
+                    value="{{ indReligion.displayValue }}" id="{{ indReligion.displayValue }}" /><span>{{
+                    indReligion.displayName }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4.D Caste/Tribe</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of casteList"
+                  for="{{ indCaste.displayValue }}">
+                  <input class="form-check-input" type="radio" formControlName="caste"
+                    value="{{ indCaste.displayValue }}" id="{{ indCaste.displayValue }}" /><span>{{ indCaste.displayName
+                    }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4.E Others Details</h3>
+              <div class="farmer-details">
+                <div class="farmer-details-inner lable-top">
+                  <label>Educational Qualification</label>
+                  <select class="flex-1 form-select" formControlName="educationQualification">
+                    <option value="">...</option>
+                    <option *ngFor="let indVal of educationList" value="{{ indVal.displayValue }}">
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
+                </div>
+                <div class="farmer-details-inner lable-top">
+                  <label>Occupation</label>
+                  <select class="flex-1 form-select" formControlName="occupation">
+                    <option value="">...</option>
+                    <option *ngFor="let indVal of occupationList" value="{{ indVal.displayValue }}">
+                      {{ indVal.displayName }}
+                    </option>
+                  </select>
+                </div>
+                <div class="farmer-details-inner lable-top">
+                  <label>Annual Income(₹)</label>
+                  <input type="text" class="form-control" formControlName="annualIncome" placeholder=""
+                    maxlength="10" />
+                  <div *ngIf="isSubmitted && f['annualIncome'].errors" class="form-text text-danger">
+                    <small *ngIf="f['annualIncome'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-details">
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                5.A Address as per officially valid document
+              </h3>
+              <div class="display-flex">
+                <div class="flex-1 lable-top">
+                  <label>Address line-1</label>
+                  <input type="text" class="form-control" formControlName="address1" placeholder="" />
+                </div>
+                <div class="flex-1 lable-top">
+                  <label for="">Address line-2</label>
+                  <input type="text" class="form-control" formControlName="address2" placeholder="" />
+                </div>
+              </div>
+              <div class="display-flex">
+                <div class="flex-1 lable-top">
+                  <label class="required">Pin Code</label>
+                  <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6"
+                    maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" />
+                  <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
+                    <small *ngIf="f['pinCode'].errors['required']">
+                      PinCode is required</small>
+                    <small *ngIf="f['pinCode'].errors['minlength']">
+                      Should be 6 digits</small>
+                    <small *ngIf="f['pinCode'].errors['maxlength']">
+                      Should be 6 digits</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">Tahsil/Taluka/Mandal</label>
+                  <select class="form-select" formControlName="taluk">
+                    <option value="">...</option>
+                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.Name }}">
+                      {{ indVal.Name }}
+                    </option>
+                  </select>
+                  <div *ngIf="isSubmitted && f['taluk'].errors" class="form-text text-danger">
+                    <small *ngIf="f['taluk'].errors['required']">
+                      Taluk is required</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">District/City</label>
+                  <input type="text" class="form-control" formControlName="city" placeholder="" readonly />
+                  <div *ngIf="isSubmitted && f['city'].errors" class="form-text text-danger">
+                    <small *ngIf="f['city'].errors['required']">
+                      City is required</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">State</label>
+                  <input type="text" class="form-control" formControlName="state" placeholder="" readonly />
+                  <div *ngIf="isSubmitted && f['state'].errors" class="form-text text-danger">
+                    <small *ngIf="f['state'].errors['required']">
+                      State is required</small>
+                  </div>
+                </div>
+              </div>
+              <div class="display-flex">
+                <div class="flex-1 lable-top">
+                  <label for="">Landmark</label>
+                  <input type="text" class="form-control" formControlName="landmark" placeholder="" />
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">Phone No.</label>
+                  <input type="text" class="form-control" formControlName="phoneNumber" placeholder="" minlength="10"
+                    maxlength="10" />
+                  <div *ngIf="isSubmitted && f['phoneNumber'].errors" class="form-text text-danger">
+                    <small *ngIf="f['phoneNumber'].errors['required']">
+                      Phone No. is required</small>
+                    <small *ngIf="f['phoneNumber'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label for="">Mobile 1</label>
+                  <input type="text" class="form-control" formControlName="mobile1" placeholder="" maxlength="10" />
+                  <div *ngIf="isSubmitted && f['mobile1'].errors" class="form-text text-danger">
+                    <small *ngIf="f['mobile1'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label for="">Mobile 2</label>
+                  <input type="text" class="form-control" formControlName="mobile2" placeholder="" />
+                </div>
+              </div>
+              <div class="display-flex">
+                <div class="flex-1 lable-top">
+                  <label for="">No. of years in present address</label>
+                  <input type="text" class="form-control" formControlName="yrsInAddress" placeholder="" maxlength="3" />
+                  <div *ngIf="isSubmitted && f['yrsInAddress'].errors" class="form-text text-danger">
+                    <small *ngIf="f['yrsInAddress'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label for="">No. of years in city/village</label>
+                  <input type="text" class="form-control" formControlName="yrsInCity" placeholder="" maxlength="3" />
+                  <div *ngIf="isSubmitted && f['yrsInCity'].errors" class="form-text text-danger">
+                    <small *ngIf="f['yrsInCity'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                  </div>
+                </div>
+                <div class="flex-2 lable-top">
+                  <label for="">Email Address</label>
+                  <input type="text" class="form-control" formControlName="email" placeholder="" />
+                  <div *ngIf="isSubmitted && f['email'].errors" class="form-text text-danger">
+                    <small *ngIf="f['email'].errors['email']">
+                      Email address is invalid</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">5.B Property status</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of propertyStatusList"
+                  for="{{ indStat.displayValue }}">
+                  <input class="form-check-input" type="radio" formControlName="propertyStatus"
+                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}" /><span>{{ indStat.displayName
+                    }}</span>
+                </label>
+              </div>
+              <div class="farmer-details">
+                <div class="farmer-details-inner lable-top">
+                  <label for="">Monthly Rent (If rented)</label>
+                  <input type="text" class="form-control" formControlName="monthlyRent" placeholder="" />
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">5.B Communication/Permanent address</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio required"
+                  *ngFor="let indStat of addressStatusList" for="{{ indStat.displayValue }}">
+                  <input class="form-check-input" type="radio" formControlName="commOrPerAddress"
+                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}" /><span>{{ indStat.displayName
+                    }}</span>
+                </label>
+                <div *ngIf="isSubmitted && f['commOrPerAddress'].errors" class="form-text text-danger">
+                  <small *ngIf="f['commOrPerAddress'].errors['required']">
+                    Field is required</small>
+                </div>
+              </div>
+              <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddress!='different_address'">
+                <div class="flex-1 lable-top">
+                  <label>Address line-1</label>
+                  <input type="text" class="form-control" formControlName="permAddressLine1" placeholder="" />
+                </div>
 
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
-                            <div class="farmer-details">
-                                <div class="small-input">
-                                    <select class="form-select" formControlName="salutation">
-                                        <option selected>Mr.</option>
-                                        <option>Mrs.</option>
-                                    </select>
-                                </div>
-                                <div class="farmer-details">
-                                    <div class="farmer-details-inner">
-                                        <input type="text" class="form-control" formControlName="fname"
-                                            placeholder="First Name">
-                                    </div>
-                                    <div class="farmer-details-inner">
-                                        <input type="text" class="form-control" formControlName="mname"
-                                            placeholder="Middle Name">
-                                    </div>
-                                    <div class="farmer-details-inner">
-                                        <input type="text" class="form-control" formControlName="lname"
-                                            placeholder="Last Name">
-                                    </div>
-                                    <div class="farmer-details-inner">
-                                        <input type="text" class="form-control" formControlName="dob"
-                                            placeholder="Date of Birth" value="Date of Birth"
-                                            onfocus="(this.type='date')" onblur="(this.type='text')">
-                                        <!-- <span><img src="../../../assets/images/date-icon.png"></span> -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">4.B Gender</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indGen of genderList" for="{{indGen.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="gender"
-                                        value="{{indGen.displayValue}}"
-                                        id="{{indGen.displayValue}}"><span>{{indGen.displayName}}</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">4.C Religion</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indReligion of religionList" for="{{indReligion.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="religion"
-                                        value="{{indReligion.displayValue}}"
-                                        id="{{indReligion.displayValue}}"><span>{{indReligion.displayName}}</span>
-                                </label>
-                                <div class="farmer-details-inner lable-top flex-2">
-                                    <label>Others(Please Specify)</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">4.D Caste/Tribe</h3>
-                            <div class="farmer-details">
-                                <label class="form-check-label form-check bordered-radio"
-                                    *ngFor="let indCaste of casteList" for="{{indCaste.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="caste"
-                                        value="{{indCaste.displayValue}}"
-                                        id="{{indCaste.displayValue}}"><span>{{indCaste.displayName}}</span>
-                                </label>
-                                <div class="farmer-details-inner lable-top">
-                                    <label>Others(Please Specify)</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-details-inner">
-                            <h3 class="form-title">4.E Others Details</h3>
-                            <div class="farmer-details">
-                                <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" formControlName="educationQualification"
-                                        placeholder="Educational Qualification">
-                                </div>
-                                <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" formControlName="occupation"
-                                        placeholder="Occupation">
-                                </div>
-                                <div class="farmer-details-inner">
-                                    <input type="text" class="form-control" formControlName="annualIncome"
-                                        placeholder="Annual Income">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-details">
-                        <div class="form-details-inner">
-                            <h3 class="form-title">5.A Address as per officially valid document</h3>
-                            <div class="display-flex">
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="address1"
-                                        placeholder="Address line-1">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="address2"
-                                        placeholder="Address line-2">
-                                </div>
-                            </div>
-                            <div class="display-flex">
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="taluk"
-                                        placeholder="Tahsil/Taluka/Mandal">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="city"
-                                        placeholder="District/City">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="pinCode"
-                                        placeholder="pin code">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="state" placeholder="State">
-                                </div>
-                            </div>
-                            <div class="display-flex">
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="landmark"
-                                        placeholder="Landmark">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="phoneNumber"
-                                        placeholder="Phone No.">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="mobile1"
-                                        placeholder="Mobile 1">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="mobile2"
-                                        placeholder="Mobile 2">
-                                </div>
-                            </div>
-                            <div class="display-flex">
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="yrsInAddress"
-                                        placeholder="No. of years in present address">
-                                </div>
-                                <div class="flex-1">
-                                    <input type="text" class="form-control" formControlName="yrsInCity"
-                                        placeholder="No. of years in city/village">
-                                </div>
-                                <div class="flex-2">
-                                    <input type="text" class="form-control" formControlName="email"
-                                        placeholder="Email Address">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-details">
-                        <h3 class="form-title">6. Property Ownership <a href="javascript:void(0)"
-                                class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
+                <div class="flex-1 lable-top">
+                  <label for="">Address line-2</label>
+                  <input type="text" class="form-control" formControlName="permAddressLine2" placeholder="" />
+                </div>
+              </div>
+              <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddress!='different_address'">
+                <div class="flex-1 lable-top">
+                  <label class="required">Pin Code</label>
+                  <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6"
+                    maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
+                  <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permPincode'].errors['required']">
+                      PinCode is required</small>
+                    <small *ngIf="f['permPincode'].errors['minlength']">
+                      Should be 6 digits</small>
+                    <small *ngIf="f['permPincode'].errors['maxlength']">
+                      Should be 6 digits</small>
+                  </div>
+                </div>
 
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
-                        <div class="mb-2" formArrayName="propertyOwnership"
-                            *ngFor="let item of getPropertyOwnershipControls(); let i = index;">
-                            <div class="display-flex family-members" [formGroupName]="i">
-                                <div class="flex-1 lable-top">
-                                    <label>Property Type</label>
-                                    <input type="text" class="form-control" formControlName='propertyType'
-                                        placeholder="House">
-                                </div>
-                                <div class="flex-1 lable-top">
-                                    <label>Upload pictures</label>
-                                    <div class="fileUpload">
-                                        <span></span><img src="../../../assets/images/photo-camera.png"><input
-                                            type="file" class="form-control uploadlogo" />
-                                    </div>
-                                </div>
-                                <div class="flex-1 lable-top">
-                                    <label>Ownership Type</label>
-                                    <select class="form-select" formControlName="ownershipType">
-                                        <option selected>select</option>
-                                        <option *ngFor="let indVal of ownershipTypeList"
-                                            value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
-                                    </select>
-                                </div>
-                                <div class="flex-1 lable-top">
-                                    <label>Particular</label>
-                                    <select class="form-select" formControlName="particular">
-                                        <option selected>select</option>
-                                        <option *ngFor="let indVal of particularList" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
-                                    </select>
-                                </div>
-                                <div class="flex-1 lable-top">
-                                    <label>Cumulative value</label>
-                                    <input type="text" name="" class="form-control" formControlName="cumulativeValue">
-                                </div>
-                            </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">Tahsil/Taluka/Mandal</label>
+                  <select class="form-select" formControlName="permTaluk">
+                    <option value="">...</option>
+                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.Name }}">
+                      {{ indVal.Name }}
+                    </option>
+                  </select>
+                  <div *ngIf="isSubmitted && f['permTaluk'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permTaluk'].errors['required']">
+                      Taluk is required</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">District/City</label>
+                  <input type="text" class="form-control" formControlName="permCity" placeholder="" readonly />
+                  <div *ngIf="isSubmitted && f['permCity'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permCity'].errors['required']">
+                      City is required</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">State</label>
+                  <input type="text" class="form-control" formControlName="permState" placeholder="" readonly />
+                  <div *ngIf="isSubmitted && f['permState'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permState'].errors['required']">
+                      State is required</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-                            <div class="row justify-content-end">
-                                <div class="col-auto add-another"
-                                    *ngIf="getPropertyOwnershipControls().length!=1  && i!=getPropertyOwnershipControls().length-1">
-                                    <a href="javascript:void(0)" class="delete-item "
-                                        (click)="removePropertyOwnership(i)"><i
-                                            class="fa fa-trash-o text-danger"></i></a>
+          <div class="form-details">
+            <div class="row align-items-center">
+              <h3 class="form-title">
+                6. How many members in the family? Record for each member.
+              </h3>
+              <div class="mb-2" formArrayName="familyMembers"
+                *ngFor="let item of getFamilyMembersControls(); let i = index">
+                <div class="display-flex" [formGroupName]="i">
+                  <div class="flex-2 lable-top">
+                    <label>Name</label>
+                    <input type="text" class="form-control" formControlName="name" placeholder="" />
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Relation</label>
+                    <select class="form-select" formControlName="relation">
+                      <option value="">...</option>
+                      <option *ngFor="let indVal of relationList" value="{{ indVal.displayValue }}">
+                        {{ indVal.displayName }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Education</label>
+                    <select class="flex-1 form-select" formControlName="education">
+                      <option value="">...</option>
+                      <option *ngFor="let indVal of educationList" value="{{ indVal.displayValue }}">
+                        {{ indVal.displayName }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Occupation</label>
 
-                                </div>
-                                <div class="col-auto add-another" *ngIf="i==getPropertyOwnershipControls().length-1">
-                                    <a href="javascript:void(0);" (click)="addPropertyOwnership()">+ Add More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <select class="flex-1 form-select" formControlName="occupation">
+                      <option value="">...</option>
+                      <option *ngFor="let indVal of occupationList" value="{{ indVal.displayValue }}">
+                        {{ indVal.displayName }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Dependency</label>
 
+                    <select class="flex-1 form-select" formControlName="dependency">
+                      <option value="">...</option>
+                      <option *ngFor="let indVal of dependencyList" value="{{ indVal.displayValue }}">
+                        {{ indVal.displayName }}
+                      </option>
+                    </select>
+                  </div>
+                  <div *ngIf="
+                      getFamilyMembersControls().length != 1 &&
+                      i != getFamilyMembersControls().length - 1
+                    " class="flex-1 add-another">
+                    <a href="javascript:void(0)" class="delete-item" (click)="removeFamilyMembers(i)"><i
+                        class="fa fa-trash-o text-danger"></i></a>
+                  </div>
+                  <div *ngIf="i == getFamilyMembersControls().length - 1" class="flex-1 add-another">
+                    <a href="javascript:void(0);" (click)="addFamilyMembers()">+ Add Another</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Co-Applicant 1 end -->
+          
 
                 </form>
-                <!-- <div class="row mt-3">
-                    <div class="col-auto add-another">
-                        <a href="#">+ Add More</a>
-                    </div>
-                </div> -->
             </div>
         </div>
     </article>
 </div>
+
+<!-- START: Common Modal Popup for File Upload and Preview -->
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header p-2">
+        <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- START : Image - 1  -->
+        <div class="row" [hidden]="!fileUpload.new.isImage1Required">
+          <div class="col-md-6 mb-1">
+            <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
+            <input class="form-control form-control-sm file-control" id="formFileSm" type="file"
+              (change)="onFileChange($event,'FRONT_IMAGE')" accept="image/*">
+          </div>
+          <div class="col-md-6 mb-1">
+            <p class="fs-6">Preview Image</p>
+            <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1"
+              style="height: 150px; width: 150px" />
+          </div>
+
+        </div>
+        <!-- END : Image - 1 -->
+
+        <!-- START : Image - 2 -->
+        <div class="row" [hidden]="!fileUpload.new.isImage2Required">
+          <hr class="mt-1" />
+          <div class="col-md-6 mb-1">
+            <label for="formFileSm" class="form-label">{{fileUpload.imageHeading2}}</label>
+            <input class="form-control form-control-sm file-control" id="formFileSm" type="file"
+              (change)="onFileChange($event,'BACK_IMAGE')" accept="image/*">
+          </div>
+          <div class="col-md-6 mb-1">
+            <p class="fs-6">Preview Image</p>
+            <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2"
+              style="height: 150px; width: 150px" />
+          </div>
+
+        </div>
+        <!-- END : Image - 2 -->
+
+      </div>
+      <div class="modal-footer p-2">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary btn-sm">Save</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END: Common Modal Popup for File Upload and Preview -->

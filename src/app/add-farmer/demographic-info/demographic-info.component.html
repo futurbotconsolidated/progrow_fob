@@ -305,6 +305,8 @@
                       Phone No. is required</small>
                     <small *ngIf="f['phoneNumber'].errors['pattern']">
                       Only Numbers are allowed</small>
+                    <small *ngIf="f['phoneNumber'].errors['minlength']">
+                      Please enter 10 Digits</small>
                   </div>
                 </div>
                 <div class="flex-1 lable-top">

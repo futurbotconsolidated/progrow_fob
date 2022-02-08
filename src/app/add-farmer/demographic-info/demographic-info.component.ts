@@ -145,6 +145,7 @@ export class DemographicInfoComponent implements OnInit {
       phoneNumber: new FormControl('', [
         Validators.required,
         Validators.pattern('^[0-9]*$'),
+        Validators.minLength(10),
       ]),
       mobile1: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       mobile2: new FormControl(''),

@@ -145,12 +145,14 @@
                                             <label>Soil Quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
-                                                    <a *ngFor="let soilQualityStar of soilQualityList; "
-                                                        href="javascript:void(0)" formControlName="soilQuality"
+                                                    <a *ngFor="let soilQualityStar of soilQualityList;  let i = index;"
+                                                        href="javascript:void(0)"
                                                         (click)="SoilQualityRating(soilQualityStar)"
                                                         [ngClass]="{'active': (soilQualityStar.displayValue == selectedSoilQualityStar)}"><i
                                                             class="fa fa-star"
-                                                            id="{{soilQualityStar.displayValue}}{{i}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
+                                                            id="{{i}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
+                                                    <input type="text" formControlName="soilQuality" hidden>
+
                                                 </div>
                                                 <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
@@ -180,11 +182,13 @@
                                             <div class="ratings">
                                                 <div class="star-rate">
                                                     <a *ngFor="let waterQualityStar of soilQualityList"
-                                                        href="javascript:void(0)" formControlName="waterQuality"
+                                                        href="javascript:void(0)"
                                                         (click)="WaterQualityRating(waterQualityStar)"
                                                         [ngClass]="{'active': (waterQualityStar.displayValue == selectedWaterQualityStar)}"><i
                                                             class="fa fa-star"
                                                             id="{{waterQualityStar.displayValue}}"></i><span>{{waterQualityStar.displayValue}}</span></a>
+                                                    <input type="text" formControlName="waterQuality" hidden>
+
                                                     <!-- <a href="javascript:void(0)" class="active"><i
                                                             class="fa fa-star"></i><span>Poor</span></a>
                                                     <a href="javascript:void(0)"><i
@@ -220,11 +224,13 @@
                                             <div class="ratings">
                                                 <div class="star-rate">
                                                     <a *ngFor="let yieldQualityStar of soilQualityList"
-                                                        href="javascript:void(0)" formControlName="yieldQuality"
+                                                        href="javascript:void(0)"
                                                         (click)="YieldQualityRating(yieldQualityStar)"
                                                         [ngClass]="{'active': (yieldQualityStar.displayValue == selectedYieldQualityStar)}"><i
                                                             class="fa fa-star"
                                                             id="{{yieldQualityStar.displayValue}}"></i><span>{{yieldQualityStar.displayValue}}</span></a>
+                                                    <input type="text" formControlName="yieldQuality" hidden>
+
                                                 </div>
                                                 <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
@@ -357,6 +363,8 @@
                                                             [ngClass]="{'active': (soilQualityStar.displayValue == selectedHistoSoilQualityStar)}"><i
                                                                 class="fa fa-star"
                                                                 id="{{soilQualityStar.displayValue}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
+                                                        <input type="text" formControlName="soilQuality" hidden>
+
                                                     </div>
                                                     <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
@@ -391,6 +399,8 @@
                                                             [ngClass]="{'active': (waterQualityStar.displayValue == selectedHistoWaterQualityStar)}"><i
                                                                 class="fa fa-star"
                                                                 id="{{waterQualityStar.displayValue}}"></i><span>{{waterQualityStar.displayValue}}</span></a>
+                                                        <input type="text" formControlName="waterQuality" hidden>
+
                                                     </div>
                                                     <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
@@ -425,6 +435,8 @@
                                                             [ngClass]="{'active': (yieldQualityStar.displayValue == selectedHistoYieldQualityStar)}"><i
                                                                 class="fa fa-star"
                                                                 id="{{yieldQualityStar.displayValue}}"></i><span>{{yieldQualityStar.displayValue}}</span></a>
+                                                        <input type="text" formControlName="yieldQuality" hidden>
+
                                                     </div>
                                                     <!-- <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="20" height="20" viewBox="0 0 20 20">
@@ -799,35 +811,50 @@
                                     <path class="b"
                                         d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
                                 </svg></a></h3>
-                        <div class="row align-items-center form-details-inner">
-                            <div class="col-md-2 lable-top">
-                                <label>Type of test</label>
-                                <input type="text" class="form-control" id="" placeholder="Water Test">
-                            </div>
-                            <div class="col-md-2 lable-top">
-                                <label>Yes/No</label>
-                                <select class="form-select">
-                                    <option selected>Yes</option>
-                                    <option>No</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 lable-top">
-                                <label>When last done</label>
-                                <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                    value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
-                            </div>
-                            <div class="col-md-3 lable-top">
-                                <label>Have you received the last test result?</label>
-                                <select class="form-select">
-                                    <option selected>Yes</option>
-                                    <option>No</option>
-                                </select>
+                        <div class="mb-3" formArrayName="testType"
+                            *ngFor="let item of getTestTypeControls(); let i = index;">
+                            <div class="row align-items-center form-details-inner" [formGroupName]="i">
+                                <div class="col-md-2 lable-top">
+                                    <label>Type of test</label>
+                                    <input type="text" class="form-control" formControlName="typeOfTest"
+                                        placeholder="Water Test">
+                                </div>
+                                <div class="col-md-2 lable-top">
+                                    <label>Yes/No</label>
+                                    <select class="form-select" formControlName="yesNo">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of yesNoList" value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 lable-top">
+                                    <label>When last done</label>
+                                    <input type="text" class="form-control" formControlName="lastDone"
+                                        placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')">
+                                </div>
+                                <div class="col-md-3 lable-top">
+                                    <label>Have you received the last test result?</label>
+                                    <select class="form-select" formControlName="testResult">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of yesNoList" value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto add-another">
+                                    <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
+                                </div>
                             </div>
                             <div class="col-auto add-another">
-                                <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
+                                <a *ngIf="getTestTypeControls().length!=1  && i!=getTestTypeControls().length-1"
+                                    href="javascript:void(0)" class="delete-item " (click)="removeTestType(i)"><i
+                                        class="fa fa-trash-o text-danger"></i></a>
+                                <a *ngIf="i==getTestTypeControls().length-1" href="javascript:void(0)"
+                                    (click)="addTestType()">+ Add</a>
                             </div>
                         </div>
-                        <div class="row align-items-center form-details-inner">
+
+                        <!-- <div class="row align-items-center form-details-inner">
                             <div class="col-md-2 lable-top">
                                 <label>Type of test</label>
                                 <input type="text" class="form-control" id="" placeholder="Soil Test">
@@ -854,7 +881,7 @@
                             <div class="col-auto add-another">
                                 <a href="#"><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                     <div class="form-details">

@@ -8,14 +8,23 @@
                         <h4 class="summery-heading"><span>Input sourcing</span><a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile kcc-details">
-                            <p><span>Where do you procure the seed for different crops?</span><span><b>Locally from
-                                        village, KVK, Hybrid variety seeds from input supplier</b></span></p>
+                            <p><span>Where do you procure the seed for different crops?</span><span><b>
+                                        {{cropMrktPlanDisp?.seedProcure?.join(',')}}</b></span></p>
+
                             <p><span>If used hybrid variety seeds, what difference do you observe in comparison to local
-                                    varieties?</span><span><b>High Yield</b></span></p>
+                                    varieties?</span><span><b>{{cropMrktPlanDisp?.varietyComparison}}</b></span></p>
+
                             <p><span>Where do you purchase your fertilizers and pesticides from for the cultivation
-                                    cycle?</span><span><b>Village Shop, Local Mandi</b></span></p>
+                                    cycle?</span><span><b>{{cropMrktPlanDisp?.fertilizerPurchase?.join(',')}}</b></span>
+                            </p>
+
                             <p><span>How satisfied are you with the fertilizer and pesticide quality/service from the
-                                    local input supplier?</span><span><b>Very satisfied </b></span></p>
+                                    local input supplier?</span><span><b>{{cropMrktPlanDisp?.pesticideQuality}}
+                                    </b></span></p>
+
+                            <p><span>Who advises you on application of
+                                    fertilizers/pesticides?</span><span><b>{{cropMrktPlanDisp?.fertilizerAdvise?.join(',')}}
+                                    </b></span></p>
                         </div>
                     </div>
                 </div>
@@ -39,31 +48,30 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><b>Rabi 2021</b></td>
-                                    <td><b>Gram</b></td>
-                                    <td><b>5%</b></td>
-                                    <td><b>10%</b></td>
-                                    <td><b>85%</b></td>
+                                    <td><b>N/A</b></td>
+                                    <td><b>N/A</b></td>
+                                    <td><b>N/A</b></td>
+                                    <td><b>N/A</b></td>
+                                    <td><b>N/A</b></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Rabi 2021</b></td>
-                                    <td><b>Peas</b></td>
-                                    <td><b>5%</b></td>
-                                    <td><b>10%</b></td>
-                                    <td><b>85%</b></td>
+                                    <td><b>N/A</b></td>
+                                    <td><b>N/A</b></td>
+                                    <td><b>N/A</b></td>
+                                    <td><b>N/A</b></td>
+                                    <td><b>N/A</b></td>
                                 </tr>
 
                             </tbody>
                         </table>
                         <div class="d-flex-profile kcc-details py-4">
-                            <p><span>Where do you sell the produce?</span><span><b>Local Mandi, District
-                                        Mandi</b></span></p>
+                            <p><span>Where do you sell the produce?</span><span><b>N/A</b></span></p>
                             <p><span>Are you satisfied with the existing farm gate grading
-                                    method?</span><span><b>Yes</b></span></p>
+                                    method?</span><span><b>{{cropMrktPlanDisp?.farmGateGrading}}</b></span></p>
                             <p><span>How long does it take before receiving money for the produce
-                                    sold?</span><span><b>On the spot at farm gate</b></span></p>
+                                    sold?</span><span><b>{{cropMrktPlanDisp?.durationReceivingMoney}}</b></span></p>
                             <p><span> Would you like to warehouse your produce before selling at the highest
-                                    price?</span><span><b>Yes </b></span></p>
+                                    price?</span><span><b>{{cropMrktPlanDisp?.warehouseProduce}} </b></span></p>
 
                         </div>
                     </div>
