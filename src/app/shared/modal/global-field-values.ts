@@ -57,8 +57,8 @@ export const gender = [
   },
   {
     id: 3,
-    displayName: 'Third-Gender',
-    displayValue: 'third_gender',
+    displayName: 'Other',
+    displayValue: 'other',
   },
 ];
 
