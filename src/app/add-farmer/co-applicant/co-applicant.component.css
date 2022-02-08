@@ -1,0 +1,19 @@
+.file-control{ 
+	height: auto; 
+}
+.co-applicant-left {
+	display: flex;
+	border: 0.5px solid #bababa;
+	border-bottom: none;
+}
+.co-applicant-left .left-info {
+	flex: 4;
+	padding: 30px 20px;
+}
+.co-app-detail { 
+	background: #DEF5D6; 
+	padding: 20px 20px; 
+}
+.co-app-detail .form-title{ 
+	margin-bottom: 0px; 
+}

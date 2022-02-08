@@ -178,6 +178,9 @@ export class DashboardComponent implements OnInit {
 
     map.addControl(new mapboxgl.NavigationControl()); // Add map controls
     map.addControl(new mapboxgl.FullscreenControl()); // Add map full screen
+    setTimeout(function() {
+      map.resize(); 
+    }, 500);
   }
   /* END: Non-API Function Calls */
 
