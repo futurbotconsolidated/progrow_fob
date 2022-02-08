@@ -289,7 +289,7 @@ export const propertyType = [
 // export const ownershipType = [
 //   { id: 1, displayName: 'Owned', displayValue: 'owned' },
 // ];
-export const particular = [{ id: 1, displayName: '', displayValue: '' }];
+export const particular = [{ id: 1, displayName: 'ABC', displayValue: 'ABC' }];
 
 export const irrigationSystem = [
   {
