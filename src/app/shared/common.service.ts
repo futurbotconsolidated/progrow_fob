@@ -51,4 +51,8 @@ export class CommonService {
     return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }
   /* END: API Calls */
+
+  /* START: NON-API Calls */
+  getDisplayName(type: string, id: any) {}
+  /* END: NON-API Calls */
 }

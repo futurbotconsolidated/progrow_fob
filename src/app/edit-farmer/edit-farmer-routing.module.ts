@@ -18,35 +18,35 @@ const routes: Routes = [
     component: SummaryComponent,
   },
   {
-    path: 'demographic-info',
+    path: 'demographic-info/:farmerid',
     component: EditDemographicInfoComponent,
   },
   {
-    path: 'field-info',
+    path: 'field-info/:farmerid',
     component: EditFieldInfoComponent,
   },
   {
-    path: 'financial-plan',
+    path: 'financial-plan/:farmerid',
     component: EditFinancialPlanningComponent,
   },
   {
-    path: 'crop-market-plan',
+    path: 'crop-market-plan/:farmerid',
     component: EditCropMarketPlanComponent,
   },
   {
-    path: 'fop',
+    path: 'fop/:farmerid',
     component: EditFpoComponent,
   },
   {
-    path: 'tech-adoption',
+    path: 'tech-adoption/:farmerid',
     component: EditTechAdoptionComponent,
   },
   {
-    path: 'co-applicant',
+    path: 'co-applicant/:farmerid',
     component: EditCoApplicantComponent,
   },
   {
-    path: 'declaration',
+    path: 'declaration/:farmerid',
     component: EditDeclarationComponent,
   },
 ];

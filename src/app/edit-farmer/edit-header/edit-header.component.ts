@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-header',
@@ -6,8 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./edit-header.component.css'],
 })
 export class EditHeaderComponent implements OnInit {
+  farmerId = '';
   demographicDisp = {} as any;
-  constructor() {
+  constructor(private activatedRoute: ActivatedRoute) {
     const A: any = localStorage.getItem('farmer-details');
 
     if (A) {
@@ -15,5 +17,12 @@ export class EditHeaderComponent implements OnInit {
       console.log(this.demographicDisp);
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadData();
+  }
+  /* START: Non-API Function Calls */
+  loadData() {
+    this.farmerId = this.activatedRoute.snapshot.params['farmerid'];
+  }
+  /* END: Non-API Function Calls */
 }

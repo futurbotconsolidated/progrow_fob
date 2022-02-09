@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AddFarmerService } from '../add-farmer.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-info-declaration',
   templateUrl: './info-declaration.component.html',
@@ -15,7 +17,9 @@ export class InfoDeclarationComponent implements OnInit {
 
   constructor(
     private addFarmerService: AddFarmerService,
-    private router: Router
+    private toastr: ToastrService,
+    private router: Router,
+    private spinner: NgxSpinnerService
   ) {
     this.canSubmit = false;
   }
@@ -32,6 +36,8 @@ export class InfoDeclarationComponent implements OnInit {
   }
 
   saveData() {
+    this.spinner.show();
+
     let demoInfo: any = localStorage.getItem('demographic-info');
     let fieldInfo: any = localStorage.getItem('field-info');
     let cropInfo: any = localStorage.getItem('crop-market-planing');
@@ -56,10 +62,25 @@ export class InfoDeclarationComponent implements OnInit {
 
     console.log(obj);
 
-    this.addFarmerService.registerFarmer(obj).subscribe((res: any) => {
-      console.log(res);
-      localStorage.clear();
-      this.router.navigate(['/']);
-    });
+    this.addFarmerService.registerFarmer(obj).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (res.message != 'Success' || !res.status) {
+          this.toastr.error(`${res.message}!`);
+          return;
+        } else {
+          console.log(res);
+          this.toastr.error('Farmer Registration Success.');
+          localStorage.clear();
+          this.router.navigate(['/bd/dashboard']);
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        this.toastr.error(
+          'Failed to register farmer details, please try again...'
+        );
+      }
+    );
   }
 }
