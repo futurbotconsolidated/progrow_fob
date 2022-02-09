@@ -70,7 +70,7 @@ export class InfoDeclarationComponent implements OnInit {
           return;
         } else {
           console.log(res);
-          this.toastr.error('Farmer Registration Success.');
+          this.toastr.success('Farmer Registration Success.');
           localStorage.clear();
           this.router.navigate(['/bd/dashboard']);
         }
