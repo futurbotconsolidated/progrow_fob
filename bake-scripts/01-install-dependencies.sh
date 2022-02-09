@@ -23,6 +23,12 @@ location / {
 }
 EOF
 
+## Install SSM agent
+log_message "Install SSM agent"
+cd /tmp
+sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+sudo systemctl enable amazon-ssm-agent
+log_message "SSM agent has been setup"
 
 # curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
 # sudo yum install -y nodejs
