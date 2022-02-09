@@ -524,15 +524,19 @@ export class DemographicInfoComponent implements OnInit {
     } else {
       const formValue = this.demographicInfoForm.value;
       const obj = {
-        profileImg: formValue.profileImg,
+        profileImg: '',
+        // profileImg: formValue.profileImg,
         identityProof: {
           panNumber: formValue.PANnumber,
-          panImg: formValue.PANFrontImage,
+          panImg: '',
+          // panImg: formValue.PANFrontImage,
         },
         addressProof: {
           selectedIdProof: formValue.addressProof,
-          selectedIdProofFrontImg: formValue.addressProofFrontImage,
-          selectedIdProofBackImg: formValue.addressProofBackImage,
+          selectedIdProofFrontImg: '',
+          selectedIdProofBackImg: '',
+          // selectedIdProofFrontImg: formValue.addressProofFrontImage,
+          // selectedIdProofBackImg: formValue.addressProofBackImage,
         },
         farmerDetails: {
           firstName: formValue.firstName,
