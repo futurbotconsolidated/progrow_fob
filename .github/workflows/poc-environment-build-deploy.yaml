@@ -13,6 +13,7 @@ env:
   AMI_NAME: "fob2-ui-${{ github.run_number }}"
   AUTOSCALING_ID: "terraform-20220119014405456800000003"
   LAUNCH_TEMPLATE_ID: "lt-04cf6e5b5eeb4f991"
+  ENVIRONMENT: "poc"
 
 jobs:
   component-build:
@@ -52,6 +53,12 @@ jobs:
       run: |
         npm ci
     
+    - name: Replace Parameters
+      run: |
+        echo "Replacing parameters for $ENVIRONMENT"
+        cp -f src/app/shared/authCodeFlowConfig${ENVIRONMENT}.ts src/app/shared/authCodeFlowConfig.ts
+        cp -f src/environments/api-endpoints${ENVIRONMENT}.ts src/environments/api-endpoints.ts
+
     - name: Component Build
       run: |
         npm run build -- --prod
