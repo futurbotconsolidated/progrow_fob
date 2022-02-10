@@ -1,6 +1,6 @@
-import { endPoints } from './api-endpoints';
+import { baseUrl, endPoints } from './api-endpoints';
 export const environment = {
   production: true,
-  baseUrl: 'https://api1.agrisaathi.com',
+  baseUrl: baseUrl,
   endPoints: endPoints,
 };

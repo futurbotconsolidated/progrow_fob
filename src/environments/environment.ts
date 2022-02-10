@@ -1,6 +1,6 @@
-import { endPoints } from './api-endpoints';
+import { baseUrl, endPoints } from './api-endpoints';
 export const environment = {
   production: false,
-  baseUrl: 'https://api.fob2.dev.adaptiwise.com',
+  baseUrl: baseUrl,
   endPoints: endPoints,
 };
