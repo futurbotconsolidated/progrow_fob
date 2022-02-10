@@ -44,10 +44,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/app/shared/authCodeFlowConfig.ts",
-                  "with": "src/app/shared/authCodeFlowConfigprod.ts"
                 }
               ],
               "outputHashing": "all"
