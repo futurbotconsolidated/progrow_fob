@@ -412,17 +412,6 @@ export class FieldInfoComponent implements OnInit {
         .openPopup();
       map.fitBounds(polygon.getBounds());
     });
-
-    // if (this.selectedCoordinates.length > 0) {
-    //   var polygon = L.polygon(this.selectedCoordinates).addTo(map);
-    //   // zoom the map to the polygon
-    //   for (let i =0;i< this.editFieldArea.length;i++){
-    //     polygon.bindPopup(`Field ID : ${this.editFieldArea.length+1} <br/> Area : ${this.editFieldArea[i].field_area_ha} (Hectare)`).openPopup();
-    //   }
-    //   map.fitBounds(polygon.getBounds());
-    // } else {
-    //   console.log('no lat lng');
-    // }
   }
 
   createFieldDetails(): FormGroup {
