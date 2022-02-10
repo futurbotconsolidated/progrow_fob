@@ -16,6 +16,7 @@ export class EditFieldInfoComponent implements OnInit {
   plannedDetails = [] as any;
   enumerateDetails = [] as any;
   typesOfTests = [] as any;
+  editFieldArea = <any>[];
 
   constructor(private spinner: NgxSpinnerService) {
     const A: any = localStorage.getItem('farmer-details');
@@ -28,6 +29,7 @@ export class EditFieldInfoComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.fieldInfo) {
+      this.editFieldArea = [];
       // this.spinner.show();
       this.fieldInfo.forEach((el: any) => {
         this.ownerShipDetails.push(el.field_ownership_detail);
@@ -52,7 +54,7 @@ export class EditFieldInfoComponent implements OnInit {
         // this.addHistoFieldDetail();
         // this.addFieldOwnershipDetail();
         // this.addEnumerate();
-
+        this.editFieldArea.push(el.field_area_ha);
         let arr = el.field_boundary.geometry.coordinates;
         let co: any = [];
         arr.forEach((x: any) => {
@@ -173,13 +175,27 @@ export class EditFieldInfoComponent implements OnInit {
     //   })
     // );
 
-    if (this.selectedCoordinates.length > 0) {
-      var polygon = L.polygon(this.selectedCoordinates).addTo(map);
-      // zoom the map to the polygon
-      polygon.bindPopup(`${this.selectedCoordinates.length}`).openPopup();
+    this.selectedCoordinates.forEach((x: any, index: number) => {
+      console.log(this.editFieldArea[index]);
+
+      var polygon = L.polygon(x).addTo(map);
+      polygon
+        .bindPopup(
+          `Field ID : ${index + 1} <br/> Area : ${
+            this.editFieldArea[index]
+          } (Hectare)`
+        )
+        .openPopup();
       map.fitBounds(polygon.getBounds());
-    } else {
-      console.log('no lat lng');
-    }
+    });
+
+    // if (this.selectedCoordinates.length > 0) {
+    //   var polygon = L.polygon(this.selectedCoordinates).addTo(map);
+    //   // zoom the map to the polygon
+    //   polygon.bindPopup(`${this.selectedCoordinates.length}`).openPopup();
+    //   map.fitBounds(polygon.getBounds());
+    // } else {
+    //   console.log('no lat lng');
+    // }
   }
 }

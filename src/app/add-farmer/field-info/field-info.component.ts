@@ -557,55 +557,51 @@ export class FieldInfoComponent implements OnInit {
   }
 
   saveData() {
-    if (this.count < 0) {
-      let url = `/add/${this.nextRoute}`;
-      let fieldArr = [];
-      console.log(this.count);
-      let obj;
-      for (var i = 0; i < this.count; i++) {
-        this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
-        this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
-        this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
-        this.fieldInfoForm.value.fieldOwnership[i].fieldOwnId = i + 1;
+    let url = `/add/${this.nextRoute}`;
+    let fieldArr = [];
+    console.log(this.count);
+    let obj;
+    for (var i = 0; i < this.count; i++) {
+      this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
+      this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
+      this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
+      this.fieldInfoForm.value.fieldOwnership[i].fieldOwnId = i + 1;
 
-        obj = {
-          field_boundary: this.drawnCoordinates[i],
-          field_area_ha: this.fieldArea[i],
-          field_address: 'test',
-          planned_season_detail: {
-            plannedSeason: this.fieldInfoForm.value.plannedSeason,
-            plannedCrops: this.fieldInfoForm.value.plannedCrops,
-            plannedFieldDetails:
-              this.fieldInfoForm.value.plannedFieldDetails[i],
-          },
-          historical_season_detail: {
-            historicalSeason: this.fieldInfoForm.value.historicalSeason,
-            historicalCrops: this.fieldInfoForm.value.historicalCrops,
-            historicalFieldDetails:
-              this.fieldInfoForm.value.historicalFieldDetails[i],
-          },
-          field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
-          enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
-          testOnFields: this.fieldInfoForm.value.testType[i],
-          undertaking_cultivation: {
-            uc: this.fieldInfoForm.value.cropCycleOnReports,
-          },
-          is_required_yn: true,
-        };
-        fieldArr.push(obj);
-      }
-      console.log(fieldArr);
-
-      localStorage.setItem('field-info', JSON.stringify(fieldArr));
-      localStorage.setItem(
-        'field-info-form',
-        JSON.stringify(this.fieldInfoForm.value)
-      );
-      this.router.navigate([url]);
-    } else {
-      this.toastr.error('Please Plot at least One Field', 'Error!');
-      return;
+      obj = {
+        field_boundary: this.drawnCoordinates[i],
+        field_area_ha: this.fieldArea[i],
+        field_address: 'test',
+        planned_season_detail: {
+          plannedSeason: this.fieldInfoForm.value.plannedSeason,
+          plannedCrops: this.fieldInfoForm.value.plannedCrops,
+          plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
+        },
+        historical_season_detail: {
+          historicalSeason: this.fieldInfoForm.value.historicalSeason,
+          historicalCrops: this.fieldInfoForm.value.historicalCrops,
+          historicalFieldDetails:
+            this.fieldInfoForm.value.historicalFieldDetails[i],
+        },
+        field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
+        enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
+        testOnFields: this.fieldInfoForm.value.testType[i],
+        undertaking_cultivation: {
+          uc: this.fieldInfoForm.value.cropCycleOnReports,
+        },
+        is_required_yn: true,
+      };
+      fieldArr.push(obj);
     }
+    console.log(fieldArr);
+
+    localStorage.setItem('field-info', JSON.stringify(fieldArr));
+    localStorage.setItem(
+      'field-info-form',
+      JSON.stringify(this.fieldInfoForm.value)
+    );
+    this.router.navigate([url]);
+    // this.toastr.error('Please Plot at least One Field', 'Error!');
+    // return;
   }
 
   SoilQualityRating(soilQualityStar: any) {
