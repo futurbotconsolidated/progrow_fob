@@ -97,14 +97,14 @@
                                     <div class="col-md-1 lable-top">
                                         <label>Field ID</label>
                                         <input type="text" class="form-control  text-center" formControlName="fieldId"
-                                            placeholder="{{i+1}}" value="{{i+1}}">
+                                            placeholder="{{i+1}}" [attr.value]="i+1">
                                     </div>
                                     <div class="display-flex-1">
                                         <div class="col-md-2 lable-top">
                                             <label>Area (In Hectares)</label>
                                             <input type="text" class="form-control" maxlength="3"
                                                 (keypress)="validateNo($event)" formControlName="fieldArea"
-                                                placeholder="50">
+                                                placeholder="Enter Area">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label>Irrigation System</label>
@@ -139,7 +139,7 @@
                                             <label>Expected Produce (Kg)</label>
                                             <input type="text" maxlength="5" (keypress)="validateNo($event)"
                                                 class="form-control" formControlName="expectedProduce"
-                                                placeholder="1000">
+                                                placeholder="Enter Value">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label>Soil Quality</label>
@@ -317,14 +317,14 @@
                                         <div class="col-md-1 lable-top">
                                             <label>Field ID</label>
                                             <input type="text" formControlName="fieldId"
-                                                class="form-control text-center" placeholder="1">
+                                                class="form-control text-center" placeholder="1" [attr.value]="i+1">
                                         </div>
                                         <div class="display-flex-1">
                                             <div class="col-md-2 lable-top">
                                                 <label>Area (In Hectares)</label>
                                                 <input type="text" class="form-control" maxlength="3"
                                                     (keypress)="validateNo($event)" formControlName="fieldArea"
-                                                    placeholder="50">
+                                                    placeholder="Enter Area">
                                             </div>
                                             <div class="col-md-2 lable-top">
                                                 <label>Irrigation System</label>
@@ -655,7 +655,7 @@
                                 <div class="col-md-1 lable-top">
                                     <label for="field_id">Field ID</label>
                                     <input class="form-control" formControlName="fieldOwnId" placeholder="{{i+1}}"
-                                        value="{{i+1}}">
+                                        [attr.value]="i+1">
                                 </div>
                                 <div class="col-md-3" *ngFor="let indGen of ownerShipTypeList">
                                     <label class="form-check-label form-check bordered-radio"
@@ -747,7 +747,7 @@
                                 <div class="col-md-1 lable-top">
                                     <label>Field ID</label>
                                     <input type="text" class="form-control" formControlName="fieldId"
-                                        placeholder="{{i+1}}" value="{{i+1}}">
+                                        placeholder="{{i+1}}" [attr.value]="i+1">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Water Source</label>
@@ -760,12 +760,12 @@
                                 <div class="col-md-2 lable-top">
                                     <label>Bore Depth (per feet)</label>
                                     <input type="text" class="form-control" formControlName="boreDepth" maxlength="5"
-                                        (keypress)="validateNo($event)" placeholder="">
+                                        (keypress)="validateNo($event)" placeholder="Enter Value">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Pump Depth (per feet)</label>
                                     <input type="text" class="form-control" formControlName="pumpDepth" maxlength="5"
-                                        (keypress)="validateNo($event)" placeholder="">
+                                        (keypress)="validateNo($event)" placeholder="Enter Value">
                                 </div>
                             </div>
                         </div>
@@ -817,7 +817,7 @@
                                 <div class="col-md-2 lable-top">
                                     <label>Type of test</label>
                                     <input type="text" class="form-control" formControlName="typeOfTest"
-                                        placeholder="Water Test">
+                                        placeholder="Enter Value">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Yes/No</label>
