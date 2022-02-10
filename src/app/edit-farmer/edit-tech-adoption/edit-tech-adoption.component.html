@@ -14,14 +14,18 @@
                             <p>
                                 <span>Do you think that you require help in farm yield improvisation?</span>
                                 <span><b>
-                                        {{techAdoptionDisp?.farmYieldImprovisation}}
+                                        {{getDisplayName('booleanValues',techAdoptionDisp?.farmYieldImprovisation)}}
                                     </b>
                                 </span>
                             </p>
                             <p><span> Model farm case studies are available to support claims. Does it help to provide
-                                    confidence?</span><span><b> {{techAdoptionDisp?.farmCaseStudies}}</b></span></p>
+                                    confidence?</span><span><b>
+                                        {{getDisplayName('booleanValues',techAdoptionDisp?.farmCaseStudies)}}</b></span>
+                            </p>
                             <p><span> Would you be comfortable to pay for technology if there is definite margin of
-                                    improvement? </span><span><b> {{techAdoptionDisp?.payForTechnology}}</b></span></p>
+                                    improvement? </span><span><b>
+                                        {{getDisplayName('booleanValues',techAdoptionDisp?.payForTechnology)}}</b></span>
+                            </p>
 
                         </div>
                     </div>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { data } from '../shared/fob_master_data';
 
 let headers = new HttpHeaders();
 headers = headers.set('Content-Type', 'application/json; charset=utf-8');
@@ -10,9 +11,10 @@ headers = headers.set('Content-Type', 'application/json; charset=utf-8');
   providedIn: 'root',
 })
 export class CommonService {
+  masterData: any = {};
+
   token: any;
   headers = new HttpHeaders();
-
   /* START API Base and Endpoints */
   private baseUrl = environment.baseUrl;
   private endPoints = environment.endPoints;
@@ -20,6 +22,7 @@ export class CommonService {
 
   constructor(private http: HttpClient, public oauthService: OAuthService) {
     this.token = this.oauthService.getIdToken();
+    this.masterData = data;
   }
 
   /* START: API Calls */
@@ -53,6 +56,16 @@ export class CommonService {
   /* END: API Calls */
 
   /* START: NON-API Calls */
-  getDisplayName(type: string, id: any) {}
+  getDisplayName(pageProperty: string, dataProperty: string, id: any) {
+    if (id === '' || id === null) return 'N/A';
+    const A = this.masterData[pageProperty][dataProperty].filter(
+      (x: any) => x.displayValue == id
+    );
+    if (Array.isArray(A) && A.length) {
+      return A[0].displayName;
+    } else {
+      return 'N/A';
+    }
+  }
   /* END: NON-API Calls */
 }

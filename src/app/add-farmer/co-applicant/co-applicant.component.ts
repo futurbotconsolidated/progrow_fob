@@ -93,7 +93,7 @@ export class CoApplicantComponent implements OnInit {
     public commonService: CommonService,
     private spinner: NgxSpinnerService
   ) {
-      this.coApplicantForm = this.formBuilder.group({
+    this.coApplicantForm = this.formBuilder.group({
       profileImg: new FormControl(''),
       addressProof: new FormControl('', [Validators.required]),
       addressProofFrontImage: new FormControl('', [Validators.required]),
@@ -165,7 +165,7 @@ export class CoApplicantComponent implements OnInit {
     this.dependencyList = dependency;
     this.ownershipTypeList = ownerShipType;
     this.particularList = particular;
-    
+
     let demoInfo: any = localStorage.getItem('co-applicant-form');
     if (demoInfo) {
       demoInfo = JSON.parse(demoInfo);
@@ -195,14 +195,11 @@ export class CoApplicantComponent implements OnInit {
   }
 
   getFamilyMembersControls() {
-    return (this.coApplicantForm.get('familyMembers') as FormArray)
-      .controls;
+    return (this.coApplicantForm.get('familyMembers') as FormArray).controls;
   }
 
   addFamilyMembers(): void {
-    this.familyMembers = this.coApplicantForm.get(
-      'familyMembers'
-    ) as FormArray;
+    this.familyMembers = this.coApplicantForm.get('familyMembers') as FormArray;
     this.familyMembers.push(this.createFamilyMembers());
   }
 
@@ -235,8 +232,7 @@ export class CoApplicantComponent implements OnInit {
       }
       const A = this.addressProofList
         .filter(
-          (x: any) =>
-            this.coApplicantForm.value.addressProof == x.displayValue
+          (x: any) => this.coApplicantForm.value.addressProof == x.displayValue
         )
         .map((y: any) => {
           return y.displayName;
@@ -419,22 +415,30 @@ export class CoApplicantComponent implements OnInit {
     } else {
       const formValue = this.coApplicantForm.value;
       const obj = {
-        profileImg: formValue.profileImg,
+        profileImg: '',
+        // profileImg: formValue.profileImg,
         identityProof: {
           panNumber: formValue.PANnumber,
-          panImg: formValue.PANFrontImage,
+          panImg: '',
+          // panImg: formValue.PANFrontImage,
         },
         addressProof: {
           selectedIdProof: formValue.addressProof,
-          selectedIdProofFrontImg: formValue.addressProofFrontImage,
-          selectedIdProofBackImg: formValue.addressProofBackImage,
+          selectedIdProofFrontImg: '',
+          selectedIdProofBackImg: '',
+          // selectedIdProofFrontImg: formValue.addressProofFrontImage,
+          // selectedIdProofBackImg: formValue.addressProofBackImage,
         },
-        passportNumber: formValue.passportNumber,    
-        passportFrontImage: formValue.passportFrontImage,    
-        passportBackImage: formValue.passportBackImage,        
-        NREGANumber: formValue.NREGANumber,        
-        NREGAFrontImage: formValue.NREGAFrontImage,        
-        NREGABackImage: formValue.NREGABackImage,        
+        passportNumber: formValue.passportNumber,
+        passportFrontImage: '',
+        // passportFrontImage: formValue.passportFrontImage,
+        passportBackImage: '',
+        // passportBackImage: formValue.passportBackImage,
+        NREGANumber: formValue.NREGANumber,
+        NREGAFrontImage: '',
+        // NREGAFrontImage: formValue.NREGAFrontImage,
+        NREGABackImage: '',
+        // NREGABackImage: formValue.NREGABackImage,
         farmerDetails: {
           firstName: formValue.firstName,
           middleName: formValue.middleName,
@@ -452,8 +456,7 @@ export class CoApplicantComponent implements OnInit {
           occupation: formValue.occupation,
           fpoName: formValue.annualIncome,
         },
-        familyMembers: formValue.familyMembers,    
-    
+        familyMembers: formValue.familyMembers,
       };
       console.log(obj);
       localStorage.setItem('co-applicant', JSON.stringify(obj));

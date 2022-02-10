@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from '../../shared/common.service';
 
 @Component({
   selector: 'app-edit-fpo',
@@ -7,12 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditFpoComponent implements OnInit {
   produceAggrDisp = {} as any;
-  constructor() {
+  constructor(private commonService: CommonService) {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.produceAggrDisp = JSON.parse(A).produce_aggregator;
-      console.log(this.produceAggrDisp);
     }
   }
   ngOnInit(): void {}
+
+  // get Name from Master Json
+  getDisplayName(dataProperty: string, id: any) {
+    return this.commonService.getDisplayName(
+      'produceAggregator',
+      dataProperty,
+      id
+    );
+  }
 }

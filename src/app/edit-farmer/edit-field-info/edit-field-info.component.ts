@@ -149,28 +149,29 @@ export class EditFieldInfoComponent implements OnInit {
       }
     ).addTo(map);
 
-    map.addControl(
-      new L.Control.Draw({
-        edit: {
-          featureGroup: drawnItems,
-          remove: true,
-          poly: {
-            allowIntersection: false,
-          },
-        },
-        draw: {
-          polygon: {
-            allowIntersection: false,
-            showArea: false,
-          },
-          polyline: false,
-          circle: false,
-          rectangle: false,
-          marker: false,
-          circlemarker: false,
-        },
-      })
-    );
+    // hide controls
+    // map.addControl(
+    //   new L.Control.Draw({
+    //     edit: {
+    //       featureGroup: drawnItems,
+    //       remove: true,
+    //       poly: {
+    //         allowIntersection: false,
+    //       },
+    //     },
+    //     draw: {
+    //       polygon: {
+    //         allowIntersection: false,
+    //         showArea: false,
+    //       },
+    //       polyline: false,
+    //       circle: false,
+    //       rectangle: false,
+    //       marker: false,
+    //       circlemarker: false,
+    //     },
+    //   })
+    // );
 
     if (this.selectedCoordinates.length > 0) {
       var polygon = L.polygon(this.selectedCoordinates).addTo(map);
