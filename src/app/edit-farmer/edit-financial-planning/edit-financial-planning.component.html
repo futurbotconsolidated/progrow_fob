@@ -252,10 +252,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><b>SBI</b></td>
-                                    <td><b>2345 6789 0198 0987</b></td>
-                                    <td><b>SBI09876123</b></td>
+                                <tr *ngFor="let x of financialInfo?.bankDetails">
+                                    <td><b>{{x.bankName}}</b></td>
+                                    <td><b>{{x.accountNum}}</b></td>
+                                    <td><b>{{x.IFSCode}}</b></td>
                                 </tr>
 
                             </tbody>
@@ -284,6 +284,8 @@
             </div>
             <div class="modal-body">
                 <ul class="modal-other-loan">
+
+
                     <li>
                         <p>Bank Name</p>
                         <p><b>ABC Bank of India</b></p>
