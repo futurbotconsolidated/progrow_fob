@@ -11,6 +11,7 @@ headers = headers.set('Content-Type', 'application/json; charset=utf-8');
   providedIn: 'root',
 })
 export class CommonService {
+  userInfo: any;
   masterData: any = {};
 
   token: any;
@@ -22,12 +23,13 @@ export class CommonService {
 
   constructor(private http: HttpClient, public oauthService: OAuthService) {
     this.token = this.oauthService.getIdToken();
+    this.userInfo = this.oauthService.getIdentityClaims();
     this.masterData = data;
   }
 
   /* START: API Calls */
   getExistingFarmers() {
-    headers = headers.set('Bd-id', '1');
+    headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
     headers = headers.set('Authorization', this.token || '');
     return this.http.get(this.baseUrl + this.endPoints.getAllFarmers, {
       headers,
@@ -35,7 +37,7 @@ export class CommonService {
   }
 
   getFarmersPipeline() {
-    headers = headers.set('Bd-id', '1');
+    headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
     headers = headers.set('Authorization', this.token || '');
     return this.http.get(this.baseUrl + this.endPoints.getAllFarmers, {
       headers,
