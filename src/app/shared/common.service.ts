@@ -29,7 +29,8 @@ export class CommonService {
 
   /* START: API Calls */
   getExistingFarmers() {
-    headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
+    headers = headers.set('Bd-id', '1');
+    // headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
     headers = headers.set('Authorization', this.token || '');
     return this.http.get(this.baseUrl + this.endPoints.getAllFarmers, {
       headers,
