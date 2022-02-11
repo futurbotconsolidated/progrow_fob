@@ -16,6 +16,7 @@ export class EditFieldInfoComponent implements OnInit {
   plannedDetails = [] as any;
   enumerateDetails = [] as any;
   typesOfTests = [] as any;
+  editFieldArea = <any>[];
 
   constructor(private spinner: NgxSpinnerService) {
     const A: any = localStorage.getItem('farmer-details');
@@ -28,6 +29,7 @@ export class EditFieldInfoComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.fieldInfo) {
+      this.editFieldArea = [];
       // this.spinner.show();
       this.fieldInfo.forEach((el: any) => {
         this.ownerShipDetails.push(el.field_ownership_detail);
@@ -48,11 +50,7 @@ export class EditFieldInfoComponent implements OnInit {
       }
 
       this.fieldInfo.forEach((el: any) => {
-        // this.addPlannedFieldDetails();
-        // this.addHistoFieldDetail();
-        // this.addFieldOwnershipDetail();
-        // this.addEnumerate();
-
+        this.editFieldArea.push(el.field_area_ha);
         let arr = el.field_boundary.geometry.coordinates;
         let co: any = [];
         arr.forEach((x: any) => {
@@ -97,10 +95,6 @@ export class EditFieldInfoComponent implements OnInit {
         },
       }),
       drawnItems = L.featureGroup().addTo(map);
-    // L.tileLayer(
-    //   'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
-    //   { maxZoom: 19, attribution: 'google' }
-    // ).addTo(map);
 
     var mapboxAccessToken =
       'pk.eyJ1IjoicHVybmFyYW0iLCJhIjoiY2tpenBvZWpsMDNlaTMzcWpiZ2liZjEydiJ9.Mdj1w5dXDfCGCpIH5MlI2g';
@@ -149,37 +143,18 @@ export class EditFieldInfoComponent implements OnInit {
       }
     ).addTo(map);
 
-    // hide controls
-    // map.addControl(
-    //   new L.Control.Draw({
-    //     edit: {
-    //       featureGroup: drawnItems,
-    //       remove: true,
-    //       poly: {
-    //         allowIntersection: false,
-    //       },
-    //     },
-    //     draw: {
-    //       polygon: {
-    //         allowIntersection: false,
-    //         showArea: false,
-    //       },
-    //       polyline: false,
-    //       circle: false,
-    //       rectangle: false,
-    //       marker: false,
-    //       circlemarker: false,
-    //     },
-    //   })
-    // );
+    this.selectedCoordinates.forEach((x: any, index: number) => {
+      console.log(this.editFieldArea[index]);
 
-    if (this.selectedCoordinates.length > 0) {
-      var polygon = L.polygon(this.selectedCoordinates).addTo(map);
-      // zoom the map to the polygon
-      polygon.bindPopup(`${this.selectedCoordinates.length}`).openPopup();
+      var polygon = L.polygon(x).addTo(map);
+      polygon
+        .bindPopup(
+          `Field ID : ${index + 1} <br/> Area : ${
+            this.editFieldArea[index]
+          } (Hectare)`
+        )
+        .openPopup();
       map.fitBounds(polygon.getBounds());
-    } else {
-      console.log('no lat lng');
-    }
+    });
   }
 }

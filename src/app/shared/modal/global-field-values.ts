@@ -248,7 +248,7 @@ export const agriculturalInterest = [
     displayValue: 'very_much_interested',
   },
   { id: 2, displayName: 'Interested', displayValue: 'interested' },
-  { id: 3, displayName: 'May be', displayValue: 'May be' },
+  { id: 3, displayName: 'May be', displayValue: 'may_be' },
   { id: 4, displayName: 'Not Interested', displayValue: 'not_interested' },
 ];
 
@@ -269,14 +269,22 @@ export const relation = [
   { id: 1, displayName: 'Father', displayValue: 'father' },
   { id: 2, displayName: 'Mother', displayValue: 'mother' },
   { id: 3, displayName: 'Sister', displayValue: 'sister' },
+  { id: 4, displayName: 'Brother', displayValue: 'brother' },
+  { id: 5, displayName: 'Other', displayValue: 'other' },
 ];
 export const education = [
-  { id: 1, displayName: '10th', displayValue: '10th' },
-  { id: 2, displayName: 'PUC', displayValue: 'puc' },
+  { id: 1, displayName: 'No Education', displayValue: 'no_education' },
+  { id: 2, displayName: '10th', displayValue: '10th' },
+  { id: 3, displayName: 'PUC', displayValue: 'puc' },
+  { id: 4, displayName: 'Graduate', displayValue: 'graduate' },
+  { id: 5, displayName: 'PhD', displayValue: 'phd' },
 ];
 export const occupation = [
   { id: 1, displayName: 'Farmer', displayValue: 'farmer' },
   { id: 2, displayName: 'House Wife', displayValue: 'house_wife' },
+  { id: 3, displayName: 'Student', displayValue: 'student' },
+  { id: 4, displayName: 'Self Employed', displayValue: 'self_employed' },
+  { id: 5, displayName: 'Professional', displayValue: 'professional' },
 ];
 export const dependency = [
   { id: 1, displayName: '1', displayValue: '1' },
@@ -301,6 +309,7 @@ export const irrigationSystem = [
 export const waterSource = [
   { id: 1, displayName: 'Pond', displayValue: 'pond' },
   { id: 1, displayName: 'Well', displayValue: 'well' },
+  { id: 3, displayName: 'Canal', displayValue: 'canal' },
 ];
 export const ownerShipType = [
   {

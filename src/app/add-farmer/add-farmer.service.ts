@@ -12,6 +12,7 @@ headers = headers.set('Content-Type', 'application/json; charset=utf-8');
   providedIn: 'root',
 })
 export class AddFarmerService {
+  userInfo: any;
   token: any;
   headers = new HttpHeaders();
   private baseUrl = environment.baseUrl;
@@ -20,6 +21,7 @@ export class AddFarmerService {
 
   constructor(private http: HttpClient, public oauthService: OAuthService) {
     this.token = this.oauthService.getIdToken();
+    this.userInfo = this.oauthService.getIdentityClaims();
   }
 
   sendMessage(routeName: string) {
@@ -39,6 +41,7 @@ export class AddFarmerService {
   // }
 
   registerFarmer(data: any) {
+    headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
     headers = headers.set('Authorization', this.token || '');
     return this.http.post(this.baseUrl + this.endPoints.registerFarmer, data, {
       headers,

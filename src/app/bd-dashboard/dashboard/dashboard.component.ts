@@ -124,51 +124,51 @@ export class DashboardComponent implements OnInit {
            </div>
          </div>`;
 
-        elem['geometry'].coordinates.forEach((h: any, i: number) => {
-          // Add Source
-          map.addSource(`figure${i}_${index}`, {
-            type: 'geojson',
-            data: {
-              type: 'Feature',
-              geometry: {
-                type: 'Polygon',
-                coordinates: [h],
-              },
-            } as any,
-          });
+        // elem['geometry'].coordinates.forEach((h: any, i: number) => {
+        //   // Add Source
+        //   map.addSource(`figure${i}_${index}`, {
+        //     type: 'geojson',
+        //     data: {
+        //       type: 'Feature',
+        //       geometry: {
+        //         type: 'Polygon',
+        //         coordinates: [h],
+        //       },
+        //     } as any,
+        //   });
 
-          // Add a layer showing the fields.
-          map.addLayer({
-            id: `figure${i}_${index}`,
-            type: 'fill',
-            source: `figure${i}_${index}`,
-            layout: {},
-            paint: {
-              'fill-outline-color': 'red',
-              'fill-opacity': 0.4,
-            },
-          });
+        //   // Add a layer showing the fields.
+        //   map.addLayer({
+        //     id: `figure${i}_${index}`,
+        //     type: 'fill',
+        //     source: `figure${i}_${index}`,
+        //     layout: {},
+        //     paint: {
+        //       'fill-outline-color': 'red',
+        //       'fill-opacity': 0.4,
+        //     },
+        //   });
 
-          // When a click event occurs on a feature in the places layer, open a popup at the
-          // location of the feature, with description HTML from its properties.
-          map.on('click', `figure${i}_${index}`, (e) => {
-            new mapboxgl.Popup()
-              .setLngLat(h[0])
-              .setHTML(popupDescription)
-              .setMaxWidth('400px')
-              .addTo(map);
-          });
+        //   // When a click event occurs on a feature in the places layer, open a popup at the
+        //   // location of the feature, with description HTML from its properties.
+        //   map.on('click', `figure${i}_${index}`, (e) => {
+        //     new mapboxgl.Popup()
+        //       .setLngLat(h[0])
+        //       .setHTML(popupDescription)
+        //       .setMaxWidth('400px')
+        //       .addTo(map);
+        //   });
 
-          // Change the cursor to a pointer when the mouse is over the places layer.
-          map.on('mouseenter', `figure${i}_${index}`, () => {
-            map.getCanvas().style.cursor = 'pointer';
-          });
+        //   // Change the cursor to a pointer when the mouse is over the places layer.
+        //   map.on('mouseenter', `figure${i}_${index}`, () => {
+        //     map.getCanvas().style.cursor = 'pointer';
+        //   });
 
-          // Change it back to a pointer when it leaves.
-          map.on('mouseleave', `figure${i}_${index}`, () => {
-            map.getCanvas().style.cursor = '';
-          });
-        });
+        //   // Change it back to a pointer when it leaves.
+        //   map.on('mouseleave', `figure${i}_${index}`, () => {
+        //     map.getCanvas().style.cursor = '';
+        //   });
+        // });
 
         if (index == useData.length - 1) {
           this.spinner.hide();
@@ -178,8 +178,8 @@ export class DashboardComponent implements OnInit {
 
     map.addControl(new mapboxgl.NavigationControl()); // Add map controls
     map.addControl(new mapboxgl.FullscreenControl()); // Add map full screen
-    setTimeout(function() {
-      map.resize(); 
+    setTimeout(function () {
+      map.resize();
     }, 500);
   }
   /* END: Non-API Function Calls */
