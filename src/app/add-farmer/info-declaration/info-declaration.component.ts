@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AddFarmerService } from '../add-farmer.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { OAuthService } from 'angular-oauth2-oidc';
+
 @Component({
   selector: 'app-info-declaration',
   templateUrl: './info-declaration.component.html',
@@ -14,14 +16,17 @@ export class InfoDeclarationComponent implements OnInit {
     agreedTerms: new FormControl('', Validators.required),
   });
   canSubmit: boolean;
+  userInfo: any;
 
   constructor(
     private addFarmerService: AddFarmerService,
     private toastr: ToastrService,
     private router: Router,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    public oauthService: OAuthService
   ) {
     this.canSubmit = false;
+    this.userInfo = this.oauthService.getIdentityClaims();
   }
 
   ngOnInit(): void {}
@@ -47,7 +52,7 @@ export class InfoDeclarationComponent implements OnInit {
     let coAppInfo: any = localStorage.getItem('co-applicant');
 
     let obj = {
-      bd_id: 1,
+      bd_id: this.userInfo['custom:access_type'],
       pan_number: JSON.parse(demoInfo).identityProof.panNumber,
       mobile: JSON.parse(demoInfo).address.mobileNumber,
       demographic_info: JSON.parse(demoInfo),
