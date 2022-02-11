@@ -12,8 +12,7 @@
         <div class="pro-img"><span>SS</span></div>
         <div class="pro-name">
           <p>Welcome</p>
-          <!-- <h3>{{ userInfo["custom:full_name"] }}</h3> -->
-          <h3>Ramesh Kumar</h3>
+          <h3>{{ userInfo["name"] }}</h3>
         </div>
       </div>
       <div class="bd-header-right col-sm-2 col-md-2 col-xl-1">
@@ -40,8 +39,7 @@
               <path
                 d="M19,7h5V9H19Zm-2,5h7v2H17Zm3,5h4v2H20ZM2,22a8,8,0,1,1,16,0H16A6,6,0,1,0,4,22Zm8-9a6,6,0,1,1,6-6A6,6,0,0,1,10,13Zm0-2A4,4,0,1,0,6,7,4,4,0,0,0,10,11Z" />
             </svg>
-            <!-- <span>{{ userInfo["custom:full_name"] }}</span> -->
-            <span>Ramesh Kumar</span>
+            <span>{{ userInfo["name"] }}</span>
           </li>
           <li>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -123,7 +121,7 @@
               <path class="a" d="M0,0H24V24H0Z" />
               <path
                 d="M2,3.993A1,1,0,0,1,2.992,3H21.008A.993.993,0,0,1,22,3.993V20.007a1,1,0,0,1-.992.993H2.992A.993.993,0,0,1,2,20.007ZM4,5V19H20V5ZM6,7h6v6H6ZM8,9v2h2V9ZM6,15H18v2H6Zm8-8h4V9H14Zm0,4h4v2H14Z" />
-            </svg><span>{{ userInfo?.bd_id || "BD0000085" }}</span>
+            </svg><span>{{ userInfo?.['custom:access_type'] || "NA" }}</span>
           </li>
           <li>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -137,7 +135,7 @@
               <path class="a" d="M0,0H24V24H0Z" />
               <path
                 d="M7,4V20H17V4ZM6,2H18a1,1,0,0,1,1,1V21a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V3A1,1,0,0,1,6,2Zm6,15a1,1,0,1,1-1,1A1,1,0,0,1,12,17Z" />
-            </svg><span>{{ userInfo?.phone || "9876543210" }}</span>
+            </svg><span>{{ userInfo?.phone_number || "NA" }}</span>
           </li>
         </ul>
       </div>
