@@ -1,4 +1,4 @@
-export const baseUrl = 'https://api.fob2.dev.adaptiwise.com';
+export const baseUrl = 'https://fobapi.agrisaathi.com';
 // export const baseUrl = 'https://fob-app.agrisaathi.com';
 
 export const endPoints = {
