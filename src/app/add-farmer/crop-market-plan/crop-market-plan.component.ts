@@ -1,39 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormGroup,
   FormControl,
   Validators,
   FormBuilder,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import {
-  seedProcure,
-  varietyComparison,
-  fertilizerPurchase,
-  fertilizerAdvise,
-  farmGateGrading,
-  durationReceivingMoney,
-  warehouseProduce,
-  pesticideQuality,
-} from '../../shared/modal/global-field-values';
+import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
+
 @Component({
   selector: 'app-crop-market-plan',
   templateUrl: './crop-market-plan.component.html',
   styleUrls: ['./crop-market-plan.component.css'],
 })
 export class CropMarketPlanComponent implements OnInit {
+  /* START: Variable */
   cropMarketPlanForm = new FormGroup({});
+  cropMarketPlanMaster = <any>[];
   nextRoute: any;
-
-  seedProcureList = <any>[];
-  varietyComparisonList = <any>[];
-  fertilizerPurchaseList = <any>[];
-  pesticideQualityList = <any>[];
-  fertilizerAdviseList = <any>[];
-  farmGateGradingList = <any>[];
-  durationReceivingMoneyList = <any>[];
-  warehouseProduceList = <any>[];
+  /* END: Variable */
 
   constructor(
     private formBuilder: FormBuilder,
@@ -61,17 +47,7 @@ export class CropMarketPlanComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.seedProcureList = seedProcure;
-    this.varietyComparisonList = varietyComparison;
-    this.fertilizerPurchaseList = fertilizerPurchase;
-    this.pesticideQualityList = pesticideQuality;
-    this.fertilizerAdviseList = fertilizerAdvise;
-    this.farmGateGradingList = farmGateGrading;
-    this.durationReceivingMoneyList = durationReceivingMoney;
-    this.warehouseProduceList = warehouseProduce;
-
-    console.log(this.fertilizerAdviseList, '----fertilizerAdviseList');
-
+    this.cropMarketPlanMaster = data.cropMarket; // read master data
     let cropPlan: any = localStorage.getItem('crop-market-planing');
     if (cropPlan) {
       cropPlan = JSON.parse(cropPlan);
