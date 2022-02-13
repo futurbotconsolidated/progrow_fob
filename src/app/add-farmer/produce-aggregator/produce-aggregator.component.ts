@@ -1,32 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormGroup,
   FormControl,
   Validators,
   FormBuilder,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import {
-  verticals,
-  associatedWithFPO,
-  enrolFPO,
-  followSuggestions,
-  consolidateLoans,
-} from '../../shared/modal/global-field-values';
+import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
+
 @Component({
   selector: 'app-produce-aggregator',
   templateUrl: './produce-aggregator.component.html',
   styleUrls: ['./produce-aggregator.component.css'],
 })
 export class ProduceAggregatorComponent implements OnInit {
+  /* START: Variable */
   produceAggregatorForm = new FormGroup({});
-  verticalsList = <any>[];
-  associatedWithFPOList = <any>[];
-  enrolFPOList = <any>[];
-  followSuggestionsList = <any>[];
-  consolidateLoansList = <any>[];
+  produceAggregatorMaster = <any>[];
   nextRoute: any;
+  /* END: Variable */
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,11 +41,7 @@ export class ProduceAggregatorComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.verticalsList = verticals;
-    this.associatedWithFPOList = associatedWithFPO;
-    this.enrolFPOList = enrolFPO;
-    this.followSuggestionsList = followSuggestions;
-    this.consolidateLoansList = consolidateLoans;
+    this.produceAggregatorMaster = data.produceAggregator; // read master data
 
     let prodAggregator: any = localStorage.getItem('produce-aggregator');
     if (prodAggregator) {
@@ -86,7 +75,7 @@ export class ProduceAggregatorComponent implements OnInit {
   }
 
   saveData() {
-    let url = `/add/${this.nextRoute}`;
+    const url = `/add/${this.nextRoute}`;
     console.log(url);
     localStorage.setItem(
       'produce-aggregator',
