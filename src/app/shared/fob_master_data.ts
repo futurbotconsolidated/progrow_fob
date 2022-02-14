@@ -74,37 +74,37 @@ export const data = {
         defaultValue: false,
       },
       {
-        id: 1,
+        id: 3,
         displayName: 'On demand access to pesticide',
         displayValue: 'On demand access to pesticide',
         defaultValue: false,
       },
       {
-        id: 2,
+        id: 4,
         displayName: 'On demand access to seeds',
         displayValue: 'On demand access to seeds',
         defaultValue: false,
       },
       {
-        id: 1,
+        id: 5,
         displayName: 'Convenience to sale of produce',
         displayValue: 'Convenience to sale of produce',
         defaultValue: false,
       },
       {
-        id: 2,
+        id: 6,
         displayName: 'Reducing number of middlemen while selling produce',
         displayValue: 'Reducing number of middlemen while selling produce',
         defaultValue: false,
       },
       {
-        id: 1,
+        id: 7,
         displayName: 'Marketing / Branding of produce',
         displayValue: 'Marketing / Branding of produce',
         defaultValue: false,
       },
       {
-        id: 2,
+        id: 8,
         displayName:
           'Lower price of Inputs and Raw materials incl. fertilizer, pesticide, seeds etc.',
         displayValue:
@@ -112,13 +112,13 @@ export const data = {
         defaultValue: false,
       },
       {
-        id: 1,
+        id: 9,
         displayName: 'Transporting produce',
         displayValue: 'Transporting produce',
         defaultValue: false,
       },
       {
-        id: 2,
+        id: 10,
         displayName:
           'Receiving money at farm gate only without worrying on sale',
         displayValue:
@@ -126,13 +126,13 @@ export const data = {
         defaultValue: false,
       },
       {
-        id: 1,
+        id: 11,
         displayName: 'Access to technology and Cultivation advisory',
         displayValue: 'Access to technology and Cultivation advisory',
         defaultValue: false,
       },
       {
-        id: 2,
+        id: 12,
         displayName: 'Social factors: Caste, Creed, Colour, Religion',
         displayValue: 'Social factors: Caste, Creed, Colour, Religion',
         defaultValue: false,
@@ -428,18 +428,176 @@ export const data = {
     ],
   },
   demoGraphic: {
+    addressProofType: [
+      { id: 1, displayName: 'Aadhaar ID', displayValue: 'aadhaar_id' },
+      {
+        id: 2,
+        displayName: 'Driving Licence ',
+        displayValue: 'driving_licence',
+      },
+      { id: 3, displayName: 'Voter ID', displayValue: 'voter_id' },
+    ],
+    gender: [
+      {
+        id: 1,
+        displayName: 'Male',
+        displayValue: 'male',
+      },
+      {
+        id: 2,
+        displayName: 'Female',
+        displayValue: 'female',
+      },
+      {
+        id: 3,
+        displayName: 'Other',
+        displayValue: 'other',
+      },
+    ],
+    religion: [
+      {
+        id: 1,
+        displayName: 'Hindu',
+        displayValue: 'hindu',
+        defaultValue: 'hindu',
+      },
+      {
+        id: 2,
+        displayName: 'Muslim',
+        displayValue: 'muslim',
+        defaultValue: false,
+      },
+      {
+        id: 3,
+        displayName: 'Sikh',
+        displayValue: 'sikh',
+        defaultValue: false,
+      },
+      {
+        id: 4,
+        displayName: 'Christian',
+        displayValue: 'Christian',
+        defaultValue: false,
+      },
+      {
+        id: 5,
+        displayName: 'Zoroastrian',
+        displayValue: 'Zoroastrian',
+        defaultValue: false,
+      },
+      {
+        id: 6,
+        displayName: 'Buddhist',
+        displayValue: 'buddhist',
+        defaultValue: false,
+      },
+      {
+        id: 7,
+        displayName: 'Others',
+        displayValue: 'others',
+        defaultValue: false,
+      },
+    ],
+    caste: [
+      {
+        id: 1,
+        displayName: 'SC',
+        displayValue: 'sc',
+        defaultValue: 'sc',
+      },
+      {
+        id: 2,
+        displayName: 'ST',
+        displayValue: 'st',
+        defaultValue: false,
+      },
+      {
+        id: 3,
+        displayName: 'OBC',
+        displayValue: 'obc',
+        defaultValue: false,
+      },
+      {
+        id: 4,
+        displayName: 'General',
+        displayValue: 'general',
+        defaultValue: false,
+      },
+      {
+        id: 5,
+        displayName: 'Others',
+        displayValue: 'others',
+        defaultValue: false,
+      },
+    ],
     relation: [
       { id: 1, displayName: 'Father', displayValue: 'father' },
       { id: 2, displayName: 'Mother', displayValue: 'mother' },
       { id: 3, displayName: 'Sister', displayValue: 'sister' },
+      { id: 4, displayName: 'Brother', displayValue: 'brother' },
+      { id: 4, displayName: 'Son', displayValue: 'son' },
+      { id: 4, displayName: 'Daughter', displayValue: 'daughter' },
+      { id: 5, displayName: 'Other', displayValue: 'other' },
     ],
     education: [
-      { id: 1, displayName: '10th', displayValue: '10th' },
-      { id: 2, displayName: 'PUC', displayValue: 'puc' },
+      { id: 1, displayName: 'No Education', displayValue: 'no_education' },
+      { id: 2, displayName: '10th', displayValue: '10th' },
+      { id: 3, displayName: 'PUC', displayValue: 'puc' },
+      { id: 4, displayName: 'Graduate', displayValue: 'graduate' },
+      { id: 5, displayName: 'PhD', displayValue: 'phd' },
     ],
     occupation: [
       { id: 1, displayName: 'Farmer', displayValue: 'farmer' },
       { id: 2, displayName: 'House Wife', displayValue: 'house_wife' },
+      { id: 3, displayName: 'Student', displayValue: 'student' },
+      { id: 4, displayName: 'Self Employed', displayValue: 'self_employed' },
+      { id: 5, displayName: 'Professional', displayValue: 'professional' },
+    ],
+    propertyStatus: [
+      {
+        id: 1,
+        displayName: 'Own',
+        displayValue: 'own',
+        defaultValue: 'own',
+      },
+      {
+        id: 2,
+        displayName: 'Parental',
+        displayValue: 'parental',
+        defaultValue: false,
+      },
+      {
+        id: 3,
+        displayName: 'Rented',
+        displayValue: 'rented',
+        defaultValue: false,
+      },
+      {
+        id: 4,
+        displayName: 'Leased',
+        displayValue: 'leased',
+        defaultValue: false,
+      },
+      {
+        id: 5,
+        displayName: 'Company Provided',
+        displayValue: 'company_provided',
+        defaultValue: false,
+      },
+    ],
+    commOrPerAddress: [
+      {
+        id: 1,
+        displayName: 'Same as above',
+        displayValue: 'same_above',
+        defaultValue: 'same_above',
+      },
+      {
+        id: 2,
+        displayName: 'Different address',
+        displayValue: 'different_address',
+        defaultValue: 'different_address',
+      },
     ],
     dependency: [
       { id: 1, displayName: '1', displayValue: '1' },
@@ -547,6 +705,6 @@ export const data = {
       },
       { id: 3, displayName: 'Share Cropping', displayValue: 'Share Cropping' },
     ],
-    particular: [{ id: 1, displayName: 'ABC', displayValue: 'ABC' }],
+    particular: [{ id: 1, displayName: 'NA', displayValue: 'NA' }],
   },
 };

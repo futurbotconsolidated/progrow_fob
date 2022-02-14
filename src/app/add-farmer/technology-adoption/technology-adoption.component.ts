@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormGroup,
   FormControl,
   Validators,
   FormBuilder,
-  FormArray,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-
-import { technologyAdoptionBoolean } from '../../shared/modal/global-field-values';
+import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
 
 @Component({
@@ -17,9 +15,11 @@ import { AddFarmerService } from '../add-farmer.service';
   styleUrls: ['./technology-adoption.component.css'],
 })
 export class TechnologyAdoptionComponent implements OnInit {
+  /* START: Variable */
   technologyAdoptionForm = new FormGroup({});
-  technologyAdoptionBooleanList = <any>[];
+  technologyAdoptionMaster = <any>{};
   nextRoute: any;
+  /* END: Variable */
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,8 +40,7 @@ export class TechnologyAdoptionComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.technologyAdoptionBooleanList = technologyAdoptionBoolean;
-
+    this.technologyAdoptionMaster = data.technologyAdoption; // read master data
     let techAdopt: any = localStorage.getItem('technology-adoption');
     if (techAdopt) {
       techAdopt = JSON.parse(techAdopt);
@@ -51,7 +50,7 @@ export class TechnologyAdoptionComponent implements OnInit {
   }
 
   saveData() {
-    let url = `/add/${this.nextRoute}`;
+    const url = `/add/${this.nextRoute}`;
     console.log(url);
     localStorage.setItem(
       'technology-adoption',

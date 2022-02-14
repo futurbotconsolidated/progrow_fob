@@ -32,8 +32,16 @@ export class AppComponent {
         ) {
           this.oauthService.initCodeFlow();
         } else {
-          console.log(this.oauthService.loadUserProfile());
-          this.router.navigate(['/bd/dashboard']);
+          if (
+            (!this.oauthService.hasValidIdToken() ||
+              !this.oauthService.hasValidAccessToken()) &&
+            this.oauthService.getAccessToken()
+          ) {
+            this.oauthService.logOut();
+            this.oauthService.initImplicitFlow();
+          } else {
+            this.router.navigate(['/bd/dashboard']);
+          }
         }
       });
   }
