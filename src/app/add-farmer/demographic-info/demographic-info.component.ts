@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from '../../shared/common.service';
 import {
   FormGroup,
   FormControl,
@@ -6,36 +10,9 @@ import {
   FormBuilder,
   FormArray,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { CommonService } from '../../shared/common.service';
 import { validatePANNumber } from '../../shared/custom-validators';
-
+import { data } from '../../shared/fob_master_data';
 declare var $: any;
-
-import {
-  religion,
-  gender,
-  caste,
-  propertyStatus,
-  commOrPerAddress,
-  relation,
-  education,
-  occupation,
-  dependency,
-  ownerShipType,
-  particular,
-  phoneType,
-  phoneOperating,
-  agriculturalInterest,
-  cultivationAdvice,
-  adviceMedium,
-  sourceOfIncome,
-  innovativeWaysFarming,
-  addressProofType,
-  propertyType,
-} from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 
 enum SaveStatus {
@@ -54,6 +31,8 @@ function sleep(ms: number): Promise<any> {
   styleUrls: ['./demographic-info.component.css'],
 })
 export class DemographicInfoComponent implements OnInit {
+  /* START: Varaibles */
+  demoGraphicMaster = <any>{};
   isSubmitted = false;
   fileUpload = {
     fileFor: '',
@@ -68,27 +47,6 @@ export class DemographicInfoComponent implements OnInit {
     imageHeading2: 'Back Image',
   } as any;
 
-  religionList = <any>[];
-  genderList = <any>[];
-  casteList = <any>[];
-  propertyStatusList = <any>[];
-  addressStatusList = <any>[];
-  relationList = <any>[];
-  educationList = <any>[];
-  occupationList = <any>[];
-  dependencyList = <any>[];
-  ownershipTypeList = <any>[];
-  particularList = <any>[];
-  phoneTypeList = <any>[];
-  phoneOperatingList = <any>[];
-  agriculturalInterestList = <any>[];
-  cultivationAdviceList = <any>[];
-  adviceMediumList = <any>[];
-  sourceOfIncomeList = <any>[];
-  innovativeWaysFarmingList = <any>[];
-  addressProofList: any = [];
-  propertyTypeList: any = [];
-
   pinCodeAPIData: any = [];
   permPinCodeAPIData: any = [];
 
@@ -99,6 +57,7 @@ export class DemographicInfoComponent implements OnInit {
   nextRoute: any;
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
+  /* END: Varaibles */
 
   constructor(
     public router: Router,
@@ -179,26 +138,8 @@ export class DemographicInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addressProofList = addressProofType;
-    this.propertyTypeList = propertyType;
-    this.religionList = religion;
-    this.genderList = gender;
-    this.casteList = caste;
-    this.propertyStatusList = propertyStatus;
-    this.addressStatusList = commOrPerAddress;
-    this.relationList = relation;
-    this.occupationList = occupation;
-    this.educationList = education;
-    this.dependencyList = dependency;
-    this.ownershipTypeList = ownerShipType;
-    this.particularList = particular;
-    this.phoneTypeList = phoneType;
-    this.phoneOperatingList = phoneOperating;
-    this.cultivationAdviceList = cultivationAdvice;
-    this.adviceMediumList = adviceMedium;
-    this.sourceOfIncomeList = sourceOfIncome;
-    this.agriculturalInterestList = agriculturalInterest;
-    this.innovativeWaysFarmingList = innovativeWaysFarming;
+    this.demoGraphicMaster = data.demoGraphic; // read master data
+
     // ----------------------- auto save --------------------
     // this.demographicInfoForm.valueChanges
     //   .pipe(
@@ -337,7 +278,7 @@ export class DemographicInfoComponent implements OnInit {
         this.toastr.error('please select Address Proof Type.', 'Error!');
         return;
       }
-      const A = this.addressProofList
+      const A = this.demoGraphicMaster['addressProofType']
         .filter(
           (x: any) =>
             this.demographicInfoForm.value.addressProof == x.displayValue

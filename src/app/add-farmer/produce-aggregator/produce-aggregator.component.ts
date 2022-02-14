@@ -17,7 +17,7 @@ import { AddFarmerService } from '../add-farmer.service';
 export class ProduceAggregatorComponent implements OnInit {
   /* START: Variable */
   produceAggregatorForm = new FormGroup({});
-  produceAggregatorMaster = <any>[];
+  produceAggregatorMaster = <any>{};
   nextRoute: any;
   /* END: Variable */
 

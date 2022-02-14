@@ -17,7 +17,7 @@ import { AddFarmerService } from '../add-farmer.service';
 export class TechnologyAdoptionComponent implements OnInit {
   /* START: Variable */
   technologyAdoptionForm = new FormGroup({});
-  technologyAdoptionMaster = <any>[];
+  technologyAdoptionMaster = <any>{};
   nextRoute: any;
   /* END: Variable */
 

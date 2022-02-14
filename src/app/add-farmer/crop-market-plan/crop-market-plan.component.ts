@@ -17,7 +17,7 @@ import { AddFarmerService } from '../add-farmer.service';
 export class CropMarketPlanComponent implements OnInit {
   /* START: Variable */
   cropMarketPlanForm = new FormGroup({});
-  cropMarketPlanMaster = <any>[];
+  cropMarketPlanMaster = <any>{};
   nextRoute: any;
   /* END: Variable */
 
