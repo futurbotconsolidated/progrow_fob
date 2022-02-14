@@ -70,8 +70,8 @@ export class DemographicInfoComponent implements OnInit {
     this.demographicInfoForm = this.formBuilder.group({
       profileImg: new FormControl(''),
       addressProof: new FormControl('', [Validators.required]),
-      addressProofFrontImage: new FormControl('', [Validators.required]),
-      addressProofBackImage: new FormControl('', [Validators.required]),
+      addressProofFrontImage: new FormControl(''),
+      addressProofBackImage: new FormControl(''),
       firstName: new FormControl('', [Validators.required]),
       PANnumber: new FormControl('', [validatePANNumber]),
       PANFrontImage: new FormControl(''),
@@ -332,10 +332,10 @@ export class DemographicInfoComponent implements OnInit {
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
 
-      if (file.size > 300000) {
-        this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
-        return;
-      }
+      // if (file.size > 300000) {
+      //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
+      //   return;
+      // }
       if (file.type.split('/')[0] != 'image') {
         this.toastr.error('Only Image files are allowed.', 'Error!');
         return;
