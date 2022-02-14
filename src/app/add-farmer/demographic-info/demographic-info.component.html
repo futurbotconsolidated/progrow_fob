@@ -237,8 +237,12 @@
               </h3>
               <div class="display-flex">
                 <div class="flex-1 lable-top">
-                  <label>Address line-1</label>
+                  <label class="required">Address line-1</label>
                   <input type="text" class="form-control" formControlName="address1" placeholder="" />
+                  <div *ngIf="isSubmitted && f['address1'].errors" class="form-text text-danger">
+                    <small *ngIf="f['address1'].errors['required']">
+                      Address is required</small>
+                  </div>
                 </div>
 
                 <div class="flex-1 lable-top">
@@ -250,7 +254,7 @@
                 <div class="flex-1 lable-top">
                   <label class="required">Pin Code</label>
                   <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6"
-                    maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" />
+                    (keypress)="validateNo($event)" maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" />
                   <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
                     <small *ngIf="f['pinCode'].errors['required']">
                       PinCode is required</small>
@@ -396,7 +400,8 @@
                 <div class="flex-1 lable-top">
                   <label class="required">Pin Code</label>
                   <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6"
-                    maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
+                    (keypress)="validateNo($event)" maxlength="6"
+                    (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
                   <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
                     <small *ngIf="f['permPincode'].errors['required']">
                       PinCode is required</small>

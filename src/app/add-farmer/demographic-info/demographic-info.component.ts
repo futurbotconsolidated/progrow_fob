@@ -90,7 +90,7 @@ export class DemographicInfoComponent implements OnInit {
       educationQualification: new FormControl(''),
       occupation: new FormControl(''),
       annualIncome: new FormControl('', [Validators.pattern('^[0-9]*$')]),
-      address1: new FormControl(''),
+      address1: new FormControl('', [Validators.required]),
       address2: new FormControl(''),
       taluk: new FormControl('', [Validators.required]),
       city: new FormControl('', [Validators.required]),
@@ -230,6 +230,14 @@ export class DemographicInfoComponent implements OnInit {
 
   removeFamilyMembers(index: any) {
     this.familyMembers.removeAt(index);
+  }
+
+  validateNo(e: any): boolean {
+    const charCode = e.which ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
   }
 
   selectCultivationAdvice(event: any, formCtlName: any, formVal: any) {
