@@ -69,7 +69,9 @@ export class DashboardComponent implements OnInit {
       useData = this.allExistingFarmers;            
     } else if (type == 'FARMS_PIPELINE_MAP_VIEW') {
       mapViewType = 'farms_pipeline_mapbox';
-      useData = mapData['features'];
+      //useData = mapData['features'];
+      if (!this.allExistingFarmers) this.getExistingFarmers();
+      useData = this.allExistingFarmers;
     }
     //  Start Overlay Code
     // TO MAKE THE MAP APPEAR YOU MUST ADD  YOUR ACCESS TOKEN FROM https://account.mapbox.com
