@@ -134,23 +134,13 @@ export class DashboardComponent implements OnInit {
            </div>        
            <div class="row">
              <div class="col-md-6 text-left">
-               <label class="fw-bold">Land Document</label>
-               <p class="text-capitalize">
-                 <a href="https://bhunaksha.raj.nic.in/08/plotreportRJ.jsp?state=08&giscode=1508804350166906168001&plotno=673" target="_blank">Download</a>
-               </p>
-             </div>
-             <div class="col-md-6 text-left">
                <label class="fw-bold">Visit Land</label>
                <p class="text-capitalize">
                  <a href="https://maps.google.com?q=${
                    coordinates_arr[0][0][1]
                  },${coordinates_arr[0][0][0]}
                  " target="_blank">Take Me</a> </p> </div> </div>
-                   <div class="row"> <div class="col-md-6"> <label
-                   class="fw-bold">Farm Size</label> <p>${Number
-                   (f_elem.field_area_ha)?.toFixed(2)} Ha</p> </div>
-                   <div class="col-md-6"> <label
-                   class="fw-bold">FRCM Score</label> <p>0</p></div></div></div>`; 
+                   </div>`; 
 
         coordinates_arr.forEach((h: any, i: number) => {
           // Add Source
