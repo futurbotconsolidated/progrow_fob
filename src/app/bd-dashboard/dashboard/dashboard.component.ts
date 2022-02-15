@@ -191,7 +191,7 @@ export class DashboardComponent implements OnInit {
       (res: any) => {
         this.spinner.hide();
         if (res.message != 'Success' || !res.status) {
-          alert('Failed to fetch existing farmers data, please try again...');
+          alert(`${res.message}`);
         } else {
           this.allExistingFarmers = res.data;
         }

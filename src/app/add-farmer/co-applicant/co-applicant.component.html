@@ -1,15 +1,15 @@
 <div class="main-farmer">
-    <app-sidenav></app-sidenav>
-    <article class="right-sec">
-        <app-header></app-header>
-        <div class="main-sec">
-            <div class="co-applicant-form">
-                <form [formGroup]="coApplicantForm">
-                  <!-- Co-Applicant 1 start -->
-                  <div class="form-details co-app-detail">
-                    <h2 class="form-title">Co-Applicant 1</h2>
-                  </div>
-            <div class="co-applicant-left">
+  <app-sidenav></app-sidenav>
+  <article class="right-sec">
+    <app-header></app-header>
+    <div class="main-sec">
+      <div class="co-applicant-form">
+        <form [formGroup]="coApplicantForm">
+          <!-- Co-Applicant 1 start -->
+          <div class="form-details co-app-detail">
+            <h2 class="form-title">Co-Applicant 1</h2>
+          </div>
+          <div class="co-applicant-left">
             <div class="left-info">
               <h3 class="form-title">1. Identity proof</h3>
               <div class="farmer-details">
@@ -162,9 +162,10 @@
               <h3 class="form-title">4.B Gender</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of genderList"
-                  for="{{ indGen.displayValue }}">
+                  for="{{ indGen.displayValue }}gender1">
                   <input class="form-check-input" type="radio" formControlName="gender"
-                    value="{{ indGen.displayValue }}" id="{{ indGen.displayValue }}" /><span>{{ indGen.displayName
+                    value="{{ indGen.displayValue }}" id="{{ indGen.displayValue }}gender1" /><span>{{
+                    indGen.displayName
                     }}</span>
                 </label>
               </div>
@@ -173,9 +174,9 @@
               <h3 class="form-title">4.C Religion</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of religionList"
-                  for="{{ indReligion.displayValue }}">
+                  for="{{ indReligion.displayValue }}religion1">
                   <input class="form-check-input" type="radio" formControlName="religion"
-                    value="{{ indReligion.displayValue }}" id="{{ indReligion.displayValue }}" /><span>{{
+                    value="{{ indReligion.displayValue }}" id="{{ indReligion.displayValue }}religion1" /><span>{{
                     indReligion.displayName }}</span>
                 </label>
               </div>
@@ -184,9 +185,10 @@
               <h3 class="form-title">4.D Caste/Tribe</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of casteList"
-                  for="{{ indCaste.displayValue }}">
+                  for="{{ indCaste.displayValue }}caste1">
                   <input class="form-check-input" type="radio" formControlName="caste"
-                    value="{{ indCaste.displayValue }}" id="{{ indCaste.displayValue }}" /><span>{{ indCaste.displayName
+                    value="{{ indCaste.displayValue }}" id="{{ indCaste.displayValue }}caste1" /><span>{{
+                    indCaste.displayName
                     }}</span>
                 </label>
               </div>
@@ -231,8 +233,12 @@
               </h3>
               <div class="display-flex">
                 <div class="flex-1 lable-top">
-                  <label>Address line-1</label>
+                  <label class="required">Address line-1</label>
                   <input type="text" class="form-control" formControlName="address1" placeholder="" />
+                  <div *ngIf="isSubmitted && f['address1'].errors" class="form-text text-danger">
+                    <small *ngIf="f['address1'].errors['required']">
+                      Address is required</small>
+                  </div>
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">Address line-2</label>
@@ -343,9 +349,10 @@
               <h3 class="form-title">5.B Property status</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of propertyStatusList"
-                  for="{{ indStat.displayValue }}">
+                  for="{{ indStat.displayValue }}propStatus1">
                   <input class="form-check-input" type="radio" formControlName="propertyStatus"
-                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}" /><span>{{ indStat.displayName
+                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}propStatus1" /><span>{{
+                    indStat.displayName
                     }}</span>
                 </label>
               </div>
@@ -357,10 +364,10 @@
               </div>
             </div>
             <div class="form-details-inner">
-              <h3 class="form-title">5.C Communication/Permanent address</h3>
+              <h3 class="form-title required">5.C Communication/Permanent address</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio required"
-                  *ngFor="let indStat of addressStatusList" for="{{ indStat.displayValue }}">
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of addressStatusList"
+                  for="{{ indStat.displayValue }}">
                   <input class="form-check-input" type="radio" formControlName="commOrPerAddress"
                     value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}" /><span>{{ indStat.displayName
                     }}</span>
@@ -541,8 +548,8 @@
                       <path
                         d="M9.827,21.763,14.31,14l3.532,6.117a10.023,10.023,0,0,1-8.015,1.646ZM7.89,21.12A10.028,10.028,0,0,1,2.458,15h8.965L7.89,21.119ZM2.05,13A9.964,9.964,0,0,1,4.633,5.239L9.112,13ZM6.159,3.883a10.021,10.021,0,0,1,8.014-1.646L9.69,10,6.159,3.883Zm9.951-1A10.028,10.028,0,0,1,21.542,9H12.577L16.11,2.881ZM21.95,11a9.964,9.964,0,0,1-2.583,7.761L14.888,11h7.064Z" />
                     </svg><span>Retake</span></a>
-                  <a (click)="removeImage($event,'FARMER_PROFILEcoa2')"><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                      height="24" viewBox="0 0 24 24">
+                  <a (click)="removeImage($event,'FARMER_PROFILEcoa2')"><svg xmlns="http://www.w3.org/2000/svg"
+                      width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -652,9 +659,10 @@
               <h3 class="form-title">4.B Gender</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of genderList"
-                  for="{{ indGen.displayValue }}">
+                  for="{{ indGen.displayValue }}gender2">
                   <input class="form-check-input" type="radio" formControlName="gendercoa2"
-                    value="{{ indGen.displayValue }}" id="{{ indGen.displayValue }}" /><span>{{ indGen.displayName
+                    value="{{ indGen.displayValue }}" id="{{ indGen.displayValue }}gender2" /><span>{{
+                    indGen.displayName
                     }}</span>
                 </label>
               </div>
@@ -663,9 +671,9 @@
               <h3 class="form-title">4.C Religion</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of religionList"
-                  for="{{ indReligion.displayValue }}">
+                  for="{{ indReligion.displayValue }}religion2">
                   <input class="form-check-input" type="radio" formControlName="religioncoa2"
-                    value="{{ indReligion.displayValue }}" id="{{ indReligion.displayValue }}" /><span>{{
+                    value="{{ indReligion.displayValue }}" id="{{ indReligion.displayValue }}religion2" /><span>{{
                     indReligion.displayName }}</span>
                 </label>
               </div>
@@ -674,9 +682,10 @@
               <h3 class="form-title">4.D Caste/Tribe</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of casteList"
-                  for="{{ indCaste.displayValue }}">
+                  for="{{ indCaste.displayValue }}caste2">
                   <input class="form-check-input" type="radio" formControlName="castecoa2"
-                    value="{{ indCaste.displayValue }}" id="{{ indCaste.displayValue }}" /><span>{{ indCaste.displayName
+                    value="{{ indCaste.displayValue }}" id="{{ indCaste.displayValue }}caste2" /><span>{{
+                    indCaste.displayName
                     }}</span>
                 </label>
               </div>
@@ -780,8 +789,8 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">Phone No.</label>
-                  <input type="text" class="form-control" formControlName="phoneNumbercoa2" placeholder="" minlength="10"
-                    maxlength="10" />
+                  <input type="text" class="form-control" formControlName="phoneNumbercoa2" placeholder=""
+                    minlength="10" maxlength="10" />
                   <div *ngIf="isSubmitted && f['phoneNumbercoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['phoneNumbercoa2'].errors['required']">
                       Phone No. is required</small>
@@ -805,7 +814,8 @@
               <div class="display-flex">
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in present address</label>
-                  <input type="text" class="form-control" formControlName="yrsInAddresscoa2" placeholder="" maxlength="3" />
+                  <input type="text" class="form-control" formControlName="yrsInAddresscoa2" placeholder=""
+                    maxlength="3" />
                   <div *ngIf="isSubmitted && f['yrsInAddresscoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['yrsInAddresscoa2'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -813,7 +823,8 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in city/village</label>
-                  <input type="text" class="form-control" formControlName="yrsInCitycoa2" placeholder="" maxlength="3" />
+                  <input type="text" class="form-control" formControlName="yrsInCitycoa2" placeholder=""
+                    maxlength="3" />
                   <div *ngIf="isSubmitted && f['yrsInCitycoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['yrsInCitycoa2'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -833,9 +844,10 @@
               <h3 class="form-title">5.B Property status</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of propertyStatusList"
-                  for="{{ indStat.displayValue }}">
+                  for="{{ indStat.displayValue }}propStatus2">
                   <input class="form-check-input" type="radio" formControlName="propertyStatuscoa2"
-                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}" /><span>{{ indStat.displayName
+                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}propStatus2" /><span>{{
+                    indStat.displayName
                     }}</span>
                 </label>
               </div>
@@ -849,10 +861,11 @@
             <div class="form-details-inner">
               <h3 class="form-title">5.C Communication/Permanent address</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio "
-                  *ngFor="let indStat of addressStatusList" for="{{ indStat.displayValue }}" for="{{ indStat.displayValue }}coa2">
+                <label class="form-check-label form-check bordered-radio " *ngFor="let indStat of addressStatusList"
+                  for="{{ indStat.displayValue }}" for="{{ indStat.displayValue }}coa2">
                   <input class="form-check-input" type="radio" formControlName="commOrPerAddresscoa2"
-                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}coa2" /><span>{{ indStat.displayName
+                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}coa2" /><span>{{
+                    indStat.displayName
                     }}</span>
                 </label>
                 <div *ngIf="isSubmitted && f['commOrPerAddresscoa2'].errors" class="form-text text-danger">
@@ -982,12 +995,12 @@
               </div>
             </div>
           </div>
-          <!-- Co-Applicant 2 end -->          
+          <!-- Co-Applicant 2 end -->
 
-                </form>
-            </div>
-        </div>
-    </article>
+        </form>
+      </div>
+    </div>
+  </article>
 </div>
 
 <!-- START: Common Modal Popup for File Upload and Preview -->

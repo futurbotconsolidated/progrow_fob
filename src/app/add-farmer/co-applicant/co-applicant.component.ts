@@ -99,8 +99,8 @@ export class CoApplicantComponent implements OnInit {
     this.coApplicantForm = this.formBuilder.group({
       profileImg: new FormControl(''),
       addressProof: new FormControl('', [Validators.required]),
-      addressProofFrontImage: new FormControl('', [Validators.required]),
-      addressProofBackImage: new FormControl('', [Validators.required]),
+      addressProofFrontImage: new FormControl(''),
+      addressProofBackImage: new FormControl(''),
       firstName: new FormControl('', [Validators.required]),
       PANnumber: new FormControl('', [validatePANNumber]),
       PANFrontImage: new FormControl(''),
@@ -119,7 +119,7 @@ export class CoApplicantComponent implements OnInit {
       educationQualification: new FormControl(''),
       occupation: new FormControl(''),
       annualIncome: new FormControl('', [Validators.pattern('^[0-9]*$')]),
-      address1: new FormControl(''),
+      address1: new FormControl('', [Validators.required]),
       address2: new FormControl(''),
       taluk: new FormControl('', [Validators.required]),
       city: new FormControl('', [Validators.required]),
@@ -134,7 +134,7 @@ export class CoApplicantComponent implements OnInit {
         Validators.required,
         Validators.pattern('^[0-9]*$'),
       ]),
-     
+
       // mobile1: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       // mobile2: new FormControl(''),
       yrsInAddress: new FormControl('', [Validators.pattern('^[0-9]*$')]),
@@ -152,12 +152,12 @@ export class CoApplicantComponent implements OnInit {
       monthlyRent: new FormControl(''),
       commOrPerAddress: new FormControl('same_above', [Validators.required]),
       familyMembers: new FormArray([this.createFamilyMembers()]),
-      
+
       profileImgcoa2: new FormControl(''),
       addressProofcoa2: new FormControl(''),
       addressProofFrontImagecoa2: new FormControl(''),
       addressProofBackImagecoa2: new FormControl(''),
-      firstNamecoa2: new FormControl(''),      
+      firstNamecoa2: new FormControl(''),
       PANnumbercoa2: new FormControl(''),
       PANFrontImagecoa2: new FormControl(''),
       passportNumbercoa2: new FormControl(''),
@@ -185,9 +185,7 @@ export class CoApplicantComponent implements OnInit {
       ]),
       statecoa2: new FormControl(''),
       landmarkcoa2: new FormControl(''),
-      phoneNumbercoa2: new FormControl('', [
-        Validators.pattern('^[0-9]*$'),
-      ]), 
+      phoneNumbercoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       // mobile1coa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       // mobile2coa2: new FormControl(''),
       yrsInAddresscoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
@@ -253,7 +251,8 @@ export class CoApplicantComponent implements OnInit {
 
   getFamilyMembersControls(type: string) {
     if (type === 'coa2') {
-      return (this.coApplicantForm.get('familyMemberscoa2') as FormArray).controls;
+      return (this.coApplicantForm.get('familyMemberscoa2') as FormArray)
+        .controls;
     } else {
       return (this.coApplicantForm.get('familyMembers') as FormArray).controls;
     }
@@ -261,11 +260,15 @@ export class CoApplicantComponent implements OnInit {
 
   addFamilyMembers(type: string): void {
     if (type === 'coa2') {
-      this.familyMemberscoa2 = this.coApplicantForm.get('familyMemberscoa2') as FormArray;
-      this.familyMemberscoa2.push(this.createFamilyMembers());       
+      this.familyMemberscoa2 = this.coApplicantForm.get(
+        'familyMemberscoa2'
+      ) as FormArray;
+      this.familyMemberscoa2.push(this.createFamilyMembers());
     } else {
-      this.familyMembers = this.coApplicantForm.get('familyMembers') as FormArray;
-      this.familyMembers.push(this.createFamilyMembers());      
+      this.familyMembers = this.coApplicantForm.get(
+        'familyMembers'
+      ) as FormArray;
+      this.familyMembers.push(this.createFamilyMembers());
     }
   }
 
@@ -274,7 +277,7 @@ export class CoApplicantComponent implements OnInit {
       this.familyMemberscoa2.removeAt(index);
     } else {
       this.familyMembers.removeAt(index);
-    }    
+    }
   }
 
   openFileModalPopup(type: string) {
@@ -294,7 +297,7 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload PAN Card';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =
-      this.coApplicantForm.value.PANFrontImage || '';
+        this.coApplicantForm.value.PANFrontImage || '';
     } else if (type === 'PANcoa2') {
       if (!this.coApplicantForm.value.PANnumbercoa2) {
         this.toastr.error('please enter PAN Number.', 'Error!');
@@ -302,7 +305,8 @@ export class CoApplicantComponent implements OnInit {
       }
       this.fileUpload.popupTitle = 'Upload PAN Card';
       this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.imageSrc1 = this.coApplicantForm.value.PANFrontImagecoa2 || '';      
+      this.fileUpload.new.imageSrc1 =
+        this.coApplicantForm.value.PANFrontImagecoa2 || '';
     } else if (type === 'ADDRESS_PROOF') {
       if (!this.coApplicantForm.value.addressProof) {
         this.toastr.error('please select Address Proof Type.', 'Error!');
@@ -318,8 +322,10 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 = this.coApplicantForm.value.addressProofFrontImage || '';
-      this.fileUpload.new.imageSrc2 = this.coApplicantForm.value.addressProofBackImage || '';
+      this.fileUpload.new.imageSrc1 =
+        this.coApplicantForm.value.addressProofFrontImage || '';
+      this.fileUpload.new.imageSrc2 =
+        this.coApplicantForm.value.addressProofBackImage || '';
     } else if (type === 'ADDRESS_PROOFcoa2') {
       if (!this.coApplicantForm.value.addressProofcoa2) {
         this.toastr.error('please select Address Proof Type.', 'Error!');
@@ -327,7 +333,8 @@ export class CoApplicantComponent implements OnInit {
       }
       const A = this.addressProofList
         .filter(
-          (x: any) => this.coApplicantForm.value.addressProofcoa2 == x.displayValue
+          (x: any) =>
+            this.coApplicantForm.value.addressProofcoa2 == x.displayValue
         )
         .map((y: any) => {
           return y.displayName;
@@ -335,8 +342,10 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 = this.coApplicantForm.value.addressProofFrontImagecoa2 || '';
-      this.fileUpload.new.imageSrc2 = this.coApplicantForm.value.addressProofBackImagecoa2 || '';      
+      this.fileUpload.new.imageSrc1 =
+        this.coApplicantForm.value.addressProofFrontImagecoa2 || '';
+      this.fileUpload.new.imageSrc2 =
+        this.coApplicantForm.value.addressProofBackImagecoa2 || '';
     } else if (type === 'PASSPORT') {
       if (!this.coApplicantForm.value.passportNumber) {
         this.toastr.error('please enter Passport Number.', 'Error!');
@@ -345,8 +354,10 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload Passport';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 = this.coApplicantForm.value.passportFrontImage || '';
-      this.fileUpload.new.imageSrc2 = this.coApplicantForm.value.passportBackImage || '';
+      this.fileUpload.new.imageSrc1 =
+        this.coApplicantForm.value.passportFrontImage || '';
+      this.fileUpload.new.imageSrc2 =
+        this.coApplicantForm.value.passportBackImage || '';
     } else if (type === 'PASSPORTcoa2') {
       if (!this.coApplicantForm.value.passportNumbercoa2) {
         this.toastr.error('please enter Passport Number.', 'Error!');
@@ -355,8 +366,10 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload Passport';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 = this.coApplicantForm.value.passportFrontImagecoa2 || '';
-      this.fileUpload.new.imageSrc2 = this.coApplicantForm.value.passportBackImagecoa2 || '';      
+      this.fileUpload.new.imageSrc1 =
+        this.coApplicantForm.value.passportFrontImagecoa2 || '';
+      this.fileUpload.new.imageSrc2 =
+        this.coApplicantForm.value.passportBackImagecoa2 || '';
     } else if (type === 'NREGA') {
       if (!this.coApplicantForm.value.NREGANumber) {
         this.toastr.error('please enter NREGA Number.', 'Error!');
@@ -365,8 +378,10 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload NREGA';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 = this.coApplicantForm.value.NREGAFrontImage || '';
-      this.fileUpload.new.imageSrc2 = this.coApplicantForm.value.NREGABackImage || '';
+      this.fileUpload.new.imageSrc1 =
+        this.coApplicantForm.value.NREGAFrontImage || '';
+      this.fileUpload.new.imageSrc2 =
+        this.coApplicantForm.value.NREGABackImage || '';
     } else if (type === 'NREGAcoa2') {
       if (!this.coApplicantForm.value.NREGANumbercoa2) {
         this.toastr.error('please enter NREGA Number.', 'Error!');
@@ -375,18 +390,22 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload NREGA';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 = this.coApplicantForm.value.NREGAFrontImagecoa2 || '';
-      this.fileUpload.new.imageSrc2 = this.coApplicantForm.value.NREGABackImagecoa2 || '';      
+      this.fileUpload.new.imageSrc1 =
+        this.coApplicantForm.value.NREGAFrontImagecoa2 || '';
+      this.fileUpload.new.imageSrc2 =
+        this.coApplicantForm.value.NREGABackImagecoa2 || '';
     } else if (type === 'FARMER_PROFILE') {
       this.fileUpload.popupTitle = 'Upload Farmer Profile';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.imageSrc1 = this.coApplicantForm.value.profileImg || '';
+      this.fileUpload.new.imageSrc1 =
+        this.coApplicantForm.value.profileImg || '';
     } else if (type === 'FARMER_PROFILEcoa2') {
       this.fileUpload.popupTitle = 'Upload Farmer Profile';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.imageSrc1 = this.coApplicantForm.value.profileImgcoa2 || '';      
+      this.fileUpload.new.imageSrc1 =
+        this.coApplicantForm.value.profileImgcoa2 || '';
     }
     $('#fileUploadModalPopup').modal('show');
   }
@@ -413,11 +432,14 @@ export class CoApplicantComponent implements OnInit {
           this.coApplicantForm.patchValue({
             PANFrontImage: imageSrc,
           });
-        } else if (this.fileUpload.fileFor === 'PANcoa2' && type == 'FRONT_IMAGE') {
+        } else if (
+          this.fileUpload.fileFor === 'PANcoa2' &&
+          type == 'FRONT_IMAGE'
+        ) {
           this.fileUpload.new.imageSrc1 = imageSrc;
           this.coApplicantForm.patchValue({
             PANFrontImagecoa2: imageSrc,
-          });          
+          });
         } else if (this.fileUpload.fileFor === 'ADDRESS_PROOF') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
@@ -441,7 +463,7 @@ export class CoApplicantComponent implements OnInit {
             this.coApplicantForm.patchValue({
               addressProofBackImagecoa2: imageSrc,
             });
-          }          
+          }
         } else if (this.fileUpload.fileFor === 'PASSPORT') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
@@ -465,7 +487,7 @@ export class CoApplicantComponent implements OnInit {
             this.coApplicantForm.patchValue({
               passportBackImagecoa2: imageSrc,
             });
-          }          
+          }
         } else if (this.fileUpload.fileFor === 'NREGA') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
@@ -489,7 +511,7 @@ export class CoApplicantComponent implements OnInit {
             this.coApplicantForm.patchValue({
               NREGABackImage: imageSrc,
             });
-          }          
+          }
         } else if (this.fileUpload.fileFor === 'FARMER_PROFILE') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
@@ -503,7 +525,7 @@ export class CoApplicantComponent implements OnInit {
             this.coApplicantForm.patchValue({
               profileImgcoa2: imageSrc,
             });
-          }          
+          }
         }
 
         console.log(this.fileUpload);
@@ -534,7 +556,7 @@ export class CoApplicantComponent implements OnInit {
         city: '',
         state: '',
       });
-      this.pinCodeAPIDatacoa2.length = 0;      
+      this.pinCodeAPIDatacoa2.length = 0;
     } else if (type === 'PERMANENT_ADDRESS') {
       this.coApplicantForm.patchValue({
         permCity: '',
@@ -546,7 +568,7 @@ export class CoApplicantComponent implements OnInit {
         permCity: '',
         permState: '',
       });
-      this.permPinCodeAPIDatacoa2.length = 0;      
+      this.permPinCodeAPIDatacoa2.length = 0;
     }
 
     // check length and proceed
@@ -570,7 +592,7 @@ export class CoApplicantComponent implements OnInit {
               this.coApplicantForm.patchValue({
                 citycoa2: this.pinCodeAPIDatacoa2[0].District,
                 statecoa2: this.pinCodeAPIDatacoa2[0].State,
-              });              
+              });
             } else if (type === 'PERMANENT_ADDRESS') {
               this.permPinCodeAPIData = res[0].PostOffice;
 
@@ -583,7 +605,7 @@ export class CoApplicantComponent implements OnInit {
               this.coApplicantForm.patchValue({
                 permCitycoa2: this.permPinCodeAPIDatacoa2[0].District,
                 permStatecoa2: this.permPinCodeAPIDatacoa2[0].State,
-              });              
+              });
             }
           }
         },
@@ -647,7 +669,7 @@ export class CoApplicantComponent implements OnInit {
           state: formValue.state,
           landmark: formValue.landmark,
           yrsInAddress: formValue.yrsInAddress,
-          yrsInCity: formValue.yrsInCity,          
+          yrsInCity: formValue.yrsInCity,
         },
         email: formValue.email,
         propertyStatus: formValue.propertyStatus,
@@ -694,10 +716,10 @@ export class CoApplicantComponent implements OnInit {
           mobileNumber: formValue.phoneNumbercoa2,
           taluk: formValue.talukcoa2,
           city: formValue.citycoa2,
-          state: formValue.statecoa2,          
-          landmark: formValue.landmarkcoa2,          
-          yrsInAddress: formValue.yrsInAddresscoa2,          
-          yrsInCity: formValue.yrsInCitycoa2, 
+          state: formValue.statecoa2,
+          landmark: formValue.landmarkcoa2,
+          yrsInAddress: formValue.yrsInAddresscoa2,
+          yrsInCity: formValue.yrsInCitycoa2,
         },
         email: formValue.emailcoa2,
         propertyStatus: formValue.propertyStatuscoa2,

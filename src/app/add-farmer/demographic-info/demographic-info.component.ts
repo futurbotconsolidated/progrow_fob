@@ -84,9 +84,9 @@ export class DemographicInfoComponent implements OnInit {
       middleName: new FormControl(''),
       lastName: new FormControl('', [Validators.required]),
       dob: new FormControl(''),
-      gender: new FormControl('male'),
-      religion: new FormControl('hindu'),
-      caste: new FormControl('sc'),
+      gender: new FormControl(''),
+      religion: new FormControl(''),
+      caste: new FormControl(''),
       educationQualification: new FormControl(''),
       occupation: new FormControl(''),
       annualIncome: new FormControl('', [Validators.pattern('^[0-9]*$')]),
@@ -438,18 +438,16 @@ export class DemographicInfoComponent implements OnInit {
         (res: any) => {
           this.spinner.hide();
           if (res && res[0].Status != 'Success') {
-            alert('Failed to fetch PinCode Details, please try again...');
+            alert(`${res[0].Message}`);
           } else {
             if (type === 'ADDRESS') {
               this.pinCodeAPIData = res[0].PostOffice;
-
               this.demographicInfoForm.patchValue({
                 city: this.pinCodeAPIData[0].District,
                 state: this.pinCodeAPIData[0].State,
               });
             } else if (type === 'PERMANENT_ADDRESS') {
               this.permPinCodeAPIData = res[0].PostOffice;
-
               this.demographicInfoForm.patchValue({
                 permCity: this.permPinCodeAPIData[0].District,
                 permState: this.permPinCodeAPIData[0].State,
@@ -466,6 +464,8 @@ export class DemographicInfoComponent implements OnInit {
   }
 
   validateAndNext() {
+    console.log(this.demographicInfoForm.value);
+
     this.isSubmitted = true;
     if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
@@ -473,8 +473,8 @@ export class DemographicInfoComponent implements OnInit {
     } else {
       const formValue = this.demographicInfoForm.value;
       const obj = {
-        profileImg: '',
-        // profileImg: formValue.profileImg,
+        // profileImg: '',
+        profileImg: formValue.profileImg,
         identityProof: {
           panNumber: formValue.PANnumber,
           panImg: '',
@@ -492,6 +492,9 @@ export class DemographicInfoComponent implements OnInit {
           middleName: formValue.middleName,
           lastName: formValue.lastName,
           dob: formValue.dob,
+          gender: formValue.gender,
+          religion: formValue.religion,
+          caste: formValue.caste,
         },
         address: {
           addressLine1: formValue.address1,
@@ -502,7 +505,7 @@ export class DemographicInfoComponent implements OnInit {
         otherDetails: {
           educationalQualification: formValue.educationalQualification,
           occupation: formValue.occupation,
-          fpoName: formValue.annualIncome,
+          annualIncome: formValue.annualIncome,
         },
         familyMembers: formValue.familyMembers,
         propertyOwnership: formValue.propertyOwnership,

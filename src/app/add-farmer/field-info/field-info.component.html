@@ -320,9 +320,9 @@
                                 </div>
                                 <div class="col-md-3 lable-top mt-3">
                                     <label>Phone number</label>
-                                    <input type="text" placeholder="xxx-xxx-xxxx" class="form-control" id="fieldOwnCoPh"
-                                        formControlName="fieldOwnCoPh" maxlength="12" phoneMask
-                                        (input)="numbersOnlyValidator($event)" />
+                                    <input type="text" placeholder="" class="form-control" id="fieldOwnCoPh"
+                                        formControlName="fieldOwnCoPh" maxlength="10" phoneMask
+                                        (keypress)="validateNo($event)" />
                                     <!-- <input class="form-control" formControlName="fieldOwnCoPh" placeholder="9876543210"> -->
                                 </div>
                                 <div class="col-auto add-another">
