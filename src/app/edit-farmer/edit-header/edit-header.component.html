@@ -7,19 +7,19 @@
                     <a href="/bd/dashboard" class="btn btn-back">Back </a>
                 </div>
                 <div class="farmer-pro">
-                    <img src="" alt="">
-                    <!-- <img src="../../../assets/images/farmer-profile-img.jpg"> -->
+                    <img *ngIf="demographicDisp?.profileImg" [src]="demographicDisp?.profileImg">
+                    <img *ngIf="!demographicDisp?.profileImg" src="../../../assets/images/profile-pic-dummy.jpg">
                 </div>
                 <div class="p">
                     <!-- <span class="profile-rating">4.1 <i class="fa fa-star"></i></span> -->
-                    <span class="profile-name">{{demographicDisp?.farmerDetails['firstName']}}
-                        {{demographicDisp?.farmerDetails['middleName']}}
-                        {{demographicDisp?.farmerDetails['lastName']}}</span>
+                    <span class="profile-name">{{demographicDisp?.farmerDetails?.firstName}}
+                        {{demographicDisp?.farmerDetails?.middleName}}
+                        {{demographicDisp?.farmerDetails?.lastName}}</span>
                 </div>
                 <div class="edit-picture-gap profile-date"><img src="../../../assets/images/profile-date.svg"
                         alt=""><span> {{demographicDisp?.farmerDetails['dob']}}</span></div>
                 <div class="edit-picture-gap gender"><img src="../../../assets/images/profile-gender.svg"
-                        alt=""><span>N/A</span>
+                        alt=""><span>{{getDisplayName('gender',demographicDisp?.farmerDetails['gender'])}}</span>
                 </div>
                 <div class="edit-picture-gap phone-num"><img src="../../../assets/images/profile-phone.svg"
                         alt=""><span>{{demographicDisp?.address['mobileNumber']}}</span></div>
@@ -42,7 +42,9 @@
             <ul>
                 <li>
                     <span><img src="../../../assets/images/profile-religion.svg" alt=""></span>
-                    <div><span><b>Religion: </b>N/A</span><br><span><b>Caste:</b> N/A</span></div>
+                    <div><span><b>Religion:
+                            </b>{{getDisplayName('religion',demographicDisp?.farmerDetails['religion'])}}</span><br><span><b>Caste:</b>
+                            {{getDisplayName('caste',demographicDisp?.farmerDetails['caste'])}}</span></div>
                 </li>
                 <li>
                     <span><img src="../../../assets/images/profile-address.svg" alt=""></span>

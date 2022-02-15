@@ -84,9 +84,9 @@ export class DemographicInfoComponent implements OnInit {
       middleName: new FormControl(''),
       lastName: new FormControl('', [Validators.required]),
       dob: new FormControl(''),
-      gender: new FormControl('male'),
-      religion: new FormControl('hindu'),
-      caste: new FormControl('sc'),
+      gender: new FormControl(''),
+      religion: new FormControl(''),
+      caste: new FormControl(''),
       educationQualification: new FormControl(''),
       occupation: new FormControl(''),
       annualIncome: new FormControl('', [Validators.pattern('^[0-9]*$')]),
@@ -473,8 +473,8 @@ export class DemographicInfoComponent implements OnInit {
     } else {
       const formValue = this.demographicInfoForm.value;
       const obj = {
-        profileImg: '',
-        // profileImg: formValue.profileImg,
+        // profileImg: '',
+        profileImg: formValue.profileImg,
         identityProof: {
           panNumber: formValue.PANnumber,
           panImg: '',
@@ -492,6 +492,9 @@ export class DemographicInfoComponent implements OnInit {
           middleName: formValue.middleName,
           lastName: formValue.lastName,
           dob: formValue.dob,
+          gender: formValue.gender,
+          religion: formValue.religion,
+          caste: formValue.caste,
         },
         address: {
           addressLine1: formValue.address1,
@@ -502,7 +505,7 @@ export class DemographicInfoComponent implements OnInit {
         otherDetails: {
           educationalQualification: formValue.educationalQualification,
           occupation: formValue.occupation,
-          fpoName: formValue.annualIncome,
+          annualIncome: formValue.annualIncome,
         },
         familyMembers: formValue.familyMembers,
         propertyOwnership: formValue.propertyOwnership,
