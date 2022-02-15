@@ -64,10 +64,14 @@ export class DashboardComponent implements OnInit {
     let useData = [] as any;
     if (type == 'EXISTING_FARMS_MAP_VIEW') {
       mapViewType = 'existing_farmers_mapbox';
-      useData = mapData['features'];
+      //useData = mapData['features'];
+      if (!this.allExistingFarmers) this.getExistingFarmers();
+      useData = this.allExistingFarmers;            
     } else if (type == 'FARMS_PIPELINE_MAP_VIEW') {
       mapViewType = 'farms_pipeline_mapbox';
-      useData = mapData['features'];
+      //useData = mapData['features'];
+      if (!this.allExistingFarmers) this.getExistingFarmers();
+      useData = this.allExistingFarmers;
     }
     //  Start Overlay Code
     // TO MAKE THE MAP APPEAR YOU MUST ADD  YOUR ACCESS TOKEN FROM https://account.mapbox.com
@@ -77,105 +81,130 @@ export class DashboardComponent implements OnInit {
       container: mapViewType, // container ID
       style: 'mapbox://styles/mapbox/satellite-v9?optimize=true', // style URL
       zoom: 14, // starting zoom
-      center: [71.43395031003963, 27.04756708332954],
+      center: [77.73521840572359, 13.048329579932709],
     });
-
+    if(mapViewType === 'existing_farmers_mapbox'){
     // geojson coordinates
     map.on('load', () => {
-      useData.forEach((elem: any, index: number) => {
+      useData.forEach((elem: any, index: number) => {        
         // prepare popup
-        const popupDescription = `<div class="field_popup" style="width:260px;">
+        elem['fieldInfo'].forEach((f_elem: any, f_index: number) => {
+          let coordinates_arr = [] as any;
+          if(typeof(f_elem.field_boundary.geometry.coordinates[0][0]) === 'number'){
+            let coordinates_a = [] as any;
+            f_elem.field_boundary.geometry.coordinates.forEach(function (latlng: any, lli: number) {              
+              var ll_arr = [];
+              ll_arr.push(latlng[1]);
+              ll_arr.push(latlng[0]);
+              coordinates_a.push(ll_arr);
+            });
+            coordinates_arr.push(coordinates_a);
+          } else {          
+          let coordinates_a = [] as any;
+          f_elem.field_boundary.geometry.coordinates.forEach(function (latlng: any, lli: number) {
+              latlng.forEach(function (ll: any, li: number) {
+                  var ll_arr = [];
+                  ll_arr.push(ll.lng);
+                  ll_arr.push(ll.lat);
+                  coordinates_a.push(ll_arr);
+              });
+          });
+          coordinates_arr.push(coordinates_a);
+        }               
+          const popupDescription = `<div class="field_popup" style="width:260px;">
            <div class="row">
              <div class="col-md-6 text-left">
-               <label class="fw-bold">Owner Name</label>
-               <p class="text-capitalize">###</p>
+               <label class="fw-bold">Farmer Id</label>
+               <p class="text-capitalize">${elem['farmerId']}</p>
              </div>
              <div class="col-md-6 text-left">
-               <label class="fw-bold">Land Record Id</label>
-               <p class="text-capitalize">###</p>
+               <label class="fw-bold">Farmer Name</label>
+               <p class="text-capitalize">${elem['farmerDetails'].firstName} ${elem['farmerDetails'].middleName} ${elem['farmerDetails'].lastName} </p>
              </div>
            </div>
            <div class="row">
              <div class="col-md-6 text-left">
-               <label class="fw-bold">Land Document</label>
-               <p class="text-capitalize">
-                 <a href="https://bhunaksha.raj.nic.in/08/plotreportRJ.jsp?state=08&giscode=1508804350166906168001&plotno=673" target="_blank">Download</a>
-               </p>
+               <label class="fw-bold">Date of registration</label>
+               <p class="text-capitalize">${elem['registrationDate']}</p>
              </div>
+             <div class="col-md-6 text-left">
+               <label class="fw-bold">Address</label>
+               <p class="text-capitalize">${f_elem.field_address}</p>
+             </div>
+           </div>        
+           <div class="row">
              <div class="col-md-6 text-left">
                <label class="fw-bold">Visit Land</label>
                <p class="text-capitalize">
                  <a href="https://maps.google.com?q=${
-                   elem['geometry'].coordinates[0][0][1]
-                 },${elem['geometry'].coordinates[0][0][0]}
-                 " target="_blank">Take Me</a>
-               </p>
-             </div>
-           </div>
-           <div class="row">
-             <div class="col-md-6">
-               <label class="fw-bold">Farm Size</label>
-               <p>${Number(elem['area-Ha'])?.toFixed(2)} Ha</p>
-             </div>
-             <div class="col-md-6">
-               <label class="fw-bold">FRCM Score</label>
-               <p>${Number(elem['aggregate_frcm_score'])?.toFixed(2)}</p>
-             </div>
-           </div>
-         </div>`;
+                   coordinates_arr[0][0][1]
+                 },${coordinates_arr[0][0][0]}
+                 " target="_blank">Take Me</a> </p> </div> </div>
+                   </div>`; 
 
-        // elem['geometry'].coordinates.forEach((h: any, i: number) => {
-        //   // Add Source
-        //   map.addSource(`figure${i}_${index}`, {
-        //     type: 'geojson',
-        //     data: {
-        //       type: 'Feature',
-        //       geometry: {
-        //         type: 'Polygon',
-        //         coordinates: [h],
-        //       },
-        //     } as any,
-        //   });
+        coordinates_arr.forEach((h: any, i: number) => {
+          // Add Source
+          map.addSource(`figure${i}_${index}_${f_index}`, {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              geometry: {
+                type: 'Polygon',
+                coordinates: [h],
+              },
+              properties: {},
+            } as any,
+          });
 
-        //   // Add a layer showing the fields.
-        //   map.addLayer({
-        //     id: `figure${i}_${index}`,
-        //     type: 'fill',
-        //     source: `figure${i}_${index}`,
-        //     layout: {},
-        //     paint: {
-        //       'fill-outline-color': 'red',
-        //       'fill-opacity': 0.4,
-        //     },
-        //   });
+          // Add a layer showing the fields.
+          map.addLayer({
+            id: `figure${i}_${index}_${f_index}`,
+            type: 'fill',
+            source: `figure${i}_${index}_${f_index}`,
+            layout: {},
+            paint: {
+              'fill-outline-color': 'red',
+              'fill-opacity': 1.0,
+            },
+          });
+          const el = document.createElement('div');
+          el.className = 'my-dash-marker';
+          new mapboxgl.Marker(el).setLngLat(h[0]).addTo(map);
+          // When a click event occurs on a feature in the places layer, open a popup at the
+          // location of the feature, with description HTML from its properties.
+          map.on('click', `figure${i}_${index}_${f_index}`, (e) => {
+            new mapboxgl.Popup()
+              .setLngLat(h[0])
+              .setHTML(popupDescription)
+              .setMaxWidth('400px')
+              .addTo(map);
+          });
 
-        //   // When a click event occurs on a feature in the places layer, open a popup at the
-        //   // location of the feature, with description HTML from its properties.
-        //   map.on('click', `figure${i}_${index}`, (e) => {
-        //     new mapboxgl.Popup()
-        //       .setLngLat(h[0])
-        //       .setHTML(popupDescription)
-        //       .setMaxWidth('400px')
-        //       .addTo(map);
-        //   });
+          // Change the cursor to a pointer when the mouse is over the places layer.
+          map.on('mouseenter', `figure${i}_${index}_${f_index}`, () => {
+            map.getCanvas().style.cursor = 'pointer';
+          });
 
-        //   // Change the cursor to a pointer when the mouse is over the places layer.
-        //   map.on('mouseenter', `figure${i}_${index}`, () => {
-        //     map.getCanvas().style.cursor = 'pointer';
-        //   });
+          // Change it back to a pointer when it leaves.
+          map.on('mouseleave', `figure${i}_${index}_${f_index}`, () => {
+            map.getCanvas().style.cursor = '';
+          });
 
-        //   // Change it back to a pointer when it leaves.
-        //   map.on('mouseleave', `figure${i}_${index}`, () => {
-        //     map.getCanvas().style.cursor = '';
-        //   });
-        // });
+        });
 
+        }); 
+        
+        // }
         if (index == useData.length - 1) {
           this.spinner.hide();
         }
       });
     });
-
+  } else {
+    map.on('load', () => {
+      this.spinner.hide();
+    });
+  }
     map.addControl(new mapboxgl.NavigationControl()); // Add map controls
     map.addControl(new mapboxgl.FullscreenControl()); // Add map full screen
     setTimeout(function () {
@@ -206,37 +235,37 @@ export class DashboardComponent implements OnInit {
   getFarmersPipeline() {
     // Other Variables
     const farmersPipeline = [
-      {
-        area_of_interest: 'Chandan',
-        farm_size: '2 - 4 Ha',
-        crop_type: 'Mustard',
-        frcm_score: '80-100',
-      },
-      {
-        area_of_interest: 'Chandan',
-        farm_size: '4 - 6 Ha',
-        crop_type: 'Cumin',
-        frcm_score: '60-80',
-      },
-      {
-        area_of_interest: 'Chandan',
-        farm_size: '6 - 8 Ha',
-        crop_type: 'Mustard',
-        frcm_score: '80-100',
-      },
-      {
-        area_of_interest: 'Chandan',
-        farm_size: '2 - 4 Ha',
-        crop_type: 'Cumin',
-        frcm_score: '60-80',
-      },
-      {
-        area_of_interest: 'Chandan',
-        farm_size: '4 - 6 Ha',
-        crop_type: 'Mustard',
-        frcm_score: '60-100',
-      },
-    ];
+      // {
+      //   area_of_interest: 'Chandan',
+      //   farm_size: '2 - 4 Ha',
+      //   crop_type: 'Mustard',
+      //   frcm_score: '80-100',
+      // },
+      // {
+      //   area_of_interest: 'Chandan',
+      //   farm_size: '4 - 6 Ha',
+      //   crop_type: 'Cumin',
+      //   frcm_score: '60-80',
+      // },
+      // {
+      //   area_of_interest: 'Chandan',
+      //   farm_size: '6 - 8 Ha',
+      //   crop_type: 'Mustard',
+      //   frcm_score: '80-100',
+      // },
+      // {
+      //   area_of_interest: 'Chandan',
+      //   farm_size: '2 - 4 Ha',
+      //   crop_type: 'Cumin',
+      //   frcm_score: '60-80',
+      // },
+      // {
+      //   area_of_interest: 'Chandan',
+      //   farm_size: '4 - 6 Ha',
+      //   crop_type: 'Mustard',
+      //   frcm_score: '60-100',
+      // },
+    ] as any;
 
     this.allPipelineFarmers = farmersPipeline;
     return;

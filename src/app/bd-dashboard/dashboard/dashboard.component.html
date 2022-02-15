@@ -215,7 +215,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr routerLink="/edit/summary/{{x.farmerId}}" *ngFor="let x of allExistingFarmers">
+                        <tr routerLink="/edit/demographic-info/{{x.farmerId}}" *ngFor="let x of allExistingFarmers">
                           <td>{{x.farmerId}}</td>
                           <td>
                             {{ x.farmerDetails?.firstName }}
@@ -231,7 +231,7 @@
                           <td>
                             {{ x.address?.addressLine1 }}
                           </td>
-                          <td>100%</td>
+                          <td>NA</td>
                         </tr>
                       </tbody>
                     </table>
