@@ -83,6 +83,7 @@ export class DashboardComponent implements OnInit {
       zoom: 14, // starting zoom
       center: [77.73521840572359, 13.048329579932709],
     });
+    if(mapViewType === 'existing_farmers_mapbox'){
     // geojson coordinates
     map.on('load', () => {
       useData.forEach((elem: any, index: number) => {        
@@ -209,7 +210,11 @@ export class DashboardComponent implements OnInit {
         }
       });
     });
-
+  } else {
+    map.on('load', () => {
+      this.spinner.hide();
+    });
+  }
     map.addControl(new mapboxgl.NavigationControl()); // Add map controls
     map.addControl(new mapboxgl.FullscreenControl()); // Add map full screen
     setTimeout(function () {
@@ -240,37 +245,37 @@ export class DashboardComponent implements OnInit {
   getFarmersPipeline() {
     // Other Variables
     const farmersPipeline = [
-      {
-        area_of_interest: 'Chandan',
-        farm_size: '2 - 4 Ha',
-        crop_type: 'Mustard',
-        frcm_score: '80-100',
-      },
-      {
-        area_of_interest: 'Chandan',
-        farm_size: '4 - 6 Ha',
-        crop_type: 'Cumin',
-        frcm_score: '60-80',
-      },
-      {
-        area_of_interest: 'Chandan',
-        farm_size: '6 - 8 Ha',
-        crop_type: 'Mustard',
-        frcm_score: '80-100',
-      },
-      {
-        area_of_interest: 'Chandan',
-        farm_size: '2 - 4 Ha',
-        crop_type: 'Cumin',
-        frcm_score: '60-80',
-      },
-      {
-        area_of_interest: 'Chandan',
-        farm_size: '4 - 6 Ha',
-        crop_type: 'Mustard',
-        frcm_score: '60-100',
-      },
-    ];
+      // {
+      //   area_of_interest: 'Chandan',
+      //   farm_size: '2 - 4 Ha',
+      //   crop_type: 'Mustard',
+      //   frcm_score: '80-100',
+      // },
+      // {
+      //   area_of_interest: 'Chandan',
+      //   farm_size: '4 - 6 Ha',
+      //   crop_type: 'Cumin',
+      //   frcm_score: '60-80',
+      // },
+      // {
+      //   area_of_interest: 'Chandan',
+      //   farm_size: '6 - 8 Ha',
+      //   crop_type: 'Mustard',
+      //   frcm_score: '80-100',
+      // },
+      // {
+      //   area_of_interest: 'Chandan',
+      //   farm_size: '2 - 4 Ha',
+      //   crop_type: 'Cumin',
+      //   frcm_score: '60-80',
+      // },
+      // {
+      //   area_of_interest: 'Chandan',
+      //   farm_size: '4 - 6 Ha',
+      //   crop_type: 'Mustard',
+      //   frcm_score: '60-100',
+      // },
+    ] as any;
 
     this.allPipelineFarmers = farmersPipeline;
     return;
