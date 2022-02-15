@@ -51,9 +51,9 @@
                             <div class="col-md-2 lable-top">
                                 <label>Year-Season</label>
                                 <select class="form-select">
-                                    <option selected="">Rabi 2021</option>
-                                    <option>Rabi 2021</option>
-                                    <option>Rabi 2021</option>
+                                    <option value="">...</option>
+                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']"
+                                        [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">
@@ -78,9 +78,9 @@
                             <div class="col-md-2 lable-top">
                                 <label>Year-Season</label>
                                 <select class="form-select">
-                                    <option selected="">Rabi 2021</option>
-                                    <option>Rabi 2021</option>
-                                    <option>Rabi 2021</option>
+                                    <option value="">...</option>
+                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']"
+                                        [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">

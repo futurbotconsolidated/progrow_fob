@@ -426,6 +426,20 @@ export const data = {
         defaultValue: false,
       },
     ],
+    cropYearSeason: [
+      {
+        id: 1,
+        displayName: 'Rabi 2021',
+        displayValue: 'rabi_2021',
+        defaultValue: false,
+      },
+      {
+        id: 2,
+        displayName: 'Kharif 2021',
+        displayValue: 'kharif_2021',
+        defaultValue: false,
+      },
+    ],
   },
   demoGraphic: {
     addressProofType: [

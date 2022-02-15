@@ -438,18 +438,16 @@ export class DemographicInfoComponent implements OnInit {
         (res: any) => {
           this.spinner.hide();
           if (res && res[0].Status != 'Success') {
-            alert('Failed to fetch PinCode Details, please try again...');
+            alert(`${res[0].Message}`);
           } else {
             if (type === 'ADDRESS') {
               this.pinCodeAPIData = res[0].PostOffice;
-
               this.demographicInfoForm.patchValue({
                 city: this.pinCodeAPIData[0].District,
                 state: this.pinCodeAPIData[0].State,
               });
             } else if (type === 'PERMANENT_ADDRESS') {
               this.permPinCodeAPIData = res[0].PostOffice;
-
               this.demographicInfoForm.patchValue({
                 permCity: this.permPinCodeAPIData[0].District,
                 permState: this.permPinCodeAPIData[0].State,
@@ -466,6 +464,8 @@ export class DemographicInfoComponent implements OnInit {
   }
 
   validateAndNext() {
+    console.log(this.demographicInfoForm.value);
+
     this.isSubmitted = true;
     if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');

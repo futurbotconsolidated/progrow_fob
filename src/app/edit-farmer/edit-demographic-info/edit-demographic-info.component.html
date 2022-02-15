@@ -51,10 +51,12 @@
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile">
                             <p>Younger generation interested in
-                                farming:<span><b>{{getDisplayName('agriculturalInterest',demographicDisp?.agricultureChildrenInterested)}}</b></span>
+                                farming:
+                                <span><b>
+                                        {{getDisplayName('agriculturalInterest',demographicDisp?.agricultureChildrenInterested)}}</b></span>
                             </p>
                             <p>Agri Tech Interests:
-                                <span *ngFor="let x of demographicDisp?.innovativeFarmingWays"><b>
+                                <span *ngFor="let x of demographicDisp?.innovativeFarmingWays"> <b>
                                         {{getDisplayName('innovativeWaysFarming',x) }}, </b></span>
 
                             </p>
@@ -68,9 +70,10 @@
                         <h4 class="summery-heading"><span>Advisory outreach</span> <a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile">
-                            <p>Phone Type:<span><b>{{getDisplayName('phoneType',demographicDisp?.phoneType)}}</b></span>
+                            <p>Phone Type:
+                                <span><b> {{getDisplayName('phoneType',demographicDisp?.phoneType)}}</b></span>
                             </p>
-                            <p>Who is operating Phone:<span><b>
+                            <p>Who is operating Phone: <span><b>
                                         {{getDisplayName('phoneOperating',demographicDisp?.phoneUsedBy)}}</b></span></p>
                             <p>Preferable advisory medium:
                                 <span *ngFor="let x of demographicDisp?.adviceMedium"><b>
@@ -79,7 +82,7 @@
 
                             </p>
                             <p>Advisory medium on
-                                cultivation: <span *ngFor="let x of demographicDisp?.cultivationAdvice"><b>
+                                cultivation: <span *ngFor="let x of demographicDisp?.cultivationAdvice"> <b>
                                         {{getDisplayName('cultivationAdvice',x)}} ,
                                     </b></span>
                                 <span><b> {{demographicDisp?.cultivationAdviceOther}}</b></span>
