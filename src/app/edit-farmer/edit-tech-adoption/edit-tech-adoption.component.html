@@ -5,15 +5,27 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><span>Outlook</span><a href="javascript:void(0)"> <img
-                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Outlook</span>
+                            <a href="javascript:void(0)">
+                                <img src="../../../assets/images/edit-img.svg" alt="">
+                            </a>
+                        </h4>
                         <div class="d-flex-profile kcc-details">
-                            <p><span>Do you think that you require help in farm yield
-                                    improvisation?</span><span><b>Yes</b></span></p>
+                            <p>
+                                <span>Do you think that you require help in farm yield improvisation?</span>
+                                <span><b>
+                                        {{getDisplayName('booleanValues',techAdoptionDisp?.farmYieldImprovisation)}}
+                                    </b>
+                                </span>
+                            </p>
                             <p><span> Model farm case studies are available to support claims. Does it help to provide
-                                    confidence?</span><span><b>Yes</b></span></p>
+                                    confidence?</span><span><b>
+                                        {{getDisplayName('booleanValues',techAdoptionDisp?.farmCaseStudies)}}</b></span>
+                            </p>
                             <p><span> Would you be comfortable to pay for technology if there is definite margin of
-                                    improvement? </span><span><b>Yes</b></span></p>
+                                    improvement? </span><span><b>
+                                        {{getDisplayName('booleanValues',techAdoptionDisp?.payForTechnology)}}</b></span>
+                            </p>
 
                         </div>
                     </div>
@@ -28,16 +40,17 @@
                         <p>Are you aware of the following technologies? In your opinion, how helpful are they to you?
                         </p>
                         <div class="d-flex-profile kcc-details">
-                            <p><span>Tissue culture / Hybrid seeds</span><span><b>Aware</b></span></p>
-                            <p><span>Poly house</span><span><b>Aware</b></span></p>
-                            <p><span>Micro irrigation</span><span><b>Helpful</b></span></p>
+                            <p><span>Tissue culture / Hybrid seeds</span><span><b>N/A</b></span></p>
+                            <p><span>Poly house</span><span><b>N/A</b></span></p>
+                            <p><span>Micro irrigation</span><span><b>N/A</b></span></p>
                             <p><span>IoT sensors which help to track farm requirements of
-                                    nutrition</span><span><b>Helpful</b></span></p>
+                                    nutrition</span><span><b>N/A</b></span></p>
                             <p><span>Drones to track farm requirements of
-                                    nutrition/spraying</span><span><b>Aware</b></span></p>
+                                    nutrition/spraying</span><span><b>N/A</b></span></p>
                             <p><span>Weather data to help plan in advance for taking preventive measures on
-                                    farm</span><span><b>Aware</b></span></p>
-                            <p><span>Satellite based tracking of crop health</span><span><b>Helpful</b></span></p>
+                                    farm</span><span><b>N/A</b></span></p>
+                            <p><span>Satellite based tracking of crop health</span><span><b>N/A</b></span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -46,9 +59,11 @@
                         <h4 class="summery-heading"><span>Comment</span><a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile">
-                            <p><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></p>
+                            <p>
+                                <span>
+                                    {{techAdoptionDisp?.payForTechnologyComment}}
+                                </span>
+                            </p>
                         </div>
                     </div>
                 </div>

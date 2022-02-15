@@ -9,27 +9,10 @@
                 <form [formGroup]="cropMarketPlanForm">
                     <div class="form-details">
                         <div class="form-details-inner">
-                            <h3 class="form-title">1A. Where do you procure the seed for different crops? <a
-                                    href="javascript:void(0)" class="comment-icon"><svg
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
-
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
+                            <h3 class="form-title">1A. Where do you procure the seed for different crops? </h3>
                             <div class="row align-items-center">
                                 <div class="select-advice innovative-way">
-                                    <div class="col-auto" *ngFor="let indStat of seedProcureList">
+                                    <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['seedProcure']">
                                         <label class="form-check-label form-check bordered-check"
                                             for="{{indStat.displayValue}}">
                                             <input class="form-check-input" type="checkbox"
@@ -38,26 +21,6 @@
                                           " [checked]="this.cropMarketPlanForm.controls['seedProcure'].value?.includes(indStat.displayValue)">{{indStat.displayName}}
                                         </label>
                                     </div>
-                                    <!-- <div class="col-auto">
-                                        <label class="form-check-label form-check bordered-check" for="KVK">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                                id="KVK">KVK</label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <label class="form-check-label form-check bordered-check" for="Hybrid-variety">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                                id="Hybrid-variety">Hybrid variety seeds from input supplier</label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <label class="form-check-label form-check bordered-check" for="FPO-seed">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                                id="FPO-seed">FPO seed outlet</label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <label class="form-check-label form-check bordered-check" for="last-produce">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                                id="last-produce">Last year produce</label>
-                                    </div> -->
                                     <div class="col-auto lable-top">
                                         <label>Others</label>
                                         <input type="text" class="form-control" placeholder="Please specify">
@@ -66,10 +29,11 @@
                             </div>
                         </div>
                         <div class="form-details-inner">
-                            <h3 class="form-title">B. If used hybrid variety seeds, what difference do you observe in
-                                comparison to local varieties?</h3>
+                            <h3 class="form-title">1B. If used hybrid variety seeds, what difference do you observe in
+                                comparison to local varieties?
+                            </h3>
                             <div class="row align-items-center">
-                                <div class="col-auto" *ngFor="let indType of varietyComparisonList">
+                                <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['varietyComparison']">
                                     <label class="form-check-label form-check bordered-radio"
                                         for="{{indType.displayValue}}">
                                         <input class="form-check-input" type="radio" formControlName="varietyComparison"
@@ -77,55 +41,19 @@
                                             id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                     </label>
                                 </div>
-                                <!-- <div class="col-auto">
-                                    <label class="form-check-label form-check bordered-radio" for="no-yield">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="no-yield">No change in Yield</label>
-                                </div>
-                                <div class="col-auto">
-                                    <label class="form-check-label form-check bordered-radio" for="Disease-resistant">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="Disease-resistant">Disease resistant</label>
-                                </div>
-                                <div class="col-auto">
-                                    <label class="form-check-label form-check bordered-radio" for="Stress-Tolerant">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="Stress-Tolerant">Stress Tolerant</label>
-                                </div>
-                                <div class="col-auto">
-                                    <label class="form-check-label form-check bordered-radio" for="Less-Irrigation">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="Less-Irrigation">Less Irrigation</label>
-                                </div> -->
                             </div>
                         </div>
                     </div>
                     <div class="form-details">
                         <h3 class="form-title">2. How much of the crop output is used for seed replacement in the next
-                            crop cycle? <a href="javascript:void(0)" class="comment-icon"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                            crop cycle? </h3>
                         <div class="row align-items-center form-details-inner">
                             <div class="col-md-2 lable-top">
                                 <label>Year-Season</label>
                                 <select class="form-select">
-                                    <option selected="">Rabi 2021</option>
-                                    <option>Rabi 2021</option>
-                                    <option>Rabi 2021</option>
+                                    <option value="">...</option>
+                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']"
+                                        [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">
@@ -150,9 +78,9 @@
                             <div class="col-md-2 lable-top">
                                 <label>Year-Season</label>
                                 <select class="form-select">
-                                    <option selected="">Rabi 2021</option>
-                                    <option>Rabi 2021</option>
-                                    <option>Rabi 2021</option>
+                                    <option value="">...</option>
+                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']"
+                                        [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">
@@ -176,25 +104,9 @@
                     </div>
                     <div class="form-details">
                         <h3 class="form-title">3. Where do you purchase your fertilizers and pesticides from for the
-                            cultivation cycle? <a href="javascript:void(0)" class="comment-icon"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                            cultivation cycle?</h3>
                         <div class="row">
-                            <div class="col-auto" *ngFor="let indStat of fertilizerPurchaseList">
+                            <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['fertilizerPurchase']">
                                 <label class="form-check-label form-check bordered-check"
                                     for="{{indStat.displayValue}}">
                                     <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"
@@ -203,16 +115,6 @@
                                   " [checked]="this.cropMarketPlanForm.controls['fertilizerPurchase'].value?.includes(indStat.displayValue)">{{indStat.displayName}}
                                 </label>
                             </div>
-                            <!-- <div class="col-auto">
-                                <label class="form-check-label form-check bordered-check" for="local-mandi">
-                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                        id="local-mandi">Local Mandi</label>
-                            </div>
-                            <div class="col-auto">
-                                <label class="form-check-label form-check bordered-check" for="Government-outlet">
-                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                        id="Government-outlet">Government outlet</label>
-                            </div> -->
                             <div class="col-auto lable-top">
                                 <label>Other</label>
                                 <input type="text" class="form-control" name="" placeholder="Please specify">
@@ -221,27 +123,10 @@
                     </div>
                     <div class="form-details">
                         <h3 class="form-title">4. How satisfied are you with the fertilizer and pesticide
-                            quality/service from the local input supplier? <a href="javascript:void(0)"
-                                class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                            quality/service from the local input supplier?</h3>
                         <div class="row align-items-center">
                             <div class="select-advice interested-child">
-                                <div class="col-auto" *ngFor="let indType of pesticideQualityList">
+                                <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['pesticideQuality']">
                                     <label class="form-check-label form-check bordered-radio"
                                         for="{{indType.displayValue}}">
                                         <input class="form-check-input" type="radio" formControlName="pesticideQuality"
@@ -249,45 +134,13 @@
                                             id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                     </label>
                                 </div>
-                                <!-- <div class="col-auto">
-                                    <label class="form-check-label form-check bordered-radio" for="Quite-satisfied">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="Quite-satisfied">Quite satisfied</label>
-                                </div>
-                                <div class="col-auto">
-                                    <label class="form-check-label form-check bordered-radio" for="no-satisfied">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="no-satisfied">Not so satisfied</label>
-                                </div>
-                                <div class="col-auto">
-                                    <label class="form-check-label form-check bordered-radio" for="Very-dissatisfied">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="Very-dissatisfied">Very dissatisfied</label>
-                                </div> -->
                             </div>
                         </div>
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">5. Who advises you on application of fertilizers/pesticides? <a
-                                href="javascript:void(0)" class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                        <h3 class="form-title">5. Who advises you on application of fertilizers/pesticides? </h3>
                         <div class="row">
-                            <div class="col-auto" *ngFor="let indStat of fertilizerAdviseList">
+                            <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['fertilizerAdvise']">
                                 <label class="form-check-label form-check bordered-check"
                                     for="{{indStat.displayValue}}">
                                     <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"
@@ -296,16 +149,6 @@
                                   " [checked]="this.cropMarketPlanForm.controls['fertilizerAdvise'].value?.includes(indStat.displayValue)">{{indStat.displayName}}
                                 </label>
                             </div>
-                            <!-- <div class="col-auto">
-                                <label class="form-check-label form-check bordered-check" for="advised-owner">
-                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                        id="advised-owner"><span>advised by fertilizer shop owner</span></label>
-                            </div>
-                            <div class="col-auto">
-                                <label class="form-check-label form-check bordered-check" for="advised-kvk">
-                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                        id="advised-kvk"><span>advised by KVK</span></label>
-                            </div> -->
                             <div class="col-auto lable-top">
                                 <label>Other</label>
                                 <input type="text" class="form-control" name="" placeholder="Please specify">
@@ -314,24 +157,7 @@
                     </div>
                     <div class="form-details">
                         <div class="form-details-inner">
-                            <h3 class="form-title">6A. Where do you sell the produce? <a href="javascript:void(0)"
-                                    class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
-
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
+                            <h3 class="form-title">6A. Where do you sell the produce?</h3>
                             <div class="row align-items-center">
                                 <div class="col-md-8">
                                     <table class="table loan product-table">
@@ -454,7 +280,7 @@
                             <h3 class="form-title">6B. Are you satisfied with the existing farm gate grading method?
                             </h3>
                             <div class="row g-3 align-items-center">
-                                <div class="col-auto" *ngFor="let indType of farmGateGradingList">
+                                <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['farmGateGrading']">
                                     <label class="form-check-label form-check bordered-radio"
                                         for="{{indType.displayValue}}">
                                         <input class="form-check-input" type="radio" formControlName="farmGateGrading"
@@ -462,35 +288,15 @@
                                             id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                     </label>
                                 </div>
-                                <!-- <div class="col-auto">
-                                    <label class="form-check-label form-check bordered-radio" for="grading-no">
-                                        <input class="form-check-input" type="radio" name="grading-method"
-                                            id="grading-no">No</label>
-                                </div> -->
                             </div>
                         </div>
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">7. How long does it take before receiving money for the produce sold? <a
-                                href="javascript:void(0)" class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                        <h3 class="form-title">7. How long does it take before receiving money for the produce sold?
+                        </h3>
                         <div class="row align-items-center">
-                            <div class="col-auto" *ngFor="let indType of durationReceivingMoneyList">
+                            <div class="col-auto"
+                                *ngFor="let indType of cropMarketPlanMaster['durationReceivingMoney']">
                                 <label class="form-check-label form-check bordered-radio"
                                     for="{{indType.displayValue}}">
                                     <input class="form-check-input" type="radio"
@@ -498,21 +304,6 @@
                                         id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                 </label>
                             </div>
-                            <!-- <div class="col-auto">
-                                <label class="form-check-label form-check bordered-radio" for="seven-days">
-                                    <input class="form-check-input" type="radio" name="Produce-sold" id="seven-days">
-                                    <7 days</label>
-                            </div>
-                            <div class="col-auto">
-                                <label class="form-check-label form-check bordered-radio" for="ten-days">
-                                    <input class="form-check-input" type="radio" name="Produce-sold" id="ten-days">10-15
-                                    dayss</label>
-                            </div>
-                            <div class="col-auto">
-                                <label class="form-check-label form-check bordered-radio" for="fifteen-days">
-                                    <input class="form-check-input" type="radio" name="Produce-sold"
-                                        id="fifteen-days">15-30 days</label>
-                            </div> -->
                             <div class="col-auto lable-top">
                                 <label>Others</label>
                                 <input type="text" class="form-control" name="" placeholder="Please specify">
@@ -521,25 +312,9 @@
                     </div>
                     <div class="form-details">
                         <h3 class="form-title">8. Would you like to warehouse your produce before selling at the highest
-                            price? <a href="javascript:void(0)" class="comment-icon"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                            price?</h3>
                         <div class="row align-items-center">
-                            <div class="col-auto" *ngFor="let indType of warehouseProduceList">
+                            <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['warehouseProduce']">
                                 <label class="form-check-label form-check bordered-radio"
                                     for="{{indType.displayValue}}">
                                     <input class="form-check-input" type="radio" formControlName="warehouseProduce"
@@ -547,11 +322,6 @@
                                         id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                 </label>
                             </div>
-                            <!-- <div class="col-auto">
-                                <label class="form-check-label form-check bordered-radio" for="selling-no">
-                                    <input class="form-check-input" type="radio" name="selling-price"
-                                        id="selling-no">No</label>
-                            </div> -->
                         </div>
                     </div>
                 </form>

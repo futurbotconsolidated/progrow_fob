@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+check_cmd_status() {
+  SETUP_LOG_DIR=${SETUP_LOG_DIR:=/tmp/setup.log}
+  CMD_STATUS=$1;
+  ERROR_MSG=$2;
+  SUCCESS_MSG=$3;
+  CRITICAL=$4;
+  if [ ${CMD_STATUS} -ne 0 ]; then
+    echo "`date` : ERROR : ${SCRIPT_NAME} : $ERROR_MSG"
+    echo "`date` : ERROR : ${SCRIPT_NAME} : $ERROR_MSG" 1>&2;
+    echo "`date` : ERROR : ${SCRIPT_NAME} : $ERROR_MSG" >> ${SETUP_LOG_DIR}
+    if [ "$CRITICAL" == "CRITICAL" ]; then
+      exit 1
+    fi
+  else
+    echo "`date` : INFO : ${SCRIPT_NAME} : $SUCCESS_MSG"
+    echo "`date` : INFO : ${SCRIPT_NAME} : $SUCCESS_MSG" >> ${SETUP_LOG_DIR}
+  fi
+}
+
+log_message() {
+  SETUP_LOG_DIR=${SETUP_LOG_DIR:=/tmp/setup.log}
+  echo "`date` : INFO : ${SCRIPT_NAME} : $@"
+  echo "`date` : INFO : ${SCRIPT_NAME} : $@" >> ${SETUP_LOG_DIR}
+}
+
+log_error() {
+  SETUP_LOG_DIR=${SETUP_LOG_DIR:=/tmp/setup.log}
+  echo "`date` : ERROR : ${SCRIPT_NAME} : $@"
+  echo "`date` : ERROR : ${SCRIPT_NAME} : $@" >> ${SETUP_LOG_DIR}
+}

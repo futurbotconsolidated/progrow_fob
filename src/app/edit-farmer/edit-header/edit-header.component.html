@@ -4,21 +4,25 @@
         <div class="header-bottom">
             <div class="edit-picture">
                 <div class="step-next profile-next">
-                    <a href="#" class="btn btn-back">Back </a>
+                    <a href="/bd/dashboard" class="btn btn-back">Back </a>
                 </div>
-                <div class="farmer-pro"><img src="../../../assets/images/farmer-profile-img.jpg"></div>
+                <div class="farmer-pro">
+                    <img *ngIf="demographicDisp?.profileImg" [src]="demographicDisp?.profileImg">
+                    <img *ngIf="!demographicDisp?.profileImg" src="../../../assets/images/profile-pic-dummy.jpg">
+                </div>
                 <div class="p">
-                    <span class="profile-rating">4.1 <i class="fa fa-star"></i></span>
-                    <span class="profile-name">Rishabh Sharma</span>
+                    <!-- <span class="profile-rating">4.1 <i class="fa fa-star"></i></span> -->
+                    <span class="profile-name">{{demographicDisp?.farmerDetails?.firstName}}
+                        {{demographicDisp?.farmerDetails?.middleName}}
+                        {{demographicDisp?.farmerDetails?.lastName}}</span>
                 </div>
                 <div class="edit-picture-gap profile-date"><img src="../../../assets/images/profile-date.svg"
-                        alt=""><span>10th Jan
-                        1980</span></div>
+                        alt=""><span> {{demographicDisp?.farmerDetails?.dob}}</span></div>
                 <div class="edit-picture-gap gender"><img src="../../../assets/images/profile-gender.svg"
-                        alt=""><span>Male</span>
+                        alt=""><span>{{getDisplayName('gender',demographicDisp?.farmerDetails?.gender)}}</span>
                 </div>
                 <div class="edit-picture-gap phone-num"><img src="../../../assets/images/profile-phone.svg"
-                        alt=""><span>9876543210</span></div>
+                        alt=""><span>{{demographicDisp?.address?.mobileNumber}}</span></div>
             </div>
             <div class="pro-right">
                 <div class="language">
@@ -38,27 +42,33 @@
             <ul>
                 <li>
                     <span><img src="../../../assets/images/profile-religion.svg" alt=""></span>
-                    <div><span><b>Religion: </b>Hindu</span><br><span><b>Caste:</b> Rajput</span></div>
+                    <div><span><b>Religion:
+                            </b>{{getDisplayName('religion',demographicDisp?.farmerDetails?.religion)}}</span><br><span><b>Caste:</b>
+                            {{getDisplayName('caste',demographicDisp?.farmerDetails?.caste)}}</span></div>
                 </li>
                 <li>
                     <span><img src="../../../assets/images/profile-address.svg" alt=""></span>
-                    <div><span><b>KYC Valid Address: </b> 88, Runjhun Heights, Chinchwad Alwar -
-                            383445</span><br><span><b>Communication Address:</b> 28, Hadapsar, Simla - 485807</span>
+                    <div><span><b>KYC Valid Address: </b> {{demographicDisp?.address?.addressLine1}}
+                            {{demographicDisp?.address?.addressLine2}} </span>
+                        <br><span><b>Communication Address:</b>N/A</span>
                     </div>
                 </li>
             </ul>
         </div>
         <div class="hori-navigation">
             <ul>
-                <li routerLinkActive="active"><a routerLink="/edit/summary">Summary</a></li>
-                <li routerLinkActive="active"><a routerLink="/edit/demographic-info">Demographic Info</a></li>
-                <li routerLinkActive="active"><a routerLink="/edit/field-info">Field Info</a></li>
-                <li routerLinkActive="active"><a routerLink="/edit/financial-plan">Financial Planning Info</a></li>
-                <li routerLinkActive="active"><a routerLink="/edit/crop-market-plan">Crop Marketing Plan</a></li>
-                <li routerLinkActive="active"><a routerLink="/edit/fop">FRCM FPO</a></li>
-                <li routerLinkActive="active"><a routerLink="/edit/tech-adoption">Tech Adoption</a></li>
-                <li routerLinkActive="active"><a routerLink="/edit/co-applicant">Co Applicant</a></li>
-                <li routerLinkActive="active"><a routerLink="/edit/declaration">Declaration</a></li>
+                <li routerLinkActive="active"><a routerLink="/edit/summary/{{farmerId}}">Summary</a></li>
+                <li routerLinkActive="active"><a routerLink="/edit/demographic-info/{{farmerId}}">Demographic Info</a>
+                </li>
+                <li routerLinkActive="active"><a routerLink="/edit/field-info/{{farmerId}}">Field Info</a></li>
+                <li routerLinkActive="active"><a routerLink="/edit/financial-plan/{{farmerId}}">Financial Planning
+                        Info</a></li>
+                <li routerLinkActive="active"><a routerLink="/edit/crop-market-plan/{{farmerId}}">Crop Marketing
+                        Plan</a></li>
+                <li routerLinkActive="active"><a routerLink="/edit/fop/{{farmerId}}">FRCM FPO</a></li>
+                <li routerLinkActive="active"><a routerLink="/edit/tech-adoption/{{farmerId}}">Tech Adoption</a></li>
+                <li routerLinkActive="active"><a routerLink="/edit/co-applicant/{{farmerId}}">Co Applicant</a></li>
+                <li routerLinkActive="active"><a routerLink="/edit/declaration/{{farmerId}}">Declaration</a></li>
             </ul>
         </div>
     </div>

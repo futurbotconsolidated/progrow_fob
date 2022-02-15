@@ -33,7 +33,13 @@ export const religion = [
   {
     id: 6,
     displayName: 'Buddhist',
-    displayValue: 'Buddhist',
+    displayValue: 'buddhist',
+    defaultValue: false,
+  },
+  {
+    id: 7,
+    displayName: 'Others',
+    displayValue: 'others',
     defaultValue: false,
   },
 ];
@@ -51,8 +57,31 @@ export const gender = [
   },
   {
     id: 3,
-    displayName: 'Third-Gender',
-    displayValue: 'third_gender',
+    displayName: 'Other',
+    displayValue: 'other',
+  },
+];
+
+export const q1 = [
+  {
+    id: 1,
+    displayName: 'Yes',
+    displayValue: 'yes',
+  },
+  {
+    id: 2,
+    displayName: 'No',
+    displayValue: 'no',
+  },
+  {
+    id: 3,
+    displayName: 'May be',
+    displayValue: 'May be',
+  },
+  {
+    id: 3,
+    displayName: 'Never',
+    displayValue: 'never',
   },
 ];
 
@@ -67,7 +96,7 @@ export const commOrPerAddress = [
     id: 2,
     displayName: 'Different address',
     displayValue: 'different_address',
-    defaultValue: false,
+    defaultValue: 'different_address',
   },
 ];
 
@@ -94,6 +123,12 @@ export const caste = [
     id: 4,
     displayName: 'General',
     displayValue: 'general',
+    defaultValue: false,
+  },
+  {
+    id: 5,
+    displayName: 'Others',
+    displayValue: 'others',
     defaultValue: false,
   },
 ];
@@ -133,9 +168,9 @@ export const propertyStatus = [
 
 /// Dropdown values
 export const addressProofType = [
-  { id: 1, displayName: 'Voter ID', displayValue: 'voter_id' },
-  { id: 1, displayName: 'PAN Card', displayValue: 'pan_card' },
-  { id: 1, displayName: 'Aadhar ID', displayValue: 'aadhar_id' },
+  { id: 1, displayName: 'Aadhaar ID', displayValue: 'aadhaar_id' },
+  { id: 2, displayName: 'Driving Licence ', displayValue: 'driving_licence' },
+  { id: 3, displayName: 'Voter ID', displayValue: 'voter_id' },
 ];
 export const salutation = [
   {
@@ -234,14 +269,22 @@ export const relation = [
   { id: 1, displayName: 'Father', displayValue: 'father' },
   { id: 2, displayName: 'Mother', displayValue: 'mother' },
   { id: 3, displayName: 'Sister', displayValue: 'sister' },
+  { id: 4, displayName: 'Brother', displayValue: 'brother' },
+  { id: 5, displayName: 'Other', displayValue: 'other' },
 ];
 export const education = [
-  { id: 1, displayName: '10th', displayValue: '10th' },
-  { id: 2, displayName: 'PUC', displayValue: 'puc' },
+  { id: 1, displayName: 'No Education', displayValue: 'no_education' },
+  { id: 2, displayName: '10th', displayValue: '10th' },
+  { id: 3, displayName: 'PUC', displayValue: 'puc' },
+  { id: 4, displayName: 'Graduate', displayValue: 'graduate' },
+  { id: 5, displayName: 'PhD', displayValue: 'phd' },
 ];
 export const occupation = [
   { id: 1, displayName: 'Farmer', displayValue: 'farmer' },
   { id: 2, displayName: 'House Wife', displayValue: 'house_wife' },
+  { id: 3, displayName: 'Student', displayValue: 'student' },
+  { id: 4, displayName: 'Self Employed', displayValue: 'self_employed' },
+  { id: 5, displayName: 'Professional', displayValue: 'professional' },
 ];
 export const dependency = [
   { id: 1, displayName: '1', displayValue: '1' },
@@ -249,11 +292,12 @@ export const dependency = [
 ];
 export const propertyType = [
   { id: 1, displayName: 'House', displayValue: 'house' },
+  { id: 2, displayName: 'Land', displayValue: 'land' },
 ];
 // export const ownershipType = [
 //   { id: 1, displayName: 'Owned', displayValue: 'owned' },
 // ];
-export const particular = [{ id: 1, displayName: '', displayValue: '' }];
+export const particular = [{ id: 1, displayName: 'ABC', displayValue: 'ABC' }];
 
 export const irrigationSystem = [
   {
@@ -265,6 +309,7 @@ export const irrigationSystem = [
 export const waterSource = [
   { id: 1, displayName: 'Pond', displayValue: 'pond' },
   { id: 1, displayName: 'Well', displayValue: 'well' },
+  { id: 3, displayName: 'Canal', displayValue: 'canal' },
 ];
 export const ownerShipType = [
   {
@@ -280,7 +325,8 @@ export const ownerShipType = [
   { id: 3, displayName: 'Share Cropping', displayValue: 'Share Cropping' },
 ];
 export const season = [
-  { id: 1, displayName: 'Rabi 2021', displayValue: 'rabi_2021' },
+  { id: 1, displayName: 'Kharif 2022', displayValue: 'kharif_2022' },
+  { id: 2, displayName: 'Rabi 2021', displayValue: 'rabi_2021' },
 ];
 
 export const cropLoanProduct = [
@@ -294,6 +340,24 @@ export const otherBanks = [
   { id: 1, displayName: 'ICICI', displayValue: 'icici' },
   { id: 1, displayName: 'HDFC', displayValue: 'hdfc' },
   { id: 1, displayName: 'Axis', displayValue: 'axis' },
+];
+
+export const crops = [
+  { id: 1, displayName: 'Mustard', displayValue: 'Mustard' },
+  { id: 1, displayName: 'Cumin', displayValue: 'Cumin' },
+  { id: 1, displayName: 'Gram', displayValue: 'Gram' },
+  { id: 1, displayName: 'Isabgol', displayValue: 'Isabgol' },
+];
+
+export const soilQuality = [
+  { id: 1, displayName: 'Poor', displayValue: 'Poor' },
+  { id: 2, displayName: 'Fair', displayValue: 'Fair' },
+  { id: 3, displayName: 'Good', displayValue: 'Good' },
+];
+
+export const yesNo = [
+  { id: 1, displayName: 'Yes', displayValue: 'Yes' },
+  { id: 2, displayName: 'No', displayValue: 'No' },
 ];
 
 // START: Corp Market plan
@@ -688,7 +752,28 @@ export const followSuggestions = [
   {
     id: 3,
     displayName: 'May be',
-    displayValue: 'may_be',
+    displayValue: 'May be',
+    defaultValue: false,
+  },
+];
+
+export const cropCycleOnReports = [
+  {
+    id: 1,
+    displayName: 'Yes',
+    displayValue: 'yes',
+    defaultValue: 'yes',
+  },
+  {
+    id: 2,
+    displayName: 'No',
+    displayValue: 'no',
+    defaultValue: false,
+  },
+  {
+    id: 3,
+    displayName: 'May be',
+    displayValue: 'May be',
     defaultValue: false,
   },
 ];
@@ -715,6 +800,22 @@ export const consolidateLoans = [
 ];
 
 // END : Produce Aggregator
+
+// START : Financial Planning
+
+export const availKCCLoan = [
+  { id: 1, displayName: 'SBI', displayValue: 'SBI' },
+  { id: 2, displayName: 'BoB', displayValue: 'BoB' },
+  { id: 3, displayName: 'PNB', displayValue: 'PNB' },
+  { id: 3, displayName: 'RRB', displayValue: 'RRB' },
+  { id: 3, displayName: 'NABARD', displayValue: 'NABARD' },
+];
+
+export const houseLoan = [
+  { id: 1, displayName: 'SBI', displayValue: 'Yes' },
+  { id: 2, displayName: 'BoB', displayValue: 'No' },
+  { id: 3, displayName: 'PNB', displayValue: 'MayBe' },
+];
 
 let a = {
   addressProofType: [
@@ -889,7 +990,7 @@ export const technologyAdoptionBoolean = [
   {
     id: 2,
     displayName: 'May be',
-    displayValue: 'may_be',
+    displayValue: 'May be',
     defaultValue: false,
   },
 ];

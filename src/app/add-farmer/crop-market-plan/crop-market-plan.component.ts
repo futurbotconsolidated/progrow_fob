@@ -1,63 +1,59 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormGroup,
   FormControl,
   Validators,
   FormBuilder,
 } from '@angular/forms';
-import {
-  seedProcure,
-  varietyComparison,
-  fertilizerPurchase,
-  fertilizerAdvise,
-  farmGateGrading,
-  durationReceivingMoney,
-  warehouseProduce,
-  pesticideQuality,
-} from '../../shared/modal/global-field-values';
+import { data } from '../../shared/fob_master_data';
+import { AddFarmerService } from '../add-farmer.service';
+
 @Component({
   selector: 'app-crop-market-plan',
   templateUrl: './crop-market-plan.component.html',
   styleUrls: ['./crop-market-plan.component.css'],
 })
 export class CropMarketPlanComponent implements OnInit {
+  /* START: Variable */
   cropMarketPlanForm = new FormGroup({});
+  cropMarketPlanMaster = <any>{};
+  nextRoute: any;
+  /* END: Variable */
 
-  seedProcureList = <any>[];
-  varietyComparisonList = <any>[];
-  fertilizerPurchaseList = <any>[];
-  pesticideQualityList = <any>[];
-  fertilizerAdviseList = <any>[];
-  farmGateGradingList = <any>[];
-  durationReceivingMoneyList = <any>[];
-  warehouseProduceList = <any>[];
-
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private addFarmerService: AddFarmerService,
+    public router: Router
+  ) {
     this.cropMarketPlanForm = this.formBuilder.group({
-      seedProcure: [Array()], //checkbox
-      varietyComparison: new FormControl('high_yield', [Validators.required]), //radio
-      fertilizerPurchase: [Array()], //checkbox
+      seedProcure: [Array()],
+      varietyComparison: new FormControl('high_yield', [Validators.required]),
+      fertilizerPurchase: [Array()],
       pesticideQuality: new FormControl('very_satisfied', [
         Validators.required,
-      ]), //radio
-      fertilizerAdvise: [Array()], //checkbox
+      ]),
+      fertilizerAdvise: [Array()],
       farmGateGrading: new FormControl('yes', [Validators.required]),
       durationReceivingMoney: new FormControl('on_spot', [Validators.required]),
       warehouseProduce: new FormControl('yes', [Validators.required]),
     });
+
+    this.addFarmerService.getMessage().subscribe((data) => {
+      this.nextRoute = data.routeName;
+      this.saveData();
+      console.log(this.nextRoute);
+    });
   }
 
   ngOnInit(): void {
-    this.seedProcureList = seedProcure;
-    this.varietyComparisonList = varietyComparison;
-    this.fertilizerPurchaseList = fertilizerPurchase;
-    this.pesticideQualityList = pesticideQuality;
-    this.fertilizerAdviseList = fertilizerAdvise;
-    this.farmGateGradingList = farmGateGrading;
-    this.durationReceivingMoneyList = durationReceivingMoney;
-    this.warehouseProduceList = warehouseProduce;
-
-    console.log(this.fertilizerAdviseList, '----fertilizerAdviseList');
+    this.cropMarketPlanMaster = data.cropMarket; // read master data
+    let cropPlan: any = localStorage.getItem('crop-market-planing');
+    if (cropPlan) {
+      cropPlan = JSON.parse(cropPlan);
+      this.cropMarketPlanForm.patchValue(cropPlan);
+      console.log(cropPlan);
+    }
   }
 
   selectCultivationAdvice(event: any, formCtlName: any, formVal: any) {
@@ -81,5 +77,15 @@ export class CropMarketPlanComponent implements OnInit {
       // @ts-ignore: Object is possibly 'null'.
       this.cropMarketPlanForm.get(formCtlName).markAsDirty();
     }
+  }
+
+  saveData() {
+    let url = `/add/${this.nextRoute}`;
+    console.log(url);
+    localStorage.setItem(
+      'crop-market-planing',
+      JSON.stringify(this.cropMarketPlanForm.value)
+    );
+    this.router.navigate([url]);
   }
 }

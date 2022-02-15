@@ -4,15 +4,15 @@
     </div>
     <div class="language">
         <select class="form-select" aria-label="Default select example">
-            <option selected>Language</option>
-            <option>English</option>
-            <option>Germany</option>
-            <option>French</option>
+            <option>Language</option>
+            <option selected>English</option>
+            <!-- <option>Germany</option>
+            <option>French</option> -->
         </select>
     </div>
     <div class="step-next">
         <a (click)="back()" class="btn btn-back">Back</a>
-        <a (click)="routeNavigate()" class="btn btn-next active">Next </a>
+        <a *ngIf="nextButtonHide" (click)="routeNavigate()" class="btn btn-next active">Next </a>
         <a (click)="logOut()" class="btn btn-primary active" style="margin-left: 10px;">Logout </a>
     </div>
 </header>

@@ -21,26 +21,27 @@
                         <h4 class="summery-heading"><span>Family and Relationship</span><a href="javascript:void(0)">
                                 <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
-                            <li>
-                                <h5>Name</h5>
-                                <p> Akhilesh Sharma</p>
-                            </li>
-                            <li>
-                                <h5>Relation</h5>
-                                <p>Brother</p>
-                            </li>
-                            <li>
-                                <h5>Education</h5>
-                                <p>10th</p>
-                            </li>
-                            <li>
-                                <h5>Occupation</h5>
-                                <p> Student</p>
-                            </li>
-                            <li>
-                                <h5>Dependency</h5>
-                                <p>Yes</p>
-                            </li>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Relation</th>
+                                        <th>Education</th>
+                                        <th>Occupation</th>
+                                        <th>Dependency</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of demographicDisp?.familyMembers">
+                                        <td>{{x.name}}</td>
+                                        <td>{{getDisplayName('relation',x.relation)}}</td>
+                                        <td>{{getDisplayName('education',x.education)}}</td>
+                                        <td>{{getDisplayName('occupation',x.occupation)}}</td>
+                                        <td>{{getDisplayName('dependency',x.dependency)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </ul>
                     </div>
                 </div>
@@ -49,8 +50,16 @@
                         <h4 class="summery-heading"><span>Future Interest</span><a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile">
-                            <p>Younger generation interested in farming:<span><b>Very much</b></span></p>
-                            <p>Agri Tech Interests:<span><b> - drip, mulch</b></span></p>
+                            <p>Younger generation interested in
+                                farming:
+                                <span><b>
+                                        {{getDisplayName('agriculturalInterest',demographicDisp?.agricultureChildrenInterested)}}</b></span>
+                            </p>
+                            <p>Agri Tech Interests:
+                                <span *ngFor="let x of demographicDisp?.innovativeFarmingWays"> <b>
+                                        {{getDisplayName('innovativeWaysFarming',x) }}, </b></span>
+
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -61,10 +70,23 @@
                         <h4 class="summery-heading"><span>Advisory outreach</span> <a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile">
-                            <p>Phone Type:<span><b> Smart phone</b></span></p>
-                            <p>Who is operating Phone:<span><b> Son</b></span></p>
-                            <p>Preferable advisory medium:<span><b> Whatsapp</b></span></p>
-                            <p>Advisory medium on cultivation:<span><b> SMS, Whatsapp</b></span></p>
+                            <p>Phone Type:
+                                <span><b> {{getDisplayName('phoneType',demographicDisp?.phoneType)}}</b></span>
+                            </p>
+                            <p>Who is operating Phone: <span><b>
+                                        {{getDisplayName('phoneOperating',demographicDisp?.phoneUsedBy)}}</b></span></p>
+                            <p>Preferable advisory medium:
+                                <span *ngFor="let x of demographicDisp?.adviceMedium"><b>
+                                        {{getDisplayName('adviceMedium',x)}} ,</b></span>
+                                <span><b> {{demographicDisp?.adviceMediumOther}}</b></span>
+
+                            </p>
+                            <p>Advisory medium on
+                                cultivation: <span *ngFor="let x of demographicDisp?.cultivationAdvice"> <b>
+                                        {{getDisplayName('cultivationAdvice',x)}} ,
+                                    </b></span>
+                                <span><b> {{demographicDisp?.cultivationAdviceOther}}</b></span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -73,26 +95,29 @@
                         <h4 class="summery-heading"><span>Property ownership</span><a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
-                            <li>
-                                <h5>Type</h5>
-                                <p> House</p>
-                            </li>
-                            <li>
-                                <h5>Photo</h5>
-                                <p><a href="javascript:void(0);">View</a></p>
-                            </li>
-                            <li>
-                                <h5>Ownership Type</h5>
-                                <p>Own</p>
-                            </li>
-                            <li>
-                                <h5>Perticular</h5>
-                                <p> Student</p>
-                            </li>
-                            <li>
-                                <h5>Value</h5>
-                                <p>INR 50,0000.00</p>
-                            </li>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Photo</th>
+                                        <th>Ownership Type</th>
+                                        <th>Perticular</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of demographicDisp?.propertyOwnership">
+                                        <td>{{getDisplayName('propertyType',x.propertyType)}}</td>
+                                        <td>
+                                            <p><a href="javascript:void(0);">View</a></p>
+                                        </td>
+                                        <td>{{getDisplayName('ownerShipType',x.ownershipType)}}</td>
+                                        <td>{{getDisplayName('particular',x.particular)}}</td>
+                                        <td>{{x.cumulativeValue}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </ul>
                     </div>
                 </div>
@@ -101,8 +126,12 @@
                         <h4 class="summery-heading"><span>Income Streams</span><a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile">
-                            <p>1. Agriculture</p>
-                            <p>2. Shop</p>
+                            <p *ngFor="let x of demographicDisp?.sourceOfIncome;let i=index">
+                                {{i+1}}. {{getDisplayName('sourceOfIncome',x)}}
+                            </p>
+                            <p *ngIf="demographicDisp?.sourceOfIncomeOther">
+                                {{demographicDisp?.sourceOfIncome?.length+1}}. {{demographicDisp?.sourceOfIncomeOther}}
+                            </p>
                         </div>
                     </div>
                 </div>

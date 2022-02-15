@@ -2,30 +2,32 @@
   <aside class="left-menu">
     <div class="left-sticky-menu">
       <div class="logo">
-        <a href="#"><img src="../../../assets/images/logo.png" alt="" /></a>
+        <a routerLink="/bd/dashboard"><img src="../../../assets/images/logo.png" alt="" /></a>
       </div>
     </div>
   </aside>
   <article class="right-sec">
     <header>
-      <div class="bd-header">
+      <div class="bd-header col-sm-10 col-md-10 col-xl-11">
         <div class="pro-img"><span>SS</span></div>
         <div class="pro-name">
           <p>Welcome</p>
-          <h3>Saryu Sirohi</h3>
+          <h3>{{ userInfo["name"] }}</h3>
+        </div>
+      </div>
+      <div class="bd-header-right col-sm-2 col-md-2 col-xl-1">
+        <div class="logout-div">
+          <a (click)="logOut()" class="btn btn-primary active" style="margin-left: 10px;">Logout </a>
         </div>
       </div>
     </header>
+
     <div class="farmer-db">
+      <!-- START: Logged In User Details -->
       <div class="farmer-detail">
         <ul>
           <li>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <defs>
                 <style>
                   .a {
@@ -35,17 +37,12 @@
               </defs>
               <path class="a" d="M0,0H24V24H0Z" />
               <path
-                d="M19,7h5V9H19Zm-2,5h7v2H17Zm3,5h4v2H20ZM2,22a8,8,0,1,1,16,0H16A6,6,0,1,0,4,22Zm8-9a6,6,0,1,1,6-6A6,6,0,0,1,10,13Zm0-2A4,4,0,1,0,6,7,4,4,0,0,0,10,11Z"
-              /></svg
-            ><span>{{ userInfo.first_name || "Karan Shukla" }}</span>
+                d="M19,7h5V9H19Zm-2,5h7v2H17Zm3,5h4v2H20ZM2,22a8,8,0,1,1,16,0H16A6,6,0,1,0,4,22Zm8-9a6,6,0,1,1,6-6A6,6,0,0,1,10,13Zm0-2A4,4,0,1,0,6,7,4,4,0,0,0,10,11Z" />
+            </svg>
+            <span>{{ userInfo["name"] }}</span>
           </li>
           <li>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <defs>
                 <style>
                   .a {
@@ -55,17 +52,11 @@
               </defs>
               <path class="a" d="M0,0H24V24H0Z" />
               <path
-                d="M3,3H21a1,1,0,0,1,1,1V20a1,1,0,0,1-1,1H3a1,1,0,0,1-1-1V4A1,1,0,0,1,3,3ZM20,7.238l-7.928,7.1L4,7.216V19H20ZM4.511,5l7.55,6.662L19.5,5Z"
-              /></svg
-            ><span>{{ userInfo.email }}</span>
+                d="M3,3H21a1,1,0,0,1,1,1V20a1,1,0,0,1-1,1H3a1,1,0,0,1-1-1V4A1,1,0,0,1,3,3ZM20,7.238l-7.928,7.1L4,7.216V19H20ZM4.511,5l7.55,6.662L19.5,5Z" />
+            </svg><span>{{ userInfo?.email }}</span>
           </li>
           <li>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <defs>
                 <style>
                   .a {
@@ -97,49 +88,29 @@
                 </style>
               </defs>
               <g transform="translate(0.491)">
-                <rect
-                  class="a"
-                  width="24"
-                  height="24"
-                  transform="translate(-0.491)"
-                />
+                <rect class="a" width="24" height="24" transform="translate(-0.491)" />
                 <g transform="translate(3 1)">
-                  <path
-                    class="b"
+                  <path class="b"
                     d="M6.563,0,3.6,1.974.4,6.965,0,9.188.521,10.8.794,12.61,1.305,13.7l.836.839,1.219.519,1.486.543.812.469,1.026.742,1.27.172,1.65-.667.946-.618,1.361-1.31.779-1.543.865-3.457L11.4,3.748l-1.5-1.773Z"
-                    transform="translate(2.982 4.936)"
-                  />
-                  <path
-                    class="c"
+                    transform="translate(2.982 4.936)" />
+                  <path class="c"
                     d="M9.438,5.056c5.113,1.691,6.55,5.876,6.436,11.11a2.453,2.453,0,0,0,1.552-2.284,3.214,3.214,0,0,0,.933-2.328,2.864,2.864,0,0,0,.177-2.608L18.4,8.186A6.235,6.235,0,0,0,15.7,3.692c.135-1.04-1.039-1.391-2.4-1.645-.4-1-1.6-1.1-2.974-1C10.107.424,9.082-.027,5.752,0A10.79,10.79,0,0,0,.16,7.984a3.293,3.293,0,0,0,.31,2.768,3.191,3.191,0,0,0,1.289,2.769c-.052.916.16,1.655,1.064,1.924l.8,1.325C2.868,10.512,6.471,6.131,9.438,5.056Z"
-                    transform="translate(0 0)"
-                  />
-                  <path
-                    class="d"
+                    transform="translate(0 0)" />
+                  <path class="d"
                     d="M.627,0C1.54.1,1.962.231,2.6,1.439c.308.577,1.4,1.219,1.926.436a1.957,1.957,0,0,1-2.359.645C1.453,2.342-.049,1.827,0,.4Z"
-                    transform="translate(10.856 15.025)"
-                  />
-                  <path
-                    class="d"
+                    transform="translate(10.856 15.025)" />
+                  <path class="d"
                     d="M3.9,0C2.99.1,2.568.231,1.926,1.439,1.618,2.017.525,2.658,0,1.876a1.958,1.958,0,0,0,2.359.645C3.077,2.342,4.581,1.827,4.529.4Z"
-                    transform="translate(5.815 15.025)"
-                  />
-                  <path
-                    class="d"
+                    transform="translate(5.815 15.025)" />
+                  <path class="d"
                     d="M.309.528A1.031,1.031,0,0,1,0,0,1.226,1.226,0,0,0,.144.156a2.2,2.2,0,0,0,1.992,0A.819.819,0,0,0,2.223.07a1.048,1.048,0,0,1-.292.459A1.219,1.219,0,0,1,.309.528Z"
-                    transform="translate(9.432 17.676)"
-                  />
+                    transform="translate(9.432 17.676)" />
                 </g>
-              </g></svg
-            ><span>Farmers Covered : {{ userInfo.farmers_covered || 5 }}</span>
+              </g>
+            </svg><span>Farmers Covered : {{ allExistingFarmers.length }}</span>
           </li>
           <li>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <defs>
                 <style>
                   .a {
@@ -149,17 +120,11 @@
               </defs>
               <path class="a" d="M0,0H24V24H0Z" />
               <path
-                d="M2,3.993A1,1,0,0,1,2.992,3H21.008A.993.993,0,0,1,22,3.993V20.007a1,1,0,0,1-.992.993H2.992A.993.993,0,0,1,2,20.007ZM4,5V19H20V5ZM6,7h6v6H6ZM8,9v2h2V9ZM6,15H18v2H6Zm8-8h4V9H14Zm0,4h4v2H14Z"
-              /></svg
-            ><span>{{ userInfo.bd_id || "BD0000085" }}</span>
+                d="M2,3.993A1,1,0,0,1,2.992,3H21.008A.993.993,0,0,1,22,3.993V20.007a1,1,0,0,1-.992.993H2.992A.993.993,0,0,1,2,20.007ZM4,5V19H20V5ZM6,7h6v6H6ZM8,9v2h2V9ZM6,15H18v2H6Zm8-8h4V9H14Zm0,4h4v2H14Z" />
+            </svg><span>{{ userInfo?.['custom:access_type'] || "NA" }}</span>
           </li>
           <li>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <defs>
                 <style>
                   .a {
@@ -169,217 +134,141 @@
               </defs>
               <path class="a" d="M0,0H24V24H0Z" />
               <path
-                d="M7,4V20H17V4ZM6,2H18a1,1,0,0,1,1,1V21a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V3A1,1,0,0,1,6,2Zm6,15a1,1,0,1,1-1,1A1,1,0,0,1,12,17Z"
-              /></svg
-            ><span>{{ userInfo.phone || "9876543210" }}</span>
+                d="M7,4V20H17V4ZM6,2H18a1,1,0,0,1,1,1V21a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V3A1,1,0,0,1,6,2Zm6,15a1,1,0,1,1-1,1A1,1,0,0,1,12,17Z" />
+            </svg><span>{{ userInfo?.phone_number || "NA" }}</span>
           </li>
         </ul>
       </div>
+      <!-- END: Logged In User Details -->
+
+      <!-- Nav Items -->
       <div class="farmer-tab">
         <ul class="nav nav-pills" id="pills-tab" role="tablist">
           <li class="nav-item">
-            <button
-              class="nav-link active"
-              data-bs-toggle="pill"
-              data-bs-target="#existing-farms"
-              type="button"
-              role="tab"
-              aria-selected="true"
-            >
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#existing_farms" type="button"
+              role="tab" aria-selected="true" (click)="filterFarms('EXISTING_FARMS_LIST_VIEW')">
               Existing Farms
             </button>
           </li>
           <li class="nav-item">
-            <button
-              class="nav-link"
-              data-bs-toggle="pill"
-              data-bs-target="#farms-pipeline"
-              type="button"
-              role="tab"
-              aria-selected="false"
-            >
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#farms_pipeline" type="button" role="tab"
+              aria-selected="false" (click)="filterFarms('FARMS_PIPELINE_LIST_VIEW')">
               Farms in Pipeline
             </button>
           </li>
         </ul>
         <div class="add-farmer">
-          <a
-            href="javascript:void(0)"
-            routerLink="/add/questionary"
-            class="btn btn-farmer"
-            >Add New Farmer</a
-          >
+          <a href="javascript:void(0)" (click)="routePage()" class="btn btn-farmer">Add New Farmer</a>
         </div>
       </div>
+
+      <!-- START: Nav tab Content -->
       <div class="farmer-data">
         <div class="tab-content" id="pills-tabContent">
-          <div
-            class="tab-pane fade show active"
-            id="existing-farms"
-            role="tabpanel"
-          >
+          <!-- START: Existing Farms Content-->
+          <div class="tab-pane fade show active" id="existing_farms" role="tabpanel">
             <div class="table-result">
               <ul class="nav nav-tabs view-data" id="myTab" role="tablist">
                 <li class="nav-item">
-                  <button
-                    class="nav-link active"
-                    data-bs-toggle="tab"
-                    data-bs-target="#listview-farms"
-                    type="button"
-                    role="tab"
-                    aria-selected="true"
-                  >
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#existing_farms_list_view"
+                    type="button" role="tab" aria-selected="true" (click)="filterFarms('EXISTING_FARMS_LIST_VIEW')">
                     <label class="form-check-label form-check" for="listview">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="ListViewFarms"
-                        id="listview"
-                        value="List View"
-                        checked
-                      />
+                      <input class="form-check-input" type="radio" name="ListViewFarms" id="listview" value="List View"
+                        [checked]="
+                          selectedViewType == 'EXISTING_FARMS_LIST_VIEW'
+                        " />
                       <span>List View</span>
                     </label>
                   </button>
                 </li>
                 <li class="nav-item">
-                  <button
-                    class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#mapview-farms"
-                    type="button"
-                    role="tab"
-                    aria-selected="false"
-                  >
-                    <label class="form-check-label form-check" for="mapview"
-                      ><input
-                        class="form-check-input"
-                        type="radio"
-                        name="ListViewFarms"
-                        value="Map View"
-                        id="mapview"
-                      /><span> Map View</span>
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#existing_farms_map_view" type="button"
+                    role="tab" aria-selected="false" (click)="filterFarms('EXISTING_FARMS_MAP_VIEW')">
+                    <label class="form-check-label form-check" for="mapview"><input class="form-check-input"
+                        type="radio" name="ListViewFarms" value="Map View" id="mapview" [checked]="
+                          selectedViewType == 'EXISTING_FARMS_MAP_VIEW'
+                        " /><span> Map View</span>
                     </label>
                   </button>
                 </li>
               </ul>
               <div class="show-result">
-                <p>5 Results</p>
+                <p>{{ allExistingFarmers.length }} Results</p>
               </div>
             </div>
             <div>
               <div class="tab-content" id="myTabContent">
-                <div
-                  class="tab-pane fade show active"
-                  id="listview-farms"
-                  role="tabpanel"
-                >
+                <div class="tab-pane fade" [ngClass]="{
+                    show: selectedViewType == 'EXISTING_FARMS_LIST_VIEW',
+                    active: selectedViewType == 'EXISTING_FARMS_LIST_VIEW'
+                  }" id="existing_farms_list_view" role="tabpanel">
                   <div class="table-responsive listview-table">
                     <table class="table table-hover">
                       <thead>
                         <tr>
                           <th>URN</th>
                           <th>Farmer Name</th>
+                          <th>Mobile</th>
                           <th>Date of Registration</th>
                           <th>Address</th>
                           <th>Status</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr routerLink="/edit/summary">
-                          <td>FA0000143</td>
-                          <td>Rishabh Sharma</td>
-                          <td>10 Jan 1980</td>
-                          <td>Chandan Village, Rajasthan</td>
-                          <td>100%</td>
-                        </tr>
-                        <tr>
-                          <td>FA0000143</td>
-                          <td>Rishabh Sharma</td>
-                          <td>10 Jan 1980</td>
-                          <td>Chandan Village, Rajasthan</td>
-                          <td>100%</td>
-                        </tr>
-                        <tr>
-                          <td>FA0000143</td>
-                          <td>Rishabh Sharma</td>
-                          <td>10 Jan 1980</td>
-                          <td>Chandan Village, Rajasthan</td>
-                          <td>100%</td>
-                        </tr>
-                        <tr>
-                          <td>FA0000143</td>
-                          <td>Rishabh Sharma</td>
-                          <td>10 Jan 1980</td>
-                          <td>Chandan Village, Rajasthan</td>
-                          <td>100%</td>
-                        </tr>
-                        <tr>
-                          <td>FA0000143</td>
-                          <td>Rishabh Sharma</td>
-                          <td>10 Jan 1980</td>
-                          <td>Chandan Village, Rajasthan</td>
+                        <tr routerLink="/edit/summary/{{x.farmerId}}" *ngFor="let x of allExistingFarmers">
+                          <td>{{x.farmerId}}</td>
+                          <td>
+                            {{ x.farmerDetails?.firstName }}
+                            {{ x.farmerDetails?.middleName }}
+                            {{ x.farmerDetails?.lastName }}
+                          </td>
+                          <td>
+                            {{ x.address?.mobileNumber }}
+                          </td>
+                          <td>
+                            {{ x.registrationDate }}
+                          </td>
+                          <td>
+                            {{ x.address?.addressLine1 }}
+                          </td>
                           <td>100%</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
-                <div class="tab-pane fade" id="mapview-farms" role="tabpanel">
-                  <div>
-                    <img src="../images/map-img.png" alt="" width="100%" />
+                <div class="tab-pane fade" id="existing_farms_map_view" role="tabpanel">
+                  <div class="map p-3">
+                    <div class="map" id="existing_farmers_mapbox" class="match-parent"></div>
                   </div>
+                  <!-- <img src="../images/map-img.png" alt="" width="100%" /> -->
                 </div>
               </div>
             </div>
           </div>
-          <div class="tab-pane fade" id="farms-pipeline" role="tabpanel">
+          <!-- END: Existing Farms Content -->
+          <!-- START: Farms In Pipeline Content -->
+          <div class="tab-pane fade" id="farms_pipeline" role="tabpanel">
             <div class="table-result">
               <ul class="nav nav-tabs view-data" id="myTab" role="tablist">
                 <li class="nav-item">
-                  <button
-                    class="nav-link active"
-                    data-bs-toggle="tab"
-                    data-bs-target="#listview-farms-pipeline"
-                    type="button"
-                    role="tab"
-                    aria-selected="true"
-                  >
-                    <label
-                      class="form-check-label form-check"
-                      for="listview-pipeline"
-                    >
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="ListViewPipeline"
-                        id="listview-pipeline"
-                        value="List View"
-                        checked
-                      />
-                      <span> List View </span></label
-                    >
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#farms_pipeline_list_view"
+                    type="button" role="tab" aria-selected="true" (click)="filterFarms('FARMS_PIPELINE_LIST_VIEW')">
+                    <label class="form-check-label form-check" for="listview-pipeline">
+                      <input class="form-check-input" type="radio" name="ListViewPipeline" id="listview-pipeline"
+                        value="List View" [checked]="
+                          selectedViewType == 'FARMS_PIPELINE_LIST_VIEW'
+                        " />
+                      <span> List View </span></label>
                   </button>
                 </li>
                 <li class="nav-item">
-                  <button
-                    class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#mapview-farms-pipeline"
-                    type="button"
-                    role="tab"
-                    aria-selected="false"
-                  >
-                    <label
-                      class="form-check-label form-check"
-                      for="mapview-pipeline"
-                      ><input
-                        class="form-check-input"
-                        type="radio"
-                        name="ListViewPipeline"
-                        id="mapview-pipeline"
-                        value="Map View"
-                      /><span>Map View</span>
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#farms_pipeline_map_view" type="button"
+                    role="tab" aria-selected="false" (click)="filterFarms('FARMS_PIPELINE_MAP_VIEW')">
+                    <label class="form-check-label form-check" for="mapview-pipeline"><input class="form-check-input"
+                        type="radio" name="ListViewPipeline" id="mapview-pipeline" value="Map View" [checked]="
+                          selectedViewType == 'FARMS_PIPELINE_MAP_VIEW'
+                        " /><span>Map View</span>
                     </label>
                   </button>
                 </li>
@@ -390,11 +279,10 @@
             </div>
             <div>
               <div class="tab-content" id="myTabContent">
-                <div
-                  class="tab-pane fade show active"
-                  id="listview-farms-pipeline"
-                  role="tabpanel"
-                >
+                <div class="tab-pane fade" [ngClass]="{
+                    show: selectedViewType == 'FARMS_PIPELINE_LIST_VIEW',
+                    active: selectedViewType == 'FARMS_PIPELINE_LIST_VIEW'
+                  }" id="farms_pipeline_list_view" role="tabpanel">
                   <div class="table-responsive listview-table">
                     <table class="table">
                       <thead>
@@ -407,63 +295,33 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Chandan</td>
-                          <td>2 - 5 Ha</td>
-                          <td>Mustard</td>
-                          <td>80-100</td>
+                        <tr *ngFor="let x of allPipelineFarmers">
+                          <td>{{ x.area_of_interest }}</td>
+                          <td>{{ x.farm_size }}</td>
+                          <td>{{ x.crop_type }}</td>
+                          <td>{{ x.frcm_score }}</td>
                           <td>
-                            <a
-                              href="javascript:void(0);"
-                              class="btn btn_add_farmer"
-                              >Add Farmer</a
-                            >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Chandan</td>
-                          <td>2 - 5 Ha</td>
-                          <td>Mustard</td>
-                          <td>80-100</td>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              class="btn btn_add_farmer"
-                              >Add Farmer</a
-                            >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Chandan</td>
-                          <td>2 - 5 Ha</td>
-                          <td>Mustard</td>
-                          <td>80-100</td>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              class="btn btn_add_farmer"
-                              >Add Farmer</a
-                            >
+                            <a href="javascript:void(0);" class="btn btn_add_farmer">Add Farmer</a>
                           </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
-                <div
-                  class="tab-pane fade"
-                  id="mapview-farms-pipeline"
-                  role="tabpanel"
-                >
-                  <div>
-                    <img src="../images/map-img.png" alt="" width="100%" />
+                <div class="tab-pane fade" id="farms_pipeline_map_view" role="tabpanel">
+                  <div class="map p-3">
+                    <div class="map" id="farms_pipeline_mapbox" class="match-parent"></div>
                   </div>
+
+                  <!-- <img src="../../../assets//images//map-img.png" alt="" width="100%" /> -->
                 </div>
               </div>
             </div>
           </div>
+          <!-- END: Farms In Pipeline Content -->
         </div>
       </div>
+      <!-- END: Nav tab Content -->
     </div>
   </article>
 </div>

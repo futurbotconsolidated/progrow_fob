@@ -16,6 +16,7 @@ import { CoApplicantComponent } from './co-applicant/co-applicant.component';
 import { InfoDeclarationComponent } from './info-declaration/info-declaration.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { AddFarmerService } from './add-farmer.service';
 @NgModule({
   declarations: [
     QuestionaryComponent,
@@ -38,5 +39,6 @@ import { FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     FormsModule,
   ],
+  providers: [AddFarmerService],
 })
 export class AddFarmerModule {}

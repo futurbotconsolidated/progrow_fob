@@ -4,14 +4,18 @@
         <div>
             <div class="row mb-3">
                 <div class="col-md-12">
-                    <div class="map">
+                    <!-- <div class="map">
                         <img src="../../../assets/images/map-img.png" alt="" width="100%">
+                    </div> -->
+
+                    <div class="map">
+                        <div id="map" style="width: 100%; height: 385px; border: 1px solid #ccc"></div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="actual-facts summery-bg">
+                    <!-- <div class="actual-facts summery-bg">
                         <h4 class="summery-heading"><span>Cluster & season details</span><a href="javascript:void(0)">
                                 <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
@@ -36,99 +40,173 @@
                                 <p>Mustard, Soya, Isabel</p>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
                     <div class="actual-facts summery-bg">
                         <h4 class="summery-heading"><span>Field info</span><a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
-                            <li>
-                                <h5>Field ID: </h5>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th> Field ID</th>
+                                        <th> Area</th>
+                                        <th> Irrigation</th>
+                                        <th> Water Source</th>
+                                        <th> Yield</th>
+                                        <th> Soil Quality </th>
+                                        <th> Water Quality </th>
+                                        <th> Exp. Produce </th>
+                                        <th> Bore Depth</th>
+                                        <th> Pump depth</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of plannedDetails; let i = index">
+                                        <td>{{x.fieldId}}</td>
+                                        <td>{{x.fieldArea}}</td>
+                                        <td>{{x.irrigationSystem}}</td>
+                                        <td>{{x.waterSource}}</td>
+                                        <td>{{x.crop}}</td>
+                                        <td>{{x.soilQuality}}</td>
+                                        <td>{{x.waterQuality}}</td>
+                                        <td>{{x.expectedProduce}}</td>
+                                        <td>{{getDepth(i,'Bore')}}</td>
+                                        <td>{{getDepth(i,'Pump')}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                            <!-- <li>
+                                <h5></h5>
                                 <p> AB123</p>
                                 <p>AB123</p>
                             </li>
                             <li>
-                                <h5>Area: </h5>
+                                <h5></h5>
                                 <p>5000 Ha</p>
                                 <p>5000 Ha</p>
                             </li>
                             <li>
-                                <h5>Irrigation: </h5>
+                                <h5></h5>
                                 <p>Surface irrigation</p>
                                 <p>Surface irrigation</p>
                             </li>
                             <li>
-                                <h5>Water Source: </h5>
+                                <h5></h5>
                                 <p> Pond</p>
                                 <p>Pond</p>
                             </li>
                             <li>
-                                <h5>Yield: </h5>
+                                <h5></h5>
                                 <p>Mustard</p>
                                 <p>Mustard</p>
                             </li>
                             <li>
-                                <h5>Soil Quality :</h5>
+                                <h5></h5>
                                 <p>Good</p>
                                 <p>Good</p>
                             </li>
                             <li>
-                                <h5>Water Quality :</h5>
+                                <h5></h5>
                                 <p>Good</p>
                                 <p>Good</p>
                             </li>
                             <li>
-                                <h5>Exp. Produce :</h5>
+                                <h5></h5>
                                 <p>Good</p>
                                 <p>Good</p>
                             </li>
                             <li>
-                                <h5>Bore Depth:</h5>
+                                <h5></h5>
                                 <p>200 M</p>
                                 <p>200 M</p>
                             </li>
                             <li>
-                                <h5>Pump depth:</h5>
+                                <h5></h5>
                                 <p>100 M</p>
                                 <p>100 M</p>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <div class="actual-facts summery-bg">
                         <h4 class="summery-heading"><span>Field info</span><a href="javascript:void(0)"> <img
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
-                            <li>
-                                <h5>Field ID: </h5>
-                                <p> GF123</p>
-                                <p>AB123</p>
-                            </li>
-                            <li>
-                                <h5>Ownership Type: </h5>
-                                <p>Owned</p>
-                                <p>Joint</p>
-                            </li>
-                            <li>
-                                <h5>Co-owner Name: </h5>
-                                <p>N/A</p>
-                                <p>Abhishek Sharma</p>
-                            </li>
-                            <li>
-                                <h5>Co-owner Contact no: </h5>
-                                <p> N/A</p>
-                                <p>9876543210</p>
-                            </li>
-                            <li>
-                                <h5>Ownership Doc: </h5>
-                                <p>N/A</p>
-                                <p><a href="javascript:void(0);">View</a></p>
-                            </li>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Field ID
+                                        </th>
+                                        <th>
+                                            Ownership Type
+                                        </th>
+                                        <th>
+                                            Co-owner Name
+                                        </th>
+                                        <th>
+                                            Co-owner Contact no
+                                        </th>
+                                        <th>
+                                            Ownership Doc
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of ownerShipDetails">
+                                        <td>{{x.fieldOwnId}}</td>
+                                        <td>{{x.ownerType}}</td>
+                                        <td>{{x.fieldOwnCoOwner}}</td>
+                                        <td>{{x.fieldOwnCoPh}}</td>
+                                        <td>{{x.dependency}} <a href="javascript:void(0);">View</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+
                         </ul>
                     </div>
                     <div class="actual-facts summery-bg">
                         <h4 class="summery-heading"><span>Soil and water test report</span><a href="javascript:void(0)">
                                 <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
-                            <li>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Type of test
+                                        </th>
+                                        <th>
+                                            Yes/No
+                                        </th>
+                                        <th>
+                                            When
+                                        </th>
+                                        <th>
+                                            Report Recieved
+                                        </th>
+                                        <th>
+                                            Report
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of typesOfTests">
+                                        <td>{{x?.typeOfTest}}</td>
+                                        <td>{{x?.yesNo}}</td>
+                                        <td>{{x?.lastDone}}</td>
+                                        <td>{{x?.testResult}}</td>
+                                        <td>{{x?.dependency}} <a href="javascript:void(0);">View</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                            <!-- <li>
                                 <h5>Type of test: </h5>
                                 <p> Water test</p>
                             </li>
@@ -147,7 +225,7 @@
                             <li>
                                 <h5>Report: </h5>
                                 <p><a href="javascript:void(0);">View</a></p>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <div class="actual-facts summery-bg">
@@ -155,7 +233,7 @@
                                     src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile ">
                             <p><span>Interested in planning cropping cycle based on soil and water
-                                    test:</span><span><b>Yes</b></span></p>
+                                    test:</span><span><b> {{fieldInfo[0]?.undertaking_cultivation?.uc}}</b></span></p>
 
                         </div>
                     </div>
