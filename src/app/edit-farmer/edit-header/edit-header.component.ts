@@ -39,11 +39,11 @@ export class EditHeaderComponent implements OnInit {
 
         if (A[0] === 'edit' && A[1] === 'demographic-info') {
           this.loadData();
-        }
-
-        const B = localStorage.getItem('farmer-details');
-        if (B) {
-          this.demographicDisp = JSON.parse(B).demographic_info;
+        } else {
+          const B = localStorage.getItem('farmer-details');
+          if (B) {
+            this.demographicDisp = JSON.parse(B).demographic_info;
+          }
         }
       }
     });
@@ -75,6 +75,7 @@ export class EditHeaderComponent implements OnInit {
             'farmer-details',
             JSON.stringify(this.farmerData)
           );
+          this.demographicDisp = this.farmerData?.demographic_info;
         }
       },
       (error: any) => {
