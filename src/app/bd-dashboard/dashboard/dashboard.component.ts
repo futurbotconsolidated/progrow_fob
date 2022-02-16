@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
   allExistingFarmers = [] as any;
   allPipelineFarmers = [] as any;
   overlayData = [] as any;
-
+  dtOptions: DataTables.Settings = {};
   /* END: Variables */
 
   constructor(
@@ -36,6 +36,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+    };
   }
 
   /* START: Non-API Function Calls */

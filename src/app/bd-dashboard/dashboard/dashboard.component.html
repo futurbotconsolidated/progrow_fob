@@ -203,7 +203,7 @@
                     active: selectedViewType == 'EXISTING_FARMS_LIST_VIEW'
                   }" id="existing_farms_list_view" role="tabpanel">
                   <div class="table-responsive listview-table">
-                    <table class="table table-hover">
+                    <table *ngIf="allExistingFarmers.length" datatable [dtOptions]="dtOptions" class="table table-hover">
                       <thead>
                         <tr>
                           <th>URN</th>
@@ -277,7 +277,7 @@
                 </li>
               </ul>
               <div class="show-result">
-                <p>3 Results</p>
+                <p>{{ allPipelineFarmers.length }} Results</p>
               </div>
             </div>
             <div>
