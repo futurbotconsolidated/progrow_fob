@@ -38,6 +38,7 @@ export class EditHeaderComponent implements OnInit {
         console.log(A);
 
         if (A[0] === 'edit' && A[1] === 'demographic-info') {
+          localStorage.removeItem('farmer-details');
           this.loadData();
         } else {
           const B = localStorage.getItem('farmer-details');
@@ -51,8 +52,6 @@ export class EditHeaderComponent implements OnInit {
   ngOnInit(): void {}
   /* START: Non-API Function Calls */
   loadData() {
-    localStorage.removeItem('farmer-details');
-
     this.getFarmerDetailsById(this.farmerId);
   }
   // get Name from Master Json
