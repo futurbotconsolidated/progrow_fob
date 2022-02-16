@@ -167,9 +167,9 @@ export class DashboardComponent implements OnInit {
               'fill-opacity': 1.0,
             },
           });
-          const el = document.createElement('div');
-          el.className = 'my-dash-marker';
-          new mapboxgl.Marker(el).setLngLat(h[0]).addTo(map);
+          // const el = document.createElement('div');
+          // el.className = 'my-dash-marker';
+          // new mapboxgl.Marker(el).setLngLat(h[0]).addTo(map);
           // When a click event occurs on a feature in the places layer, open a popup at the
           // location of the feature, with description HTML from its properties.
           map.on('click', `figure${i}_${index}_${f_index}`, (e) => {
