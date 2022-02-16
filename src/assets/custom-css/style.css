@@ -1384,3 +1384,8 @@ input::-webkit-file-upload-button {
     max-width: 100%;
   }
 }
+
+.common_button_color {
+  background: #2eadc4;
+  color: #fff;
+}
