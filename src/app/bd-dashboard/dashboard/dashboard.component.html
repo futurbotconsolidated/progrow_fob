@@ -237,7 +237,10 @@
                     </table>
                   </div>
                 </div>
-                <div class="tab-pane fade" id="existing_farms_map_view" role="tabpanel">
+                <div class="tab-pane fade" [ngClass]="{
+                  show: selectedViewType == 'EXISTING_FARMS_MAP_VIEW',
+                  active: selectedViewType == 'EXISTING_FARMS_MAP_VIEW'
+                }" id="existing_farms_map_view" role="tabpanel">
                   <div class="map p-3">
                     <div class="map" id="existing_farmers_mapbox" class="match-parent"></div>
                   </div>
@@ -308,7 +311,10 @@
                     </table>
                   </div>
                 </div>
-                <div class="tab-pane fade" id="farms_pipeline_map_view" role="tabpanel">
+                <div class="tab-pane fade" [ngClass]="{
+                  show: selectedViewType == 'FARMS_PIPELINE_MAP_VIEW',
+                  active: selectedViewType == 'FARMS_PIPELINE_MAP_VIEW'
+                }" id="farms_pipeline_map_view" role="tabpanel">
                   <div class="map p-3">
                     <div class="map" id="farms_pipeline_mapbox" class="match-parent"></div>
                   </div>
