@@ -3,7 +3,7 @@ name: PoC Environment Build Deploy
 on:
   push:
     branches:
-      - develop
+      - poc
       
 env:
   PIPELINE_TYPE: COMPONENT
