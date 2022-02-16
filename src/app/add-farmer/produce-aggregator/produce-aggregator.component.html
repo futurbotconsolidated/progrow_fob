@@ -17,7 +17,7 @@
                                     <label class="label-title">Verticals</label>
                                 </div>
                                 <div class="verticals-address">
-                                    <div class="col-auto" *ngFor="let indStat of produceAggregatorMaster['verticals']">
+                                    <div class="col-md-3" *ngFor="let indStat of produceAggregatorMaster['verticals']">
                                         <label class="form-check-label form-check bordered-check"
                                             for="{{indStat.displayValue}}">
                                             <input class="form-check-input" type="checkbox"
@@ -35,7 +35,7 @@
                             associated with an FPO or not? </h3>
                         <div class="row g-3 align-items-center fpo-factor">
 
-                            <div class="col-md-3" *ngFor="let indStat of produceAggregatorMaster['associatedWithFPO']">
+                            <div class="col-md-4" *ngFor="let indStat of produceAggregatorMaster['associatedWithFPO']">
                                 <label class="form-check-label form-check bordered-check"
                                     for="{{indStat.displayValue}}">
                                     <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"

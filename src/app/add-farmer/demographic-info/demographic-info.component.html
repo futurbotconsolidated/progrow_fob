@@ -167,9 +167,9 @@
               <h3 class="form-title">4.B Gender</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen.displayValue }}">
+                  *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen.displayValue }}gender">
                   <input class="form-check-input" type="radio" formControlName="gender"
-                    value="{{ indGen.displayValue }}" id="{{ indGen.displayValue }}" /><span>{{ indGen.displayName
+                    value="{{ indGen.displayValue }}" id="{{ indGen.displayValue }}gender" /><span>{{ indGen.displayName
                     }}</span>
                 </label>
               </div>
@@ -178,9 +178,10 @@
               <h3 class="form-title">4.C Religion</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion.displayValue }}">
+                  *ngFor="let indReligion of demoGraphicMaster['religion']"
+                  for="{{ indReligion.displayValue }}religion">
                   <input class="form-check-input" type="radio" formControlName="religion"
-                    value="{{ indReligion.displayValue }}" id="{{ indReligion.displayValue }}" /><span>{{
+                    value="{{ indReligion.displayValue }}" id="{{ indReligion.displayValue }}religion" /><span>{{
                     indReligion.displayName }}</span>
                 </label>
               </div>
@@ -189,9 +190,10 @@
               <h3 class="form-title">4.D Caste/Tribe</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste.displayValue }}">
+                  *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste.displayValue }}caste">
                   <input class="form-check-input" type="radio" formControlName="caste"
-                    value="{{ indCaste.displayValue }}" id="{{ indCaste.displayValue }}" /><span>{{ indCaste.displayName
+                    value="{{ indCaste.displayValue }}" id="{{ indCaste.displayValue }}caste" /><span>{{
+                    indCaste.displayName
                     }}</span>
                 </label>
               </div>
@@ -220,8 +222,8 @@
                 </div>
                 <div class="farmer-details-inner lable-top">
                   <label>Annual Income(₹)</label>
-                  <input type="text" class="form-control" formControlName="annualIncome" placeholder=""
-                    maxlength="10" />
+                  <input type="text" class="form-control" formControlName="annualIncome" placeholder="" maxlength="10"
+                    (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['annualIncome'].errors" class="form-text text-danger">
                     <small *ngIf="f['annualIncome'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -360,9 +362,11 @@
               <h3 class="form-title">5.B Property status</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat.displayValue }}">
+                  *ngFor="let indStat of demoGraphicMaster['propertyStatus']"
+                  for="{{ indStat.displayValue }}propertyStatus">
                   <input class="form-check-input" type="radio" formControlName="propertyStatus"
-                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}" /><span>{{ indStat.displayName
+                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}propertyStatus" /><span>{{
+                    indStat.displayName
                     }}</span>
                 </label>
               </div>
@@ -377,9 +381,11 @@
               <h3 class="form-title required">5.C Communication/Permanent address</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio "
-                  *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat.displayValue }}">
+                  *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']"
+                  for="{{ indStat.displayValue }}commOrPerAddress">
                   <input class="form-check-input" type="radio" formControlName="commOrPerAddress"
-                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}" /><span>{{ indStat.displayName
+                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}commOrPerAddress" /><span>{{
+                    indStat.displayName
                     }}</span>
                 </label>
                 <div *ngIf="isSubmitted && f['commOrPerAddress'].errors" class="form-text text-danger">
@@ -586,9 +592,10 @@
               <h3 class="form-title">8A. What type of phone do you own?</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indType of demoGraphicMaster['phoneType']" for="{{ indType.displayValue }}">
+                  *ngFor="let indType of demoGraphicMaster['phoneType']" for="{{ indType.displayValue }}phoneType">
                   <input class="form-check-input" type="radio" formControlName="phoneType"
-                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}" /><span>{{ indType.displayName
+                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}phoneType" /><span>{{
+                    indType.displayName
                     }}</span>
                 </label>
               </div>
@@ -599,9 +606,11 @@
               </h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indType of demoGraphicMaster['phoneOperating']" for="{{ indType.displayValue }}">
+                  *ngFor="let indType of demoGraphicMaster['phoneOperating']"
+                  for="{{ indType.displayValue }}phoneOperating">
                   <input class="form-check-input" type="radio" formControlName="phoneOperating"
-                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}" /><span>{{ indType.displayName
+                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}phoneOperating" /><span>{{
+                    indType.displayName
                     }}</span>
                 </label>
               </div>
@@ -612,8 +621,10 @@
               </h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-check"
-                  *ngFor="let indStat of demoGraphicMaster['cultivationAdvice']" for="{{ indStat.displayValue }}">
-                  <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}" (click)="
+                  *ngFor="let indStat of demoGraphicMaster['cultivationAdvice']"
+                  for="{{ indStat.displayValue }}cultivationAdvice">
+                  <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}cultivationAdvice"
+                    (click)="
                       selectCultivationAdvice(
                         $event,
                         'cultivationAdvice',
@@ -637,8 +648,9 @@
               </h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-check"
-                  *ngFor="let indStat of demoGraphicMaster['adviceMedium']" for="{{ indStat.displayValue }}">
-                  <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}" (click)="
+                  *ngFor="let indStat of demoGraphicMaster['adviceMedium']"
+                  for="{{ indStat.displayValue }}adviceMedium">
+                  <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}adviceMedium" (click)="
                       selectCultivationAdvice(
                         $event,
                         'adviceMedium',
@@ -664,8 +676,9 @@
             </h3>
             <div class="farmer-details">
               <label class="form-check-label form-check bordered-check"
-                *ngFor="let indStat of demoGraphicMaster['sourceOfIncome']" for="{{ indStat.displayValue }}">
-                <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}" (click)="
+                *ngFor="let indStat of demoGraphicMaster['sourceOfIncome']"
+                for="{{ indStat.displayValue }}sourceOfIncome">
+                <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}sourceOfIncome" (click)="
                     selectCultivationAdvice(
                       $event,
                       'sourceOfIncome',
@@ -690,9 +703,11 @@
               </h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indType of demoGraphicMaster['agriculturalInterest']" for="{{ indType.displayValue }}">
+                  *ngFor="let indType of demoGraphicMaster['agriculturalInterest']"
+                  for="{{ indType.displayValue }}agriculturalInterest">
                   <input class="form-check-input" type="radio" formControlName="agriculturalInterest"
-                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}" /><span>{{ indType.displayName
+                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}agriculturalInterest" /><span>{{
+                    indType.displayName
                     }}</span>
                 </label>
               </div>
@@ -704,8 +719,10 @@
               </h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-check"
-                  *ngFor="let indStat of demoGraphicMaster['innovativeWaysFarming']" for="{{ indStat.displayValue }}">
-                  <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}" (click)="
+                  *ngFor="let indStat of demoGraphicMaster['innovativeWaysFarming']"
+                  for="{{ indStat.displayValue }}innovativeWaysFarming">
+                  <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}innovativeWaysFarming"
+                    (click)="
                       selectCultivationAdvice(
                         $event,
                         'innovativeWaysFarming',
