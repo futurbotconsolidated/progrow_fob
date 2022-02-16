@@ -27,9 +27,9 @@ export class TechnologyAdoptionComponent implements OnInit {
     public router: Router
   ) {
     this.technologyAdoptionForm = this.formBuilder.group({
-      farmYieldImprovisation: new FormControl('yes', [Validators.required]),
-      farmCaseStudies: new FormControl('yes', [Validators.required]),
-      payForTechnology: new FormControl('yes', [Validators.required]),
+      farmYieldImprovisation: new FormControl('', [Validators.required]),
+      farmCaseStudies: new FormControl('', [Validators.required]),
+      payForTechnology: new FormControl('', [Validators.required]),
       payForTechnologyComment: new FormControl('', [Validators.required]),
     });
 

@@ -29,9 +29,9 @@ export class ProduceAggregatorComponent implements OnInit {
     this.produceAggregatorForm = this.formBuilder.group({
       verticals: [Array()],
       associatedWithFPO: [Array()],
-      enrolFPO: new FormControl('one', [Validators.required]),
-      followSuggestions: new FormControl('yes', [Validators.required]),
-      consolidateLoans: new FormControl('yes1', [Validators.required]),
+      enrolFPO: new FormControl('', [Validators.required]),
+      followSuggestions: new FormControl('', [Validators.required]),
+      consolidateLoans: new FormControl('', [Validators.required]),
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {

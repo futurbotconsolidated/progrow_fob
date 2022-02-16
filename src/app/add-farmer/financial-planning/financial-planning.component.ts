@@ -39,7 +39,7 @@ export class FinancialPlanningComponent implements OnInit {
       loanReqPlaned: new FormArray([]),
       ownerType: new FormControl([]),
       bankDetails: new FormArray([this.createBankDetails()]),
-      availKccLoan: new FormControl('SBI', [Validators.required]), //radio creditedAmount
+      availKccLoan: new FormControl('', [Validators.required]), //radio creditedAmount
       creditedAmount: new FormControl('', [Validators.required]),
     });
 

@@ -6,24 +6,7 @@
             <div class="financial-planning-form">
                 <form [formGroup]="financialForm">
                     <div class="form-details">
-                        <h3 class="form-title">1. What is your crop loan requirement for the planned crop season? <a
-                                href="javascript:void(0)" class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                        <h3 class="form-title">1. What is your crop loan requirement for the planned crop season? </h3>
                         <div class="mb-3" formArrayName="loanReqPlaned"
                             *ngFor="let item of getLoanReqPlanedControls(); let i = index;">
                             <div class="row align-items-center form-details-inner" [formGroupName]="i">
@@ -90,24 +73,7 @@
                         </div> -->
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">2. What other FRCM loan products you would be interested in? <a
-                                href="javascript:void(0)" class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                        <h3 class="form-title">2. What other FRCM loan products you would be interested in?</h3>
                         <div class="row g-3 align-items-center">
                             <div class="col-md-6">
                                 <table class="table loan product-table">
@@ -124,8 +90,8 @@
                                             <td>Housing Loan</td>
                                             <td>
                                                 <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Housing Loan" id="yes" checked><label
-                                                        class="form-check-label" for="yes"></label></div>
+                                                        name="Housing Loan" id="yes"><label class="form-check-label"
+                                                        for="yes"></label></div>
                                             </td>
                                             <td>
                                                 <div class="form-check"><input class="form-check-input" type="radio"
@@ -142,8 +108,8 @@
                                             <td>Tractor Finance Loan</td>
                                             <td>
                                                 <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Finance Loan" id="yes" checked><label
-                                                        class="form-check-label" for="yes"></label></div>
+                                                        name="Finance Loan" id="yes"><label class="form-check-label"
+                                                        for="yes"></label></div>
                                             </td>
                                             <td>
                                                 <div class="form-check"><input class="form-check-input" type="radio"
@@ -160,8 +126,8 @@
                                             <td>FRCM Crop Insurance</td>
                                             <td>
                                                 <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Crop Insurance" id="yes" checked><label
-                                                        class="form-check-label" for="yes"></label></div>
+                                                        name="Crop Insurance" id="yes"><label class="form-check-label"
+                                                        for="yes"></label></div>
                                             </td>
                                             <td>
                                                 <div class="form-check"><input class="form-check-input" type="radio"
@@ -178,8 +144,8 @@
                                             <td>Personal Loan</td>
                                             <td>
                                                 <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Personal Loan" id="yes" checked><label
-                                                        class="form-check-label" for="yes"></label></div>
+                                                        name="Personal Loan" id="yes"><label class="form-check-label"
+                                                        for="yes"></label></div>
                                             </td>
                                             <td>
                                                 <div class="form-check"><input class="form-check-input" type="radio"
@@ -206,23 +172,7 @@
                     </div>
                     <div class="form-details">
                         <h3 class="form-title">3. What is your approximate expenditure for following farming activities?
-                            <a href="javascript:void(0)" class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
 
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a>
                         </h3>
                         <div class="cultivation-cost form-details-inner">
                             <h3 class="form-title">A. Cultivation Cost</h3>
@@ -308,24 +258,7 @@
                             </div>
                         </div>
                         <div class="crop-wise-selling form-details-inner">
-                            <h3 class="form-title">B. Season crop wise selling information <a href="javascript:void(0)"
-                                    class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
-
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
+                            <h3 class="form-title">B. Season crop wise selling information</h3>
                             <div class="row form-details-inner">
                                 <div class="col-md-3 season-crop">
                                     <div class="">
@@ -453,24 +386,7 @@
 
 
                     <div class="form-details">
-                        <h3 class="form-title">4. What are your major monthly expenditures for your family? <a
-                                href="javascript:void(0)" class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                        <h3 class="form-title">4. What are your major monthly expenditures for your family?</h3>
                         <div class="row monthly-expenditure">
                             <div class="monthly-table">
                                 <table class="table">
@@ -536,24 +452,7 @@
                     </div>
                     <div class="form-details">
                         <div class="kcc-loan form-details-inner">
-                            <h3 class="form-title">5A. Which Bank do you avail KCC loan from? <a
-                                    href="javascript:void(0)" class="comment-icon"><svg
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
-
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
+                            <h3 class="form-title">5A. Which Bank do you avail KCC loan from? </h3>
                             <div class="display-flex">
                                 <div class="flex-1" *ngFor="let indType of kccLoanList">
                                     <label class="form-check-label form-check bordered-radio"
@@ -591,7 +490,8 @@
                                     <div class="lable-top">
                                         <label>Otheres</label>
                                         <select class="form-select">
-                                            <option selected>ICICI</option>
+                                            <option>...</option>
+                                            <option>ICICI</option>
                                             <option>HDFC</option>
                                             <option>Axis</option>
                                         </select>
@@ -685,23 +585,7 @@
                     <div class="form-details">
                         <div class="form-details-inner">
                             <h3 class="form-title">6A. How much premium did you pay for the PMFBY on your KCC Loan in
-                                last season? <a href="javascript:void(0)" class="comment-icon"><svg
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
-
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
+                                last season?</h3>
                             <div class="row align-items-center">
                                 <div class="col-md-2 lable-top">
                                     <label>Amount paid</label>
@@ -902,23 +786,7 @@
                     <div class="form-details">
                         <h3 class="form-title">7. Preferred source of credit outside KCC?<br> <span
                                 style="color: #6a6a6a;font-size: 14px;">Specify ROI charged by month (2% per month, 3%
-                                per month, etc.)</span> <a href="javascript:void(0)" class="comment-icon"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                                per month, etc.)</span> </h3>
                         <div class="row align-items-center">
                             <div class="advice-cultivation">
                                 <div class="col-md-2">
@@ -1006,23 +874,7 @@
                     </div>
                     <div class="form-details">
                         <h3 class="form-title">8. What is the reason for preferring any of the above agents? Rank order.
-                            <a href="javascript:void(0)" class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
 
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a>
                         </h3>
                         <div class="agent-rank-order">
                             <label class="form-check-label form-check bordered-check" for="capital_cycle"
@@ -1060,24 +912,7 @@
                         </div>
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">9. What is the collateral being pledged against credit outside KCC? <a
-                                href="javascript:void(0)" class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                        <h3 class="form-title">9. What is the collateral being pledged against credit outside KCC? </h3>
                         <div class="row">
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="credit_supplier">
@@ -1103,24 +938,7 @@
                         </div>
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">10. Have you availed farm loan waiver? <a href="javascript:void(0)"
-                                class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                        <h3 class="form-title">10. Have you availed farm loan waiver? </h3>
                         <div class="row">
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="loan-yes">
@@ -1145,24 +963,7 @@
                     </div>
                     <div class="form-details">
                         <div class="form-details-inner">
-                            <h3 class="form-title">11A. Do you own tractor? <a href="javascript:void(0)"
-                                    class="comment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24">
-                                        <defs>
-                                            <style>
-                                                .a {
-                                                    fill: none;
-                                                }
-
-                                                .b {
-                                                    fill: #0779ff;
-                                                }
-                                            </style>
-                                        </defs>
-                                        <path class="a" d="M0,0H24V24H0Z" />
-                                        <path class="b"
-                                            d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                    </svg></a></h3>
+                            <h3 class="form-title">11A. Do you own tractor?</h3>
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="tractor-yes">
@@ -1218,23 +1019,7 @@
                         </div>
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">12. Bank details <a href="javascript:void(0)" class="comment-icon"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <style>
-                                            .a {
-                                                fill: none;
-                                            }
-
-                                            .b {
-                                                fill: #0779ff;
-                                            }
-                                        </style>
-                                    </defs>
-                                    <path class="a" d="M0,0H24V24H0Z" />
-                                    <path class="b"
-                                        d="M14,3V5H4V18.385L5.763,17H20V10h2v8a1,1,0,0,1-1,1H6.455L2,22.5V4A1,1,0,0,1,3,3Zm5,0V0h2V3h3V5H21V8H19V5H16V3Z" />
-                                </svg></a></h3>
+                        <h3 class="form-title">12. Bank details </h3>
                         <div formArrayName="bankDetails" *ngFor="let item of getBankDetailsControls(); let i = index;">
                             <div class="display-flex" [formGroupName]="i">
                                 <div class="flex-1 lable-top">

@@ -69,14 +69,14 @@ export class FieldInfoComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.fieldInfoForm = this.formBuilder.group({
-      plannedSeason: new FormControl('kharif_2022', [Validators.required]),
+      plannedSeason: new FormControl('', [Validators.required]),
       plannedCrops: new FormControl('', [Validators.required]),
       plannedFieldDetails: new FormArray([]),
       historicalFieldDetails: new FormArray([]),
       fieldOwnership: new FormArray([]),
       testType: new FormArray([this.createTestType()]),
       enumerate: new FormArray([]),
-      cropCycleOnReports: new FormControl('May be', [Validators.required]), //radio
+      cropCycleOnReports: new FormControl('', [Validators.required]), //radio
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {
@@ -482,7 +482,7 @@ export class FieldInfoComponent implements OnInit {
   createFieldOwnershipDetails(): FormGroup {
     return this.formBuilder.group({
       fieldOwnId: new FormControl('', [Validators.required]),
-      ownerType: new FormControl('Owned (Joint/Self)', []),
+      ownerType: new FormControl('', []),
       fieldOwnCoOwner: new FormControl('', [Validators.required]),
       fieldOwnCoPh: new FormControl('', [Validators.required]),
     });

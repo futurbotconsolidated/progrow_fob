@@ -28,15 +28,13 @@ export class CropMarketPlanComponent implements OnInit {
   ) {
     this.cropMarketPlanForm = this.formBuilder.group({
       seedProcure: [Array()],
-      varietyComparison: new FormControl('high_yield', [Validators.required]),
+      varietyComparison: new FormControl('', [Validators.required]),
       fertilizerPurchase: [Array()],
-      pesticideQuality: new FormControl('very_satisfied', [
-        Validators.required,
-      ]),
+      pesticideQuality: new FormControl('', [Validators.required]),
       fertilizerAdvise: [Array()],
-      farmGateGrading: new FormControl('yes', [Validators.required]),
-      durationReceivingMoney: new FormControl('on_spot', [Validators.required]),
-      warehouseProduce: new FormControl('yes', [Validators.required]),
+      farmGateGrading: new FormControl('', [Validators.required]),
+      durationReceivingMoney: new FormControl('', [Validators.required]),
+      warehouseProduce: new FormControl('', [Validators.required]),
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {
