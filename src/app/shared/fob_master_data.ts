@@ -20,7 +20,29 @@ export const data = {
         defaultValue: false,
       },
     ],
+    technologyOpinions: [
+      {
+        formCntrlName: 'tissueCulture',
+        title: 'Tissue culture / Hybrid seeds',
+      },
+      { formCntrlName: 'polyHouse', title: 'Poly house' },
+      { formCntrlName: 'microIrrigation', title: 'Micro irrigation' },
+      {
+        formCntrlName: 'iotSensors',
+        title: 'IoT sensors which help to track farm requirements of nutrition',
+      },
+      {
+        formCntrlName: 'weatherData',
+        title:
+          'Weather data to help plan in advance for taking preventive measures on farm',
+      },
+      {
+        formCntrlName: 'satelliteTracking',
+        title: 'Satellite based tracking of crop health',
+      },
+    ],
   },
+
   produceAggregator: {
     verticals: [
       {

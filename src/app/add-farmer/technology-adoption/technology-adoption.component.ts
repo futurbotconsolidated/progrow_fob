@@ -26,26 +26,35 @@ export class TechnologyAdoptionComponent implements OnInit {
     private addFarmerService: AddFarmerService,
     public router: Router
   ) {
+    this.technologyAdoptionMaster = data.technologyAdoption; // read master data
+
     this.technologyAdoptionForm = this.formBuilder.group({
       farmYieldImprovisation: new FormControl('', [Validators.required]),
       farmCaseStudies: new FormControl('', [Validators.required]),
       payForTechnology: new FormControl('', [Validators.required]),
       payForTechnologyComment: new FormControl('', [Validators.required]),
+      tissueCulture: new FormControl(),
+    });
+
+    // add dynamic form controls
+    this.technologyAdoptionMaster['technologyOpinions'].forEach((x: any) => {
+      this.technologyAdoptionForm.addControl(
+        x.formCntrlName,
+        new FormControl('')
+      );
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {
       this.nextRoute = data.routeName;
       this.saveData();
-      console.log(this.nextRoute);
     });
   }
+
   ngOnInit(): void {
-    this.technologyAdoptionMaster = data.technologyAdoption; // read master data
     let techAdopt: any = localStorage.getItem('technology-adoption');
     if (techAdopt) {
       techAdopt = JSON.parse(techAdopt);
       this.technologyAdoptionForm.patchValue(techAdopt);
-      console.log(techAdopt);
     }
   }
 

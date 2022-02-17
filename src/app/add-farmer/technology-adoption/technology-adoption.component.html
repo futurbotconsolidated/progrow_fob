@@ -12,8 +12,8 @@
             <div class="row g-3 align-items-center">
               <div class="col-auto" *ngFor="let indType of technologyAdoptionMaster['booleanValues']">
                 <label class="form-check-label form-check bordered-radio" for="{{ indType.displayValue }}fyi">
-                  <input class="form-check-input" type="radio" formControlName="farmYieldImprovisation"
-                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}fyi" /><span>{{ indType.displayName
+                  <input class="form-check-input" type="radio" formControlName="farmYieldImprovisation" value="{{ indType.displayValue }}" id="{{ indType.displayValue }}fyi" /><span>{{
+                    indType.displayName
                     }}</span>
                 </label>
               </div>
@@ -27,8 +27,7 @@
             <div class="row g-3 align-items-center">
               <div class="col-auto" *ngFor="let indType of technologyAdoptionMaster['booleanValues']">
                 <label class="form-check-label form-check bordered-radio" for="{{ indType.displayValue }}fcs">
-                  <input class="form-check-input" type="radio" formControlName="farmCaseStudies"
-                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}fcs" /><span>{{ indType.displayName
+                  <input class="form-check-input" type="radio" formControlName="farmCaseStudies" value="{{ indType.displayValue }}" id="{{ indType.displayValue }}fcs" /><span>{{ indType.displayName
                     }}</span>
                 </label>
               </div>
@@ -43,8 +42,7 @@
             <div class="row g-3 align-items-center">
               <div class="col-auto" *ngFor="let indType of technologyAdoptionMaster['booleanValues']">
                 <label class="form-check-label form-check bordered-radio" for="{{ indType.displayValue }}pfy">
-                  <input class="form-check-input" type="radio" formControlName="payForTechnology"
-                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}pfy" /><span>{{ indType.displayName
+                  <input class="form-check-input" type="radio" formControlName="payForTechnology" value="{{ indType.displayValue }}" id="{{ indType.displayValue }}pfy" /><span>{{ indType.displayName
                     }}</span>
                 </label>
               </div>
@@ -66,116 +64,16 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Tissue culture / Hybrid seeds</td>
+                    <tr *ngFor="let elem of technologyAdoptionMaster['technologyOpinions']">
+                      <td>{{elem.title}}</td>
                       <td>
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
+                          <input class="form-check-input" type="radio" value="Aware" formControlName="{{elem.formCntrlName}}" /><label class="form-check-label"></label>
                         </div>
                       </td>
                       <td>
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Poly house</td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Micro irrigation</td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        IoT sensors which help to track farm requirements of
-                        nutrition
-                      </td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        Drones to track farm requirements of nutrition/spraying
-                      </td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        Weather data to help plan in advance for taking
-                        preventive measures on farm
-                      </td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Satellite based tracking of crop health</td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="" id="yes" /><label
-                            class="form-check-label" for="yes"></label>
+                          <input class="form-check-input" type="radio" value="Helpful" formControlName="{{elem.formCntrlName}}" /><label class="form-check-label"></label>
                         </div>
                       </td>
                     </tr>
