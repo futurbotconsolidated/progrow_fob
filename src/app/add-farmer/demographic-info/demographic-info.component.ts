@@ -106,8 +106,14 @@ export class DemographicInfoComponent implements OnInit {
         Validators.pattern('^[0-9]*$'),
         Validators.minLength(10),
       ]),
-      mobile1: new FormControl('', [Validators.pattern('^[0-9]*$')]),
-      mobile2: new FormControl(''),
+      mobile1: new FormControl('', [
+        Validators.pattern('^[0-9]*$'),
+        Validators.minLength(10),
+      ]),
+      mobile2: new FormControl('', [
+        Validators.pattern('^[0-9]*$'),
+        Validators.minLength(10),
+      ]),
       yrsInAddress: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       yrsInCity: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       email: new FormControl('', [Validators.email]),
