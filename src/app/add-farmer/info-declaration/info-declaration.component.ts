@@ -67,6 +67,13 @@ export class InfoDeclarationComponent implements OnInit {
 
     console.log(obj);
 
+    let draft_farmers = [] as any;
+    if(localStorage.getItem('draft_farmers')){
+      draft_farmers = JSON.parse(localStorage.getItem('draft_farmers') as any);    
+    }
+    draft_farmers.push(obj);
+    localStorage.setItem('draft_farmers', JSON.stringify(draft_farmers));
+
     this.addFarmerService.registerFarmer(obj).subscribe(
       (res: any) => {
         this.spinner.hide();

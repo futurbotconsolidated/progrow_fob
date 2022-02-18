@@ -156,6 +156,12 @@
               Farms in Pipeline
             </button>
           </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#draft_farmer" type="button"
+              role="tab" aria-selected="false" (click)="filterFarms('DRAFT_FARMER_LIST_VIEW')">
+              Draft Farmer
+            </button>
+          </li>          
         </ul>
         <div class="add-farmer">
           <a href="javascript:void(0)" (click)="routePage()" class="btn btn-farmer">Add New Farmer</a>
@@ -202,6 +208,21 @@
                     show: selectedViewType == 'EXISTING_FARMS_LIST_VIEW',
                     active: selectedViewType == 'EXISTING_FARMS_LIST_VIEW'
                   }" id="existing_farms_list_view" role="tabpanel">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label for="live">Select Filter:</label>
+                        <select id="live" class="flex-1 form-select" name="searchValue" (change)="selectlive($event)">
+                          <option value="">...</option>
+                          <option value="today" [selected]="searchValue == 'today'">Today</option>
+                          <option value="this_week" [selected]="searchValue == 'this_week'">This Week</option>
+                          <option value="two_week" [selected]="searchValue == 'two_week'">Last Two Week</option>
+                          <option value="three_week" [selected]="searchValue == 'three_week'">Last Three Week</option>
+                          <option value="this_month" [selected]="searchValue == 'this_month'">This Month</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
                   <div class="table-responsive listview-table">
                     <table *ngIf="allExistingFarmers.length" datatable [dtOptions]="dtOptions" class="table table-hover">
                       <thead>
@@ -235,6 +256,7 @@
                         </tr>
                       </tbody>
                     </table>
+                    <div *ngIf="!allExistingFarmers.length">No data available in table</div>
                   </div>
                 </div>
                 <div class="tab-pane fade" [ngClass]="{
@@ -325,6 +347,75 @@
             </div>
           </div>
           <!-- END: Farms In Pipeline Content -->
+          <!-- START: Draft Farmer Content-->
+          <div class="tab-pane fade" id="draft_farmer" role="tabpanel">
+            <div class="table-result">
+              <ul class="nav nav-tabs view-data" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#draft_farmer_list_view"
+                    type="button" role="tab" aria-selected="true" (click)="filterFarms('DRAFT_FARMER_LIST_VIEW')">
+                    <label class="form-check-label form-check" for="listview">
+                      <input class="form-check-input" type="radio" name="ListViewFarms" id="listview" value="List View"
+                        [checked]="
+                          selectedViewType == 'DRAFT_FARMER_LIST_VIEW'
+                        " />
+                      <span>List View</span>
+                    </label>
+                  </button>
+                </li>
+              </ul>
+              <div class="show-result">
+                <p>{{ allDraftFarmers.length }} Results</p>
+              </div>
+            </div>
+            <div>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade" [ngClass]="{
+                    show: selectedViewType == 'DRAFT_FARMER_LIST_VIEW',
+                    active: selectedViewType == 'DRAFT_FARMER_LIST_VIEW'
+                  }" id="draft_farmer_list_view" role="tabpanel">
+                  <div class="table-responsive listview-table">
+                    <table id="dataTables-farmer" *ngIf="allDraftFarmers.length" datatable [dtOptions]="dtOptions" class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>URN</th>
+                          <th>Farmer Name</th>
+                          <th>Mobile</th>
+                          <th>Date of Registration</th>
+                          <th>Address</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let x of allDraftFarmers">
+                          <td>{{x.farmerId}}</td>
+                          <td>
+                            {{ x.demographic_info.farmerDetails?.firstName }}
+                            {{ x.demographic_info.farmerDetails?.middleName }}
+                            {{ x.demographic_info.farmerDetails?.lastName }}
+                          </td>
+                          <td>
+                            {{ x.mobile }}
+                          </td>
+                          <td>
+                            {{ x.registrationDate }}
+                          </td>
+                          <td>
+                            {{ x.demographic_info.address?.addressLine1 }}
+                            {{ x.demographic_info.address?.addressLine2 }}
+                            {{ x.demographic_info.address?.pincode }}
+                          </td>
+                          <td>NA</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div *ngIf="!allDraftFarmers.length">No data available in table</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: Draft Farmer Content -->          
         </div>
       </div>
       <!-- END: Nav tab Content -->

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
 import * as mapboxgl from 'mapbox-gl';
@@ -19,8 +20,10 @@ export class DashboardComponent implements OnInit {
   selectedViewType = 'EXISTING_FARMS_LIST_VIEW';
   allExistingFarmers = [] as any;
   allPipelineFarmers = [] as any;
+  allDraftFarmers = [] as any;
   overlayData = [] as any;
   dtOptions: DataTables.Settings = {};
+  searchValue = '';
   /* END: Variables */
 
   constructor(
@@ -36,13 +39,62 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+    let obj_search = JSON.parse(localStorage.getItem('search-value') as any);
+    console.log(obj_search);
+    if(obj_search && obj_search.minDate != '' && obj_search.maxDate != ''){
+    this.searchValue = obj_search.searchValue; 
+      $.fn['dataTable'].ext.search.push((settings: any, data: any, dataIndex: any) => {
+        const regDate = data[3];
+        if(regDate && (obj_search.minDate || obj_search.maxDate)){
+          if (formatDate(regDate,'yyyy-MM-dd','en_US') >= formatDate(obj_search.minDate,'yyyy-MM-dd','en_US') && formatDate(obj_search.maxDate,'yyyy-MM-dd','en_US') >= formatDate(regDate,'yyyy-MM-dd','en_US')){
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+    
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
+      lengthMenu: [10, 25, 50, 100, 200],
       processing: true,
     };
   }
 
+  selectlive(event: any) {
+    console.log(event.target.value);
+    let minDate = '' as any;
+    let maxDate = '' as any;
+    let last_date = new Date();
+    if(event.target.value === 'today'){
+      minDate = maxDate = new Date();
+    } else if(event.target.value === 'this_week') {
+      maxDate = new Date();
+      last_date.setDate(last_date.getDate() - 7);
+      minDate = last_date;
+    } else if(event.target.value === 'two_week') {
+      maxDate = new Date();
+      last_date.setDate(last_date.getDate() - 14);
+      minDate = last_date;
+    } else if(event.target.value === 'three_week') {
+      maxDate = new Date();
+      last_date.setDate(last_date.getDate() - 21);
+      minDate = last_date;
+    } else if(event.target.value === 'this_month') {
+      maxDate = new Date();
+      last_date.setDate(last_date.getDate() - 30);
+      minDate = last_date;
+    }
+    const obj_search1 = {
+      minDate: minDate,
+      maxDate: maxDate,
+      searchValue: event.target.value,
+    }
+    localStorage.setItem('search-value', JSON.stringify(obj_search1));
+    window.location.reload();
+  }
+  
   /* START: Non-API Function Calls */
   loadData() {
     this.getExistingFarmers();
@@ -58,6 +110,10 @@ export class DashboardComponent implements OnInit {
       this.getFarmersPipeline();
     } else if (type == 'FARMS_PIPELINE_MAP_VIEW') {
       this.overlayMap('FARMS_PIPELINE_MAP_VIEW');
+    } else if (type == 'DRAFT_FARMER_LIST_VIEW') {
+      if(localStorage.getItem('draft_farmers')){
+        this.allDraftFarmers = JSON.parse(localStorage.getItem('draft_farmers') as any);   
+      }
     }
   }
 
@@ -95,6 +151,7 @@ export class DashboardComponent implements OnInit {
     if (mapViewType === 'existing_farmers_mapbox') {
       // geojson coordinates
       map.on('load', () => {
+        if(useData.length){
         useData.forEach((elem: any, index: number) => {
           // prepare popup
           elem['fieldInfo'].forEach((f_elem: any, f_index: number) => {
@@ -147,7 +204,7 @@ export class DashboardComponent implements OnInit {
              </div>
              <div class="col-md-6 text-left">
                <label class="fw-bold">Address</label>
-               <p class="text-capitalize">${f_elem.field_address}</p>
+               <p class="text-capitalize">${elem.address.addressLine1} ${elem.address.addressLine2} ${elem.address.pincode}</p>
              </div>
            </div>        
            <div class="row">
@@ -180,12 +237,13 @@ export class DashboardComponent implements OnInit {
                 layout: {},
                 paint: {
                   'fill-outline-color': 'red',
-                  'fill-opacity': 1.0,
+                  'fill-opacity': 1,
+                  'fill-color': 'transparent',
                 },
               });
-              // const el = document.createElement('div');
-              // el.className = 'my-dash-marker';
-              // new mapboxgl.Marker(el).setLngLat(h[0]).addTo(map);
+              const el = document.createElement('div');
+              el.className = 'my-dash-marker';
+              new mapboxgl.Marker(el).setLngLat(h[0]).addTo(map);
               // When a click event occurs on a feature in the places layer, open a popup at the
               // location of the feature, with description HTML from its properties.
               map.on('click', `figure${i}_${index}_${f_index}`, (e) => {
@@ -213,6 +271,9 @@ export class DashboardComponent implements OnInit {
             this.spinner.hide();
           }
         });
+      } else {
+        this.spinner.hide();
+      }
       });
     } else {
       map.on('load', () => {
