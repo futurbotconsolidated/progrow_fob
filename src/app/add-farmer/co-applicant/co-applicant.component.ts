@@ -543,6 +543,13 @@ export class CoApplicantComponent implements OnInit {
       });
     }
   }
+  validateNo(e: any): boolean {
+    const charCode = e.which ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
   getPinCodeData(event: any, type: string) {
     // clear values
     if (type === 'ADDRESS') {

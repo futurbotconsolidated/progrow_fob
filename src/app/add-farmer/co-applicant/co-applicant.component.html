@@ -216,7 +216,7 @@
                 <div class="farmer-details-inner lable-top">
                   <label>Annual Income(₹)</label>
                   <input type="text" class="form-control" formControlName="annualIncome" placeholder=""
-                    maxlength="10" />
+                    maxlength="10" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['annualIncome'].errors" class="form-text text-danger">
                     <small *ngIf="f['annualIncome'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -248,7 +248,7 @@
                 <div class="flex-1 lable-top">
                   <label class="required">Pin Code</label>
                   <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6"
-                    maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" />
+                    maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
                     <small *ngIf="f['pinCode'].errors['required']">
                       PinCode is required</small>
@@ -296,7 +296,7 @@
                 <div class="flex-1 lable-top">
                   <label class="required">Phone No.</label>
                   <input type="text" class="form-control" formControlName="phoneNumber" placeholder="" minlength="10"
-                    maxlength="10" />
+                    maxlength="10" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['phoneNumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['phoneNumber'].errors['required']">
                       Phone No. is required</small>
@@ -712,7 +712,7 @@
                 <div class="farmer-details-inner lable-top">
                   <label>Annual Income(₹)</label>
                   <input type="text" class="form-control" formControlName="annualIncomecoa2" placeholder=""
-                    maxlength="10" />
+                    maxlength="10" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['annualIncomecoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['annualIncomecoa2'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -740,7 +740,7 @@
                 <div class="flex-1 lable-top">
                   <label class="">Pin Code</label>
                   <input type="text" class="form-control" formControlName="pinCodecoa2" placeholder="" minlength="6"
-                    maxlength="6" (keyup)="getPinCodeData($event,'ADDRESScoa2')" />
+                    maxlength="6" (keyup)="getPinCodeData($event,'ADDRESScoa2')" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['pinCodecoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['pinCodecoa2'].errors['required']">
                       PinCode is required</small>
@@ -788,7 +788,7 @@
                 <div class="flex-1 lable-top">
                   <label class="">Phone No.</label>
                   <input type="text" class="form-control" formControlName="phoneNumbercoa2" placeholder=""
-                    minlength="10" maxlength="10" />
+                    minlength="10" maxlength="10" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['phoneNumbercoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['phoneNumbercoa2'].errors['required']">
                       Phone No. is required</small>
