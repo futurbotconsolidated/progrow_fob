@@ -90,6 +90,7 @@ export class DemographicInfoComponent implements OnInit {
       educationQualification: new FormControl(''),
       occupation: new FormControl(''),
       annualIncome: new FormControl('', [Validators.pattern('^[0-9]*$')]),
+
       address1: new FormControl('', [Validators.required]),
       address2: new FormControl(''),
       taluk: new FormControl('', [Validators.required]),
@@ -101,6 +102,7 @@ export class DemographicInfoComponent implements OnInit {
       ]),
       state: new FormControl('', [Validators.required]),
       landmark: new FormControl(''),
+
       phoneNumber: new FormControl('', [
         Validators.required,
         Validators.pattern('^[0-9]*$'),
@@ -143,6 +145,7 @@ export class DemographicInfoComponent implements OnInit {
     });
   }
 
+  /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
     this.demoGraphicMaster = data.demoGraphic; // read master data
 
@@ -166,7 +169,6 @@ export class DemographicInfoComponent implements OnInit {
     if (demoInfo) {
       demoInfo = JSON.parse(demoInfo);
       this.demographicInfoForm.patchValue(demoInfo);
-      console.log(demoInfo);
 
       // this.familyMembers = this.demographicInfoForm.get(
       //   'familyMembers'
@@ -186,6 +188,9 @@ export class DemographicInfoComponent implements OnInit {
   get f() {
     return this.demographicInfoForm.controls;
   }
+  /* END: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
+
+  /* START: NON-API Function Calls-------------------------------------------------------------- */
   createPropertyOwnership(): FormGroup {
     return this.formBuilder.group({
       propertyType: new FormControl(''),
@@ -408,8 +413,6 @@ export class DemographicInfoComponent implements OnInit {
             });
           }
         }
-
-        console.log(this.fileUpload);
       };
     }
   }
@@ -421,57 +424,49 @@ export class DemographicInfoComponent implements OnInit {
     }
   }
 
-  getPinCodeData(event: any, type: string) {
-    // clear values
-    if (type === 'ADDRESS') {
-      this.demographicInfoForm.patchValue({
-        city: '',
-        state: '',
-      });
-      this.pinCodeAPIData.length = 0;
-    } else if (type === 'PERMANENT_ADDRESS') {
-      this.demographicInfoForm.patchValue({
-        permCity: '',
-        permState: '',
-      });
-      this.permPinCodeAPIData.length = 0;
-    }
+  // setDynamicValidators(event: any, formCtlName: string) {
+  //   if (this.f[formCtlName].value === 'different_address') {
+  //     this.demographicInfoForm.controls['permAddressLine1'].setValidators([
+  //       Validators.required,
+  //     ]);
+  //     this.demographicInfoForm.controls['permTaluk'].setValidators([
+  //       Validators.required,
+  //     ]);
+  //     this.demographicInfoForm.controls['permCity'].setValidators([
+  //       Validators.required,
+  //     ]);
+  //     this.demographicInfoForm.controls['permPincode'].setValidators([
+  //       Validators.required,
+  //       Validators.minLength(6),
+  //       Validators.maxLength(6),
+  //     ]);
+  //     this.demographicInfoForm.controls['permState'].setValidators([
+  //       Validators.required,
+  //     ]);
+  //   } else {
+  //     this.demographicInfoForm.controls['permAddressLine1'].clearValidators();
+  //     this.demographicInfoForm.controls['permTaluk'].clearValidators();
+  //     this.demographicInfoForm.controls['permCity'].clearValidators();
+  //     this.demographicInfoForm.controls['permPincode'].clearValidators();
+  //     this.demographicInfoForm.controls['permState'].clearValidators();
+  //   }
 
-    // check length and proceed
-    if (event && event.target.value.trim().length == 6) {
-      this.spinner.show();
-      this.commonService.getPinCodeData(event.target.value.trim()).subscribe(
-        (res: any) => {
-          this.spinner.hide();
-          if (res && res[0].Status != 'Success') {
-            alert(`${res[0].Message}`);
-          } else {
-            if (type === 'ADDRESS') {
-              this.pinCodeAPIData = res[0].PostOffice;
-              this.demographicInfoForm.patchValue({
-                city: this.pinCodeAPIData[0].District,
-                state: this.pinCodeAPIData[0].State,
-              });
-            } else if (type === 'PERMANENT_ADDRESS') {
-              this.permPinCodeAPIData = res[0].PostOffice;
-              this.demographicInfoForm.patchValue({
-                permCity: this.permPinCodeAPIData[0].District,
-                permState: this.permPinCodeAPIData[0].State,
-              });
-            }
-          }
-        },
-        (error: any) => {
-          this.spinner.hide();
-          alert('Failed to fetch PinCode Details, please try againn...');
-        }
-      );
-    }
-  }
+  //   // call below function for update the form controls it will be effect immediately on the form controls.
+  //   this.demographicInfoForm.controls[
+  //     'permAddressLine1'
+  //   ].updateValueAndValidity();
+  //   this.demographicInfoForm.controls['permTaluk'].updateValueAndValidity();
+  //   this.demographicInfoForm.controls['permCity'].updateValueAndValidity();
+  //   this.demographicInfoForm.controls['permPincode'].updateValueAndValidity();
+  //   this.demographicInfoForm.controls['permState'].updateValueAndValidity();
+  //   console.log(
+  //     event.target.value,
+  //     this.demographicInfoForm.controls[formCtlName].value
+  //   );
+  //   console.log(this.demographicInfoForm);
+  // }
 
   validateAndNext() {
-    console.log(this.demographicInfoForm.value);
-
     this.isSubmitted = true;
     if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
@@ -526,7 +521,7 @@ export class DemographicInfoComponent implements OnInit {
         agricultureChildrenInterested: formValue.agriculturalInterest,
         innovativeFarmingWays: formValue.innovativeWaysFarming,
       };
-      console.log(obj);
+
       localStorage.setItem('demographic-info', JSON.stringify(obj));
       localStorage.setItem('demographic-info-form', JSON.stringify(formValue));
 
@@ -536,4 +531,55 @@ export class DemographicInfoComponent implements OnInit {
       this.router.navigate([url]);
     }
   }
+  /* END: NON-API Function Calls------------------------------------------------------------------------ */
+
+  /* START: API Function Calls-------------------------------------------------------------------------- */
+  getPinCodeData(event: any, type: string) {
+    // clear values
+    if (type === 'ADDRESS') {
+      this.demographicInfoForm.patchValue({
+        city: '',
+        state: '',
+      });
+      this.pinCodeAPIData.length = 0;
+    } else if (type === 'PERMANENT_ADDRESS') {
+      this.demographicInfoForm.patchValue({
+        permCity: '',
+        permState: '',
+      });
+      this.permPinCodeAPIData.length = 0;
+    }
+
+    // check length and proceed
+    if (event && event.target.value.trim().length == 6) {
+      this.spinner.show();
+      this.commonService.getPinCodeData(event.target.value.trim()).subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res && res[0].Status != 'Success') {
+            alert(`${res[0].Message}`);
+          } else {
+            if (type === 'ADDRESS') {
+              this.pinCodeAPIData = res[0].PostOffice;
+              this.demographicInfoForm.patchValue({
+                city: this.pinCodeAPIData[0].District,
+                state: this.pinCodeAPIData[0].State,
+              });
+            } else if (type === 'PERMANENT_ADDRESS') {
+              this.permPinCodeAPIData = res[0].PostOffice;
+              this.demographicInfoForm.patchValue({
+                permCity: this.permPinCodeAPIData[0].District,
+                permState: this.permPinCodeAPIData[0].State,
+              });
+            }
+          }
+        },
+        (error: any) => {
+          this.spinner.hide();
+          alert('Failed to fetch PinCode Details, please try againn...');
+        }
+      );
+    }
+  }
+  /* END: API Function Calls---------------------------------------------------------------------------- */
 }

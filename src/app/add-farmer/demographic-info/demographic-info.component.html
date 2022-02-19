@@ -376,8 +376,12 @@
               </div>
               <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='different_address'">
                 <div class="flex-1 lable-top">
-                  <label>Address line-1</label>
+                  <label class="required">Address line-1</label>
                   <input type="text" class="form-control" formControlName="permAddressLine1" placeholder="" />
+                  <div *ngIf="isSubmitted && f['permAddressLine1'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permAddressLine1'].errors['required']">
+                      Address is required</small>
+                  </div>
                 </div>
 
                 <div class="flex-1 lable-top">
