@@ -145,16 +145,28 @@ export class DashboardComponent implements OnInit {
         'pk.eyJ1IjoicHVybmFyYW0iLCJhIjoiY2tpenBvZWpsMDNlaTMzcWpiZ2liZjEydiJ9.Mdj1w5dXDfCGCpIH5MlI2g',
       container: mapViewType, // container ID
       style: 'mapbox://styles/mapbox/satellite-v9?optimize=true', // style URL
-      zoom: 14, // starting zoom
-      center: [77.73521840572359, 13.048329579932709],
+      zoom: 3, // starting zoom 
+      center: [78, 20], 
     });
     if (mapViewType === 'existing_farmers_mapbox') {
       // geojson coordinates
       map.on('load', () => {
+        map.loadImage(
+          'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+          (error: any, image: any) => {
+          if (error){
+             throw error;
+            }
+            map.addImage('custom-marker', image);
+          }
+        );
         if(useData.length){
         useData.forEach((elem: any, index: number) => {
           // prepare popup
           elem['fieldInfo'].forEach((f_elem: any, f_index: number) => {
+            if(!f_elem.field_boundary.geometry.coordinates.length){
+              return;
+           }
             let coordinates_arr = [] as any;
             if (
               typeof f_elem.field_boundary.geometry.coordinates[0][0] ===
@@ -241,9 +253,17 @@ export class DashboardComponent implements OnInit {
                   'fill-color': 'transparent',
                 },
               });
-              const el = document.createElement('div');
-              el.className = 'my-dash-marker';
-              new mapboxgl.Marker(el).setLngLat(h[0]).addTo(map);
+
+              // Add a layer(marker) showing the field location.
+              map.addLayer({
+                id: `icon_figure${i}_${index}_${f_index}`,
+                type: 'symbol',
+                source: `figure${i}_${index}_${f_index}`,
+                layout: {
+                  'icon-image': 'custom-marker',
+                } as any,
+              });
+
               // When a click event occurs on a feature in the places layer, open a popup at the
               // location of the feature, with description HTML from its properties.
               map.on('click', `figure${i}_${index}_${f_index}`, (e) => {
