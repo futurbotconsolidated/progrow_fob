@@ -414,10 +414,10 @@ export class CoApplicantComponent implements OnInit {
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
 
-      if (file.size > 300000) {
-        this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
-        return;
-      }
+      // if (file.size > 300000) {
+      //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
+      //   return;
+      // }
       if (file.type.split('/')[0] != 'image') {
         this.toastr.error('Only Image files are allowed.', 'Error!');
         return;

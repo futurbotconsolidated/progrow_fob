@@ -13,10 +13,8 @@
                             <div class="row align-items-center">
                                 <div class="select-advice innovative-way">
                                     <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['seedProcure']">
-                                        <label class="form-check-label form-check bordered-check"
-                                            for="{{indStat.displayValue}}">
-                                            <input class="form-check-input" type="checkbox"
-                                                id="{{indStat.displayValue}}" name="{{indStat.displayValue}}" (click)="
+                                        <label class="form-check-label form-check bordered-check" for="{{indStat.displayValue}}">
+                                            <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}" name="{{indStat.displayValue}}" (click)="
                                             selectCultivationAdvice($event, 'seedProcure', indStat.displayValue)
                                           " [checked]="this.cropMarketPlanForm.controls['seedProcure'].value?.includes(indStat.displayValue)">{{indStat.displayName}}
                                         </label>
@@ -34,10 +32,8 @@
                             </h3>
                             <div class="row align-items-center">
                                 <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['varietyComparison']">
-                                    <label class="form-check-label form-check bordered-radio"
-                                        for="{{indType.displayValue}}">
-                                        <input class="form-check-input" type="radio" formControlName="varietyComparison"
-                                            value="{{indType.displayValue}}"
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}">
+                                        <input class="form-check-input" type="radio" formControlName="varietyComparison" value="{{indType.displayValue}}"
                                             id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                     </label>
                                 </div>
@@ -52,8 +48,7 @@
                                 <label>Year-Season</label>
                                 <select class="form-select">
                                     <option value="">...</option>
-                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']"
-                                        [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
+                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']" [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">
@@ -63,15 +58,15 @@
 
                             <div class="col-md-3 lable-top">
                                 <label>% used for Self Consumption</label>
-                                <input type="text" class="form-control" id="" placeholder="5%">
+                                <input type="text" class="form-control" id="" placeholder="5%" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                             <div class="col-md-3 lable-top">
                                 <label>% used for Seed Replacement</label>
-                                <input type="text" class="form-control" id="" placeholder="10%">
+                                <input type="text" class="form-control" id="" placeholder="10%" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                             <div class="col-md-3 lable-top">
                                 <label>% used for Selling at Market Place</label>
-                                <input type="text" class="form-control" id="" placeholder="85%">
+                                <input type="text" class="form-control" id="" placeholder="85%" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                         </div>
                         <div class="row align-items-center form-details-inner">
@@ -79,8 +74,7 @@
                                 <label>Year-Season</label>
                                 <select class="form-select">
                                     <option value="">...</option>
-                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']"
-                                        [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
+                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']" [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">
@@ -90,15 +84,15 @@
 
                             <div class="col-md-3 lable-top">
                                 <label>% used for Self Consumption</label>
-                                <input type="text" class="form-control" id="" placeholder="5%">
+                                <input type="text" class="form-control" id="" placeholder="5%" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                             <div class="col-md-3 lable-top">
                                 <label>% used for Seed Replacement</label>
-                                <input type="text" class="form-control" id="" placeholder="10%">
+                                <input type="text" class="form-control" id="" placeholder="10%" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                             <div class="col-md-3 lable-top">
                                 <label>% used for Selling at Market Place</label>
-                                <input type="text" class="form-control" id="" placeholder="85%">
+                                <input type="text" class="form-control" id="" placeholder="85%" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                         </div>
                     </div>
@@ -107,10 +101,8 @@
                             cultivation cycle?</h3>
                         <div class="row">
                             <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['fertilizerPurchase']">
-                                <label class="form-check-label form-check bordered-check"
-                                    for="{{indStat.displayValue}}">
-                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"
-                                        name="{{indStat.displayValue}}" (click)="
+                                <label class="form-check-label form-check bordered-check" for="{{indStat.displayValue}}">
+                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}" name="{{indStat.displayValue}}" (click)="
                                     selectCultivationAdvice($event, 'fertilizerPurchase', indStat.displayValue)
                                   " [checked]="this.cropMarketPlanForm.controls['fertilizerPurchase'].value?.includes(indStat.displayValue)">{{indStat.displayName}}
                                 </label>
@@ -127,10 +119,8 @@
                         <div class="row align-items-center">
                             <div class="select-advice interested-child">
                                 <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['pesticideQuality']">
-                                    <label class="form-check-label form-check bordered-radio"
-                                        for="{{indType.displayValue}}">
-                                        <input class="form-check-input" type="radio" formControlName="pesticideQuality"
-                                            value="{{indType.displayValue}}"
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}">
+                                        <input class="form-check-input" type="radio" formControlName="pesticideQuality" value="{{indType.displayValue}}"
                                             id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                     </label>
                                 </div>
@@ -141,10 +131,8 @@
                         <h3 class="form-title">5. Who advises you on application of fertilizers/pesticides? </h3>
                         <div class="row">
                             <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['fertilizerAdvise']">
-                                <label class="form-check-label form-check bordered-check"
-                                    for="{{indStat.displayValue}}">
-                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}"
-                                        name="{{indStat.displayValue}}" (click)="
+                                <label class="form-check-label form-check bordered-check" for="{{indStat.displayValue}}">
+                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}" name="{{indStat.displayValue}}" (click)="
                                     selectCultivationAdvice($event, 'fertilizerAdvise', indStat.displayValue)
                                   " [checked]="this.cropMarketPlanForm.controls['fertilizerAdvise'].value?.includes(indStat.displayValue)">{{indStat.displayName}}
                                 </label>
@@ -174,93 +162,77 @@
                                             <tr>
                                                 <td>Particular-1</td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-1" id="yes"><label class="form-check-label"
-                                                            for="yes"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-1" id="yes"><label class="form-check-label" for="yes"></label>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-1" id="no"><label class="form-check-label"
-                                                            for="no"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-1" id="no"><label class="form-check-label" for="no"></label>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-1" id="may-be"><label
-                                                            class="form-check-label" for="may-be"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-1" id="may-be"><label class="form-check-label"
+                                                            for="may-be"></label></div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-1" id="may-be"><label
-                                                            class="form-check-label" for="may-be"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-1" id="may-be"><label class="form-check-label"
+                                                            for="may-be"></label></div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Particular-2</td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-2" id="yes"><label class="form-check-label"
-                                                            for="yes"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-2" id="yes"><label class="form-check-label" for="yes"></label>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-2" id="no"><label class="form-check-label"
-                                                            for="no"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-2" id="no"><label class="form-check-label" for="no"></label>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-2" id="may-be"><label
-                                                            class="form-check-label" for="may-be"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-2" id="may-be"><label class="form-check-label"
+                                                            for="may-be"></label></div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-2" id="may-be"><label
-                                                            class="form-check-label" for="may-be"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-2" id="may-be"><label class="form-check-label"
+                                                            for="may-be"></label></div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Particular-3</td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-3" id="yes"><label class="form-check-label"
-                                                            for="yes"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-3" id="yes"><label class="form-check-label" for="yes"></label>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-3" id="no"><label class="form-check-label"
-                                                            for="no"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-3" id="no"><label class="form-check-label" for="no"></label>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-3" id="may-be"><label
-                                                            class="form-check-label" for="may-be"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-3" id="may-be"><label class="form-check-label"
+                                                            for="may-be"></label></div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-3" id="may-be"><label
-                                                            class="form-check-label" for="may-be"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-3" id="may-be"><label class="form-check-label"
+                                                            for="may-be"></label></div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Particular-4</td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-4" id="yes"><label class="form-check-label"
-                                                            for="yes"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-4" id="yes"><label class="form-check-label" for="yes"></label>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-4" id="no"><label class="form-check-label"
-                                                            for="no"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-4" id="no"><label class="form-check-label" for="no"></label>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-4" id="may-be"><label
-                                                            class="form-check-label" for="may-be"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-4" id="may-be"><label class="form-check-label"
+                                                            for="may-be"></label></div>
                                                 </td>
                                                 <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio"
-                                                            name="Particular-4" id="may-be"><label
-                                                            class="form-check-label" for="may-be"></label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-4" id="may-be"><label class="form-check-label"
+                                                            for="may-be"></label></div>
                                                 </td>
                                             </tr>
 
@@ -281,11 +253,9 @@
                             </h3>
                             <div class="row g-3 align-items-center">
                                 <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['farmGateGrading']">
-                                    <label class="form-check-label form-check bordered-radio"
-                                        for="{{indType.displayValue}}">
-                                        <input class="form-check-input" type="radio" formControlName="farmGateGrading"
-                                            value="{{indType.displayValue}}"
-                                            id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}farmGateGrading">
+                                        <input class="form-check-input" type="radio" formControlName="farmGateGrading" value="{{indType.displayValue}}"
+                                            id="{{indType.displayValue}}farmGateGrading"><span>{{indType.displayName}}</span>
                                     </label>
                                 </div>
                             </div>
@@ -295,12 +265,9 @@
                         <h3 class="form-title">7. How long does it take before receiving money for the produce sold?
                         </h3>
                         <div class="row align-items-center">
-                            <div class="col-auto"
-                                *ngFor="let indType of cropMarketPlanMaster['durationReceivingMoney']">
-                                <label class="form-check-label form-check bordered-radio"
-                                    for="{{indType.displayValue}}">
-                                    <input class="form-check-input" type="radio"
-                                        formControlName="durationReceivingMoney" value="{{indType.displayValue}}"
+                            <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['durationReceivingMoney']">
+                                <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}">
+                                    <input class="form-check-input" type="radio" formControlName="durationReceivingMoney" value="{{indType.displayValue}}"
                                         id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                 </label>
                             </div>
@@ -315,11 +282,9 @@
                             price?</h3>
                         <div class="row align-items-center">
                             <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['warehouseProduce']">
-                                <label class="form-check-label form-check bordered-radio"
-                                    for="{{indType.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="warehouseProduce"
-                                        value="{{indType.displayValue}}"
-                                        id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
+                                <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}warehouseProduce">
+                                    <input class="form-check-input" type="radio" formControlName="warehouseProduce" value="{{indType.displayValue}}"
+                                        id="{{indType.displayValue}}warehouseProduce"><span>{{indType.displayName}}</span>
                                 </label>
                             </div>
                         </div>

@@ -573,7 +573,9 @@ export const data = {
       { id: 4, displayName: 'Brother', displayValue: 'brother' },
       { id: 4, displayName: 'Son', displayValue: 'son' },
       { id: 4, displayName: 'Daughter', displayValue: 'daughter' },
-      { id: 5, displayName: 'Other', displayValue: 'other' },
+      { id: 5, displayName: 'Husband', displayValue: 'husband' },
+      { id: 6, displayName: 'Wife', displayValue: 'wife' },
+      { id: 7, displayName: 'Other', displayValue: 'other' },
     ],
     education: [
       { id: 1, displayName: 'No Education', displayValue: 'no_education' },
