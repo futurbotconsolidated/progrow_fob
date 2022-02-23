@@ -7,28 +7,24 @@ import {
   FormArray,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import {
-  cropLoanProduct,
-  crops,
-  availKCCLoan,
-  houseLoan,
-} from '../../shared/modal/global-field-values';
+import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
+
 @Component({
   selector: 'app-financial-planning',
   templateUrl: './financial-planning.component.html',
   styleUrls: ['./financial-planning.component.css'],
 })
 export class FinancialPlanningComponent implements OnInit {
-  cropLoanProductList: any = [];
+  /* START: Variables */
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
   nextRoute: any;
-  cropsList = <any>[];
-  kccLoanList = <any>[];
-  houseLoanList = <any>[];
 
   financialForm = new FormGroup({});
+  financialMaster = <any>{};
+  commonMaster = <any>{};
+  /* END: Variables */
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,10 +47,8 @@ export class FinancialPlanningComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cropLoanProductList = cropLoanProduct;
-    this.cropsList = crops;
-    this.kccLoanList = availKCCLoan;
-    this.houseLoanList = houseLoan;
+    this.financialMaster = data.financialPlan; // read master data
+    this.commonMaster = data.commonData; // read master data
 
     let finPlan: any = localStorage.getItem('financial-planing');
     if (finPlan) {

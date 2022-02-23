@@ -745,4 +745,31 @@ export const data = {
     ],
     particular: [{ id: 1, displayName: 'NA', displayValue: 'NA' }],
   },
+  financialPlan: {
+    cropLoanProduct: [
+      {
+        id: 1,
+        displayName: 'Crop-Loan Product 1',
+        displayValue: 'crop_loan_product_1',
+      },
+    ],
+    KCCLoanBank: [
+      { id: 1, displayName: 'SBI', displayValue: 'sbi' },
+      { id: 2, displayName: 'BoB', displayValue: 'bob' },
+      { id: 3, displayName: 'PNB', displayValue: 'pnb' },
+      { id: 3, displayName: 'RRB', displayValue: 'rrb' },
+      { id: 3, displayName: 'NABARD', displayValue: 'nabard' },
+      { id: 3, displayName: 'ICICI', displayValue: 'icici' },
+      { id: 3, displayName: 'HDFC', displayValue: 'hdfc' },
+      { id: 3, displayName: 'Axis', displayValue: 'axis' },
+    ],
+  },
+  commonData: {
+    crops: [
+      { id: 1, displayName: 'Mustard', displayValue: 'Mustard' },
+      { id: 1, displayName: 'Cumin', displayValue: 'Cumin' },
+      { id: 1, displayName: 'Gram', displayValue: 'Gram' },
+      { id: 1, displayName: 'Isabgol', displayValue: 'Isabgol' },
+    ],
+  },
 };

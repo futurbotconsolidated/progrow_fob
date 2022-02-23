@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from '../../shared/common.service';
 
 @Component({
   selector: 'app-edit-financial-planning',
@@ -6,15 +7,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./edit-financial-planning.component.css'],
 })
 export class EditFinancialPlanningComponent implements OnInit {
-  financialInfo = {} as any;
-  constructor() {
+  financialPlanDisp = {} as any;
+  constructor(private commonService: CommonService) {
     const A: any = localStorage.getItem('farmer-details');
 
     if (A) {
-      this.financialInfo = JSON.parse(A).financial_planning;
-      console.log(this.financialInfo?.loanReqPlaned);
+      this.financialPlanDisp = JSON.parse(A).financial_planning;
+      // console.log(this.financialPlanDisp?.loanReqPlaned);
     }
   }
 
   ngOnInit(): void {}
+  // get Name from Master Json
+  getDisplayName(dataProperty: string, id: any, dataType: string) {
+    return this.commonService.getDisplayName(dataType, dataProperty, id);
+  }
 }

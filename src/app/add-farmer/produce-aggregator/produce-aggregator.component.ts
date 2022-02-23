@@ -15,11 +15,11 @@ import { AddFarmerService } from '../add-farmer.service';
   styleUrls: ['./produce-aggregator.component.css'],
 })
 export class ProduceAggregatorComponent implements OnInit {
-  /* START: Variable */
+  /* START: Variables */
   produceAggregatorForm = new FormGroup({});
   produceAggregatorMaster = <any>{};
   nextRoute: any;
-  /* END: Variable */
+  /* END: Variables */
 
   constructor(
     private formBuilder: FormBuilder,

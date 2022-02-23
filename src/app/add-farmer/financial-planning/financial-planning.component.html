@@ -7,70 +7,37 @@
                 <form [formGroup]="financialForm">
                     <div class="form-details">
                         <h3 class="form-title">1. What is your crop loan requirement for the planned crop season? </h3>
-                        <div class="mb-3" formArrayName="loanReqPlaned"
-                            *ngFor="let item of getLoanReqPlanedControls(); let i = index;">
+                        <div class="mb-3" formArrayName="loanReqPlaned" *ngFor="let item of getLoanReqPlanedControls(); let i = index;">
                             <div class="row align-items-center form-details-inner" [formGroupName]="i">
                                 <div class="col-md-1 lable-top">
                                     <label>Field ID</label>
-                                    <input type="text" class="form-control" formControlName="fieldId" value="{{i+1}}"
-                                        placeholder="{{i+1}}">
+                                    <input type="text" class="form-control" formControlName="fieldId" value="{{i+1}}" placeholder="{{i+1}}">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Crop-Loan Product</label>
                                     <select class="form-select" formControlName="cropLoanProduct">
-                                        <option *ngFor="let indVal of cropLoanProductList"
-                                            value="{{indVal.displayValue}}">
+                                        <option *ngFor="let indVal of financialMaster['cropLoanProduct']" value="{{indVal.displayValue}}">
                                             {{indVal.displayName}}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Planned cultivation area (In Hectares)</label>
-                                    <input type="text" class="form-control" maxlength="3"
-                                        (keypress)="validateNo($event)" formControlName="plannedCultivationArea"
-                                        placeholder="50 ">
+                                    <input type="text" class="form-control" maxlength="3" (keypress)="validateNo($event)" formControlName="plannedCultivationArea" placeholder="50 ">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Amount</label>
-                                    <input type="text" class="form-control" maxlength="10"
-                                        (input)="numbersOnlyValidator($event)" formControlName="hectares"
-                                        placeholder="INR 3,50,000.00">
+                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" formControlName="hectares" placeholder="INR 3,50,000.00">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Crop</label>
                                     <select class="form-select" formControlName="crop">
                                         <option value="">...</option>
-                                        <option *ngFor="let indVal of cropsList" value="{{indVal.displayValue}}">
+                                        <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
                                             {{indVal.displayName}}</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="row align-items-center form-details-inner">
-                            <div class="col-md-1 lable-top">
-                                <label>Field ID</label>
-                                <input type="text" class="form-control" id="" placeholder="1">
-                            </div>
-                            <div class="col-md-3 lable-top">
-                                <label>Crop-Loan Product</label>
-                                <select class="form-select">
-                                    <option selected>Crop-Loan Product-1</option>
-                                    <option>Crop-Loan Product-2</option>
-                                    <option>Crop-Loan Product-3</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3 lable-top">
-                                <label>Planned cultivation area</label>
-                                <input type="text" class="form-control" id="" placeholder="5000 Hectares">
-                            </div>
-                            <div class="col-md-3 lable-top">
-                                <label>5000 Hectares</label>
-                                <input type="text" class="form-control" id="" placeholder="INR 3,50,000.00">
-                            </div>
-                            <div class="col-md-2 lable-top">
-                                <label>Crop</label>
-                                <input type="text" class="form-control" id="" placeholder="Mustard">
-                            </div>
-                        </div> -->
                     </div>
                     <div class="form-details">
                         <h3 class="form-title">2. What other FRCM loan products you would be interested in?</h3>
@@ -89,72 +56,58 @@
                                         <tr>
                                             <td>Housing Loan</td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Housing Loan" id="yes"><label class="form-check-label"
-                                                        for="yes"></label></div>
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Housing Loan" id="yes"><label class="form-check-label" for="yes"></label>
+                                                </div>
                                             </td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Housing Loan" id="no"><label class="form-check-label"
-                                                        for="no"></label></div>
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Housing Loan" id="no"><label class="form-check-label" for="no"></label></div>
                                             </td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Housing Loan" id="may-be"><label class="form-check-label"
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Housing Loan" id="may-be"><label class="form-check-label"
                                                         for="may-be"></label></div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Tractor Finance Loan</td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Finance Loan" id="yes"><label class="form-check-label"
-                                                        for="yes"></label></div>
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Finance Loan" id="yes"><label class="form-check-label" for="yes"></label>
+                                                </div>
                                             </td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Finance Loan" id="no"><label class="form-check-label"
-                                                        for="no"></label></div>
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Finance Loan" id="no"><label class="form-check-label" for="no"></label></div>
                                             </td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Finance Loan" id="may-be"><label class="form-check-label"
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Finance Loan" id="may-be"><label class="form-check-label"
                                                         for="may-be"></label></div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>FRCM Crop Insurance</td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Crop Insurance" id="yes"><label class="form-check-label"
-                                                        for="yes"></label></div>
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Crop Insurance" id="yes"><label class="form-check-label" for="yes"></label>
+                                                </div>
                                             </td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Crop Insurance" id="no"><label class="form-check-label"
-                                                        for="no"></label></div>
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Crop Insurance" id="no"><label class="form-check-label" for="no"></label>
+                                                </div>
                                             </td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Crop Insurance" id="may-be"><label
-                                                        class="form-check-label" for="may-be"></label></div>
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Crop Insurance" id="may-be"><label class="form-check-label"
+                                                        for="may-be"></label></div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Personal Loan</td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Personal Loan" id="yes"><label class="form-check-label"
-                                                        for="yes"></label></div>
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Personal Loan" id="yes"><label class="form-check-label" for="yes"></label>
+                                                </div>
                                             </td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Personal Loan" id="no"><label class="form-check-label"
-                                                        for="no"></label></div>
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Personal Loan" id="no"><label class="form-check-label" for="no"></label>
+                                                </div>
                                             </td>
                                             <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio"
-                                                        name="Personal Loan" id="may-be"><label class="form-check-label"
+                                                <div class="form-check"><input class="form-check-input" type="radio" name="Personal Loan" id="may-be"><label class="form-check-label"
                                                         for="may-be"></label></div>
                                             </td>
                                         </tr>
@@ -182,18 +135,15 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center form-details-inner">
@@ -202,18 +152,15 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center form-details-inner">
@@ -222,18 +169,15 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center form-details-inner">
@@ -242,18 +186,15 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder=""
-                                        (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
                                 </div>
                             </div>
                         </div>
@@ -277,19 +218,15 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" maxlength="10"
-                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" maxlength="10"
-                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                                value="Pick a date" onfocus="(this.type='date')"
-                                                onblur="(this.type='text')">
+                                            <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                         </div>
                                     </div>
                                     <div class="row align-items-center form-details-inner">
@@ -303,19 +240,15 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" maxlength="10"
-                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" maxlength="10"
-                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                                value="Pick a date" onfocus="(this.type='date')"
-                                                onblur="(this.type='text')">
+                                            <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                         </div>
                                     </div>
                                 </div>
@@ -338,19 +271,15 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" maxlength="10"
-                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" maxlength="10"
-                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                                value="Pick a date" onfocus="(this.type='date')"
-                                                onblur="(this.type='text')">
+                                            <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                         </div>
                                     </div>
                                     <div class="row align-items-center form-details-inner">
@@ -364,19 +293,15 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" maxlength="10"
-                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" maxlength="10"
-                                                (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                                value="Pick a date" onfocus="(this.type='date')"
-                                                onblur="(this.type='text')">
+                                            <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                         </div>
                                     </div>
                                 </div>
@@ -399,23 +324,19 @@
                                     <tbody>
                                         <tr>
                                             <td>Household – Grocery/Repairs</td>
-                                            <td><input type="text" class="form-control" maxlength="10"
-                                                    (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Health** - Doctors Expense/ Medical Treatment</td>
-                                            <td><input type="text" class="form-control" maxlength="10"
-                                                    (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Education**</td>
-                                            <td><input type="text" class="form-control" maxlength="10"
-                                                    (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Rental paying**</td>
-                                            <td><input type="text" class="form-control" maxlength="10"
-                                                    (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -431,18 +352,15 @@
                                     <tbody>
                                         <tr>
                                             <td>House Electricity**</td>
-                                            <td><input type="text" class="form-control" maxlength="10"
-                                                    (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Interest Payments**</td>
-                                            <td><input type="text" class="form-control" maxlength="10"
-                                                    (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Others, please specify</td>
-                                            <td><input type="text" class="form-control" maxlength="10"
-                                                    (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -454,48 +372,11 @@
                         <div class="kcc-loan form-details-inner">
                             <h3 class="form-title">5A. Which Bank do you avail KCC loan from? </h3>
                             <div class="display-flex">
-                                <div class="flex-1" *ngFor="let indType of kccLoanList">
-                                    <label class="form-check-label form-check bordered-radio"
-                                        for="{{indType.displayValue}}">
-                                        <input class="form-check-input" type="radio" formControlName="availKccLoan"
-                                            value="{{indType.displayValue}}"
+                                <div class="flex-1" *ngFor="let indType of financialMaster['KCCLoanBank']">
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}">
+                                        <input class="form-check-input" type="radio" formControlName="availKccLoan" value="{{indType.displayValue}}"
                                             id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                     </label>
-                                </div>
-                                <!-- <div class="flex-1">
-                                    <label class="form-check-label form-check bordered-radio" for="BoB">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="BoB"><span>BoB</span>
-                                    </label>
-                                </div>
-                                <div class="flex-1">
-                                    <label class="form-check-label form-check bordered-radio" for="PNB">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="PNB"><span>PNB</span>
-                                    </label>
-                                </div>
-                                <div class="flex-1">
-                                    <label class="form-check-label form-check bordered-radio" for="RRB">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="RRB"><span>RRB</span>
-                                    </label>
-                                </div>
-                                <div class="flex-1">
-                                    <label class="form-check-label form-check bordered-radio" for="NABARD">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="NABARD"><span>NABARD</span>
-                                    </label>
-                                </div> -->
-                                <div class="flex-1">
-                                    <div class="lable-top">
-                                        <label>Otheres</label>
-                                        <select class="form-select">
-                                            <option>...</option>
-                                            <option>ICICI</option>
-                                            <option>HDFC</option>
-                                            <option>Axis</option>
-                                        </select>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -505,23 +386,19 @@
                             <div class="display-flex">
                                 <div class="flex-1 lable-top">
                                     <label>Credited Amount</label>
-                                    <input type="text" class="form-control" id="" maxlength="10"
-                                        (input)="numbersOnlyValidator($event)" placeholder="INR 5,00,000">
+                                    <input type="text" class="form-control" id="" maxlength="10" (input)="numbersOnlyValidator($event)" placeholder="INR 5,00,000">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                        value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Repayment Amount</label>
-                                    <input type="text" class="form-control" maxlength="10"
-                                        (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                        value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                             </div>
                         </div>
@@ -531,9 +408,7 @@
                             <div class="row align-items-center">
                                 <div class="col-md-4 lable-top">
                                     <label>Credited Amount</label>
-                                    <input type="text" class="form-control" maxlength="10"
-                                        (input)="numbersOnlyValidator($event)" formControlName="creditedAmount" id=""
-                                        placeholder="">
+                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" formControlName="creditedAmount" id="" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -542,13 +417,11 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="e">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="e">Yes</label>
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="e">Yes</label>
                                 </div>
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="No">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="No">No</label>
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="No">No</label>
                                 </div>
                             </div>
                         </div>
@@ -561,23 +434,19 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Credited Amount</label>
-                                    <input type="text" class="form-control" maxlength="10"
-                                        (input)="numbersOnlyValidator($event)" id="" placeholder="INR 5,00,000">
+                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="INR 5,00,000">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                        value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Amount</label>
-                                    <input type="text" class="form-control" maxlength="10"
-                                        (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                        value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                             </div>
                         </div>
@@ -589,13 +458,11 @@
                             <div class="row align-items-center">
                                 <div class="col-md-2 lable-top">
                                     <label>Amount paid</label>
-                                    <input type="text" class="form-control" id="" maxlength="10"
-                                        (input)="numbersOnlyValidator($event)" placeholder="INR 5,00,000">
+                                    <input type="text" class="form-control" id="" maxlength="10" (input)="numbersOnlyValidator($event)" placeholder="INR 5,00,000">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Date of payment</label>
-                                    <input type="text" class="form-control" id="" placeholder="Pick a date"
-                                        value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                             </div>
                         </div>
@@ -612,21 +479,18 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Premium paid</label>
-                                    <input type="text" class="form-control" maxlength="10"
-                                        (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Settlement amount credited?</label>
                                     <div class="two-radio">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-Amount"
-                                                id="Amount-Yes" value="option1"><label class="form-check-label"
-                                                for="Amount-Yes"> Yes</label>
+                                            <input class="form-check-input" type="radio" name="Settlement-Amount" id="Amount-Yes" value="option1"><label class="form-check-label" for="Amount-Yes">
+                                                Yes</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-Amount"
-                                                id="Amount-No" value="option1"><label class="form-check-label"
-                                                for="Amount-No"> No</label>
+                                            <input class="form-check-input" type="radio" name="Settlement-Amount" id="Amount-No" value="option1"><label class="form-check-label" for="Amount-No">
+                                                No</label>
                                         </div>
                                     </div>
                                 </div>
@@ -634,13 +498,11 @@
                                     <label>Satisfied with the disbursement?</label>
                                     <div class="two-radio">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement"
-                                                id="disbursement-Yes" value="option1"><label class="form-check-label"
+                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement" id="disbursement-Yes" value="option1"><label class="form-check-label"
                                                 for="disbursement-Yes"> Yes</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement"
-                                                id="disbursement-No" value="option1"><label class="form-check-label"
+                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement" id="disbursement-No" value="option1"><label class="form-check-label"
                                                 for="disbursement-No"> No</label>
                                         </div>
                                     </div>
@@ -657,21 +519,18 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Premium paid</label>
-                                    <input type="text" class="form-control" maxlength="10"
-                                        (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Settlement amount credited?</label>
                                     <div class="two-radio">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount1"
-                                                id="amount1-Yes" value="option1"><label class="form-check-label"
-                                                for="amount1-Yes"> Yes</label>
+                                            <input class="form-check-input" type="radio" name="Settlement-amount1" id="amount1-Yes" value="option1"><label class="form-check-label" for="amount1-Yes">
+                                                Yes</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount1"
-                                                id="amount1-No" value="option1"><label class="form-check-label"
-                                                for="amount1-No"> No</label>
+                                            <input class="form-check-input" type="radio" name="Settlement-amount1" id="amount1-No" value="option1"><label class="form-check-label" for="amount1-No">
+                                                No</label>
                                         </div>
                                     </div>
                                 </div>
@@ -679,13 +538,11 @@
                                     <label>Satisfied with the disbursement?</label>
                                     <div class="two-radio">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement1"
-                                                id="disbursement1-Yes" value="option1"><label class="form-check-label"
+                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement1" id="disbursement1-Yes" value="option1"><label class="form-check-label"
                                                 for="disbursement1-Yes"> Yes</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement1"
-                                                id="disbursement1-No" value="option1"><label class="form-check-label"
+                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement1" id="disbursement1-No" value="option1"><label class="form-check-label"
                                                 for="disbursement1-No"> No</label>
                                         </div>
                                     </div>
@@ -702,21 +559,18 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Premium paid</label>
-                                    <input type="text" class="form-control" maxlength="10"
-                                        (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Settlement amount credited?</label>
                                     <div class="two-radio">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount2"
-                                                id="amount2-Yes" value="option1"><label class="form-check-label"
-                                                for="amount2-Yes"> Yes</label>
+                                            <input class="form-check-input" type="radio" name="Settlement-amount2" id="amount2-Yes" value="option1"><label class="form-check-label" for="amount2-Yes">
+                                                Yes</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount2"
-                                                id="amount2-No" value="option1"><label class="form-check-label"
-                                                for="amount2-No"> No</label>
+                                            <input class="form-check-input" type="radio" name="Settlement-amount2" id="amount2-No" value="option1"><label class="form-check-label" for="amount2-No">
+                                                No</label>
                                         </div>
                                     </div>
                                 </div>
@@ -724,13 +578,11 @@
                                     <label>Satisfied with the disbursement?</label>
                                     <div class="two-radio">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement2"
-                                                id="disbursement2-Yes" value="option1"><label class="form-check-label"
+                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement2" id="disbursement2-Yes" value="option1"><label class="form-check-label"
                                                 for="disbursement2-Yes"> Yes</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement2"
-                                                id="disbursement2-No" value="option1"><label class="form-check-label"
+                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement2" id="disbursement2-No" value="option1"><label class="form-check-label"
                                                 for="disbursement2-No"> No</label>
                                         </div>
                                     </div>
@@ -753,14 +605,12 @@
                                     <label>Settlement amount credited?</label>
                                     <div class="two-radio">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount3"
-                                                id="amount3-Yes" value="option1"><label class="form-check-label"
-                                                for="amount3-Yes"> Yes</label>
+                                            <input class="form-check-input" type="radio" name="Settlement-amount3" id="amount3-Yes" value="option1"><label class="form-check-label" for="amount3-Yes">
+                                                Yes</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount3"
-                                                id="amount3-No" value="option1"><label class="form-check-label"
-                                                for="amount3-No"> No</label>
+                                            <input class="form-check-input" type="radio" name="Settlement-amount3" id="amount3-No" value="option1"><label class="form-check-label" for="amount3-No">
+                                                No</label>
                                         </div>
                                     </div>
                                 </div>
@@ -768,13 +618,11 @@
                                     <label>Satisfied with the disbursement?</label>
                                     <div class="two-radio">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement3"
-                                                id="disbursement3-Yes" value="option1"><label class="form-check-label"
+                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement3" id="disbursement3-Yes" value="option1"><label class="form-check-label"
                                                 for="disbursement3-Yes"> Yes</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement3"
-                                                id="disbursement3-No" value="option1"><label class="form-check-label"
+                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement3" id="disbursement3-No" value="option1"><label class="form-check-label"
                                                 for="disbursement3-No"> No</label>
                                         </div>
                                     </div>
@@ -784,8 +632,7 @@
 
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">7. Preferred source of credit outside KCC?<br> <span
-                                style="color: #6a6a6a;font-size: 14px;">Specify ROI charged by month (2% per month, 3%
+                        <h3 class="form-title">7. Preferred source of credit outside KCC?<br> <span style="color: #6a6a6a;font-size: 14px;">Specify ROI charged by month (2% per month, 3%
                                 per month, etc.)</span> </h3>
                         <div class="row align-items-center">
                             <div class="advice-cultivation">
@@ -795,32 +642,27 @@
                                 <div class="credit-outside">
                                     <div class="col-auto">
                                         <label class="form-check-label form-check bordered-check" for="farmer_family">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                                id="farmer_family">
+                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="farmer_family">
                                             <span>Commission Agent/ Arhatiya</span></label>
                                     </div>
                                     <div class="col-auto">
                                         <label class="form-check-label form-check bordered-check" for="company_doctor">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                                id="company_doctor">
+                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="company_doctor">
                                             <span>Family/Friends</span></label>
                                     </div>
                                     <div class="col-auto">
                                         <label class="form-check-label form-check bordered-check" for="tv_program">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                                id="tv_program">
+                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="tv_program">
                                             <span>Input Supplier</span></label>
                                     </div>
                                     <div class="col-auto">
                                         <label class="form-check-label form-check bordered-check" for="kvk">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                                id="kvk">
+                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="kvk">
                                             <span>Local Sahookar</span></label>
                                     </div>
                                     <div class="col-auto">
                                         <label class="form-check-label form-check bordered-check" for="youtube">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                                id="youtube">
+                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="youtube">
                                             <span>Gold Loan</span></label>
                                     </div>
                                 </div>
@@ -877,36 +719,29 @@
 
                         </h3>
                         <div class="agent-rank-order">
-                            <label class="form-check-label form-check bordered-check" for="capital_cycle"
-                                id="hide_capital">
+                            <label class="form-check-label form-check bordered-check" for="capital_cycle" id="hide_capital">
                                 <!-- <span class="ranking" id="show_capital">3</span> -->
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                    id="capital_cycle">
+                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="capital_cycle">
                                 <span>Working Capital cycle requirement</span>
                             </label>
                             <label class="form-check-label form-check bordered-check" for="finance_input">
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                    id="finance_input">
+                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="finance_input">
                                 <span>Finance for inputs</span>
                             </label>
                             <label class="form-check-label form-check bordered-check" for="rollover_credit">
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                    id="rollover_credit">
+                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="rollover_credit">
                                 <span>Rollover of credit</span>
                             </label>
                             <label class="form-check-label form-check bordered-check" for="produce_buyback">
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                    id="produce_buyback">
+                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="produce_buyback">
                                 <span>Produce buyback guarantee/obligation</span>
                             </label>
                             <label class="form-check-label form-check bordered-check" for="interest_rate">
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                    id="interest_rate">
+                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="interest_rate">
                                 <span>Interest rate</span>
                             </label>
                             <label class="form-check-label form-check bordered-check" for="repayment_period">
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                    id="repayment_period">
+                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="repayment_period">
                                 <span>Repayment period</span>
                             </label>
                         </div>
@@ -916,14 +751,12 @@
                         <div class="row">
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="credit_supplier">
-                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                        id="credit_supplier">
+                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="credit_supplier">
                                     <span>Output is sold to the credit supplier</span></label>
                             </div>
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="agricuture_land">
-                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                        id="agricuture_land">
+                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="agricuture_land">
                                     <span>Agricultural Land</span></label>
                             </div>
                             <div class="col-auto">
@@ -942,18 +775,15 @@
                         <div class="row">
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="loan-yes">
-                                    <input class="form-check-input" type="radio" name="availed-loan"
-                                        id="loan-yes">Yes</label>
+                                    <input class="form-check-input" type="radio" name="availed-loan" id="loan-yes">Yes</label>
                             </div>
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="loan-no">
-                                    <input class="form-check-input" type="radio" name="availed-loan"
-                                        id="loan-no">No</label>
+                                    <input class="form-check-input" type="radio" name="availed-loan" id="loan-no">No</label>
                             </div>
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="loan-gold">
-                                    <input class="form-check-input" type="radio" name="availed-loan"
-                                        id="loan-gold">Gold</label>
+                                    <input class="form-check-input" type="radio" name="availed-loan" id="loan-gold">Gold</label>
                             </div>
                             <div class="col-auto lable-top">
                                 <label>Mention other (if any)</label>
@@ -967,13 +797,11 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="tractor-yes">
-                                        <input class="form-check-input" type="radio" name="own-tractor"
-                                            id="tractor-yes">Yes</label>
+                                        <input class="form-check-input" type="radio" name="own-tractor" id="tractor-yes">Yes</label>
                                 </div>
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="tractor-no">
-                                        <input class="form-check-input" type="radio" name="own-tractor"
-                                            id="tractor-no">No</label>
+                                        <input class="form-check-input" type="radio" name="own-tractor" id="tractor-no">No</label>
                                 </div>
                             </div>
                         </div>
@@ -983,36 +811,28 @@
                             <div class="row align-items-center">
                                 <div class="select-advice innovative-way">
                                     <label class="form-check-label form-check bordered-check" for="Drip">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                            id="Drip"><span>Tiller</span>
+                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Drip"><span>Tiller</span>
                                     </label>
                                     <label class="form-check-label form-check bordered-check" for="Mulch">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                            id="Mulch"><span>Seed drill</span>
+                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Mulch"><span>Seed drill</span>
                                     </label>
                                     <label class="form-check-label form-check bordered-check" for="Solar_Pump">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                            id="Solar_Pump"><span>Spraying machine</span>
+                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Solar_Pump"><span>Spraying machine</span>
                                     </label>
                                     <label class="form-check-label form-check bordered-check" for="Fertilizers">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                            id="Fertilizers"><span>Rotavator</span>
+                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Fertilizers"><span>Rotavator</span>
                                     </label>
                                     <label class="form-check-label form-check bordered-check" for="IoT/Drone">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                            id="IoT/Drone"><span>Combine Harvester</span>
+                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="IoT/Drone"><span>Combine Harvester</span>
                                     </label>
                                     <label class="form-check-label form-check bordered-check" for="Weather_Updates">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                            id="Weather_Updates"><span>Reaper</span>
+                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Weather_Updates"><span>Reaper</span>
                                     </label>
                                     <label class="form-check-label form-check bordered-check" for="sops">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                            id="sops"><span>Tillage Implements</span>
+                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="sops"><span>Tillage Implements</span>
                                     </label>
                                     <label class="form-check-label form-check bordered-check" for="sops">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                            id="sops"><span>Thresher</span>
+                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="sops"><span>Thresher</span>
                                     </label>
                                 </div>
                             </div>
@@ -1028,8 +848,7 @@
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label for="">Account Number</label>
-                                    <input type="text" class="form-control" maxlength="14"
-                                        (input)="numbersOnlyValidator($event)" formControlName="accountNum">
+                                    <input type="text" class="form-control" maxlength="14" (input)="numbersOnlyValidator($event)" formControlName="accountNum">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label for="">IFSC Code</label>
@@ -1041,11 +860,9 @@
                                 </div>
                             </div>
                             <div class="flex-1 add-another">
-                                <a *ngIf="getBankDetailsControls().length!=1  && i!=getBankDetailsControls().length-1"
-                                    href="javascript:void(0)" class="delete-item " (click)="removeBankDetails(i)"><i
+                                <a *ngIf="getBankDetailsControls().length!=1  && i!=getBankDetailsControls().length-1" href="javascript:void(0)" class="delete-item " (click)="removeBankDetails(i)"><i
                                         class="fa fa-trash-o text-danger"></i></a>
-                                <a *ngIf="i==getBankDetailsControls().length-1" href="javascript:void(0)"
-                                    (click)="addBankDetails()">+ Add another bank details</a>
+                                <a *ngIf="i==getBankDetailsControls().length-1" href="javascript:void(0)" (click)="addBankDetails()">+ Add another bank details</a>
                             </div>
                         </div>
                     </div>
