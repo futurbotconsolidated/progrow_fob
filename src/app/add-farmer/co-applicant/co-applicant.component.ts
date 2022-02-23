@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
 import {
   FormGroup,
   FormControl,
@@ -221,6 +222,26 @@ export class CoApplicantComponent implements OnInit {
     this.ownershipTypeList = ownerShipType;
     this.particularList = particular;
 
+    // ----------------------- Start auto save --------------------
+    this.coApplicantForm.valueChanges
+    .pipe(
+      tap(() => {
+        this.saveStatus = SaveStatus.Saving;
+      })
+    )
+    .subscribe(async (form_values) => {
+      let draft_farmer_new = {} as any;
+      if(localStorage.getItem('draft_farmer_new')){
+        draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any);    
+      }
+      draft_farmer_new['co_applicant_form'] = form_values;
+      localStorage.setItem('draft_farmer_new', JSON.stringify(draft_farmer_new));
+      this.saveStatus = SaveStatus.Saved;
+      if (this.saveStatus === SaveStatus.Saved) {
+        this.saveStatus = SaveStatus.Idle;
+      }
+    });
+    // ----------------------- End auto save --------------------
     let demoInfo: any = localStorage.getItem('co-applicant-form');
     if (demoInfo) {
       demoInfo = JSON.parse(demoInfo);

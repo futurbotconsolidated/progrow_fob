@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { tap } from 'rxjs/operators';
 import { CommonService } from '../../shared/common.service';
 import {
   FormGroup,
@@ -149,22 +150,26 @@ export class DemographicInfoComponent implements OnInit {
   ngOnInit(): void {
     this.demoGraphicMaster = data.demoGraphic; // read master data
 
-    // ----------------------- auto save --------------------
-    // this.demographicInfoForm.valueChanges
-    //   .pipe(
-    //     tap(() => {
-    //       this.saveStatus = SaveStatus.Saving;
-    //     })
-    //   )
-    //   .subscribe(async (value) => {
-    //     console.log(value);
-    //     this.saveStatus = SaveStatus.Saved;
-    //     await sleep(2000);
-    //     if (this.saveStatus === SaveStatus.Saved) {
-    //       this.saveStatus = SaveStatus.Idle;
-    //     }
-    //   });
-
+    // ----------------------- Start auto save --------------------
+    this.demographicInfoForm.valueChanges
+      .pipe(
+        tap(() => {
+          this.saveStatus = SaveStatus.Saving;
+        })
+      )
+      .subscribe(async (form_values) => {
+        let draft_farmer_new = {} as any;
+        if(localStorage.getItem('draft_farmer_new')){
+          draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any);    
+        }
+        draft_farmer_new['demographic_info_form'] = form_values;
+        localStorage.setItem('draft_farmer_new', JSON.stringify(draft_farmer_new));
+        this.saveStatus = SaveStatus.Saved;
+        if (this.saveStatus === SaveStatus.Saved) {
+          this.saveStatus = SaveStatus.Idle;
+        }
+      });
+    // ----------------------- End auto save --------------------
     let demoInfo: any = localStorage.getItem('demographic-info-form');
     if (demoInfo) {
       demoInfo = JSON.parse(demoInfo);

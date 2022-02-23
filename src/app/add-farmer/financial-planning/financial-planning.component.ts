@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
 import {
   FormGroup,
   FormControl,
@@ -9,6 +10,11 @@ import {
 import { Router } from '@angular/router';
 import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
+enum SaveStatus {
+  Saving = 'Saving...',
+  Saved = 'Saved.',
+  Idle = '',
+}
 
 @Component({
   selector: 'app-financial-planning',
@@ -20,6 +26,9 @@ export class FinancialPlanningComponent implements OnInit {
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
   nextRoute: any;
+
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
+    SaveStatus.Idle;
 
   financialForm = new FormGroup({});
   financialMaster = <any>{};
@@ -50,6 +59,31 @@ export class FinancialPlanningComponent implements OnInit {
     this.financialMaster = data.financialPlan; // read master data
     this.commonMaster = data.commonData; // read master data
 
+    // -----------------------start auto save --------------------
+    this.financialForm.valueChanges
+      .pipe(
+        tap(() => {
+          this.saveStatus = SaveStatus.Saving;
+        })
+      )
+      .subscribe(async (form_values) => {
+        let draft_farmer_new = {} as any;
+        if (localStorage.getItem('draft_farmer_new')) {
+          draft_farmer_new = JSON.parse(
+            localStorage.getItem('draft_farmer_new') as any
+          );
+        }
+        draft_farmer_new['financial_planing'] = form_values;
+        localStorage.setItem(
+          'draft_farmer_new',
+          JSON.stringify(draft_farmer_new)
+        );
+        this.saveStatus = SaveStatus.Saved;
+        if (this.saveStatus === SaveStatus.Saved) {
+          this.saveStatus = SaveStatus.Idle;
+        }
+      });
+    // -----------------------End auto save --------------------
     let finPlan: any = localStorage.getItem('financial-planing');
     if (finPlan) {
       finPlan = JSON.parse(finPlan);

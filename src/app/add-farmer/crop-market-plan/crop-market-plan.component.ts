@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 import {
   FormGroup,
   FormControl,
@@ -8,7 +9,11 @@ import {
 } from '@angular/forms';
 import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
-
+enum SaveStatus {
+  Saving = 'Saving...',
+  Saved = 'Saved.',
+  Idle = '',
+}
 @Component({
   selector: 'app-crop-market-plan',
   templateUrl: './crop-market-plan.component.html',
@@ -19,6 +24,7 @@ export class CropMarketPlanComponent implements OnInit {
   cropMarketPlanForm = new FormGroup({});
   cropMarketPlanMaster = <any>{};
   nextRoute: any;
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle = SaveStatus.Idle;
   /* END: Variable */
 
   constructor(
@@ -46,6 +52,26 @@ export class CropMarketPlanComponent implements OnInit {
 
   ngOnInit(): void {
     this.cropMarketPlanMaster = data.cropMarket; // read master data
+    // -----------------------start auto save --------------------
+    this.cropMarketPlanForm.valueChanges
+    .pipe(
+      tap(() => {
+        this.saveStatus = SaveStatus.Saving;
+      })
+    )
+    .subscribe(async (form_values) => {
+      let draft_farmer_new = {} as any;
+      if(localStorage.getItem('draft_farmer_new')){
+        draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any);    
+      }
+      draft_farmer_new['crop_market_planing'] = form_values;
+      localStorage.setItem('draft_farmer_new', JSON.stringify(draft_farmer_new));
+      this.saveStatus = SaveStatus.Saved;
+      if (this.saveStatus === SaveStatus.Saved) {
+        this.saveStatus = SaveStatus.Idle;
+      }
+    });
+    // -----------------------End auto save --------------------
     let cropPlan: any = localStorage.getItem('crop-market-planing');
     if (cropPlan) {
       cropPlan = JSON.parse(cropPlan);
