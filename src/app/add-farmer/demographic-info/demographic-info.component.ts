@@ -468,7 +468,7 @@ export class DemographicInfoComponent implements OnInit {
 
   validateAndNext() {
     this.isSubmitted = true;
-    if (this.demographicInfoForm.invalid && 1 != 1) {
+    if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
       return;
     } else {
