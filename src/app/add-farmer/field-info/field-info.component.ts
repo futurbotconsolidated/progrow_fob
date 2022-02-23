@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
 import {
   FormGroup,
   FormControl,
@@ -25,12 +26,19 @@ import {
 import { AddFarmerService } from '../add-farmer.service';
 import { ToastrService } from 'ngx-toastr';
 
+enum SaveStatus {
+  Saving = 'Saving...',
+  Saved = 'Saved.',
+  Idle = '',
+}
+
 @Component({
   selector: 'app-field-info',
   templateUrl: './field-info.component.html',
   styleUrls: ['./field-info.component.css'],
 })
 export class FieldInfoComponent implements OnInit {
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle = SaveStatus.Idle;
   SoilQualityStar: any[] = soilQuality;
   selectedSoilQualityStar: any;
   selectedWaterQualityStar: any;
@@ -99,6 +107,27 @@ export class FieldInfoComponent implements OnInit {
     this.selectedCoordinates = [];
     this.fieldArea = [];
     this.editFieldArea = [];
+
+    // -----------------------start auto save --------------------
+    this.fieldInfoForm.valueChanges
+    .pipe(
+      tap(() => {
+        this.saveStatus = SaveStatus.Saving;
+      })
+    )
+    .subscribe(async (form_values) => {
+      let draft_farmer_new = {} as any;
+      if(localStorage.getItem('draft_farmer_new')){
+        draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any);    
+      }
+      draft_farmer_new['field_info_form'] = form_values;
+      localStorage.setItem('draft_farmer_new', JSON.stringify(draft_farmer_new));
+      this.saveStatus = SaveStatus.Saved;
+      if (this.saveStatus === SaveStatus.Saved) {
+        this.saveStatus = SaveStatus.Idle;
+      }
+    });
+    // -----------------------End auto save --------------------
 
     let fieldInfo: any = localStorage.getItem('field-info-form');
 

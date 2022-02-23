@@ -38,15 +38,28 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData();
+    this.loadData();    
+    if(localStorage.getItem('draft_farmer_new')){
+      let draft_farmer_new = {} as any;
+      draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any); 
+      draft_farmer_new['DF_ID'] = Date.now(); 
+      draft_farmer_new['registration_date'] = formatDate(new Date(),'MMMM d, y, h:mm:ss a z','en_IN') as string;     
+
+      let draft_farmers = [] as any;
+      if(localStorage.getItem('draft_farmers')){
+        draft_farmers = JSON.parse(localStorage.getItem('draft_farmers') as any);    
+      }
+      draft_farmers.push(draft_farmer_new);
+      localStorage.setItem('draft_farmers', JSON.stringify(draft_farmers));
+      localStorage.removeItem('draft_farmer_new');
+    }    
     let obj_search = JSON.parse(localStorage.getItem('search-value') as any);
-    console.log(obj_search);
     if(obj_search && obj_search.minDate != '' && obj_search.maxDate != ''){
     this.searchValue = obj_search.searchValue; 
       $.fn['dataTable'].ext.search.push((settings: any, data: any, dataIndex: any) => {
         const regDate = data[3];
         if(regDate && (obj_search.minDate || obj_search.maxDate)){
-          if (formatDate(regDate,'yyyy-MM-dd','en_US') >= formatDate(obj_search.minDate,'yyyy-MM-dd','en_US') && formatDate(obj_search.maxDate,'yyyy-MM-dd','en_US') >= formatDate(regDate,'yyyy-MM-dd','en_US')){
+          if (formatDate(regDate,'yyyy-MM-dd','en_IN') >= formatDate(obj_search.minDate,'yyyy-MM-dd','en_IN') && formatDate(obj_search.maxDate,'yyyy-MM-dd','en_IN') >= formatDate(regDate,'yyyy-MM-dd','en_IN')){
             return true;
           }
         }
@@ -63,7 +76,6 @@ export class DashboardComponent implements OnInit {
   }
 
   selectlive(event: any) {
-    console.log(event.target.value);
     let minDate = '' as any;
     let maxDate = '' as any;
     let last_date = new Date();
@@ -118,7 +130,16 @@ export class DashboardComponent implements OnInit {
   }
 
   routePage() {
-    localStorage.clear();
+    localStorage.removeItem('demographic-info');
+    localStorage.removeItem('demographic-info-form');
+    localStorage.removeItem('field-info');
+    localStorage.removeItem('field-info-form');
+    localStorage.removeItem('crop-market-planing');
+    localStorage.removeItem('financial-planing');
+    localStorage.removeItem('produce-aggregator');
+    localStorage.removeItem('technology-adoption');
+    localStorage.removeItem('co-applicant');
+    localStorage.removeItem('co-applicant-form');
     this.router.navigate(['/add/concept-cards']);
   }
 
@@ -402,6 +423,52 @@ export class DashboardComponent implements OnInit {
         );
       }
     );
+  }
+
+  editDraftFarmer(farmerId: any) {
+    if(localStorage.getItem('draft_farmers')){      
+      let draft_farmers = [] as any;
+      draft_farmers = JSON.parse(localStorage.getItem('draft_farmers') as any);  
+      draft_farmers.forEach((dfarm: any, i: number) => {
+        if(farmerId == dfarm.DF_ID){
+          localStorage.setItem('draft_farmer_new', JSON.stringify(dfarm));
+          if(dfarm.demographic_info_form){
+            localStorage.setItem('demographic-info-form', JSON.stringify(dfarm.demographic_info_form));
+          }
+          if(dfarm.field_info_form){
+            localStorage.setItem('field-info-form', JSON.stringify(dfarm.field_info_form));
+          }
+          if(dfarm.crop_market_planing){
+            localStorage.setItem('crop-market-planing', JSON.stringify(dfarm.crop_market_planing));
+          }
+          if(dfarm.financial_planing){
+            localStorage.setItem('financial-planing', JSON.stringify(dfarm.financial_planing));
+          }
+          if(dfarm.produce_aggregator){
+            localStorage.setItem('produce-aggregator', JSON.stringify(dfarm.produce_aggregator));
+          }
+          if(dfarm.technology_adoption){
+            localStorage.setItem('technology-adoption', JSON.stringify(dfarm.technology_adoption));
+          }
+          if(dfarm.co_applicant_form){
+            localStorage.setItem('co-applicant-form', JSON.stringify(dfarm.co_applicant_form));
+          }          
+          delete draft_farmers[i];
+        }        
+      }); 
+      let draft_farmers_list = [] as any;
+      draft_farmers.forEach((dfarm: any, i: number) => {
+        if(dfarm.length){
+          draft_farmers_list.push(dfarm);
+        }
+      });
+      if(draft_farmers_list.length){
+        localStorage.setItem('draft_farmers', JSON.stringify(draft_farmers_list));
+      } else {
+        localStorage.removeItem('draft_farmers');
+      }
+      this.router.navigate(['/add/concept-cards']);      
+    }
   }
 
   logOut() {

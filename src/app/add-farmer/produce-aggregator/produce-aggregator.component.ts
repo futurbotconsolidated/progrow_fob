@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 import {
   FormGroup,
   FormControl,
@@ -8,7 +9,11 @@ import {
 } from '@angular/forms';
 import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
-
+enum SaveStatus {
+  Saving = 'Saving...',
+  Saved = 'Saved.',
+  Idle = '',
+}
 @Component({
   selector: 'app-produce-aggregator',
   templateUrl: './produce-aggregator.component.html',
@@ -19,6 +24,7 @@ export class ProduceAggregatorComponent implements OnInit {
   produceAggregatorForm = new FormGroup({});
   produceAggregatorMaster = <any>{};
   nextRoute: any;
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle = SaveStatus.Idle;
   /* END: Variable */
 
   constructor(
@@ -42,7 +48,26 @@ export class ProduceAggregatorComponent implements OnInit {
   }
   ngOnInit(): void {
     this.produceAggregatorMaster = data.produceAggregator; // read master data
-
+    // -----------------------start auto save --------------------
+    this.produceAggregatorForm.valueChanges
+    .pipe(
+      tap(() => {
+        this.saveStatus = SaveStatus.Saving;
+      })
+    )
+    .subscribe(async (form_values) => {
+      let draft_farmer_new = {} as any;
+      if(localStorage.getItem('draft_farmer_new')){
+        draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any);    
+      }
+      draft_farmer_new['produce_aggregator'] = form_values;
+      localStorage.setItem('draft_farmer_new', JSON.stringify(draft_farmer_new));
+      this.saveStatus = SaveStatus.Saved;
+      if (this.saveStatus === SaveStatus.Saved) {
+        this.saveStatus = SaveStatus.Idle;
+      }
+    });
+    // -----------------------End auto save --------------------
     let prodAggregator: any = localStorage.getItem('produce-aggregator');
     if (prodAggregator) {
       prodAggregator = JSON.parse(prodAggregator);

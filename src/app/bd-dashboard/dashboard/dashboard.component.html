@@ -361,37 +361,37 @@
                     active: selectedViewType == 'DRAFT_FARMER_LIST_VIEW'
                   }" id="draft_farmer_list_view" role="tabpanel">
                   <div class="table-responsive listview-table">
-                    <table id="dataTables-farmer" *ngIf="allDraftFarmers.length" datatable [dtOptions]="dtOptions" class="table table-hover">
+                    <table *ngIf="allDraftFarmers.length" datatable [dtOptions]="dtOptions" class="table table-hover">
                       <thead>
                         <tr>
-                          <th>URN</th>
+                          <th>ID</th>
                           <th>Farmer Name</th>
                           <th>Mobile</th>
                           <th>Date of Registration</th>
                           <th>Address</th>
-                          <th>Status</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let x of allDraftFarmers">
-                          <td>{{x.farmerId}}</td>
+                          <td>{{x?.DF_ID}}</td>
                           <td>
-                            {{ x.demographic_info.farmerDetails?.firstName }}
-                            {{ x.demographic_info.farmerDetails?.middleName }}
-                            {{ x.demographic_info.farmerDetails?.lastName }}
+                            {{ x.demographic_info_form?.firstName }}
+                            {{ x.demographic_info_form?.middleName }}
+                            {{ x.demographic_info_form?.lastName }}
                           </td>
                           <td>
-                            {{ x.mobile }}
+                            {{ x.demographic_info_form?.phoneNumber }}
                           </td>
                           <td>
-                            {{ x.registrationDate }}
+                            {{ x?.registration_date }} 
                           </td>
                           <td>
-                            {{ x.demographic_info.address?.addressLine1 }}
-                            {{ x.demographic_info.address?.addressLine2 }}
-                            {{ x.demographic_info.address?.pincode }}
+                            {{ x.demographic_info_form?.address1 }}
+                            {{ x.demographic_info_form?.address2 }}
+                            {{ x.demographic_info_form?.pinCode }}
                           </td>
-                          <td>NA</td>
+                          <td><a (click)="editDraftFarmer(x.DF_ID)"><i class="fa fa-edit"></i> Edit</a></td>
                         </tr>
                       </tbody>
                     </table>
