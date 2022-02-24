@@ -8,21 +8,12 @@ import {
   FormArray,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { data } from '../../shared/fob_master_data';
 
 // import 'leaflet';
 declare const L: any;
 import 'leaflet-draw';
 import '../../../../node_modules/leaflet-draw/dist/leaflet.draw-src.js';
-import {
-  season,
-  irrigationSystem,
-  waterSource,
-  ownerShipType,
-  cropCycleOnReports,
-  crops,
-  soilQuality,
-  yesNo,
-} from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -38,8 +29,13 @@ enum SaveStatus {
   styleUrls: ['./field-info.component.css'],
 })
 export class FieldInfoComponent implements OnInit {
-  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle = SaveStatus.Idle;
-  SoilQualityStar: any[] = soilQuality;
+  /* START: Variables */
+  fieldInforMaster = <any>{};
+  commonMaster = <any>{};
+
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
+    SaveStatus.Idle;
+  SoilQualityStar = [] as any;
   selectedSoilQualityStar: any;
   selectedWaterQualityStar: any;
   selectedYieldQualityStar: any;
@@ -56,20 +52,15 @@ export class FieldInfoComponent implements OnInit {
   enumerate!: FormArray;
   testType!: FormArray;
 
-  plannedSeasonList = <any>[];
-  irrigationSystemList = <any>[];
-  waterSourceList = <any>[];
-  ownerShipTypeList = <any>[];
-  cropCycleOnReportsList = <any>[];
-  soilQualityList = <any>[];
   selectedCoordinates = <any>[];
   drawnCoordinates = <any>[];
-  cropsList = <any>[];
-  yesNoList = <any>[];
+
   field_boundary: any;
   count = 0;
   fieldArea = <any>[];
   editFieldArea = <any>[];
+  /* END: Variables */
+
   constructor(
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
@@ -95,14 +86,10 @@ export class FieldInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.plannedSeasonList = season;
-    this.irrigationSystemList = irrigationSystem;
-    this.waterSourceList = waterSource;
-    this.ownerShipTypeList = ownerShipType;
-    this.cropCycleOnReportsList = cropCycleOnReports;
-    this.cropsList = crops;
-    this.soilQualityList = soilQuality;
-    this.yesNoList = yesNo;
+    this.fieldInforMaster = data.fieldInfo; // read master data
+    this.commonMaster = data.commonData; // read master data
+
+    this.SoilQualityStar = this.fieldInforMaster['soilQuality'];
 
     this.selectedCoordinates = [];
     this.fieldArea = [];
@@ -110,23 +97,28 @@ export class FieldInfoComponent implements OnInit {
 
     // -----------------------start auto save --------------------
     this.fieldInfoForm.valueChanges
-    .pipe(
-      tap(() => {
-        this.saveStatus = SaveStatus.Saving;
-      })
-    )
-    .subscribe(async (form_values) => {
-      let draft_farmer_new = {} as any;
-      if(localStorage.getItem('draft_farmer_new')){
-        draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any);    
-      }
-      draft_farmer_new['field_info_form'] = form_values;
-      localStorage.setItem('draft_farmer_new', JSON.stringify(draft_farmer_new));
-      this.saveStatus = SaveStatus.Saved;
-      if (this.saveStatus === SaveStatus.Saved) {
-        this.saveStatus = SaveStatus.Idle;
-      }
-    });
+      .pipe(
+        tap(() => {
+          this.saveStatus = SaveStatus.Saving;
+        })
+      )
+      .subscribe(async (form_values) => {
+        let draft_farmer_new = {} as any;
+        if (localStorage.getItem('draft_farmer_new')) {
+          draft_farmer_new = JSON.parse(
+            localStorage.getItem('draft_farmer_new') as any
+          );
+        }
+        draft_farmer_new['field_info_form'] = form_values;
+        localStorage.setItem(
+          'draft_farmer_new',
+          JSON.stringify(draft_farmer_new)
+        );
+        this.saveStatus = SaveStatus.Saved;
+        if (this.saveStatus === SaveStatus.Saved) {
+          this.saveStatus = SaveStatus.Idle;
+        }
+      });
     // -----------------------End auto save --------------------
 
     let fieldInfo: any = localStorage.getItem('field-info-form');

@@ -772,4 +772,64 @@ export const data = {
       { id: 1, displayName: 'Isabgol', displayValue: 'Isabgol' },
     ],
   },
+  fieldInfo: {
+    season: [
+      { id: 1, displayName: 'Kharif 2022', displayValue: 'kharif_2022' },
+      { id: 2, displayName: 'Rabi 2021', displayValue: 'rabi_2021' },
+    ],
+    irrigationSystem: [
+      {
+        id: 1,
+        displayName: 'Surface Irrigation',
+        displayValue: 'surface_irrigation',
+      },
+    ],
+    waterSource: [
+      { id: 1, displayName: 'Pond', displayValue: 'pond' },
+      { id: 1, displayName: 'Well', displayValue: 'well' },
+      { id: 3, displayName: 'Canal', displayValue: 'canal' },
+    ],
+    ownerShipType: [
+      {
+        id: 1,
+        displayName: 'Leased (Joint/Self)',
+        displayValue: 'Leased (Joint/Self)',
+      },
+      {
+        id: 2,
+        displayName: 'Owned (Joint/Self)',
+        displayValue: 'Owned (Joint/Self)',
+      },
+      { id: 3, displayName: 'Share Cropping', displayValue: 'Share Cropping' },
+    ],
+    cropCycleOnReports: [
+      {
+        id: 1,
+        displayName: 'Yes',
+        displayValue: 'yes',
+        defaultValue: 'yes',
+      },
+      {
+        id: 2,
+        displayName: 'No',
+        displayValue: 'no',
+        defaultValue: false,
+      },
+      {
+        id: 3,
+        displayName: 'May be',
+        displayValue: 'May be',
+        defaultValue: false,
+      },
+    ],
+    soilQuality: [
+      { id: 1, displayName: 'Poor', displayValue: 'Poor' },
+      { id: 2, displayName: 'Fair', displayValue: 'Fair' },
+      { id: 3, displayName: 'Good', displayValue: 'Good' },
+    ],
+    yesNo: [
+      { id: 1, displayName: 'Yes', displayValue: 'Yes' },
+      { id: 2, displayName: 'No', displayValue: 'No' },
+    ],
+  },
 };

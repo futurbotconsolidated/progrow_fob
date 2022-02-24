@@ -13,13 +13,12 @@ export class EditFinancialPlanningComponent implements OnInit {
 
     if (A) {
       this.financialPlanDisp = JSON.parse(A).financial_planning;
-      // console.log(this.financialPlanDisp?.loanReqPlaned);
     }
   }
 
   ngOnInit(): void {}
   // get Name from Master Json
-  getDisplayName(dataProperty: string, id: any, dataType: string) {
-    return this.commonService.getDisplayName(dataType, dataProperty, id);
+  getDisplayName(dataProperty: string, id: any, mainProperty: string) {
+    return this.commonService.getDisplayName(mainProperty, dataProperty, id);
   }
 }

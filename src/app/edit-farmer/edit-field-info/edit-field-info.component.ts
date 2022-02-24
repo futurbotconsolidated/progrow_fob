@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from '../../shared/common.service';
+
 declare const L: any;
 import 'leaflet-draw';
 
@@ -18,12 +20,13 @@ export class EditFieldInfoComponent implements OnInit {
   typesOfTests = [] as any;
   editFieldArea = <any>[];
 
-  constructor(private spinner: NgxSpinnerService) {
+  constructor(
+    private spinner: NgxSpinnerService,
+    private commonService: CommonService
+  ) {
     const A: any = localStorage.getItem('farmer-details');
-
     if (A) {
       this.fieldInfo = JSON.parse(A).fieldInfo;
-      console.log(this.fieldInfo);
     }
   }
 
@@ -156,5 +159,10 @@ export class EditFieldInfoComponent implements OnInit {
         .openPopup();
       map.fitBounds(polygon.getBounds());
     });
+  }
+
+  // get Name from Master Json
+  getDisplayName(dataProperty: string, id: any, mainProperty: string) {
+    return this.commonService.getDisplayName(mainProperty, dataProperty, id);
   }
 }
