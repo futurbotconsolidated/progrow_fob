@@ -159,11 +159,16 @@ export class DemographicInfoComponent implements OnInit {
       )
       .subscribe(async (form_values) => {
         let draft_farmer_new = {} as any;
-        if(localStorage.getItem('draft_farmer_new')){
-          draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any);    
+        if (localStorage.getItem('draft_farmer_new')) {
+          draft_farmer_new = JSON.parse(
+            localStorage.getItem('draft_farmer_new') as any
+          );
         }
         draft_farmer_new['demographic_info_form'] = form_values;
-        localStorage.setItem('draft_farmer_new', JSON.stringify(draft_farmer_new));
+        localStorage.setItem(
+          'draft_farmer_new',
+          JSON.stringify(draft_farmer_new)
+        );
         this.saveStatus = SaveStatus.Saved;
         if (this.saveStatus === SaveStatus.Saved) {
           this.saveStatus = SaveStatus.Idle;
@@ -473,7 +478,7 @@ export class DemographicInfoComponent implements OnInit {
 
   validateAndNext() {
     this.isSubmitted = true;
-    if (this.demographicInfoForm.invalid && 1 != 1) {
+    if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
       return;
     } else {

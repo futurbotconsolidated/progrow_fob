@@ -832,4 +832,5 @@ export const data = {
       { id: 2, displayName: 'No', displayValue: 'No' },
     ],
   },
+  coApplicant: [],
 };

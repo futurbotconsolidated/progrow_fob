@@ -14,22 +14,7 @@ import { CommonService } from '../../shared/common.service';
 import { validatePANNumber } from '../../shared/custom-validators';
 
 declare var $: any;
-
-import {
-  religion,
-  gender,
-  caste,
-  propertyStatus,
-  commOrPerAddress,
-  relation,
-  education,
-  occupation,
-  dependency,
-  ownerShipType,
-  particular,
-  addressProofType,
-  propertyType,
-} from '../../shared/modal/global-field-values';
+import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
 
 enum SaveStatus {
@@ -48,6 +33,10 @@ function sleep(ms: number): Promise<any> {
   styleUrls: ['./co-applicant.component.css'],
 })
 export class CoApplicantComponent implements OnInit {
+  /* START: Varaibles */
+  coApplicantMaster = <any>{};
+  demoGraphicMaster = <any>{};
+
   isSubmitted = false;
   fileUpload = {
     fileFor: '',
@@ -62,20 +51,6 @@ export class CoApplicantComponent implements OnInit {
     imageHeading2: 'Back Image',
   } as any;
 
-  religionList = <any>[];
-  genderList = <any>[];
-  casteList = <any>[];
-  propertyStatusList = <any>[];
-  addressStatusList = <any>[];
-  relationList = <any>[];
-  educationList = <any>[];
-  occupationList = <any>[];
-  dependencyList = <any>[];
-  ownershipTypeList = <any>[];
-  particularList = <any>[];
-  addressProofList: any = [];
-  propertyTypeList: any = [];
-
   pinCodeAPIData: any = [];
   pinCodeAPIDatacoa2: any = [];
   permPinCodeAPIData: any = [];
@@ -88,6 +63,7 @@ export class CoApplicantComponent implements OnInit {
   nextRoute: any;
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
+  /* END: Varaibles */
 
   constructor(
     public router: Router,
@@ -208,39 +184,32 @@ export class CoApplicantComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addressProofList = addressProofType;
-    this.propertyTypeList = propertyType;
-    this.religionList = religion;
-    this.genderList = gender;
-    this.casteList = caste;
-    this.propertyStatusList = propertyStatus;
-    this.addressStatusList = commOrPerAddress;
-    this.relationList = relation;
-    this.occupationList = occupation;
-    this.educationList = education;
-    this.dependencyList = dependency;
-    this.ownershipTypeList = ownerShipType;
-    this.particularList = particular;
-
+    this.coApplicantMaster = data.coApplicant; // read master data
+    this.demoGraphicMaster = data.demoGraphic; // read master data
     // ----------------------- Start auto save --------------------
     this.coApplicantForm.valueChanges
-    .pipe(
-      tap(() => {
-        this.saveStatus = SaveStatus.Saving;
-      })
-    )
-    .subscribe(async (form_values) => {
-      let draft_farmer_new = {} as any;
-      if(localStorage.getItem('draft_farmer_new')){
-        draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any);    
-      }
-      draft_farmer_new['co_applicant_form'] = form_values;
-      localStorage.setItem('draft_farmer_new', JSON.stringify(draft_farmer_new));
-      this.saveStatus = SaveStatus.Saved;
-      if (this.saveStatus === SaveStatus.Saved) {
-        this.saveStatus = SaveStatus.Idle;
-      }
-    });
+      .pipe(
+        tap(() => {
+          this.saveStatus = SaveStatus.Saving;
+        })
+      )
+      .subscribe(async (form_values) => {
+        let draft_farmer_new = {} as any;
+        if (localStorage.getItem('draft_farmer_new')) {
+          draft_farmer_new = JSON.parse(
+            localStorage.getItem('draft_farmer_new') as any
+          );
+        }
+        draft_farmer_new['co_applicant_form'] = form_values;
+        localStorage.setItem(
+          'draft_farmer_new',
+          JSON.stringify(draft_farmer_new)
+        );
+        this.saveStatus = SaveStatus.Saved;
+        if (this.saveStatus === SaveStatus.Saved) {
+          this.saveStatus = SaveStatus.Idle;
+        }
+      });
     // ----------------------- End auto save --------------------
     let demoInfo: any = localStorage.getItem('co-applicant-form');
     if (demoInfo) {
@@ -333,7 +302,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please select Address Proof Type.', 'Error!');
         return;
       }
-      const A = this.addressProofList
+      const A = this.demoGraphicMaster['addressProofType']
         .filter(
           (x: any) => this.coApplicantForm.value.addressProof == x.displayValue
         )
@@ -352,7 +321,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please select Address Proof Type.', 'Error!');
         return;
       }
-      const A = this.addressProofList
+      const A = this.demoGraphicMaster['addressProofType']
         .filter(
           (x: any) =>
             this.coApplicantForm.value.addressProofcoa2 == x.displayValue
