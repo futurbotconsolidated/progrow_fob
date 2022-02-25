@@ -262,6 +262,20 @@ export class DashboardComponent implements OnInit {
                 } as any,
               });
 
+              let line_h = h;
+              line_h.push(h[0]);
+              map.addSource(`line_source_figure${i}_${index}_${f_index}`, {
+                type: 'geojson',
+                data: {
+                  type: 'Feature',
+                  geometry: {
+                    type: 'Polygon',
+                    coordinates: [line_h],
+                  },
+                  properties: {},
+                } as any,
+              });
+
               // Add a layer showing the fields.
               map.addLayer({
                 id: `figure${i}_${index}_${f_index}`,
@@ -275,6 +289,17 @@ export class DashboardComponent implements OnInit {
                 },
               });
 
+              // Add a layer showing the fields.
+              map.addLayer({
+                id: `line_figure${i}_${index}_${f_index}`,
+                type: 'line',
+                source: `line_source_figure${i}_${index}_${f_index}`,
+                layout: {},
+                paint: {
+                  'line-color': 'red',
+                  'line-width': 3,
+                },
+              });
               // Add a layer(marker) showing the field location.
               map.addLayer({
                 id: `icon_figure${i}_${index}_${f_index}`,
@@ -287,7 +312,7 @@ export class DashboardComponent implements OnInit {
 
               // When a click event occurs on a feature in the places layer, open a popup at the
               // location of the feature, with description HTML from its properties.
-              map.on('click', `figure${i}_${index}_${f_index}`, (e) => {
+              map.on('click', `icon_figure${i}_${index}_${f_index}`, (e) => {
                 new mapboxgl.Popup()
                   .setLngLat(h[0])
                   .setHTML(popupDescription)
@@ -296,12 +321,12 @@ export class DashboardComponent implements OnInit {
               });
 
               // Change the cursor to a pointer when the mouse is over the places layer.
-              map.on('mouseenter', `figure${i}_${index}_${f_index}`, () => {
+              map.on('mouseenter', `icon_figure${i}_${index}_${f_index}`, () => {
                 map.getCanvas().style.cursor = 'pointer';
               });
 
               // Change it back to a pointer when it leaves.
-              map.on('mouseleave', `figure${i}_${index}_${f_index}`, () => {
+              map.on('mouseleave', `icon_figure${i}_${index}_${f_index}`, () => {
                 map.getCanvas().style.cursor = '';
               });
             });

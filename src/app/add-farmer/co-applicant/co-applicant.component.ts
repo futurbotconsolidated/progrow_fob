@@ -284,7 +284,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter PAN Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload PAN Card';
+      this.fileUpload.popupTitle = 'Upload PAN Card Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =
         this.coApplicantForm.value.PANFrontImage || '';
@@ -293,7 +293,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter PAN Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload PAN Card';
+      this.fileUpload.popupTitle = 'Upload PAN Card Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =
         this.coApplicantForm.value.PANFrontImagecoa2 || '';
@@ -341,7 +341,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter Passport Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload Passport';
+      this.fileUpload.popupTitle = 'Upload Passport Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.fileUpload.new.imageSrc1 =
@@ -353,7 +353,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter Passport Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload Passport';
+      this.fileUpload.popupTitle = 'Upload Passport Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.fileUpload.new.imageSrc1 =
@@ -365,7 +365,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter NREGA Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload NREGA';
+      this.fileUpload.popupTitle = 'Upload NREGA Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.fileUpload.new.imageSrc1 =
@@ -377,7 +377,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter NREGA Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload NREGA';
+      this.fileUpload.popupTitle = 'Upload NREGA Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.fileUpload.new.imageSrc1 =
