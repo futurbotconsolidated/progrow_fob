@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { tap } from 'rxjs/operators';
 import { CommonService } from '../../shared/common.service';
+import { ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
   FormControl,
@@ -58,6 +59,10 @@ export class DemographicInfoComponent implements OnInit {
   nextRoute: any;
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
+
+  // edit feature
+  farmerId = '';
+
   /* END: Varaibles */
 
   constructor(
@@ -66,8 +71,10 @@ export class DemographicInfoComponent implements OnInit {
     private addFarmerService: AddFarmerService,
     private toastr: ToastrService,
     public commonService: CommonService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private activatedRoute: ActivatedRoute
   ) {
+    // create form group
     this.demographicInfoForm = this.formBuilder.group({
       profileImg: new FormControl(''),
       addressProof: new FormControl('', [Validators.required]),
@@ -144,6 +151,14 @@ export class DemographicInfoComponent implements OnInit {
       agriculturalInterest: new FormControl(''),
       innovativeWaysFarming: [Array()],
     });
+
+    // EDIT: read farmer id in edit
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'];
+    console.log(this.farmerId);
+
+    if (this.farmerId) {
+      this.patchFarmerDetails();
+    }
   }
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
@@ -175,6 +190,8 @@ export class DemographicInfoComponent implements OnInit {
         }
       });
     // ----------------------- End auto save --------------------
+
+    // add form
     let demoInfo: any = localStorage.getItem('demographic-info-form');
     if (demoInfo) {
       demoInfo = JSON.parse(demoInfo);
@@ -475,6 +492,78 @@ export class DemographicInfoComponent implements OnInit {
   //   );
   //   console.log(this.demographicInfoForm);
   // }
+
+  // patch edit farmer details
+  patchFarmerDetails() {
+    const A: any = localStorage.getItem('farmer-details');
+
+    if (A) {
+      const B = JSON.parse(A).demographic_info;
+      // create form group
+      this.demographicInfoForm.patchValue({
+        profileImg: B.profileImg,
+        addressProof: B.addressProof['selectedIdProof'],
+        addressProofFrontImage: B.addressProof['selectedIdProofFrontImg'],
+        addressProofBackImage: B.addressProof['selectedIdProofBackImg'],
+        firstName: B.farmerDetails['firstName'],
+        PANnumber: '',
+        PANFrontImage: '',
+        passportNumber: '',
+        passportFrontImage: '',
+        passportBackImage: '',
+        NREGANumber: '',
+        NREGAFrontImage: '',
+        NREGABackImage: '',
+        middleName: B.farmerDetails['middleName'],
+        lastName: B.farmerDetails['lastName'],
+        dob: '',
+        gender: '',
+        religion: '',
+        caste: '',
+        educationQualification: '',
+        occupation: '',
+        annualIncome: '',
+
+        address1: '',
+        address2: '',
+        taluk: '',
+        city: '',
+        pinCode: '',
+        state: '',
+        landmark: '',
+
+        phoneNumber: '',
+        mobile1: '',
+        mobile2: '',
+        yrsInAddress: '',
+        yrsInCity: '',
+        email: '',
+
+        permAddressLine1: '',
+        permAddressLine2: '',
+        permTaluk: '',
+        permCity: '',
+        permPincode: '',
+        permState: '',
+
+        propertyStatus: '',
+        monthlyRent: '',
+        commOrPerAddress: '',
+        // familyMembers: '',
+        // propertyOwnership: '',
+        phoneType: '',
+        phoneOperating: '',
+        cultivationAdvice: B.cultivationAdvice,
+        cultivationAdviceOther: '',
+        adviceMedium: B.adviceMedium,
+        adviceMediumOther: '',
+        sourceOfIncome: B.sourceOfIncome,
+        sourceOfIncomeOther: '',
+        agriculturalInterest: '',
+        innovativeWaysFarming: B.innovativeFarmingWays,
+      });
+    }
+  }
 
   validateAndNext() {
     this.isSubmitted = true;

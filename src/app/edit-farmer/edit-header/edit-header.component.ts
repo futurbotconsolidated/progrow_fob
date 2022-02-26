@@ -18,7 +18,7 @@ export class EditHeaderComponent implements OnInit {
     private commonService: CommonService,
     private activatedRoute: ActivatedRoute
   ) {
-    this.farmerId = this.activatedRoute.snapshot.params['farmerid'];
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'];
 
     const A: any = localStorage.getItem('farmer-details');
     if (A) {

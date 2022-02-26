@@ -38,35 +38,50 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData();    
-    if(localStorage.getItem('draft_farmer_new')){
+    this.loadData();
+    if (localStorage.getItem('draft_farmer_new')) {
       let draft_farmer_new = {} as any;
-      draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any); 
-      draft_farmer_new['DF_ID'] = Date.now(); 
-      draft_farmer_new['registration_date'] = formatDate(new Date(),'MMMM d, y, h:mm:ss a z','en_IN') as string;     
+      draft_farmer_new = JSON.parse(
+        localStorage.getItem('draft_farmer_new') as any
+      );
+      draft_farmer_new['DF_ID'] = Date.now();
+      draft_farmer_new['registration_date'] = formatDate(
+        new Date(),
+        'MMMM d, y, h:mm:ss a z',
+        'en_IN'
+      ) as string;
 
       let draft_farmers = [] as any;
-      if(localStorage.getItem('draft_farmers')){
-        draft_farmers = JSON.parse(localStorage.getItem('draft_farmers') as any);    
+      if (localStorage.getItem('draft_farmers')) {
+        draft_farmers = JSON.parse(
+          localStorage.getItem('draft_farmers') as any
+        );
       }
       draft_farmers.push(draft_farmer_new);
       localStorage.setItem('draft_farmers', JSON.stringify(draft_farmers));
       localStorage.removeItem('draft_farmer_new');
-    }    
-    let obj_search = JSON.parse(localStorage.getItem('search-value') as any);
-    if(obj_search && obj_search.minDate != '' && obj_search.maxDate != ''){
-    this.searchValue = obj_search.searchValue; 
-      $.fn['dataTable'].ext.search.push((settings: any, data: any, dataIndex: any) => {
-        const regDate = data[3];
-        if(regDate && (obj_search.minDate || obj_search.maxDate)){
-          if (formatDate(regDate,'yyyy-MM-dd','en_IN') >= formatDate(obj_search.minDate,'yyyy-MM-dd','en_IN') && formatDate(obj_search.maxDate,'yyyy-MM-dd','en_IN') >= formatDate(regDate,'yyyy-MM-dd','en_IN')){
-            return true;
-          }
-        }
-        return false;
-      });
     }
-    
+    let obj_search = JSON.parse(localStorage.getItem('search-value') as any);
+    if (obj_search && obj_search.minDate != '' && obj_search.maxDate != '') {
+      this.searchValue = obj_search.searchValue;
+      $.fn['dataTable'].ext.search.push(
+        (settings: any, data: any, dataIndex: any) => {
+          const regDate = data[3];
+          if (regDate && (obj_search.minDate || obj_search.maxDate)) {
+            if (
+              formatDate(regDate, 'yyyy-MM-dd', 'en_IN') >=
+                formatDate(obj_search.minDate, 'yyyy-MM-dd', 'en_IN') &&
+              formatDate(obj_search.maxDate, 'yyyy-MM-dd', 'en_IN') >=
+                formatDate(regDate, 'yyyy-MM-dd', 'en_IN')
+            ) {
+              return true;
+            }
+          }
+          return false;
+        }
+      );
+    }
+
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -79,21 +94,21 @@ export class DashboardComponent implements OnInit {
     let minDate = '' as any;
     let maxDate = '' as any;
     let last_date = new Date();
-    if(event.target.value === 'today'){
+    if (event.target.value === 'today') {
       minDate = maxDate = new Date();
-    } else if(event.target.value === 'this_week') {
+    } else if (event.target.value === 'this_week') {
       maxDate = new Date();
       last_date.setDate(last_date.getDate() - 7);
       minDate = last_date;
-    } else if(event.target.value === 'two_week') {
+    } else if (event.target.value === 'two_week') {
       maxDate = new Date();
       last_date.setDate(last_date.getDate() - 14);
       minDate = last_date;
-    } else if(event.target.value === 'three_week') {
+    } else if (event.target.value === 'three_week') {
       maxDate = new Date();
       last_date.setDate(last_date.getDate() - 21);
       minDate = last_date;
-    } else if(event.target.value === 'this_month') {
+    } else if (event.target.value === 'this_month') {
       maxDate = new Date();
       last_date.setDate(last_date.getDate() - 30);
       minDate = last_date;
@@ -102,11 +117,11 @@ export class DashboardComponent implements OnInit {
       minDate: minDate,
       maxDate: maxDate,
       searchValue: event.target.value,
-    }
+    };
     localStorage.setItem('search-value', JSON.stringify(obj_search1));
     window.location.reload();
   }
-  
+
   /* START: Non-API Function Calls */
   loadData() {
     this.getExistingFarmers();
@@ -123,8 +138,10 @@ export class DashboardComponent implements OnInit {
     } else if (type == 'FARMS_PIPELINE_MAP_VIEW') {
       this.overlayMap('FARMS_PIPELINE_MAP_VIEW');
     } else if (type == 'DRAFT_FARMER_LIST_VIEW') {
-      if(localStorage.getItem('draft_farmers')){
-        this.allDraftFarmers = JSON.parse(localStorage.getItem('draft_farmers') as any);   
+      if (localStorage.getItem('draft_farmers')) {
+        this.allDraftFarmers = JSON.parse(
+          localStorage.getItem('draft_farmers') as any
+        );
       }
     }
   }
@@ -166,8 +183,8 @@ export class DashboardComponent implements OnInit {
         'pk.eyJ1IjoicHVybmFyYW0iLCJhIjoiY2tpenBvZWpsMDNlaTMzcWpiZ2liZjEydiJ9.Mdj1w5dXDfCGCpIH5MlI2g',
       container: mapViewType, // container ID
       style: 'mapbox://styles/mapbox/satellite-v9?optimize=true', // style URL
-      zoom: 3, // starting zoom 
-      center: [78, 20], 
+      zoom: 3, // starting zoom
+      center: [78, 20],
     });
     if (mapViewType === 'existing_farmers_mapbox') {
       // geojson coordinates
@@ -175,51 +192,51 @@ export class DashboardComponent implements OnInit {
         map.loadImage(
           'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
           (error: any, image: any) => {
-          if (error){
-             throw error;
+            if (error) {
+              throw error;
             }
             map.addImage('custom-marker', image);
           }
         );
-        if(useData.length){
-        useData.forEach((elem: any, index: number) => {
-          // prepare popup
-          elem['fieldInfo'].forEach((f_elem: any, f_index: number) => {
-            if(!f_elem.field_boundary.geometry.coordinates.length){
-              return;
-           }
-            let coordinates_arr = [] as any;
-            if (
-              typeof f_elem.field_boundary.geometry.coordinates[0][0] ===
-              'number'
-            ) {
-              let coordinates_a = [] as any;
-              f_elem.field_boundary.geometry.coordinates.forEach(function (
-                latlng: any,
-                lli: number
+        if (useData.length) {
+          useData.forEach((elem: any, index: number) => {
+            // prepare popup
+            elem['fieldInfo'].forEach((f_elem: any, f_index: number) => {
+              if (!f_elem.field_boundary.geometry.coordinates.length) {
+                return;
+              }
+              let coordinates_arr = [] as any;
+              if (
+                typeof f_elem.field_boundary.geometry.coordinates[0][0] ===
+                'number'
               ) {
-                var ll_arr = [];
-                ll_arr.push(latlng[1]);
-                ll_arr.push(latlng[0]);
-                coordinates_a.push(ll_arr);
-              });
-              coordinates_arr.push(coordinates_a);
-            } else {
-              let coordinates_a = [] as any;
-              f_elem.field_boundary.geometry.coordinates.forEach(function (
-                latlng: any,
-                lli: number
-              ) {
-                latlng.forEach(function (ll: any, li: number) {
+                let coordinates_a = [] as any;
+                f_elem.field_boundary.geometry.coordinates.forEach(function (
+                  latlng: any,
+                  lli: number
+                ) {
                   var ll_arr = [];
-                  ll_arr.push(ll.lng);
-                  ll_arr.push(ll.lat);
+                  ll_arr.push(latlng[1]);
+                  ll_arr.push(latlng[0]);
                   coordinates_a.push(ll_arr);
                 });
-              });
-              coordinates_arr.push(coordinates_a);
-            }
-            const popupDescription = `<div class="field_popup" style="width:260px;">
+                coordinates_arr.push(coordinates_a);
+              } else {
+                let coordinates_a = [] as any;
+                f_elem.field_boundary.geometry.coordinates.forEach(function (
+                  latlng: any,
+                  lli: number
+                ) {
+                  latlng.forEach(function (ll: any, li: number) {
+                    var ll_arr = [];
+                    ll_arr.push(ll.lng);
+                    ll_arr.push(ll.lat);
+                    coordinates_a.push(ll_arr);
+                  });
+                });
+                coordinates_arr.push(coordinates_a);
+              }
+              const popupDescription = `<div class="field_popup" style="width:260px;">
            <div class="row">
              <div class="col-md-6 text-left">
                <label class="fw-bold">Farmer Id</label>
@@ -248,98 +265,106 @@ export class DashboardComponent implements OnInit {
                  " target="_blank">Take Me</a> </p> </div> </div>
                    </div>`;
 
-            coordinates_arr.forEach((h: any, i: number) => {
-              // Add Source
-              map.addSource(`figure${i}_${index}_${f_index}`, {
-                type: 'geojson',
-                data: {
-                  type: 'Feature',
-                  geometry: {
-                    type: 'Polygon',
-                    coordinates: [h],
+              coordinates_arr.forEach((h: any, i: number) => {
+                // Add Source
+                map.addSource(`figure${i}_${index}_${f_index}`, {
+                  type: 'geojson',
+                  data: {
+                    type: 'Feature',
+                    geometry: {
+                      type: 'Polygon',
+                      coordinates: [h],
+                    },
+                    properties: {},
+                  } as any,
+                });
+
+                let line_h = h;
+                line_h.push(h[0]);
+                map.addSource(`line_source_figure${i}_${index}_${f_index}`, {
+                  type: 'geojson',
+                  data: {
+                    type: 'Feature',
+                    geometry: {
+                      type: 'Polygon',
+                      coordinates: [line_h],
+                    },
+                    properties: {},
+                  } as any,
+                });
+
+                // Add a layer showing the fields.
+                map.addLayer({
+                  id: `figure${i}_${index}_${f_index}`,
+                  type: 'fill',
+                  source: `figure${i}_${index}_${f_index}`,
+                  layout: {},
+                  paint: {
+                    'fill-outline-color': 'red',
+                    'fill-opacity': 1,
+                    'fill-color': 'transparent',
                   },
-                  properties: {},
-                } as any,
-              });
+                });
 
-              let line_h = h;
-              line_h.push(h[0]);
-              map.addSource(`line_source_figure${i}_${index}_${f_index}`, {
-                type: 'geojson',
-                data: {
-                  type: 'Feature',
-                  geometry: {
-                    type: 'Polygon',
-                    coordinates: [line_h],
+                // Add a layer showing the fields.
+                map.addLayer({
+                  id: `line_figure${i}_${index}_${f_index}`,
+                  type: 'line',
+                  source: `line_source_figure${i}_${index}_${f_index}`,
+                  layout: {},
+                  paint: {
+                    'line-color': 'red',
+                    'line-width': 3,
                   },
-                  properties: {},
-                } as any,
-              });
+                });
+                // Add a layer(marker) showing the field location.
+                map.addLayer({
+                  id: `icon_figure${i}_${index}_${f_index}`,
+                  type: 'symbol',
+                  source: `figure${i}_${index}_${f_index}`,
+                  layout: {
+                    'icon-image': 'custom-marker',
+                  } as any,
+                });
 
-              // Add a layer showing the fields.
-              map.addLayer({
-                id: `figure${i}_${index}_${f_index}`,
-                type: 'fill',
-                source: `figure${i}_${index}_${f_index}`,
-                layout: {},
-                paint: {
-                  'fill-outline-color': 'red',
-                  'fill-opacity': 1,
-                  'fill-color': 'transparent',
-                },
-              });
+                // When a click event occurs on a feature in the places layer, open a popup at the
+                // location of the feature, with description HTML from its properties.
+                map.on('click', `icon_figure${i}_${index}_${f_index}`, (e) => {
+                  new mapboxgl.Popup()
+                    .setLngLat(h[0])
+                    .setHTML(popupDescription)
+                    .setMaxWidth('400px')
+                    .addTo(map);
+                });
 
-              // Add a layer showing the fields.
-              map.addLayer({
-                id: `line_figure${i}_${index}_${f_index}`,
-                type: 'line',
-                source: `line_source_figure${i}_${index}_${f_index}`,
-                layout: {},
-                paint: {
-                  'line-color': 'red',
-                  'line-width': 3,
-                },
-              });
-              // Add a layer(marker) showing the field location.
-              map.addLayer({
-                id: `icon_figure${i}_${index}_${f_index}`,
-                type: 'symbol',
-                source: `figure${i}_${index}_${f_index}`,
-                layout: {
-                  'icon-image': 'custom-marker',
-                } as any,
-              });
+                // Change the cursor to a pointer when the mouse is over the places layer.
+                map.on(
+                  'mouseenter',
+                  `icon_figure${i}_${index}_${f_index}`,
+                  () => {
+                    map.getCanvas().style.cursor = 'pointer';
+                  }
+                );
 
-              // When a click event occurs on a feature in the places layer, open a popup at the
-              // location of the feature, with description HTML from its properties.
-              map.on('click', `icon_figure${i}_${index}_${f_index}`, (e) => {
-                new mapboxgl.Popup()
-                  .setLngLat(h[0])
-                  .setHTML(popupDescription)
-                  .setMaxWidth('400px')
-                  .addTo(map);
-              });
-
-              // Change the cursor to a pointer when the mouse is over the places layer.
-              map.on('mouseenter', `icon_figure${i}_${index}_${f_index}`, () => {
-                map.getCanvas().style.cursor = 'pointer';
-              });
-
-              // Change it back to a pointer when it leaves.
-              map.on('mouseleave', `icon_figure${i}_${index}_${f_index}`, () => {
-                map.getCanvas().style.cursor = '';
+                // Change it back to a pointer when it leaves.
+                map.on(
+                  'mouseleave',
+                  `icon_figure${i}_${index}_${f_index}`,
+                  () => {
+                    map.getCanvas().style.cursor = '';
+                  }
+                );
               });
             });
-          });
 
-          // }
-          if (index == useData.length - 1) {
-            this.spinner.hide();
-          }
-        });
-      } else {
-        this.spinner.hide();
-      }
+            // }
+            if (index == useData.length - 1) {
+              this.spinner.hide();
+            }
+          });
+        } else {
+          this.spinner.hide();
+        }
       });
     } else {
       map.on('load', () => {
@@ -428,7 +453,7 @@ export class DashboardComponent implements OnInit {
   }
   /* END: API Function Calls */
 
-  getFarmerDetailsById(farmerId: any) {
+  getFarmerDetailsById(farmerId: any, type: string) {
     localStorage.removeItem('farmer-details');
     this.spinner.show();
     this.commonService.getFarmerDetailsById(farmerId).subscribe(
@@ -438,7 +463,11 @@ export class DashboardComponent implements OnInit {
           this.toastr.error(`${res.message}!`);
         } else {
           localStorage.setItem('farmer-details', JSON.stringify(res.data));
-          this.router.navigate([`/edit/demographic-info/${farmerId}`]);
+          if (type === 'view') {
+            this.router.navigate([`/edit/demographic-info/${farmerId}`]);
+          } else if (type === 'edit') {
+            this.router.navigate([`/add/demographic-info/${farmerId}`]);
+          }
         }
       },
       (error: any) => {
@@ -451,48 +480,72 @@ export class DashboardComponent implements OnInit {
   }
 
   editDraftFarmer(farmerId: any) {
-    if(localStorage.getItem('draft_farmers')){      
+    if (localStorage.getItem('draft_farmers')) {
       let draft_farmers = [] as any;
-      draft_farmers = JSON.parse(localStorage.getItem('draft_farmers') as any);  
+      draft_farmers = JSON.parse(localStorage.getItem('draft_farmers') as any);
       draft_farmers.forEach((dfarm: any, i: number) => {
-        if(farmerId == dfarm.DF_ID){
+        if (farmerId == dfarm.DF_ID) {
           localStorage.setItem('draft_farmer_new', JSON.stringify(dfarm));
-          if(dfarm.demographic_info_form){
-            localStorage.setItem('demographic-info-form', JSON.stringify(dfarm.demographic_info_form));
+          if (dfarm.demographic_info_form) {
+            localStorage.setItem(
+              'demographic-info-form',
+              JSON.stringify(dfarm.demographic_info_form)
+            );
           }
-          if(dfarm.field_info_form){
-            localStorage.setItem('field-info-form', JSON.stringify(dfarm.field_info_form));
+          if (dfarm.field_info_form) {
+            localStorage.setItem(
+              'field-info-form',
+              JSON.stringify(dfarm.field_info_form)
+            );
           }
-          if(dfarm.crop_market_planing){
-            localStorage.setItem('crop-market-planing', JSON.stringify(dfarm.crop_market_planing));
+          if (dfarm.crop_market_planing) {
+            localStorage.setItem(
+              'crop-market-planing',
+              JSON.stringify(dfarm.crop_market_planing)
+            );
           }
-          if(dfarm.financial_planing){
-            localStorage.setItem('financial-planing', JSON.stringify(dfarm.financial_planing));
+          if (dfarm.financial_planing) {
+            localStorage.setItem(
+              'financial-planing',
+              JSON.stringify(dfarm.financial_planing)
+            );
           }
-          if(dfarm.produce_aggregator){
-            localStorage.setItem('produce-aggregator', JSON.stringify(dfarm.produce_aggregator));
+          if (dfarm.produce_aggregator) {
+            localStorage.setItem(
+              'produce-aggregator',
+              JSON.stringify(dfarm.produce_aggregator)
+            );
           }
-          if(dfarm.technology_adoption){
-            localStorage.setItem('technology-adoption', JSON.stringify(dfarm.technology_adoption));
+          if (dfarm.technology_adoption) {
+            localStorage.setItem(
+              'technology-adoption',
+              JSON.stringify(dfarm.technology_adoption)
+            );
           }
-          if(dfarm.co_applicant_form){
-            localStorage.setItem('co-applicant-form', JSON.stringify(dfarm.co_applicant_form));
-          }          
+          if (dfarm.co_applicant_form) {
+            localStorage.setItem(
+              'co-applicant-form',
+              JSON.stringify(dfarm.co_applicant_form)
+            );
+          }
           delete draft_farmers[i];
-        }        
-      }); 
+        }
+      });
       let draft_farmers_list = [] as any;
       draft_farmers.forEach((dfarm: any, i: number) => {
-        if(dfarm.length){
+        if (dfarm.length) {
           draft_farmers_list.push(dfarm);
         }
       });
-      if(draft_farmers_list.length){
-        localStorage.setItem('draft_farmers', JSON.stringify(draft_farmers_list));
+      if (draft_farmers_list.length) {
+        localStorage.setItem(
+          'draft_farmers',
+          JSON.stringify(draft_farmers_list)
+        );
       } else {
         localStorage.removeItem('draft_farmers');
       }
-      this.router.navigate(['/add/concept-cards']);      
+      this.router.navigate(['/add/concept-cards']);
     }
   }
 

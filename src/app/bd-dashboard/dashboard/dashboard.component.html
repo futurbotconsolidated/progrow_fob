@@ -221,26 +221,28 @@
                           <th>Date of Registration</th>
                           <th>Address</th>
                           <th>Status</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr (click)="getFarmerDetailsById(x.farmerId)" *ngFor="let x of allExistingFarmers">
-                          <td>{{x.farmerId}}</td>
-                          <td>
+                        <tr *ngFor="let x of allExistingFarmers">
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">{{x.farmerId}}</td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.farmerDetails?.firstName }}
                             {{ x.farmerDetails?.middleName }}
                             {{ x.farmerDetails?.lastName }}
                           </td>
-                          <td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.address?.mobileNumber }}
                           </td>
-                          <td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.registrationDate }}
                           </td>
-                          <td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.address?.addressLine1 }}
                           </td>
-                          <td>NA</td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'edit')" class="cursor-pointer"><i class="fa fa-edit"></i></td>
                         </tr>
                       </tbody>
                     </table>
@@ -384,7 +386,7 @@
                             {{ x.demographic_info_form?.phoneNumber }}
                           </td>
                           <td>
-                            {{ x?.registration_date }} 
+                            {{ x?.registration_date }}
                           </td>
                           <td>
                             {{ x.demographic_info_form?.address1 }}
