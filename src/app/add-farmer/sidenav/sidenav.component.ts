@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent implements OnInit {
-
+  lsn_tv_show = false;
   constructor() { }
 
   ngOnInit(): void {
   }
-
+  showResult(param: boolean){   
+    this.lsn_tv_show = param;
+  }
 }

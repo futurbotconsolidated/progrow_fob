@@ -656,6 +656,14 @@ export class FieldInfoComponent implements OnInit {
     }
     return true;
   }
+  validateDecimalNo(e: any): boolean {
+    const charCode = e.which ? e.which : e.keyCode;
+    if ((charCode > 31 && (charCode < 48 || charCode > 57 ) && charCode != 46) 
+    || (charCode == 46 && e.target.value.indexOf(".") !== -1)) {
+      return false;
+    }
+    return true;
+  }
 
   numbersOnlyValidator(event: any) {
     const pattern = /^[0-9\-]*$/;

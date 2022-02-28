@@ -1,4 +1,4 @@
-<aside class="left-menu">
+<aside class="left-menu" [class]="lsn_tv_show? 'lsn-tv-active' : 'lsn-tv-inactive'">
     <div class="left-sticky-menu">
         <div class="logo">
             <a routerLink="/bd/dashboard"><img src="../../../assets/images/logo.png" alt=""></a>
@@ -29,3 +29,7 @@
 
     </div>
 </aside>
+<div class="lsn-tv-div" [class]="lsn_tv_show? 'lsn-tv-extend' : 'lsn-tv-collapse'">
+    <a *ngIf="!lsn_tv_show" (click)="showResult(true)"><i class="fa fa-angle-double-right"></i></a>
+    <a *ngIf="lsn_tv_show" (click)="showResult(false)"><i class="fa fa-angle-double-left"></i></a>
+</div>

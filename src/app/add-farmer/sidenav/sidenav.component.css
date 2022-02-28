@@ -1,0 +1,25 @@
+@media only screen and (min-device-width: 992px) and (max-device-width: 1200px) {
+.lsn-tv-div {
+	position: fixed;
+	top: 46px;
+	z-index: 9999;
+    padding: 0px 8px;
+    background-color: #D4EACD;
+}
+.lsn-tv-extend{
+    left: 229px;
+}
+.lsn-tv-collapse{
+    left: 0px;
+}
+.lsn-tv-div a .fa{
+    font-size: 35px;  
+    color: #000;  
+}
+.lsn-tv-inactive{
+    display: none;
+}
+.lsn-tv-active{
+    display: block;
+}
+}
