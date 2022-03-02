@@ -729,6 +729,7 @@ export const data = {
     propertyType: [
       { id: 1, displayName: 'House', displayValue: 'house' },
       { id: 2, displayName: 'Land', displayValue: 'land' },
+      { id: 3, displayName: 'Shop', displayValue: 'shop' },
     ],
     ownerShipType: [
       {
