@@ -218,7 +218,7 @@
                           <th>URN</th>
                           <th>Farmer Name</th>
                           <th>Mobile</th>
-                          <!-- <th>Date of Registration</th> -->
+                          <th>Date of Registration</th>
                           <th>Address</th>
                           <th>Status</th>
                           <!-- <th></th> -->
@@ -235,9 +235,9 @@
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.address?.mobileNumber }}
                           </td>
-                          <!-- <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.registrationDate }}
-                          </td> -->
+                          </td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.address?.addressLine1 }}
                           </td>
