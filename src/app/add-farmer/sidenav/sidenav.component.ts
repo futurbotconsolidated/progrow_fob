@@ -11,7 +11,7 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  showResult(param: boolean){   
+  showLeftSide(param: boolean){   
     this.lsn_tv_show = param;
   }
 }
