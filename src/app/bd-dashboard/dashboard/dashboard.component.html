@@ -1,11 +1,15 @@
 <div class="main-farmer">
-  <aside class="left-menu">
+  <aside class="left-menu" [class]="lsn_tv_show? 'lsn-tv-active' : 'lsn-tv-inactive'">
     <div class="left-sticky-menu">
       <div class="logo">
         <a routerLink="/bd/dashboard"><img src="../../../assets/images/logo.png" alt="" /></a>
       </div>
     </div>
   </aside>
+  <div class="lsn-tv-div" [class]="lsn_tv_show? 'lsn-tv-extend' : 'lsn-tv-collapse'">
+    <a *ngIf="!lsn_tv_show" (click)="showLeftSide(true)"><i class="fa fa-angle-double-right"></i></a>
+    <a *ngIf="lsn_tv_show" (click)="showLeftSide(false)"><i class="fa fa-angle-double-left"></i></a>
+  </div>  
   <article class="right-sec">
     <header>
       <div class="bd-header col-sm-10 col-md-10 col-xl-11">

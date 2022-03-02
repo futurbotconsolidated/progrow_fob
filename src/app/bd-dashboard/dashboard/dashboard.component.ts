@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   overlayData = [] as any;
   dtOptions: DataTables.Settings = {};
   searchValue = '';
+  lsn_tv_show = false;
   /* END: Variables */
 
   constructor(
@@ -550,12 +551,16 @@ export class DashboardComponent implements OnInit {
       } else {
         localStorage.removeItem('draft_farmers');
       }
-      this.router.navigate(['/add/concept-cards']);
+      this.router.navigate(['/add/demographic-info']);
     }
   }
 
   logOut() {
     this.oauthService.logOut();
     this.router.navigate(['/']);
+  }
+
+  showLeftSide(param: boolean){   
+    this.lsn_tv_show = param;
   }
 }

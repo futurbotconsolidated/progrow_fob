@@ -30,6 +30,6 @@
     </div>
 </aside>
 <div class="lsn-tv-div" [class]="lsn_tv_show? 'lsn-tv-extend' : 'lsn-tv-collapse'">
-    <a *ngIf="!lsn_tv_show" (click)="showResult(true)"><i class="fa fa-angle-double-right"></i></a>
-    <a *ngIf="lsn_tv_show" (click)="showResult(false)"><i class="fa fa-angle-double-left"></i></a>
+    <a *ngIf="!lsn_tv_show" (click)="showLeftSide(true)"><i class="fa fa-angle-double-right"></i></a>
+    <a *ngIf="lsn_tv_show" (click)="showLeftSide(false)"><i class="fa fa-angle-double-left"></i></a>
 </div>
