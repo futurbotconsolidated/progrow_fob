@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
   FormControl,
@@ -24,13 +25,18 @@ export class CropMarketPlanComponent implements OnInit {
   cropMarketPlanForm = new FormGroup({});
   cropMarketPlanMaster = <any>{};
   nextRoute: any;
-  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle = SaveStatus.Idle;
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
+    SaveStatus.Idle;
+
+  // edit feature
+  farmerId = '';
   /* END: Variable */
 
   constructor(
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
-    public router: Router
+    public router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.cropMarketPlanForm = this.formBuilder.group({
       seedProcure: [Array()],
@@ -54,30 +60,44 @@ export class CropMarketPlanComponent implements OnInit {
     this.cropMarketPlanMaster = data.cropMarket; // read master data
     // -----------------------start auto save --------------------
     this.cropMarketPlanForm.valueChanges
-    .pipe(
-      tap(() => {
-        this.saveStatus = SaveStatus.Saving;
-      })
-    )
-    .subscribe(async (form_values) => {
-      let draft_farmer_new = {} as any;
-      if(localStorage.getItem('draft_farmer_new')){
-        draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any);    
-      }
-      draft_farmer_new['crop_market_planing'] = form_values;
-      localStorage.setItem('draft_farmer_new', JSON.stringify(draft_farmer_new));
-      this.saveStatus = SaveStatus.Saved;
-      if (this.saveStatus === SaveStatus.Saved) {
-        this.saveStatus = SaveStatus.Idle;
-      }
-    });
+      .pipe(
+        tap(() => {
+          this.saveStatus = SaveStatus.Saving;
+        })
+      )
+      .subscribe(async (form_values) => {
+        let draft_farmer_new = {} as any;
+        if (localStorage.getItem('draft_farmer_new')) {
+          draft_farmer_new = JSON.parse(
+            localStorage.getItem('draft_farmer_new') as any
+          );
+        }
+        draft_farmer_new['crop_market_planing'] = form_values;
+        localStorage.setItem(
+          'draft_farmer_new',
+          JSON.stringify(draft_farmer_new)
+        );
+        this.saveStatus = SaveStatus.Saved;
+        if (this.saveStatus === SaveStatus.Saved) {
+          this.saveStatus = SaveStatus.Idle;
+        }
+      });
     // -----------------------End auto save --------------------
     let cropPlan: any = localStorage.getItem('crop-market-planing');
     if (cropPlan) {
       cropPlan = JSON.parse(cropPlan);
       this.cropMarketPlanForm.patchValue(cropPlan);
       console.log(cropPlan);
+    } else if (this.farmerId) {
+      const A: any = localStorage.getItem('farmer-details');
+      if (A) {
+        const B = JSON.parse(A).crop_market_plan;
+        this.cropMarketPlanForm.patchValue(cropPlan);
+      }
     }
+
+    //--------------------------EDIT--------
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
   validateNo(e: any): boolean {
@@ -111,7 +131,7 @@ export class CropMarketPlanComponent implements OnInit {
   }
 
   saveData() {
-    let url = `/add/${this.nextRoute}`;
+    let url = `/add/${this.nextRoute}/${this.farmerId}`;
     console.log(url);
     localStorage.setItem(
       'crop-market-planing',

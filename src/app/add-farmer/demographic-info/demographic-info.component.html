@@ -118,9 +118,9 @@
               <h3 class="form-title">4.A Farmer details</h3>
               <div class="farmer-details">
                 <div class="small-input">
-                  <select class="form-select">
-                    <option selected>Mr.</option>
-                    <option>Mrs.</option>
+                  <select class="form-select" formControlName="salutation">
+                    <option value="Mr.">Mr.</option>
+                    <option value="Mrs.">Mrs.</option>
                   </select>
                 </div>
                 <div class="farmer-details">
@@ -186,7 +186,7 @@
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
                   <label>Educational Qualification</label>
-                  <select class="flex-1 form-select" formControlName="educationQualification">
+                  <select class="flex-1 form-select" formControlName="educationalQualification">
                     <option value="">...</option>
                     <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal.displayValue }}">
                       {{ indVal.displayName }}

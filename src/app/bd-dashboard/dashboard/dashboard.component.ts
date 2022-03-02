@@ -455,6 +455,11 @@ export class DashboardComponent implements OnInit {
 
   getFarmerDetailsById(farmerId: any, type: string) {
     localStorage.removeItem('farmer-details');
+
+    // clear edit related localStorage variables
+    localStorage.removeItem('edit-demographic-info');
+    localStorage.removeItem('edit-demographic-info-form');
+
     this.spinner.show();
     this.commonService.getFarmerDetailsById(farmerId).subscribe(
       (res: any) => {

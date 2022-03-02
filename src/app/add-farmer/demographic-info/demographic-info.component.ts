@@ -80,6 +80,7 @@ export class DemographicInfoComponent implements OnInit {
       addressProof: new FormControl('', [Validators.required]),
       addressProofFrontImage: new FormControl(''),
       addressProofBackImage: new FormControl(''),
+      salutation: new FormControl(''),
       firstName: new FormControl('', [Validators.required]),
       PANnumber: new FormControl('', [validatePANNumber]),
       PANFrontImage: new FormControl(''),
@@ -95,7 +96,7 @@ export class DemographicInfoComponent implements OnInit {
       gender: new FormControl(''),
       religion: new FormControl(''),
       caste: new FormControl(''),
-      educationQualification: new FormControl(''),
+      educationalQualification: new FormControl(''),
       occupation: new FormControl(''),
       annualIncome: new FormControl('', [Validators.pattern('^[0-9]*$')]),
 
@@ -152,13 +153,7 @@ export class DemographicInfoComponent implements OnInit {
       innovativeWaysFarming: [Array()],
     });
 
-    // EDIT: read farmer id in edit
-    this.farmerId = this.activatedRoute.snapshot.params['farmerId'];
-    console.log(this.farmerId);
-
-    if (this.farmerId) {
-      this.patchFarmerDetails();
-    }
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
@@ -166,43 +161,56 @@ export class DemographicInfoComponent implements OnInit {
     this.demoGraphicMaster = data.demoGraphic; // read master data
 
     // ----------------------- Start auto save --------------------
-    this.demographicInfoForm.valueChanges
-      .pipe(
-        tap(() => {
-          this.saveStatus = SaveStatus.Saving;
-        })
-      )
-      .subscribe(async (form_values) => {
-        let draft_farmer_new = {} as any;
-        if (localStorage.getItem('draft_farmer_new')) {
-          draft_farmer_new = JSON.parse(
-            localStorage.getItem('draft_farmer_new') as any
+    // draft feature is not required in edit operation
+    if (!this.farmerId) {
+      this.demographicInfoForm.valueChanges
+        .pipe(
+          tap(() => {
+            this.saveStatus = SaveStatus.Saving;
+          })
+        )
+        .subscribe(async (form_values) => {
+          let draft_farmer_new = {} as any;
+          if (localStorage.getItem('draft_farmer_new')) {
+            draft_farmer_new = JSON.parse(
+              localStorage.getItem('draft_farmer_new') as any
+            );
+          }
+          draft_farmer_new['demographic_info_form'] = form_values;
+          localStorage.setItem(
+            'draft_farmer_new',
+            JSON.stringify(draft_farmer_new)
           );
-        }
-        draft_farmer_new['demographic_info_form'] = form_values;
-        localStorage.setItem(
-          'draft_farmer_new',
-          JSON.stringify(draft_farmer_new)
-        );
-        this.saveStatus = SaveStatus.Saved;
-        if (this.saveStatus === SaveStatus.Saved) {
-          this.saveStatus = SaveStatus.Idle;
-        }
-      });
+          this.saveStatus = SaveStatus.Saved;
+          if (this.saveStatus === SaveStatus.Saved) {
+            this.saveStatus = SaveStatus.Idle;
+          }
+        });
+    }
     // ----------------------- End auto save --------------------
 
-    // add form
-    let demoInfo: any = localStorage.getItem('demographic-info-form');
-    if (demoInfo) {
-      demoInfo = JSON.parse(demoInfo);
-      this.demographicInfoForm.patchValue(demoInfo);
+    //  first check data exist - edit form
+    if (this.farmerId) {
+      let editForm: any = localStorage.getItem('edit-demographic-info-form');
+      if (editForm) {
+        editForm = JSON.parse(editForm);
+        this.demographicInfoForm.patchValue(editForm);
+      } else {
+        this.patchFarmerDetails(); // bind/patch fresh api data
+      }
+    } else {
+      let demoInfo: any = localStorage.getItem('demographic-info-form');
+      if (demoInfo) {
+        demoInfo = JSON.parse(demoInfo);
+        this.demographicInfoForm.patchValue(demoInfo);
 
-      // this.familyMembers = this.demographicInfoForm.get(
-      //   'familyMembers'
-      // ) as FormArray;
-      // demoInfo.familyMembers.forEach((x: any) => {
-      //   this.familyMembers.push(this.formBuilder.group(x));
-      // });
+        // this.familyMembers = this.demographicInfoForm.get(
+        //   'familyMembers'
+        // ) as FormArray;
+        // demoInfo.familyMembers.forEach((x: any) => {
+        //   this.familyMembers.push(this.formBuilder.group(x));
+        // });
+      }
     }
   }
   ngAfterViewInit(): void {
@@ -505,50 +513,55 @@ export class DemographicInfoComponent implements OnInit {
         addressProof: B.addressProof['selectedIdProof'],
         addressProofFrontImage: B.addressProof['selectedIdProofFrontImg'],
         addressProofBackImage: B.addressProof['selectedIdProofBackImg'],
+        salutation: B.farmerDetails['salutation'],
         firstName: B.farmerDetails['firstName'],
         PANnumber: B.identityProof['panNumber'],
-        PANFrontImage: '',
-        passportNumber: '',
-        passportFrontImage: '',
-        passportBackImage: '',
-        NREGANumber: '',
-        NREGAFrontImage: '',
-        NREGABackImage: '',
+        PANFrontImage: B.identityProof['panImg'],
+
+        passportNumber: B.identityProof['passportNumber'],
+        passportFrontImage: B.identityProof['passportFrontImage'],
+        passportBackImage: B.identityProof['passportBackImage'],
+
+        NREGANumber: B.identityProof['NREGANumber'],
+        NREGAFrontImage: B.identityProof['NREGAFrontImage'],
+        NREGABackImage: B.identityProof['NREGABackImage'],
+
         middleName: B.farmerDetails['middleName'],
         lastName: B.farmerDetails['lastName'],
         dob: B.farmerDetails['dob'],
         gender: B.farmerDetails['gender'],
         religion: B.farmerDetails['religion'],
         caste: B.farmerDetails['caste'],
-        educationQualification: B.otherDetails['educationalQualification'],
+        educationalQualification: B.otherDetails['educationalQualification'],
         occupation: B.otherDetails['occupation'],
         annualIncome: B.otherDetails['annualIncome'],
 
         address1: B.address['addressLine1'],
         address2: B.address['addressLine2'],
-        taluk: '',
-        city: '',
-        pinCode: B.address['pinCode'],
-        state: '',
-        landmark: '',
+        pinCode: B.address['pincode'],
+        taluk: B.address['taluk'],
+        city: B.address['city'],
+        state: B.address['state'],
+        landmark: B.address['landmark'],
 
         phoneNumber: B.address['mobileNumber'],
-        mobile1: '',
-        mobile2: '',
-        yrsInAddress: '',
-        yrsInCity: '',
-        email: '',
+        mobile1: B.address['mobile1'],
+        mobile2: B.address['mobile2'],
+        email: B.address['email'],
 
-        permAddressLine1: '',
-        permAddressLine2: '',
-        permTaluk: '',
-        permCity: '',
-        permPincode: '',
-        permState: '',
+        yrsInAddress: B.yrsInAddress,
+        yrsInCity: B.yrsInCity,
 
-        propertyStatus: '',
-        monthlyRent: '',
-        commOrPerAddress: '',
+        permAddressLine1: B.permAddress?.addressLine1,
+        permAddressLine2: B.permAddress?.addressLine2,
+        permPincode: B.permAddress?.pincode,
+        permTaluk: B.permAddress?.taluk,
+        permCity: B.permAddress?.city,
+        permState: B.permAddress?.state,
+
+        propertyStatus: B.propertyStatus,
+        monthlyRent: B.monthlyRent,
+        commOrPerAddress: B.permAddress?.commOrPerAddress,
         // familyMembers: '',
         // propertyOwnership: '',
         phoneType: B.phoneType,
@@ -579,6 +592,14 @@ export class DemographicInfoComponent implements OnInit {
           panNumber: formValue.PANnumber,
           panImg: '',
           // panImg: formValue.PANFrontImage,
+
+          passportNumber: formValue.passportNumber,
+          passportFrontImage: formValue.passportFrontImage,
+          passportBackImage: formValue.passportBackImage,
+
+          NREGANumber: formValue.NREGANumber,
+          NREGAFrontImage: formValue.NREGAFrontImage,
+          NREGABackImage: formValue.NREGABackImage,
         },
         addressProof: {
           selectedIdProof: formValue.addressProof,
@@ -588,6 +609,7 @@ export class DemographicInfoComponent implements OnInit {
           // selectedIdProofBackImg: formValue.addressProofBackImage,
         },
         farmerDetails: {
+          salutation: formValue.salutation,
           firstName: formValue.firstName,
           middleName: formValue.middleName,
           lastName: formValue.lastName,
@@ -600,7 +622,23 @@ export class DemographicInfoComponent implements OnInit {
           addressLine1: formValue.address1,
           addressLine2: formValue.address2,
           pincode: formValue.pinCode,
+          taluk: formValue.taluk,
+          city: formValue.city,
+          state: formValue.state,
+          landmark: formValue.landmark,
           mobileNumber: formValue.phoneNumber,
+          mobile1: formValue.mobile1,
+          mobile2: formValue.mobile2,
+          email: formValue.email,
+        },
+        permAddress: {
+          commOrPerAddress: formValue.commOrPerAddress,
+          addressLine1: formValue.permAddressLine1,
+          addressLine2: formValue.permAddressLine2,
+          pincode: formValue.permPincode,
+          taluk: formValue.permTaluk,
+          city: formValue.permCity,
+          state: formValue.permState,
         },
         otherDetails: {
           educationalQualification: formValue.educationalQualification,
@@ -619,14 +657,30 @@ export class DemographicInfoComponent implements OnInit {
         sourceOfIncomeOther: formValue.sourceOfIncomeOther,
         agricultureChildrenInterested: formValue.agriculturalInterest,
         innovativeFarmingWays: formValue.innovativeWaysFarming,
+
+        yrsInAddress: formValue.yrsInAddress,
+        yrsInCity: formValue.yrsInCity,
+
+        propertyStatus: formValue.propertyStatus,
+        monthlyRent: formValue.monthlyRent,
       };
 
-      localStorage.setItem('demographic-info', JSON.stringify(obj));
-      localStorage.setItem('demographic-info-form', JSON.stringify(formValue));
+      if (this.farmerId) {
+        localStorage.setItem('edit-demographic-info', JSON.stringify(obj));
+        localStorage.setItem(
+          'edit-demographic-info-form',
+          JSON.stringify(formValue)
+        );
+      } else {
+        localStorage.setItem('demographic-info', JSON.stringify(obj));
+        localStorage.setItem(
+          'demographic-info-form',
+          JSON.stringify(formValue)
+        );
+      }
 
-      // console.log(JSON.stringify(obj).length, JSON.stringify(formValue).length);
-
-      const url = `/add/${this.nextRoute}`;
+      console.log(this.farmerId);
+      const url = `/add/${this.nextRoute}/${this.farmerId}`;
       this.router.navigate([url]);
     }
   }
