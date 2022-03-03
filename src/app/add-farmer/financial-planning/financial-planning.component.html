@@ -209,8 +209,12 @@
                                 <div class="col-md-9">
                                     <div class="row align-items-center form-details-inner">
                                         <div class="col-md-3 lable-top">
-                                            <label for="">Crop</label>
-                                            <input type="text" class="form-control" id="" placeholder="Gram">
+                                            <label>Crop</label>
+                                            <select class="form-select">
+                                                <option value="">...</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
+                                                    {{indVal.displayName}}</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Sold at</label>
@@ -231,8 +235,12 @@
                                     </div>
                                     <div class="row align-items-center form-details-inner">
                                         <div class="col-md-3 lable-top">
-                                            <label for="">Crop</label>
-                                            <input type="text" class="form-control" id="" placeholder="Gram">
+                                            <label>Crop</label>
+                                            <select class="form-select">
+                                                <option value="">...</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
+                                                    {{indVal.displayName}}</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Sold at</label>
@@ -262,8 +270,12 @@
                                 <div class="col-md-9">
                                     <div class="row align-items-center form-details-inner">
                                         <div class="col-md-3 lable-top">
-                                            <label for="">Crop</label>
-                                            <input type="text" class="form-control" id="" placeholder="Gram">
+                                            <label>Crop</label>
+                                            <select class="form-select">
+                                                <option value="">...</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
+                                                    {{indVal.displayName}}</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Sold at</label>
@@ -284,8 +296,12 @@
                                     </div>
                                     <div class="row align-items-center form-details-inner">
                                         <div class="col-md-3 lable-top">
-                                            <label for="">Crop</label>
-                                            <input type="text" class="form-control" id="" placeholder="Gram">
+                                            <label>Crop</label>
+                                            <select class="form-select">
+                                                <option value="">...</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
+                                                    {{indVal.displayName}}</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Sold at</label>
