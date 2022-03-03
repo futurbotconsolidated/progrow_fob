@@ -21,7 +21,7 @@
                                     </div>
                                     <div class="col-auto lable-top">
                                         <label>Others</label>
-                                        <input type="text" class="form-control" placeholder="Please specify">
+                                        <input type="text" class="form-control" placeholder="Please specify" formControlName="seedProcureOther">
                                     </div>
                                 </div>
                             </div>
@@ -46,53 +46,61 @@
                         <div class="row align-items-center form-details-inner">
                             <div class="col-md-2 lable-top">
                                 <label>Year-Season</label>
-                                <select class="form-select">
+                                <select class="form-select" formControlName="year1">
                                     <option value="">...</option>
                                     <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']" [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">
                                 <label>Crop</label>
-                                <input type="text" class="form-control" id="" placeholder="Gram">
+                                <select class="form-select" formControlName="crop1">
+                                    <option value="">...</option>
+                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
+                                        {{indVal.displayName}}</option>
+                                </select>
                             </div>
 
                             <div class="col-md-3 lable-top">
                                 <label>% used for Self Consumption</label>
-                                <input type="text" class="form-control" id="" placeholder="5%" (keypress)="validateNo($event)" maxlength="2">
+                                <input type="text" class="form-control" formControlName="selfConsumption1" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                             <div class="col-md-3 lable-top">
                                 <label>% used for Seed Replacement</label>
-                                <input type="text" class="form-control" id="" placeholder="10%" (keypress)="validateNo($event)" maxlength="2">
+                                <input type="text" class="form-control" formControlName="seedReplacement1" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                             <div class="col-md-3 lable-top">
                                 <label>% used for Selling at Market Place</label>
-                                <input type="text" class="form-control" id="" placeholder="85%" (keypress)="validateNo($event)" maxlength="2">
+                                <input type="text" class="form-control" formControlName="sellAtMarketPlace1" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                         </div>
                         <div class="row align-items-center form-details-inner">
                             <div class="col-md-2 lable-top">
                                 <label>Year-Season</label>
-                                <select class="form-select">
+                                <select class="form-select" formControlName="year2">
                                     <option value="">...</option>
                                     <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']" [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">
                                 <label>Crop</label>
-                                <input type="text" class="form-control" id="" placeholder="Gram">
+                                <select class="form-select" formControlName="crop2">
+                                    <option value="">...</option>
+                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
+                                        {{indVal.displayName}}</option>
+                                </select>
                             </div>
 
                             <div class="col-md-3 lable-top">
                                 <label>% used for Self Consumption</label>
-                                <input type="text" class="form-control" id="" placeholder="5%" (keypress)="validateNo($event)" maxlength="2">
+                                <input type="text" class="form-control" formControlName="selfConsumption2" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                             <div class="col-md-3 lable-top">
                                 <label>% used for Seed Replacement</label>
-                                <input type="text" class="form-control" id="" placeholder="10%" (keypress)="validateNo($event)" maxlength="2">
+                                <input type="text" class="form-control" formControlName="seedReplacement2" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                             <div class="col-md-3 lable-top">
                                 <label>% used for Selling at Market Place</label>
-                                <input type="text" class="form-control" id="" placeholder="85%" (keypress)="validateNo($event)" maxlength="2">
+                                <input type="text" class="form-control" formControlName="sellAtMarketPlace2" (keypress)="validateNo($event)" maxlength="2">
                             </div>
                         </div>
                     </div>
@@ -109,7 +117,7 @@
                             </div>
                             <div class="col-auto lable-top">
                                 <label>Other</label>
-                                <input type="text" class="form-control" name="" placeholder="Please specify">
+                                <input type="text" class="form-control" placeholder="Please specify" formControlName="fertilizerPurchaseOther">
                             </div>
                         </div>
                     </div>
@@ -139,7 +147,7 @@
                             </div>
                             <div class="col-auto lable-top">
                                 <label>Other</label>
-                                <input type="text" class="form-control" name="" placeholder="Please specify">
+                                <input type="text" class="form-control" placeholder="Please specify" formControlName="fertilizerAdviseOther">
                             </div>
                         </div>
                     </div>
@@ -152,97 +160,26 @@
                                         <thead>
                                             <tr>
                                                 <td></td>
-                                                <td>Local Mandi</td>
-                                                <td>District Mandi</td>
-                                                <td>Farm gate aggregator</td>
-                                                <td>Arhatiya</td>
+                                                <td *ngFor="let x of sellProduceArray['thead']">{{x}}</td>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Particular-1</td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-1" id="yes"><label class="form-check-label" for="yes"></label>
+                                            <tr *ngFor="let x of sellProduceArray['tbody'];let i=index">
+                                                <td>{{x}}</td>
+                                                <td *ngFor="let perIndex of [0,1,2,3]">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" formControlName="particular{{i+1}}" value="{{sellProduceArray.thead[perIndex]}}">
+                                                        <label class="form-check-label"></label>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-1" id="no"><label class="form-check-label" for="no"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-1" id="may-be"><label class="form-check-label"
-                                                            for="may-be"></label></div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-1" id="may-be"><label class="form-check-label"
-                                                            for="may-be"></label></div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>Particular-2</td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-2" id="yes"><label class="form-check-label" for="yes"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-2" id="no"><label class="form-check-label" for="no"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-2" id="may-be"><label class="form-check-label"
-                                                            for="may-be"></label></div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-2" id="may-be"><label class="form-check-label"
-                                                            for="may-be"></label></div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Particular-3</td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-3" id="yes"><label class="form-check-label" for="yes"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-3" id="no"><label class="form-check-label" for="no"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-3" id="may-be"><label class="form-check-label"
-                                                            for="may-be"></label></div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-3" id="may-be"><label class="form-check-label"
-                                                            for="may-be"></label></div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Particular-4</td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-4" id="yes"><label class="form-check-label" for="yes"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-4" id="no"><label class="form-check-label" for="no"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-4" id="may-be"><label class="form-check-label"
-                                                            for="may-be"></label></div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check"><input class="form-check-input" type="radio" name="Particular-4" id="may-be"><label class="form-check-label"
-                                                            for="may-be"></label></div>
-                                                </td>
-                                            </tr>
-
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="lable-top">
                                         <label for="Comment" class="form-label">Comment</label>
-                                        <textarea class="form-control" id="Comment" rows="8"></textarea>
+                                        <textarea class="form-control" id="Comment" rows="8" formControlName="sellProduceComment"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -273,7 +210,7 @@
                             </div>
                             <div class="col-auto lable-top">
                                 <label>Others</label>
-                                <input type="text" class="form-control" name="" placeholder="Please specify">
+                                <input type="text" class="form-control" name="" placeholder="Please specify" formControlName="durationReceivingMoneyOther">
                             </div>
                         </div>
                     </div>

@@ -22,11 +22,22 @@ enum SaveStatus {
 })
 export class CropMarketPlanComponent implements OnInit {
   /* START: Variables */
-  cropMarketPlanForm = new FormGroup({});
-  cropMarketPlanMaster = <any>{};
   nextRoute: any;
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
+
+  cropMarketPlanForm = new FormGroup({});
+  cropMarketPlanMaster = <any>{};
+  commonMaster = <any>{};
+  sellProduceArray = {
+    thead: [
+      'Local Mandi',
+      'District Mandi',
+      'Farm gate aggregator',
+      'Arhatiya',
+    ],
+    tbody: ['Particular-1', 'Particular-2', 'Particular-3', 'Particular-4'],
+  };
 
   farmerId = ''; // edit feature
   /* END: Variables */
@@ -39,13 +50,38 @@ export class CropMarketPlanComponent implements OnInit {
   ) {
     this.cropMarketPlanForm = this.formBuilder.group({
       seedProcure: [Array()],
-      varietyComparison: new FormControl('', [Validators.required]),
+      seedProcureOther: new FormControl(''),
+      varietyComparison: new FormControl(''),
+
+      year1: new FormControl(''),
+      crop1: new FormControl(''),
+      selfConsumption1: new FormControl(''),
+      seedReplacement1: new FormControl(''),
+      sellAtMarketPlace1: new FormControl(''),
+
+      year2: new FormControl(''),
+      crop2: new FormControl(''),
+      selfConsumption2: new FormControl(''),
+      seedReplacement2: new FormControl(''),
+      sellAtMarketPlace2: new FormControl(''),
+
       fertilizerPurchase: [Array()],
-      pesticideQuality: new FormControl('', [Validators.required]),
+      fertilizerPurchaseOther: new FormControl(''),
+
+      pesticideQuality: new FormControl(''),
       fertilizerAdvise: [Array()],
-      farmGateGrading: new FormControl('', [Validators.required]),
-      durationReceivingMoney: new FormControl('', [Validators.required]),
-      warehouseProduce: new FormControl('', [Validators.required]),
+      fertilizerAdviseOther: new FormControl(''),
+
+      farmGateGrading: new FormControl(''),
+      durationReceivingMoney: new FormControl(''),
+      durationReceivingMoneyOther: new FormControl(''),
+      warehouseProduce: new FormControl(''),
+
+      sellProduceComment: new FormControl(''),
+      particular1: new FormControl(''),
+      particular2: new FormControl(''),
+      particular3: new FormControl(''),
+      particular4: new FormControl(''),
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {
@@ -59,6 +95,7 @@ export class CropMarketPlanComponent implements OnInit {
 
   ngOnInit(): void {
     this.cropMarketPlanMaster = data.cropMarket; // read master data
+    this.commonMaster = data.commonData; // read master data
     // -----------------------start auto save --------------------
     // draft feature is not required in edit operation
     if (!this.farmerId) {
@@ -87,16 +124,26 @@ export class CropMarketPlanComponent implements OnInit {
         });
     }
     // -----------------------End auto save --------------------
-    let cropPlan: any = localStorage.getItem('crop-market-planing');
-    if (cropPlan) {
-      cropPlan = JSON.parse(cropPlan);
-      this.cropMarketPlanForm.patchValue(cropPlan);
-      console.log(cropPlan);
-    } else if (this.farmerId) {
-      const A: any = localStorage.getItem('farmer-details');
-      if (A) {
-        const B = JSON.parse(A).crop_market_plan;
+
+    // if case is for EDIT and else case is for NEW/DRAFT
+    if (this.farmerId) {
+      let editForm: any = localStorage.getItem('edit-crop-market-planing');
+      if (editForm) {
+        editForm = JSON.parse(editForm);
+        this.cropMarketPlanForm.patchValue(editForm);
+      } else {
+        const A: any = localStorage.getItem('farmer-details');
+        if (A) {
+          const B = JSON.parse(A).crop_market_plan;
+          this.cropMarketPlanForm.patchValue(B);
+        }
+      }
+    } else {
+      let cropPlan: any = localStorage.getItem('crop-market-planing');
+      if (cropPlan) {
+        cropPlan = JSON.parse(cropPlan);
         this.cropMarketPlanForm.patchValue(cropPlan);
+        console.log(cropPlan);
       }
     }
 
@@ -135,11 +182,17 @@ export class CropMarketPlanComponent implements OnInit {
   }
 
   saveData() {
-    localStorage.setItem(
-      'crop-market-planing',
-      JSON.stringify(this.cropMarketPlanForm.value)
-    );
-
+    if (this.farmerId) {
+      localStorage.setItem(
+        'edit-crop-market-planing',
+        JSON.stringify(this.cropMarketPlanForm.value)
+      );
+    } else {
+      localStorage.setItem(
+        'crop-market-planing',
+        JSON.stringify(this.cropMarketPlanForm.value)
+      );
+    }
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
   }

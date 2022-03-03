@@ -460,6 +460,7 @@ export class DashboardComponent implements OnInit {
     // clear edit related localStorage variables before starting
     localStorage.removeItem('edit-demographic-info');
     localStorage.removeItem('edit-demographic-info-form');
+    localStorage.removeItem('edit-crop-market-planing');
     localStorage.removeItem('edit-produce-aggregator');
 
     this.spinner.show();

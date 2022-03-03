@@ -5,12 +5,12 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><span>Input sourcing</span><a href="javascript:void(0)"> <img
-                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Input sourcing</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile kcc-details">
                             <p><span>Where do you procure the seed for different crops?</span>
                                 <span><b *ngFor="let x of cropMrktPlanDisp?.seedProcure">
-                                        {{getDisplayName('seedProcure',x)}}, </b></span>
+                                        {{getDisplayName('seedProcure',x)}}, </b>
+                                    <b>{{cropMrktPlanDisp?.seedProcureOther}}</b></span>
                             </p>
 
                             <p><span>If used hybrid variety seeds, what difference do you observe in comparison to local
@@ -20,7 +20,8 @@
                             <p><span>Where do you purchase your fertilizers and pesticides from for the cultivation
                                     cycle?</span>
                                 <span><b *ngFor="let x of cropMrktPlanDisp?.fertilizerPurchase">
-                                        {{getDisplayName('fertilizerPurchase',x)}}, </b></span>
+                                        {{getDisplayName('fertilizerPurchase',x)}}, </b>
+                                    <b>{{cropMrktPlanDisp?.fertilizerPurchaseOther}}</b></span>
                             </p>
 
                             <p><span>How satisfied are you with the fertilizer and pesticide quality/service from the
@@ -31,7 +32,9 @@
                             <p><span>Who advises you on application of
                                     fertilizers/pesticides?</span>
                                 <span><b *ngFor="let x of cropMrktPlanDisp?.fertilizerAdvise">
-                                        {{getDisplayName('fertilizerAdvise',x)}}, </b></span>
+                                        {{getDisplayName('fertilizerAdvise',x)}},</b>
+                                    <b>{{cropMrktPlanDisp?.fertilizerAdviseOther}}</b></span>
+
 
                             </p>
                         </div>
@@ -42,8 +45,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><span>Product Market Plan</span><a href="javascript:void(0)"> <img
-                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Product Market Plan</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <p>How much of the crop output is used for seed replacement in the next crop cycle?</p>
                         <table>
                             <thead>
