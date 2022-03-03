@@ -21,16 +21,15 @@ enum SaveStatus {
   styleUrls: ['./crop-market-plan.component.css'],
 })
 export class CropMarketPlanComponent implements OnInit {
-  /* START: Variable */
+  /* START: Variables */
   cropMarketPlanForm = new FormGroup({});
   cropMarketPlanMaster = <any>{};
   nextRoute: any;
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
 
-  // edit feature
-  farmerId = '';
-  /* END: Variable */
+  farmerId = ''; // edit feature
+  /* END: Variables */
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,34 +53,39 @@ export class CropMarketPlanComponent implements OnInit {
       this.saveData();
       console.log(this.nextRoute);
     });
+
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
   ngOnInit(): void {
     this.cropMarketPlanMaster = data.cropMarket; // read master data
     // -----------------------start auto save --------------------
-    this.cropMarketPlanForm.valueChanges
-      .pipe(
-        tap(() => {
-          this.saveStatus = SaveStatus.Saving;
-        })
-      )
-      .subscribe(async (form_values) => {
-        let draft_farmer_new = {} as any;
-        if (localStorage.getItem('draft_farmer_new')) {
-          draft_farmer_new = JSON.parse(
-            localStorage.getItem('draft_farmer_new') as any
+    // draft feature is not required in edit operation
+    if (!this.farmerId) {
+      this.cropMarketPlanForm.valueChanges
+        .pipe(
+          tap(() => {
+            this.saveStatus = SaveStatus.Saving;
+          })
+        )
+        .subscribe(async (form_values) => {
+          let draft_farmer_new = {} as any;
+          if (localStorage.getItem('draft_farmer_new')) {
+            draft_farmer_new = JSON.parse(
+              localStorage.getItem('draft_farmer_new') as any
+            );
+          }
+          draft_farmer_new['crop_market_planing'] = form_values;
+          localStorage.setItem(
+            'draft_farmer_new',
+            JSON.stringify(draft_farmer_new)
           );
-        }
-        draft_farmer_new['crop_market_planing'] = form_values;
-        localStorage.setItem(
-          'draft_farmer_new',
-          JSON.stringify(draft_farmer_new)
-        );
-        this.saveStatus = SaveStatus.Saved;
-        if (this.saveStatus === SaveStatus.Saved) {
-          this.saveStatus = SaveStatus.Idle;
-        }
-      });
+          this.saveStatus = SaveStatus.Saved;
+          if (this.saveStatus === SaveStatus.Saved) {
+            this.saveStatus = SaveStatus.Idle;
+          }
+        });
+    }
     // -----------------------End auto save --------------------
     let cropPlan: any = localStorage.getItem('crop-market-planing');
     if (cropPlan) {
@@ -131,12 +135,12 @@ export class CropMarketPlanComponent implements OnInit {
   }
 
   saveData() {
-    let url = `/add/${this.nextRoute}/${this.farmerId}`;
-    console.log(url);
     localStorage.setItem(
       'crop-market-planing',
       JSON.stringify(this.cropMarketPlanForm.value)
     );
+
+    const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
   }
 }

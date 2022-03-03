@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
   FormControl,
@@ -59,13 +60,16 @@ export class FieldInfoComponent implements OnInit {
   count = 0;
   fieldArea = <any>[];
   editFieldArea = <any>[];
+
+  farmerId = ''; // edit feature
   /* END: Variables */
 
   constructor(
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
     public router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.fieldInfoForm = this.formBuilder.group({
       plannedSeason: new FormControl('', [Validators.required]),
@@ -83,6 +87,8 @@ export class FieldInfoComponent implements OnInit {
       this.saveData();
       console.log(this.nextRoute);
     });
+
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
   ngOnInit(): void {
@@ -96,33 +102,35 @@ export class FieldInfoComponent implements OnInit {
     this.editFieldArea = [];
 
     // -----------------------start auto save --------------------
-    this.fieldInfoForm.valueChanges
-      .pipe(
-        tap(() => {
-          this.saveStatus = SaveStatus.Saving;
-        })
-      )
-      .subscribe(async (form_values) => {
-        let draft_farmer_new = {} as any;
-        if (localStorage.getItem('draft_farmer_new')) {
-          draft_farmer_new = JSON.parse(
-            localStorage.getItem('draft_farmer_new') as any
+    // draft feature is not required in edit operation
+    if (!this.farmerId) {
+      this.fieldInfoForm.valueChanges
+        .pipe(
+          tap(() => {
+            this.saveStatus = SaveStatus.Saving;
+          })
+        )
+        .subscribe(async (form_values) => {
+          let draft_farmer_new = {} as any;
+          if (localStorage.getItem('draft_farmer_new')) {
+            draft_farmer_new = JSON.parse(
+              localStorage.getItem('draft_farmer_new') as any
+            );
+          }
+          draft_farmer_new['field_info_form'] = form_values;
+          localStorage.setItem(
+            'draft_farmer_new',
+            JSON.stringify(draft_farmer_new)
           );
-        }
-        draft_farmer_new['field_info_form'] = form_values;
-        localStorage.setItem(
-          'draft_farmer_new',
-          JSON.stringify(draft_farmer_new)
-        );
-        this.saveStatus = SaveStatus.Saved;
-        if (this.saveStatus === SaveStatus.Saved) {
-          this.saveStatus = SaveStatus.Idle;
-        }
-      });
+          this.saveStatus = SaveStatus.Saved;
+          if (this.saveStatus === SaveStatus.Saved) {
+            this.saveStatus = SaveStatus.Idle;
+          }
+        });
+    }
     // -----------------------End auto save --------------------
 
     let fieldInfo: any = localStorage.getItem('field-info-form');
-
     if (fieldInfo) {
       fieldInfo = JSON.parse(fieldInfo);
       this.bindItemsInEdit(fieldInfo);
@@ -567,7 +575,6 @@ export class FieldInfoComponent implements OnInit {
   }
 
   saveData() {
-    let url = `/add/${this.nextRoute}`;
     let fieldArr = [];
     console.log(this.count);
     let obj;
@@ -609,6 +616,7 @@ export class FieldInfoComponent implements OnInit {
       'field-info-form',
       JSON.stringify(this.fieldInfoForm.value)
     );
+    const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
     // this.toastr.error('Please Plot at least One Field', 'Error!');
     // return;
@@ -658,8 +666,10 @@ export class FieldInfoComponent implements OnInit {
   }
   validateDecimalNo(e: any): boolean {
     const charCode = e.which ? e.which : e.keyCode;
-    if ((charCode > 31 && (charCode < 48 || charCode > 57 ) && charCode != 46) 
-    || (charCode == 46 && e.target.value.indexOf(".") !== -1)) {
+    if (
+      (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46) ||
+      (charCode == 46 && e.target.value.indexOf('.') !== -1)
+    ) {
       return false;
     }
     return true;

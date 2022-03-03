@@ -60,9 +60,7 @@ export class DemographicInfoComponent implements OnInit {
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
 
-  // edit feature
-  farmerId = '';
-
+  farmerId = ''; // edit feature
   /* END: Varaibles */
 
   constructor(

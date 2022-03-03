@@ -457,9 +457,10 @@ export class DashboardComponent implements OnInit {
   getFarmerDetailsById(farmerId: any, type: string) {
     localStorage.removeItem('farmer-details');
 
-    // clear edit related localStorage variables
+    // clear edit related localStorage variables before starting
     localStorage.removeItem('edit-demographic-info');
     localStorage.removeItem('edit-demographic-info-form');
+    localStorage.removeItem('edit-produce-aggregator');
 
     this.spinner.show();
     this.commonService.getFarmerDetailsById(farmerId).subscribe(
@@ -560,7 +561,7 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  showLeftSide(param: boolean){   
+  showLeftSide(param: boolean) {
     this.lsn_tv_show = param;
   }
 }
