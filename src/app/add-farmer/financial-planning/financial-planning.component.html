@@ -47,78 +47,26 @@
                                     <thead>
                                         <tr>
                                             <td></td>
-                                            <td>Yes</td>
-                                            <td>No</td>
-                                            <td>May Be</td>
+                                            <td *ngFor="let x of interestedFRCMLoanProductsArray['thead']">{{x}}</td>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Housing Loan</td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Housing Loan" id="yes"><label class="form-check-label" for="yes"></label>
+                                        <tr *ngFor="let x of interestedFRCMLoanProductsArray['tbody'];let i=index">
+                                            <td>{{x.displayLabel}}</td>
+                                            <td *ngFor="let perIndex of [0,1,2]">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" formControlName="{{x.formControlName}}" value="{{interestedFRCMLoanProductsArray.thead[perIndex]}}">
+                                                    <label class="form-check-label"></label>
                                                 </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Housing Loan" id="no"><label class="form-check-label" for="no"></label></div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Housing Loan" id="may-be"><label class="form-check-label"
-                                                        for="may-be"></label></div>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>Tractor Finance Loan</td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Finance Loan" id="yes"><label class="form-check-label" for="yes"></label>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Finance Loan" id="no"><label class="form-check-label" for="no"></label></div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Finance Loan" id="may-be"><label class="form-check-label"
-                                                        for="may-be"></label></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>FRCM Crop Insurance</td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Crop Insurance" id="yes"><label class="form-check-label" for="yes"></label>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Crop Insurance" id="no"><label class="form-check-label" for="no"></label>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Crop Insurance" id="may-be"><label class="form-check-label"
-                                                        for="may-be"></label></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Personal Loan</td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Personal Loan" id="yes"><label class="form-check-label" for="yes"></label>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Personal Loan" id="no"><label class="form-check-label" for="no"></label>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check"><input class="form-check-input" type="radio" name="Personal Loan" id="may-be"><label class="form-check-label"
-                                                        for="may-be"></label></div>
-                                            </td>
-                                        </tr>
-
                                     </tbody>
                                 </table>
                             </div>
                             <div class="col-md-6">
                                 <div class="lable-top">
                                     <label for="Comment" class="form-label">Comment</label>
-                                    <textarea class="form-control" id="Comment" rows="8"></textarea>
+                                    <textarea class="form-control" id="Comment" rows="8" formControlName="interestedFRCMLoanProductsComment"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -340,19 +288,19 @@
                                     <tbody>
                                         <tr>
                                             <td>Household – Grocery/Repairs</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="groceryExpense"></td>
                                         </tr>
                                         <tr>
                                             <td>Health** - Doctors Expense/ Medical Treatment</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="medicalExpense"></td>
                                         </tr>
                                         <tr>
                                             <td>Education**</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="educationExpense"></td>
                                         </tr>
                                         <tr>
                                             <td>Rental paying**</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="rentalExpense"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -368,15 +316,15 @@
                                     <tbody>
                                         <tr>
                                             <td>House Electricity**</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="electricityExpense"></td>
                                         </tr>
                                         <tr>
                                             <td>Interest Payments**</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="interestExpense"></td>
                                         </tr>
                                         <tr>
                                             <td>Others, please specify</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="otherExpense"></td>
                                         </tr>
                                     </tbody>
                                 </table>

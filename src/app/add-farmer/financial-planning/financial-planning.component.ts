@@ -35,6 +35,21 @@ export class FinancialPlanningComponent implements OnInit {
   financialForm = new FormGroup({});
   financialMaster = <any>{};
   commonMaster = <any>{};
+  interestedFRCMLoanProductsArray = {
+    thead: ['Yes', 'No', 'May Be'],
+    tbody: [
+      { formControlName: 'housingLoan', displayLabel: 'Housing Loan' },
+      {
+        formControlName: 'tractorFinanceLoan',
+        displayLabel: 'Tractor Finance Loan',
+      },
+      {
+        formControlName: 'FRCMCropInsurance',
+        displayLabel: 'FRCM Crop Insurance',
+      },
+      { formControlName: 'personalLoan', displayLabel: 'Personal Loan' },
+    ],
+  };
 
   farmerId = ''; // edit feature
   /* END: Variables */
@@ -47,6 +62,20 @@ export class FinancialPlanningComponent implements OnInit {
   ) {
     this.financialForm = this.formBuilder.group({
       loanReqPlaned: new FormArray([]),
+
+      interestedFRCMLoanProductsComment: new FormControl(''),
+      housingLoan: new FormControl(''),
+      tractorFinanceLoan: new FormControl(''),
+      FRCMCropInsurance: new FormControl(''),
+      personalLoan: new FormControl(''),
+
+      groceryExpense: new FormControl(''),
+      medicalExpense: new FormControl(''),
+      educationExpense: new FormControl(''),
+      rentalExpense: new FormControl(''),
+      electricityExpense: new FormControl(''),
+      interestExpense: new FormControl(''),
+      otherExpense: new FormControl(''),
 
       KCCLoanBank: new FormControl(''),
       KCCLoanCreditedAmount: new FormControl(''),

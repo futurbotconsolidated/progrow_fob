@@ -126,6 +126,7 @@ export class DashboardComponent implements OnInit {
   /* START: Non-API Function Calls */
   loadData() {
     this.getExistingFarmers();
+    this.clearLocalStorageOnEditAndView();
   }
 
   filterFarms(type: string) {
@@ -378,6 +379,17 @@ export class DashboardComponent implements OnInit {
       map.resize();
     }, 500);
   }
+
+  clearLocalStorageOnEditAndView() {
+    localStorage.removeItem('farmer-details'); // related to view and edit
+
+    // clear edit related localStorage variables before starting
+    localStorage.removeItem('edit-demographic-info');
+    localStorage.removeItem('edit-demographic-info-form');
+    localStorage.removeItem('edit-financial-planing');
+    localStorage.removeItem('edit-crop-market-planing');
+    localStorage.removeItem('edit-produce-aggregator');
+  }
   /* END: Non-API Function Calls */
 
   /* START: API Function Calls */
@@ -455,14 +467,7 @@ export class DashboardComponent implements OnInit {
   /* END: API Function Calls */
 
   getFarmerDetailsById(farmerId: any, type: string) {
-    localStorage.removeItem('farmer-details');
-
-    // clear edit related localStorage variables before starting
-    localStorage.removeItem('edit-demographic-info');
-    localStorage.removeItem('edit-demographic-info-form');
-    localStorage.removeItem('edit-financial-planing');
-    localStorage.removeItem('edit-crop-market-planing');
-    localStorage.removeItem('edit-produce-aggregator');
+    this.clearLocalStorageOnEditAndView(); // clear unwanted localStorage data
 
     this.spinner.show();
     this.commonService.getFarmerDetailsById(farmerId).subscribe(

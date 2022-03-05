@@ -36,7 +36,12 @@ export class CropMarketPlanComponent implements OnInit {
       'Farm gate aggregator',
       'Arhatiya',
     ],
-    tbody: ['Particular-1', 'Particular-2', 'Particular-3', 'Particular-4'],
+    tbody: [
+      { formControlName: 'particular1', displayLabel: 'Particular-1' },
+      { formControlName: 'particular2', displayLabel: 'Particular-2' },
+      { formControlName: 'particular3', displayLabel: 'Particular-3' },
+      { formControlName: 'particular4', displayLabel: 'Particular-4' },
+    ],
   };
 
   farmerId = ''; // edit feature
