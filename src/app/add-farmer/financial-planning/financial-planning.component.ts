@@ -51,6 +51,14 @@ export class FinancialPlanningComponent implements OnInit {
     ],
   };
 
+  preferredCreditSourceRankOrderArray = [
+    'Commission Agent/ Arhatiya',
+    'Family/Friends',
+    'Input Supplier',
+    'Local Sahookar',
+    'Gold Loan',
+  ];
+
   farmerId = ''; // edit feature
   /* END: Variables */
 
@@ -93,6 +101,18 @@ export class FinancialPlanningComponent implements OnInit {
 
       PMFBYAmountPaid: new FormControl(''),
       PMFBYPaymentDate: new FormControl(''),
+
+      preferredCreditSourceRankOrder: new FormControl([]),
+      commissionAgentROICharge: new FormControl(''),
+      familyROICharge: new FormControl(''),
+      inputSupplierROICharge: new FormControl(''),
+      localSahookarROICharge: new FormControl(''),
+      goldLoanROICharge: new FormControl(''),
+      commissionAgentLoanAmount: new FormControl(''),
+      familyLoanAmount: new FormControl(''),
+      inputSupplierLoanAmount: new FormControl(''),
+      localSahookarLoanAmount: new FormControl(''),
+      goldLoanLoanAmount: new FormControl(''),
 
       reasonAgent: new FormControl([]),
       pledgedCollateral: new FormControl([]),

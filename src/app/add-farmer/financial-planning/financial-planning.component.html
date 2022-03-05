@@ -488,30 +488,21 @@
                                     <label class="label-title">Rank Order</label>
                                 </div>
                                 <div class="credit-outside">
-                                    <div class="col-auto">
-                                        <label class="form-check-label form-check bordered-check" for="farmer_family">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="farmer_family">
-                                            <span>Commission Agent/ Arhatiya</span></label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <label class="form-check-label form-check bordered-check" for="company_doctor">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="company_doctor">
-                                            <span>Family/Friends</span></label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <label class="form-check-label form-check bordered-check" for="tv_program">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="tv_program">
-                                            <span>Input Supplier</span></label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <label class="form-check-label form-check bordered-check" for="kvk">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="kvk">
-                                            <span>Local Sahookar</span></label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <label class="form-check-label form-check bordered-check" for="youtube">
-                                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="youtube">
-                                            <span>Gold Loan</span></label>
+
+                                    <div class="col-auto" *ngFor="let indStat of preferredCreditSourceRankOrderArray">
+                                        <label class="form-check-label form-check bordered-check" for="{{ indStat }}">
+                                            <input class="form-check-input" type="checkbox" id="{{ indStat }}" (click)="
+                                            selectCheckboxArray(
+                                                $event,
+                                                'preferredCreditSourceRankOrder',
+                                                indStat
+                                                )
+                                            " [checked]="
+                                                this.financialForm.controls[
+                                                'preferredCreditSourceRankOrder'
+                                                ].value?.includes(indStat)
+                                            " /><span>{{ indStat }}</span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -521,19 +512,19 @@
                                 </div>
                                 <div class="credit-outside rank-order">
                                     <div class="col-auto">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="commissionAgentROICharge">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="familyROICharge">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="inputSupplierROICharge">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="localSahookarROICharge">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="goldLoanROICharge">
                                     </div>
                                 </div>
                             </div>
@@ -543,19 +534,19 @@
                                 </div>
                                 <div class="credit-outside rank-order">
                                     <div class="col-auto">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="commissionAgentLoanAmount">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="familyLoanAmount">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="inputSupplierLoanAmount">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="localSahookarLoanAmount">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="goldLoanLoanAmount">
                                     </div>
                                 </div>
                             </div>
