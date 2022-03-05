@@ -22,11 +22,11 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Planned cultivation area (In Hectares)</label>
-                                    <input type="text" class="form-control" maxlength="3" (keypress)="validateNo($event)" formControlName="plannedCultivationArea" placeholder="50 ">
+                                    <input type="text" class="form-control" maxlength="3" (keypress)="validateNo($event)" formControlName="plannedCultivationArea">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Amount</label>
-                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" formControlName="hectares" placeholder="INR 3,50,000.00">
+                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="hectares">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Crop</label>
@@ -222,15 +222,15 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                            <input type="date" class="form-control">
                                         </div>
                                     </div>
                                     <div class="row align-items-center form-details-inner">
@@ -248,15 +248,15 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                            <input type="date" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -283,15 +283,15 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                            <input type="date" class="form-control">
                                         </div>
                                     </div>
                                     <div class="row align-items-center form-details-inner">
@@ -309,15 +309,15 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
-                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Selling Price</label>
-                                            <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                            <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="">
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label for="">Selling Date</label>
-                                            <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                            <input type="date" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -340,19 +340,19 @@
                                     <tbody>
                                         <tr>
                                             <td>Household – Grocery/Repairs</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Health** - Doctors Expense/ Medical Treatment</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Education**</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Rental paying**</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -368,15 +368,15 @@
                                     <tbody>
                                         <tr>
                                             <td>House Electricity**</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Interest Payments**</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
                                         </tr>
                                         <tr>
                                             <td>Others, please specify</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" name=""></td>
+                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" name=""></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -402,19 +402,19 @@
                             <div class="display-flex">
                                 <div class="flex-1 lable-top">
                                     <label>Credited Amount</label>
-                                    <input type="text" class="form-control" id="" maxlength="10" (input)="numbersOnlyValidator($event)" placeholder="INR 5,00,000">
+                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="KCCLoanCreditedAmount">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="date" class="form-control" formControlName="KCCLoanDisbursementDate">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Repayment Amount</label>
-                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="KCCLoanRepaymentAmount">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="date" class="form-control" formControlName="KCCLoanRepaymentDate">
                                 </div>
                             </div>
                         </div>
@@ -423,7 +423,7 @@
                             </h3>
                             <div class="row align-items-center">
                                 <div class="col-md-4 lable-top">
-                                    <label>Land Size Amount</label>
+                                    <label>Land Size</label>
                                     <input type="text" class="form-control" formControlName="loanLandSize">
                                 </div>
                             </div>
@@ -446,23 +446,23 @@
                             <div class="row align-items-center">
                                 <div class="col-md-2 lable-top">
                                     <label>Bank Name</label>
-                                    <input type="text" class="form-control" id="" placeholder="ABC Bank of India">
+                                    <input type="text" class="form-control" formControlName="otherLoanBank">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Credited Amount</label>
-                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="INR 5,00,000">
+                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="otherLoanCreditedAmount">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="date" class="form-control" formControlName="otherLoanDisbursementDate">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Amount</label>
-                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="otherLoanRepaymentAmount">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="date" class="form-control" formControlName="otherLoanRepaymentDate">
                                 </div>
                             </div>
                         </div>
@@ -474,11 +474,11 @@
                             <div class="row align-items-center">
                                 <div class="col-md-2 lable-top">
                                     <label>Amount paid</label>
-                                    <input type="text" class="form-control" id="" maxlength="10" (input)="numbersOnlyValidator($event)" placeholder="INR 5,00,000">
+                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="PMFBYAmountPaid">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Date of payment</label>
-                                    <input type="text" class="form-control" id="" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="date" class="form-control" formControlName="PMFBYPaymentDate">
                                 </div>
                             </div>
                         </div>
@@ -487,7 +487,11 @@
                             <div class="row align-items-center form-details-inner">
                                 <div class="col-md-2 lable-top">
                                     <label>Insurance type</label>
-                                    <input type="text" class="form-control" id="" placeholder="Health">
+                                    <select class="form-select">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of financialMaster['insuranceType']" value="{{indVal.displayValue}}">
+                                            {{indVal.displayName}}</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Month-Year last taken</label>
@@ -495,7 +499,7 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Premium paid</label>
-                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
+                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Settlement amount credited?</label>
@@ -520,126 +524,6 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Satisfied-disbursement" id="disbursement-No" value="option1"><label class="form-check-label"
                                                 for="disbursement-No"> No</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row align-items-center form-details-inner">
-                                <div class="col-md-2 lable-top">
-                                    <label>Insurance type</label>
-                                    <input type="text" class="form-control" id="" placeholder="Health">
-                                </div>
-                                <div class="col-md-2 lable-top">
-                                    <label>Month-Year last taken</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="col-md-2 lable-top">
-                                    <label>Premium paid</label>
-                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
-                                </div>
-                                <div class="col-md-3 lable-top">
-                                    <label>Settlement amount credited?</label>
-                                    <div class="two-radio">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount1" id="amount1-Yes" value="option1"><label class="form-check-label" for="amount1-Yes">
-                                                Yes</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount1" id="amount1-No" value="option1"><label class="form-check-label" for="amount1-No">
-                                                No</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 lable-top">
-                                    <label>Satisfied with the disbursement?</label>
-                                    <div class="two-radio">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement1" id="disbursement1-Yes" value="option1"><label class="form-check-label"
-                                                for="disbursement1-Yes"> Yes</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement1" id="disbursement1-No" value="option1"><label class="form-check-label"
-                                                for="disbursement1-No"> No</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row align-items-center form-details-inner">
-                                <div class="col-md-2 lable-top">
-                                    <label>Insurance type</label>
-                                    <input type="text" class="form-control" id="" placeholder="Health">
-                                </div>
-                                <div class="col-md-2 lable-top">
-                                    <label>Month-Year last taken</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="col-md-2 lable-top">
-                                    <label>Premium paid</label>
-                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" id="" placeholder="">
-                                </div>
-                                <div class="col-md-3 lable-top">
-                                    <label>Settlement amount credited?</label>
-                                    <div class="two-radio">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount2" id="amount2-Yes" value="option1"><label class="form-check-label" for="amount2-Yes">
-                                                Yes</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount2" id="amount2-No" value="option1"><label class="form-check-label" for="amount2-No">
-                                                No</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 lable-top">
-                                    <label>Satisfied with the disbursement?</label>
-                                    <div class="two-radio">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement2" id="disbursement2-Yes" value="option1"><label class="form-check-label"
-                                                for="disbursement2-Yes"> Yes</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement2" id="disbursement2-No" value="option1"><label class="form-check-label"
-                                                for="disbursement2-No"> No</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row align-items-center form-details-inner">
-                                <div class="col-md-2 lable-top">
-                                    <label>Insurance type</label>
-                                    <input type="text" class="form-control" id="" placeholder="Health">
-                                </div>
-                                <div class="col-md-2 lable-top">
-                                    <label>Month-Year last taken</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="col-md-2 lable-top">
-                                    <label>Premium paid</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="col-md-3 lable-top">
-                                    <label>Settlement amount credited?</label>
-                                    <div class="two-radio">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount3" id="amount3-Yes" value="option1"><label class="form-check-label" for="amount3-Yes">
-                                                Yes</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Settlement-amount3" id="amount3-No" value="option1"><label class="form-check-label" for="amount3-No">
-                                                No</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 lable-top">
-                                    <label>Satisfied with the disbursement?</label>
-                                    <div class="two-radio">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement3" id="disbursement3-Yes" value="option1"><label class="form-check-label"
-                                                for="disbursement3-Yes"> Yes</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Satisfied-disbursement3" id="disbursement3-No" value="option1"><label class="form-check-label"
-                                                for="disbursement3-No"> No</label>
                                         </div>
                                     </div>
                                 </div>
@@ -841,7 +725,7 @@
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label for="">Account Number</label>
-                                    <input type="text" class="form-control" maxlength="14" (input)="numbersOnlyValidator($event)" formControlName="accountNum">
+                                    <input type="text" class="form-control" maxlength="14" (keypress)="validateNo($event)" formControlName="accountNum">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label for="">IFSC Code</label>
@@ -855,7 +739,7 @@
                             <div class="flex-1 add-another">
                                 <a *ngIf="getBankDetailsControls().length!=1  && i!=getBankDetailsControls().length-1" href="javascript:void(0)" class="delete-item " (click)="removeBankDetails(i)"><i
                                         class="fa fa-trash-o text-danger"></i></a>
-                                <a *ngIf="i==getBankDetailsControls().length-1" href="javascript:void(0)" (click)="addBankDetails()">+ Add another bank details</a>
+                                <a *ngIf="i==getBankDetailsControls().length-1" href="javascript:void(0)" (click)="addBankDetails()">+ Add Another</a>
                             </div>
                         </div>
                     </div>

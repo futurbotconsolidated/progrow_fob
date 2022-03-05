@@ -835,6 +835,7 @@ export const data = {
         displayValue: 'repaymentPeriod',
       },
     ],
+    insuranceType: [{ id: 1, displayName: 'Health', displayValue: 'Health' }],
   },
   commonData: {
     crops: [

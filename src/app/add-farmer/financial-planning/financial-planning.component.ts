@@ -37,7 +37,6 @@ export class FinancialPlanningComponent implements OnInit {
   commonMaster = <any>{};
 
   farmerId = ''; // edit feature
-
   /* END: Variables */
 
   constructor(
@@ -48,18 +47,31 @@ export class FinancialPlanningComponent implements OnInit {
   ) {
     this.financialForm = this.formBuilder.group({
       loanReqPlaned: new FormArray([]),
-      ownerType: new FormControl([]),
+
+      KCCLoanBank: new FormControl(''),
+      KCCLoanCreditedAmount: new FormControl(''),
+      KCCLoanDisbursementDate: new FormControl(''),
+      KCCLoanRepaymentAmount: new FormControl(''),
+      KCCLoanRepaymentDate: new FormControl(''),
+      loanLandSize: new FormControl(''),
 
       takenOtherLoan: new FormControl(''),
-      loanLandSize: new FormControl(''),
-      KCCLoanBank: new FormControl(''),
-      reasonAgent: new FormArray([]),
-      pledgedCollateral: new FormArray([]),
+      otherLoanBank: new FormControl(''),
+      otherLoanCreditedAmount: new FormControl(''),
+      otherLoanDisbursementDate: new FormControl(''),
+      otherLoanRepaymentAmount: new FormControl(''),
+      otherLoanRepaymentDate: new FormControl(''),
+
+      PMFBYAmountPaid: new FormControl(''),
+      PMFBYPaymentDate: new FormControl(''),
+
+      reasonAgent: new FormControl([]),
+      pledgedCollateral: new FormControl([]),
       pledgedCollateralOther: new FormControl(''),
-      availedFarmLoanWwaiver: new FormControl(''),
-      availedFarmLoanWwaiverOther: new FormControl(''),
+      availedFarmLoanWaiver: new FormControl(''),
+      availedFarmLoanWaiverOther: new FormControl(''),
       ownTractor: new FormControl(''),
-      farmMachinery: new FormControl(''),
+      farmMachinery: new FormControl([]),
       bankDetails: new FormArray([this.createBankDetails()]),
     });
 
@@ -104,19 +116,34 @@ export class FinancialPlanningComponent implements OnInit {
         });
     }
     // -----------------------End auto save --------------------
-    let finPlan: any = localStorage.getItem('financial-planing');
-    if (finPlan) {
-      finPlan = JSON.parse(finPlan);
-      this.financialForm.patchValue(finPlan);
-      console.log(finPlan);
-    }
+    // if case is for EDIT and else case is for NEW/DRAFT
+    if (this.farmerId) {
+      let editForm: any = localStorage.getItem('edit-financial-planing');
+      if (editForm) {
+        editForm = JSON.parse(editForm);
+        this.financialForm.patchValue(editForm);
+      } else {
+        const A: any = localStorage.getItem('farmer-details');
+        if (A) {
+          const B = JSON.parse(A).financial_planning;
+          this.financialForm.patchValue(B);
+        }
+      }
+    } else {
+      let finPlan: any = localStorage.getItem('financial-planing');
+      if (finPlan) {
+        finPlan = JSON.parse(finPlan);
+        this.financialForm.patchValue(finPlan);
+        console.log(finPlan);
+      }
 
-    let fieldInfo: any = localStorage.getItem('field-info');
-    if (fieldInfo) {
-      fieldInfo = JSON.parse(fieldInfo);
-      fieldInfo.forEach((element: any) => {
-        this.addLoanReqPlaned();
-      });
+      let fieldInfo: any = localStorage.getItem('field-info');
+      if (fieldInfo) {
+        fieldInfo = JSON.parse(fieldInfo);
+        fieldInfo.forEach((element: any) => {
+          this.addLoanReqPlaned();
+        });
+      }
     }
   }
 
@@ -206,10 +233,17 @@ export class FinancialPlanningComponent implements OnInit {
   }
 
   saveData() {
-    localStorage.setItem(
-      'financial-planing',
-      JSON.stringify(this.financialForm.value)
-    );
+    if (this.farmerId) {
+      localStorage.setItem(
+        'edit-financial-planing',
+        JSON.stringify(this.financialForm.value)
+      );
+    } else {
+      localStorage.setItem(
+        'financial-planing',
+        JSON.stringify(this.financialForm.value)
+      );
+    }
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
   }
