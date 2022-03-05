@@ -764,6 +764,77 @@ export const data = {
       { id: 3, displayName: 'HDFC', displayValue: 'hdfc' },
       { id: 3, displayName: 'Axis', displayValue: 'axis' },
     ],
+    farmMachinery: [
+      {
+        id: 1,
+        displayName: 'Tiller',
+        displayValue: 'tiller',
+      },
+      {
+        id: 1,
+        displayName: 'Seed drill',
+        displayValue: 'seed_drill',
+      },
+      {
+        id: 1,
+        displayName: 'Spraying machine',
+        displayValue: 'spraying_machine',
+      },
+      {
+        id: 1,
+        displayName: 'Rotavator',
+        displayValue: 'rotavator',
+      },
+      {
+        id: 1,
+        displayName: 'Combine Harvester',
+        displayValue: 'combine_harvester',
+      },
+      {
+        id: 1,
+        displayName: 'Reaper',
+        displayValue: 'reaper',
+      },
+      {
+        id: 1,
+        displayName: 'Tillage Implements',
+        displayValue: 'tillage_implements',
+      },
+      {
+        id: 1,
+        displayName: 'Thresher',
+        displayValue: 'thresher',
+      },
+    ],
+    pledgedCollateral: [
+      {
+        id: 1,
+        displayName: 'Output is sold to the credit supplier',
+        displayValue: 'Output',
+      },
+      { id: 1, displayName: 'Agricultural Land', displayValue: 'Agricultural' },
+      { id: 1, displayName: 'Gold', displayValue: 'Gold' },
+    ],
+    reasonAgent: [
+      {
+        id: 1,
+        displayName: 'Working Capital cycle requirement',
+        displayValue: 'Capital',
+      },
+      { id: 1, displayName: 'Finance for inputs', displayValue: 'Finance' },
+      { id: 1, displayName: 'Rollover of credit', displayValue: 'Rollover' },
+      {
+        id: 1,
+        displayName: 'Produce buyback guarantee/obligation',
+        displayValue: 'Produce',
+      },
+      { id: 1, displayName: 'Interest rate', displayValue: 'InterestRate' },
+      {
+        id: 1,
+        displayName: 'Repayment period',
+        displayValue: 'repaymentPeriod',
+      },
+    ],
   },
   commonData: {
     crops: [

@@ -49,9 +49,18 @@ export class FinancialPlanningComponent implements OnInit {
     this.financialForm = this.formBuilder.group({
       loanReqPlaned: new FormArray([]),
       ownerType: new FormControl([]),
+
+      takenOtherLoan: new FormControl(''),
+      loanLandSize: new FormControl(''),
+      KCCLoanBank: new FormControl(''),
+      reasonAgent: new FormArray([]),
+      pledgedCollateral: new FormArray([]),
+      pledgedCollateralOther: new FormControl(''),
+      availedFarmLoanWwaiver: new FormControl(''),
+      availedFarmLoanWwaiverOther: new FormControl(''),
+      ownTractor: new FormControl(''),
+      farmMachinery: new FormControl(''),
       bankDetails: new FormArray([this.createBankDetails()]),
-      availKccLoan: new FormControl('', [Validators.required]), //radio creditedAmount
-      creditedAmount: new FormControl('', [Validators.required]),
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {
@@ -171,6 +180,29 @@ export class FinancialPlanningComponent implements OnInit {
 
   removeBankDetails(index: any) {
     this.bankDetails.removeAt(index);
+  }
+
+  selectCheckboxArray(event: any, formCtlName: any, formVal: any) {
+    formVal = String(formVal);
+    let aryValCurr = this.financialForm.controls[formCtlName].value;
+    let aryValNew: any = [];
+    if (Array.isArray(aryValCurr)) {
+      aryValNew = [...aryValCurr];
+    } else if (aryValCurr) {
+      aryValNew = String(aryValCurr).split(',');
+    }
+    if (aryValNew.includes(formVal) && !event.target.checked) {
+      aryValNew.splice(aryValNew.indexOf(formVal), 1);
+    } else {
+      aryValNew.push(formVal);
+    }
+    // update the form value
+    // @ts-ignore: Object is possibly 'null'.
+    this.financialForm.get(formCtlName).setValue(aryValNew);
+    if (this.financialForm.controls[formCtlName].pristine) {
+      // @ts-ignore: Object is possibly 'null'.
+      this.financialForm.get(formCtlName).markAsDirty();
+    }
   }
 
   saveData() {

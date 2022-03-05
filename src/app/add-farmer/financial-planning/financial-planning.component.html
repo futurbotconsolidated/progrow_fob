@@ -390,7 +390,7 @@
                             <div class="display-flex">
                                 <div class="flex-1" *ngFor="let indType of financialMaster['KCCLoanBank']">
                                     <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}">
-                                        <input class="form-check-input" type="radio" formControlName="availKccLoan" value="{{indType.displayValue}}"
+                                        <input class="form-check-input" type="radio" formControlName="KCCLoanBank" value="{{indType.displayValue}}"
                                             id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                     </label>
                                 </div>
@@ -423,8 +423,8 @@
                             </h3>
                             <div class="row align-items-center">
                                 <div class="col-md-4 lable-top">
-                                    <label>Credited Amount</label>
-                                    <input type="text" class="form-control" maxlength="10" (input)="numbersOnlyValidator($event)" formControlName="creditedAmount" id="" placeholder="">
+                                    <label>Land Size Amount</label>
+                                    <input type="text" class="form-control" formControlName="loanLandSize">
                                 </div>
                             </div>
                         </div>
@@ -432,12 +432,12 @@
                             <h3 class="form-title">5D. Have you taken any other loan?</h3>
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <label class="form-check-label form-check bordered-radio" for="e">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="e">Yes</label>
+                                    <label class="form-check-label form-check bordered-radio" for="takenOtherLoanYES">
+                                        <input class="form-check-input" type="radio" formControlName="takenOtherLoan" value="Yes" id="takenOtherLoanYES">Yes</label>
                                 </div>
                                 <div class="col-auto">
-                                    <label class="form-check-label form-check bordered-radio" for="No">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="No">No</label>
+                                    <label class="form-check-label form-check bordered-radio" for="takenOtherLoanNO">
+                                        <input class="form-check-input" type="radio" formControlName="takenOtherLoan" value="No" id="takenOtherLoanNO">No</label>
                                 </div>
                             </div>
                         </div>
@@ -731,58 +731,46 @@
 
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">8. What is the reason for preferring any of the above agents? Rank order.
-
+                        <h3 class="form-title">
+                            8. What is the reason for preferring any of the above agents? Rank order.
                         </h3>
                         <div class="agent-rank-order">
-                            <label class="form-check-label form-check bordered-check" for="capital_cycle" id="hide_capital">
-                                <!-- <span class="ranking" id="show_capital">3</span> -->
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="capital_cycle">
-                                <span>Working Capital cycle requirement</span>
-                            </label>
-                            <label class="form-check-label form-check bordered-check" for="finance_input">
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="finance_input">
-                                <span>Finance for inputs</span>
-                            </label>
-                            <label class="form-check-label form-check bordered-check" for="rollover_credit">
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="rollover_credit">
-                                <span>Rollover of credit</span>
-                            </label>
-                            <label class="form-check-label form-check bordered-check" for="produce_buyback">
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="produce_buyback">
-                                <span>Produce buyback guarantee/obligation</span>
-                            </label>
-                            <label class="form-check-label form-check bordered-check" for="interest_rate">
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="interest_rate">
-                                <span>Interest rate</span>
-                            </label>
-                            <label class="form-check-label form-check bordered-check" for="repayment_period">
-                                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="repayment_period">
-                                <span>Repayment period</span>
+                            <label class="form-check-label form-check bordered-check" *ngFor="let indStat of financialMaster['reasonAgent']" for="{{ indStat.displayValue }}reasonAgent">
+                                <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}reasonAgent" (click)="
+                                selectCheckboxArray(
+                                    $event,
+                                    'reasonAgent',
+                                    indStat.displayValue
+                                    )
+                                " [checked]="
+                                    this.financialForm.controls[
+                                    'reasonAgent'
+                                    ].value?.includes(indStat.displayValue)
+                                " /><span>{{ indStat.displayName }}</span>
                             </label>
                         </div>
                     </div>
                     <div class="form-details">
                         <h3 class="form-title">9. What is the collateral being pledged against credit outside KCC? </h3>
                         <div class="row">
-                            <div class="col-auto">
-                                <label class="form-check-label form-check bordered-check" for="credit_supplier">
-                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="credit_supplier">
-                                    <span>Output is sold to the credit supplier</span></label>
-                            </div>
-                            <div class="col-auto">
-                                <label class="form-check-label form-check bordered-check" for="agricuture_land">
-                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="agricuture_land">
-                                    <span>Agricultural Land</span></label>
-                            </div>
-                            <div class="col-auto">
-                                <label class="form-check-label form-check bordered-check" for="Gold">
-                                    <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Gold">
-                                    <span>Gold</span></label>
+                            <div class="col-auto" *ngFor="let indStat of financialMaster['pledgedCollateral']">
+                                <label class="form-check-label form-check bordered-check" for="{{ indStat.displayValue }}pledgedCollateral">
+                                    <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}pledgedCollateral" (click)="
+                                    selectCheckboxArray(
+                                        $event,
+                                        'pledgedCollateral',
+                                        indStat.displayValue
+                                        )
+                                    " [checked]="
+                                        this.financialForm.controls[
+                                        'pledgedCollateral'
+                                        ].value?.includes(indStat.displayValue)
+                                    " /><span>{{ indStat.displayName }}</span>
+                                </label>
                             </div>
                             <div class="col-auto lable-top">
                                 <label>Mention other (if any)</label>
-                                <input type="text" class="form-control" name="" placeholder="">
+                                <input type="text" class="form-control" formControlName="pledgedCollateralOther">
                             </div>
                         </div>
                     </div>
@@ -791,19 +779,19 @@
                         <div class="row">
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="loan-yes">
-                                    <input class="form-check-input" type="radio" name="availed-loan" id="loan-yes">Yes</label>
+                                    <input class="form-check-input" type="radio" formControlName="availedFarmLoanWaiver" id="loan-yes" value="Yes">Yes</label>
                             </div>
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="loan-no">
-                                    <input class="form-check-input" type="radio" name="availed-loan" id="loan-no">No</label>
+                                    <input class="form-check-input" type="radio" formControlName="availedFarmLoanWaiver" id="loan-no" value="No">No</label>
                             </div>
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="loan-gold">
-                                    <input class="form-check-input" type="radio" name="availed-loan" id="loan-gold">Gold</label>
+                                    <input class="form-check-input" type="radio" formControlName="availedFarmLoanWaiver" id="loan-gold" value="Gold">Gold</label>
                             </div>
                             <div class="col-auto lable-top">
                                 <label>Mention other (if any)</label>
-                                <input type="text" class="form-control" name="" placeholder="">
+                                <input type="text" class="form-control" name="" placeholder="" formControlName="availedFarmLoanWaiverOther">
                             </div>
                         </div>
                     </div>
@@ -813,11 +801,11 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="tractor-yes">
-                                        <input class="form-check-input" type="radio" name="own-tractor" id="tractor-yes">Yes</label>
+                                        <input class="form-check-input" type="radio" formControlName="ownTractor" id="tractor-yes" value="Yes">Yes</label>
                                 </div>
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="tractor-no">
-                                        <input class="form-check-input" type="radio" name="own-tractor" id="tractor-no">No</label>
+                                        <input class="form-check-input" type="radio" formControlName="ownTractor" id="tractor-no" value="No">No</label>
                                 </div>
                             </div>
                         </div>
@@ -826,29 +814,18 @@
                             </h3>
                             <div class="row align-items-center">
                                 <div class="select-advice innovative-way">
-                                    <label class="form-check-label form-check bordered-check" for="Drip">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Drip"><span>Tiller</span>
-                                    </label>
-                                    <label class="form-check-label form-check bordered-check" for="Mulch">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Mulch"><span>Seed drill</span>
-                                    </label>
-                                    <label class="form-check-label form-check bordered-check" for="Solar_Pump">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Solar_Pump"><span>Spraying machine</span>
-                                    </label>
-                                    <label class="form-check-label form-check bordered-check" for="Fertilizers">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Fertilizers"><span>Rotavator</span>
-                                    </label>
-                                    <label class="form-check-label form-check bordered-check" for="IoT/Drone">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="IoT/Drone"><span>Combine Harvester</span>
-                                    </label>
-                                    <label class="form-check-label form-check bordered-check" for="Weather_Updates">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Weather_Updates"><span>Reaper</span>
-                                    </label>
-                                    <label class="form-check-label form-check bordered-check" for="Tillage_Implements">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Tillage_Implements"><span>Tillage Implements</span>
-                                    </label>
-                                    <label class="form-check-label form-check bordered-check" for="sops">
-                                        <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="sops"><span>Thresher</span>
+                                    <label class="form-check-label form-check bordered-check" *ngFor="let indStat of financialMaster['farmMachinery']" for="{{ indStat.displayValue }}farmMachinery">
+                                        <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}farmMachinery" (click)="
+                                        selectCheckboxArray(
+                                              $event,
+                                              'farmMachinery',
+                                              indStat.displayValue
+                                            )
+                                          " [checked]="
+                                            this.financialForm.controls[
+                                              'farmMachinery'
+                                            ].value?.includes(indStat.displayValue)
+                                          " /><span>{{ indStat.displayName }}</span>
                                     </label>
                                 </div>
                             </div>
