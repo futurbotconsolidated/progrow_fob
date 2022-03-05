@@ -843,6 +843,7 @@ export const data = {
       { id: 1, displayName: 'Cumin', displayValue: 'Cumin' },
       { id: 1, displayName: 'Gram', displayValue: 'Gram' },
       { id: 1, displayName: 'Isabgol', displayValue: 'Isabgol' },
+      { id: 1, displayName: 'Cotton', displayValue: 'Cotton' },
     ],
   },
   fieldInfo: {

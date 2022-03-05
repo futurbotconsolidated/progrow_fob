@@ -72,10 +72,8 @@
                         </div>
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">3. What is your approximate expenditure for following farming activities?
-
-                        </h3>
-                        <div class="cultivation-cost form-details-inner">
+                        <h3 class="form-title">3. What is your approximate expenditure for following farming activities?</h3>
+                        <div class="cultivation-cost form-details-inner" formGroupName="cultivationCost">
                             <h3 class="form-title">A. Cultivation Cost</h3>
                             <div class="row g-3 align-items-center form-details-inner">
                                 <div class="col-md-3">
@@ -83,15 +81,15 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="seedPlanned1" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="seedPlanned2" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="seedHistorical" (keypress)="validateNo($event)">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center form-details-inner">
@@ -100,15 +98,15 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="labourPlanned1" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="labourPlanned2" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="labourHistorical" (keypress)="validateNo($event)">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center form-details-inner">
@@ -117,15 +115,15 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="farmElectricityPlanned1" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="farmElectricityPlanned2" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="farmElectricityHistorical" (keypress)="validateNo($event)">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center form-details-inner">
@@ -134,15 +132,15 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="machineryPlanned1" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Planned)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="machineryPlanned2" (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" id="" placeholder="" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="machineryHistorical" (keypress)="validateNo($event)">
                                 </div>
                             </div>
                         </div>

@@ -77,6 +77,24 @@ export class FinancialPlanningComponent implements OnInit {
       FRCMCropInsurance: new FormControl(''),
       personalLoan: new FormControl(''),
 
+      cultivationCost: new FormGroup({
+        seedPlanned1: new FormControl(''),
+        seedPlanned2: new FormControl(''),
+        seedHistorical: new FormControl(''),
+
+        labourPlanned1: new FormControl(''),
+        labourPlanned2: new FormControl(''),
+        labourHistorical: new FormControl(''),
+
+        farmElectricityPlanned1: new FormControl(''),
+        farmElectricityPlanned2: new FormControl(''),
+        farmElectricityHistorical: new FormControl(''),
+
+        machineryPlanned1: new FormControl(''),
+        machineryPlanned2: new FormControl(''),
+        machineryHistorical: new FormControl(''),
+      }),
+
       groceryExpense: new FormControl(''),
       medicalExpense: new FormControl(''),
       educationExpense: new FormControl(''),
