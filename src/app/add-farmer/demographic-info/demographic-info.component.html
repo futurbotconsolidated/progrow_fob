@@ -11,7 +11,7 @@
               <h3 class="form-title">1. Identity proof</h3>
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
-                  <label for="PANnumber">PAN Card number </label>
+                  <label for="PANnumber">PAN Card Number </label>
                   <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="ABWRT0987T" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
@@ -87,7 +87,7 @@
             </div>
           </div>
           <div class="form-details">
-            <h3 class="form-title">3. Others Details</h3>
+            <h3 class="form-title">3. Others details</h3>
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Passport Number</label>
@@ -506,7 +506,7 @@
             </div>
           </div>
           <div class="form-details">
-            <h3 class="form-title">7. Property Ownership</h3>
+            <h3 class="form-title">7. Property ownership</h3>
             <div class="mb-2" formArrayName="propertyOwnership" *ngFor="let item of getPropertyOwnershipControls(); let i = index">
               <div class="display-flex family-members" [formGroupName]="i">
                 <div class="flex-1 lable-top">

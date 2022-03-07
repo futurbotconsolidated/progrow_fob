@@ -76,15 +76,14 @@
                             <p>Who is operating Phone: <span><b>
                                         {{getDisplayName('phoneOperating',demographicDisp?.phoneUsedBy)}}</b></span></p>
                             <p>Preferable advisory medium:
-                                <span *ngFor="let x of demographicDisp?.adviceMedium"><b>
-                                        {{getDisplayName('adviceMedium',x)}} ,</b></span>
+                                <span *ngFor="let x of demographicDisp?.adviceMedium;let xindex=index;"><b>{{ (xindex>0)? ', ':'' }}                                        {{getDisplayName('adviceMedium',x)}}</b></span>
                                 <span><b> {{demographicDisp?.adviceMediumOther}}</b></span>
 
                             </p>
                             <p>Advisory medium on
-                                cultivation: <span *ngFor="let x of demographicDisp?.cultivationAdvice"> <b>
-                                        {{getDisplayName('cultivationAdvice',x)}} ,
-                                    </b></span>
+                                cultivation: <span *ngFor="let x of demographicDisp?.cultivationAdvice;let xindex=index;"> <b>{{ (xindex>0)? ', ':'' }}
+                                        {{getDisplayName('cultivationAdvice',x)}}</b>
+                                    </span>
                                 <span><b> {{demographicDisp?.cultivationAdviceOther}}</b></span>
                             </p>
                         </div>
