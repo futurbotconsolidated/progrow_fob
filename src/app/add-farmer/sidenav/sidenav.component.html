@@ -4,15 +4,15 @@
             <a routerLink="/bd/dashboard"><img src="../../../assets/images/logo.png" alt=""></a>
         </div>
         <ul class="navigation">
-            <li><a disabled>Concept Cards</a></li>
-            <li><a disabled>Demographic Info</a></li>
-            <li><a disabled>Field Info</a></li>
-            <li><a disabled>Financial Planning</a></li>
-            <li><a disabled>Crop Market Plan</a></li>
-            <li><a disabled>FRCM as Produce Aggregator</a></li>
-            <li><a disabled>Technology Adoption</a></li>
-            <li><a disabled>Co-Applicant Details</a></li>
-            <li><a disabled>Information & Declaration</a></li>
+            <li [class]="lsn_current_url == '/add/concept-cards'? 'active' : ''"><a disabled>Concept Cards</a></li>
+            <li [class]="lsn_current_url == '/add/demographic-info'? 'active' : ''"><a disabled>Demographic Info</a></li>
+            <li [class]="lsn_current_url == '/add/field-info'? 'active' : ''"><a disabled>Field Info</a></li>
+            <li [class]="lsn_current_url == '/add/financial-planning'? 'active' : ''"><a disabled>Financial Planning</a></li>
+            <li [class]="lsn_current_url == '/add/crop-market-plan'? 'active' : ''"><a disabled>Crop Market Plan</a></li>
+            <li [class]="lsn_current_url == '/add/produce-aggregator'? 'active' : ''"><a disabled>FRCM as Produce Aggregator</a></li>
+            <li [class]="lsn_current_url == '/add/technology-adoption'? 'active' : ''"><a disabled>Technology Adoption</a></li>
+            <li [class]="lsn_current_url == '/add/co-applicant'? 'active' : ''"><a disabled>Co-Applicant Details</a></li>
+            <li [class]="lsn_current_url == '/add/info-declaration'? 'active' : ''"><a disabled>Information & Declaration</a></li>
         </ul>
 
         <!-- <ul class="navigation">
