@@ -27,6 +27,7 @@ export class FinancialPlanningComponent implements OnInit {
   /* START: Variables */
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
+  insuranceDetails!: FormArray;
   nextRoute: any;
 
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
@@ -119,6 +120,8 @@ export class FinancialPlanningComponent implements OnInit {
 
       PMFBYAmountPaid: new FormControl(''),
       PMFBYPaymentDate: new FormControl(''),
+
+      insuranceDetails: new FormArray([this.createInsuranceDetails()]),
 
       preferredCreditSourceRankOrder: new FormControl([]),
       commissionAgentROICharge: new FormControl(''),
@@ -231,6 +234,7 @@ export class FinancialPlanningComponent implements OnInit {
 
   ngAfterContentInit() {}
 
+  /* START: Add Dynamic crop loan requirement  :FormArray */
   createLoanReqPlaned(): FormGroup {
     return this.formBuilder.group({
       fieldId: new FormControl('', [Validators.required]),
@@ -253,7 +257,9 @@ export class FinancialPlanningComponent implements OnInit {
   removeLoanReqPlaned(index: any) {
     this.loanReqPlaned.removeAt(index);
   }
+  /* END: Add Dynamic crop loan requirement  :FormArray */
 
+  /* START: Add Dynamic Bank Details: FormArray */
   createBankDetails(): FormGroup {
     return this.formBuilder.group({
       bankName: new FormControl('', [Validators.required]),
@@ -275,6 +281,34 @@ export class FinancialPlanningComponent implements OnInit {
   removeBankDetails(index: any) {
     this.bankDetails.removeAt(index);
   }
+  /* END: Add Dynamic Bank Details: FormArray */
+
+  /* START: Add Dynamic Insurance Details: FormArray */
+  createInsuranceDetails(): FormGroup {
+    return this.formBuilder.group({
+      insuranceType: new FormControl(''),
+      monthYearTaken: new FormControl(''),
+      premiumPaid: new FormControl(''),
+      isSettlementAmountCredited: new FormControl(''),
+      isDisbursementSatisfied: new FormControl(''),
+    });
+  }
+
+  getInsuranceDetailsControls() {
+    return (this.financialForm.get('insuranceDetails') as FormArray).controls;
+  }
+
+  addInsuranceDetails(): void {
+    this.insuranceDetails = this.financialForm.get(
+      'insuranceDetails'
+    ) as FormArray;
+    this.insuranceDetails.push(this.createInsuranceDetails());
+  }
+
+  removeInsuranceDetails(index: any) {
+    this.insuranceDetails.removeAt(index);
+  }
+  /* END: Add Dynamic Insurance Details: FormArray */
 
   selectCheckboxArray(event: any, formCtlName: any, formVal: any) {
     formVal = String(formVal);
