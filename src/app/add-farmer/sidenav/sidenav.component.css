@@ -1,6 +1,12 @@
 .lsn-tv-div{
     display: none;
   }
+.left-menu ul.navigation li.active a{
+    color: #608e50;
+}
+.left-menu ul.navigation li.active a::after {
+	border-bottom-color:#608e50;
+}
 @media only screen and (min-device-width: 992px) and (max-device-width: 1200px) {
 .lsn-tv-div {
 	position: fixed;
