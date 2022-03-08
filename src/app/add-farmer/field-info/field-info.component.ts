@@ -60,7 +60,6 @@ export class FieldInfoComponent implements OnInit {
   count = 0;
   fieldArea = <any>[];
   editFieldArea = <any>[];
-  fieldIndexMapIds = <any>[];
 
   farmerId = ''; // edit feature
   /* END: Variables */
@@ -101,7 +100,7 @@ export class FieldInfoComponent implements OnInit {
     this.selectedCoordinates = [];
     this.fieldArea = [];
     this.editFieldArea = [];
-    this.fieldIndexMapIds = [];
+
     // -----------------------start auto save --------------------
     // draft feature is not required in edit operation
     if (!this.farmerId) {
@@ -370,14 +369,10 @@ export class FieldInfoComponent implements OnInit {
       this.addHistoFieldDetail();
       this.addFieldOwnershipDetail();
       this.addEnumerate();
-      console.log(this.plannedFieldDetails);
+
       drawnItems.addLayer(layer);
-      let fimi_ob = {
-        'field_index': this.plannedFieldDetails.length-1,
-        'leaflet_id': layer._leaflet_id
-      };
-      this.fieldIndexMapIds.push(fimi_ob);
       var area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+      console.log(area_sq_meter);
       var area_hec = (area_sq_meter / 10000).toFixed(2);
       this.fieldArea.push(area_hec);
 
@@ -388,42 +383,10 @@ export class FieldInfoComponent implements OnInit {
         .openPopup();
     });
 
-    map.on(L.Draw.Event.EDITED, (e: any) => {
-      console.log('Event.EDITED', e);
-      let layers = e.layers;
-      let count = this.count;
-      console.log(this.fieldIndexMapIds);
-      layers.eachLayer(function(layer: any) {
-        console.log(layer);
-        let area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
-        let area_hec = (area_sq_meter / 10000).toFixed(2);
-        layer
-        .bindPopup(
-          `Field ID : ${count} <br/> Area : ${area_hec} (Hectare)`
-        )
-        .openPopup();
-        });
-    });
-
-    map.on(L.Draw.Event.DELETED, (e: any) => {
-      console.log('Event.DELETED', e);
-      let layers = e.layers;
+    map.on(L.Draw.Event.DELETED, (event: any) => {
+      var layer = event.layer;
       this.count--;
-      console.log(this.fieldIndexMapIds);
-      let fieldIndexMapIds_var = this.fieldIndexMapIds;
-      var field_index = -1;
-      layers.eachLayer(function(layer: any) {
-        fieldIndexMapIds_var.forEach((x: any, index: number) => {
-          console.log(x);
-          if(layer._leaflet_id == x.leaflet_id){
-            field_index = x.field_index;
-          }
-        });
-      });   
-      console.log(field_index);   
-      if(field_index){
-        this.removePlannedFieldDetails(field_index);
-      }
+      // this.removePlannedFieldDetails();
     });
 
     map.on('draw:editvertex', (e: any) => {
