@@ -267,8 +267,9 @@
                                     <input class="form-control" formControlName="fieldOwnId" placeholder="{{i+1}}" [attr.value]="i+1">
                                 </div>
                                 <div class="col-md-3" *ngFor="let indGen of fieldInforMaster['ownerShipType']">
-                                    <label class="form-check-label form-check bordered-radio" for="{{indGen.displayValue}}">
-                                        <input class="form-check-input" type="radio" formControlName="ownerType" value="{{indGen.displayValue}}">{{indGen.displayName}}</label>
+                                    <label class="form-check-label form-check bordered-radio" for="{{indGen.displayValue}}{{i}}">
+                                        <input class="form-check-input" type="radio" formControlName="ownerType" id="{{indGen.displayValue}}{{i}}"
+                                            value="{{indGen.displayValue}}">{{indGen.displayName}}</label>
                                 </div>
 
                                 <div class="col-md-7 lable-top mt-3">
