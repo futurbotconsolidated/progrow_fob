@@ -163,8 +163,14 @@
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
-                                            <label for="">Sold at</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <label>Sold at</label>
+                                            <select class="form-select">
+                                                <option value="">...</option>
+                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal.displayValue}}">
+                                                    {{indVal.displayName}}</option>
+                                            </select>
+
+
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
@@ -189,8 +195,12 @@
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
-                                            <label for="">Sold at</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <label>Sold at</label>
+                                            <select class="form-select">
+                                                <option value="">...</option>
+                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal.displayValue}}">
+                                                    {{indVal.displayName}}</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
@@ -224,8 +234,12 @@
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
-                                            <label for="">Sold at</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <label>Sold at</label>
+                                            <select class="form-select">
+                                                <option value="">...</option>
+                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal.displayValue}}">
+                                                    {{indVal.displayName}}</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
@@ -250,8 +264,12 @@
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
-                                            <label for="">Sold at</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
+                                            <label>Sold at</label>
+                                            <select class="form-select">
+                                                <option value="">...</option>
+                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal.displayValue}}">
+                                                    {{indVal.displayName}}</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label for="">Quantity Sold</label>
@@ -339,6 +357,10 @@
                                         <input class="form-check-input" type="radio" formControlName="KCCLoanBank" value="{{indType.displayValue}}"
                                             id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
                                     </label>
+                                </div>
+                                <div class="col-auto lable-top">
+                                    <label>Other</label>
+                                    <input type="text" class="form-control" placeholder="" formControlName="KCCLoanBankOther">
                                 </div>
                             </div>
                         </div>

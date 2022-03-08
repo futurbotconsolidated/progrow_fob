@@ -246,26 +246,44 @@ export class DashboardComponent implements OnInit {
              </div>
              <div class="col-md-6 text-left">
                <label class="fw-bold">Farmer Name</label>
-               <p class="text-capitalize">${elem['farmerDetails'].firstName} ${elem['farmerDetails'].middleName} ${elem['farmerDetails'].lastName} </p>
+               <p class="text-capitalize">${elem['farmerDetails'].firstName} ${
+                elem['farmerDetails'].middleName
+              } ${elem['farmerDetails'].lastName} </p>
              </div>
            </div>
            <div class="row">
              <div class="col-md-6 text-left">
                <label class="fw-bold">Date of registration</label>
-               <p class="text-capitalize">${formatDate(elem['registrationDate'], 'EE, MMM d, y', 'en_IN')}</p>
+               <p class="text-capitalize">${formatDate(
+                 elem['registrationDate'],
+                 'EE, MMM d, y',
+                 'en_IN'
+               )}</p>
              </div>
              <div class="col-md-6 text-left">
                <label class="fw-bold">Address</label>
-               <p class="text-capitalize">${elem.address.addressLine1} ${elem.address.addressLine2} ${elem.address.pincode}</p>
+               <p class="text-capitalize">${elem.address.addressLine1} ${
+                elem.address.addressLine2
+              } ${elem.address.pincode}</p>
              </div>
            </div>        
            <div class="row">
              <div class="col-md-6 text-left">
                <label class="fw-bold">Visit Land</label>
                <p class="text-capitalize">
-                 <a href="https://maps.google.com?q=${coordinates_arr[0][0][1]},${coordinates_arr[0][0][0]}
-                 " target="_blank">Take Me</a> </p> </div> </div>
-                   </div>`;
+                 <a href="https://maps.google.com?q=${
+                   coordinates_arr[0][0][1]
+                 },${coordinates_arr[0][0][0]}
+                 " target="_blank">Take Me</a> 
+                </p> 
+              </div> 
+              <div class="col-md-6 text-left d-none" >
+                <a routerLink="/edit/demographic-info/${
+                  elem['farmerId']
+                }"  class="btn btn-sm mt-2 btn-farmer p-1">View Profile</a>
+              </div>
+            </div>
+                  </div>`;
 
               coordinates_arr.forEach((h: any, i: number) => {
                 // Add Source

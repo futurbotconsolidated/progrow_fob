@@ -105,6 +105,7 @@ export class FinancialPlanningComponent implements OnInit {
       otherExpense: new FormControl(''),
 
       KCCLoanBank: new FormControl(''),
+      KCCLoanBankOther: new FormControl(''),
       KCCLoanCreditedAmount: new FormControl(''),
       KCCLoanDisbursementDate: new FormControl(''),
       KCCLoanRepaymentAmount: new FormControl(''),
