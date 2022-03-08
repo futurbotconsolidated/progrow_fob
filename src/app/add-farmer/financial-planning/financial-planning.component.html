@@ -154,7 +154,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="row align-items-center form-details-inner">
-                                        <div class="col-md-3 lable-top">
+                                        <div class="col-md-2 lable-top">
                                             <label>Crop</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
@@ -162,7 +162,7 @@
                                                     {{indVal.displayName}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-2 lable-top">
+                                        <div class="col-md-3 lable-top">
                                             <label>Sold at</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
@@ -186,7 +186,7 @@
                                         </div>
                                     </div>
                                     <div class="row align-items-center form-details-inner">
-                                        <div class="col-md-3 lable-top">
+                                        <div class="col-md-2 lable-top">
                                             <label>Crop</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
@@ -194,7 +194,7 @@
                                                     {{indVal.displayName}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-2 lable-top">
+                                        <div class="col-md-3 lable-top">
                                             <label>Sold at</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
@@ -225,7 +225,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="row align-items-center form-details-inner">
-                                        <div class="col-md-3 lable-top">
+                                        <div class="col-md-2 lable-top">
                                             <label>Crop</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
@@ -233,7 +233,7 @@
                                                     {{indVal.displayName}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-2 lable-top">
+                                        <div class="col-md-3 lable-top">
                                             <label>Sold at</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
@@ -255,7 +255,7 @@
                                         </div>
                                     </div>
                                     <div class="row align-items-center form-details-inner">
-                                        <div class="col-md-3 lable-top">
+                                        <div class="col-md-2 lable-top">
                                             <label>Crop</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
@@ -263,7 +263,7 @@
                                                     {{indVal.displayName}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-2 lable-top">
+                                        <div class="col-md-3 lable-top">
                                             <label>Sold at</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
@@ -474,12 +474,12 @@
                                         <label>Settlement amount credited?</label>
                                         <div class="two-radio">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" id="Amount-Yes" formControlName="isSettlementAmountCredited" value="Yes"><label class="form-check-label"
-                                                    for="Amount-Yes">
+                                                <input class="form-check-input" type="radio" id="Amount-Yes{{i}}" formControlName="isSettlementAmountCredited" value="Yes"><label
+                                                    class="form-check-label" for="Amount-Yes">
                                                     Yes</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" id="Amount-No" formControlName="isSettlementAmountCredited" value="No"><label class="form-check-label"
+                                                <input class="form-check-input" type="radio" id="Amount-No{{i}}" formControlName="isSettlementAmountCredited" value="No"><label class="form-check-label"
                                                     for="Amount-No">
                                                     No</label>
                                             </div>
@@ -489,12 +489,12 @@
                                         <label>Satisfied with the disbursement?</label>
                                         <div class="two-radio">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" id="disbursement-Yes" formControlName="isDisbursementSatisfied" value="Yes"><label class="form-check-label"
-                                                    for="disbursement-Yes"> Yes</label>
+                                                <input class="form-check-input" type="radio" id="disbursement-Yes{{i}}" formControlName="isDisbursementSatisfied" value="Yes"><label
+                                                    class="form-check-label" for="disbursement-Yes"> Yes</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" id="disbursement-No" formControlName="isDisbursementSatisfied" value="No"><label class="form-check-label"
-                                                    for="disbursement-No"> No</label>
+                                                <input class="form-check-input" type="radio" id="disbursement-No{{i}}" formControlName="isDisbursementSatisfied" value="No"><label
+                                                    class="form-check-label" for="disbursement-No"> No</label>
                                             </div>
                                         </div>
                                     </div>
