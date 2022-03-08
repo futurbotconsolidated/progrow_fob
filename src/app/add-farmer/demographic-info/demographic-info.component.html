@@ -544,7 +544,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label>Cumulative value(₹)</label>
-                  <input type="text" name="" class="form-control" formControlName="cumulativeValue" maxlength="10" />
+                  <input type="text" name="" class="form-control" formControlName="cumulativeValue" maxlength="10" (keypress)="validateNo($event)" />
                   <!-- <div *ngIf="isSubmitted && f['cumulativeValue'].errors" class="form-text text-danger">
                     <small *ngIf="f['cumulativeValue'].errors['pattern']">
                       Only Numbers are allowed</small>

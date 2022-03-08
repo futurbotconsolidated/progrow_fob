@@ -836,6 +836,16 @@ export const data = {
       },
     ],
     insuranceType: [{ id: 1, displayName: 'Health', displayValue: 'Health' }],
+    cropSoldPlace: [
+      { id: 1, displayName: 'Local Mandi', displayValue: 'Local Mandi' },
+      { id: 1, displayName: 'District Mandi', displayValue: 'District Mandi' },
+      {
+        id: 1,
+        displayName: 'Farm gate aggregator',
+        displayValue: 'Farm gate aggregator',
+      },
+      { id: 1, displayName: 'Arhatiya', displayValue: 'Arhatiya' },
+    ],
   },
   commonData: {
     crops: [
