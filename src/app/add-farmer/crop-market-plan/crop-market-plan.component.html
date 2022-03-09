@@ -13,10 +13,10 @@
                             <div class="row align-items-center">
                                 <div class="select-advice innovative-way">
                                     <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['seedProcure']">
-                                        <label class="form-check-label form-check bordered-check" for="{{indStat.displayValue}}">
-                                            <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}" name="{{indStat.displayValue}}" (click)="
-                                            selectCultivationAdvice($event, 'seedProcure', indStat.displayValue)
-                                          " [checked]="this.cropMarketPlanForm.controls['seedProcure'].value?.includes(indStat.displayValue)">{{indStat.displayName}}
+                                        <label class="form-check-label form-check bordered-check" for="{{indStat}}">
+                                            <input class="form-check-input" type="checkbox" id="{{indStat}}" name="{{indStat}}" (click)="
+                                            selectCultivationAdvice($event, 'seedProcure', indStat)
+                                          " [checked]="this.cropMarketPlanForm.controls['seedProcure'].value?.includes(indStat)">{{indStat}}
                                         </label>
                                     </div>
                                     <div class="col-auto lable-top">
@@ -32,9 +32,8 @@
                             </h3>
                             <div class="row align-items-center">
                                 <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['varietyComparison']">
-                                    <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}">
-                                        <input class="form-check-input" type="radio" formControlName="varietyComparison" value="{{indType.displayValue}}"
-                                            id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType}}">
+                                        <input class="form-check-input" type="radio" formControlName="varietyComparison" value="{{indType}}" id="{{indType}}"><span>{{indType}}</span>
                                     </label>
                                 </div>
                             </div>
@@ -48,15 +47,15 @@
                                 <label>Year-Season</label>
                                 <select class="form-select" formControlName="year1">
                                     <option value="">...</option>
-                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']" [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
+                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']" [value]="crpSesn">{{crpSesn}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">
                                 <label>Crop</label>
                                 <select class="form-select" formControlName="crop1">
                                     <option value="">...</option>
-                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
-                                        {{indVal.displayName}}</option>
+                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                        {{indVal}}</option>
                                 </select>
                             </div>
 
@@ -78,15 +77,15 @@
                                 <label>Year-Season</label>
                                 <select class="form-select" formControlName="year2">
                                     <option value="">...</option>
-                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']" [value]="crpSesn.displayValue">{{crpSesn.displayName}}</option>
+                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']" [value]="crpSesn">{{crpSesn}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">
                                 <label>Crop</label>
                                 <select class="form-select" formControlName="crop2">
                                     <option value="">...</option>
-                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
-                                        {{indVal.displayName}}</option>
+                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                        {{indVal}}</option>
                                 </select>
                             </div>
 
@@ -109,10 +108,10 @@
                             cultivation cycle?</h3>
                         <div class="row">
                             <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['fertilizerPurchase']">
-                                <label class="form-check-label form-check bordered-check" for="{{indStat.displayValue}}">
-                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}" name="{{indStat.displayValue}}" (click)="
-                                    selectCultivationAdvice($event, 'fertilizerPurchase', indStat.displayValue)
-                                  " [checked]="this.cropMarketPlanForm.controls['fertilizerPurchase'].value?.includes(indStat.displayValue)">{{indStat.displayName}}
+                                <label class="form-check-label form-check bordered-check" for="{{indStat}}">
+                                    <input class="form-check-input" type="checkbox" id="{{indStat}}" name="{{indStat}}" (click)="
+                                    selectCultivationAdvice($event, 'fertilizerPurchase', indStat)
+                                  " [checked]="this.cropMarketPlanForm.controls['fertilizerPurchase'].value?.includes(indStat)">{{indStat}}
                                 </label>
                             </div>
                             <div class="col-auto lable-top">
@@ -127,9 +126,8 @@
                         <div class="row align-items-center">
                             <div class="select-advice interested-child">
                                 <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['pesticideQuality']">
-                                    <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}">
-                                        <input class="form-check-input" type="radio" formControlName="pesticideQuality" value="{{indType.displayValue}}"
-                                            id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType}}">
+                                        <input class="form-check-input" type="radio" formControlName="pesticideQuality" value="{{indType}}" id="{{indType}}"><span>{{indType}}</span>
                                     </label>
                                 </div>
                             </div>
@@ -139,10 +137,10 @@
                         <h3 class="form-title">5. Who advises you on application of fertilizers/pesticides? </h3>
                         <div class="row">
                             <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['fertilizerAdvise']">
-                                <label class="form-check-label form-check bordered-check" for="{{indStat.displayValue}}">
-                                    <input class="form-check-input" type="checkbox" id="{{indStat.displayValue}}" name="{{indStat.displayValue}}" (click)="
-                                    selectCultivationAdvice($event, 'fertilizerAdvise', indStat.displayValue)
-                                  " [checked]="this.cropMarketPlanForm.controls['fertilizerAdvise'].value?.includes(indStat.displayValue)">{{indStat.displayName}}
+                                <label class="form-check-label form-check bordered-check" for="{{indStat}}">
+                                    <input class="form-check-input" type="checkbox" id="{{indStat}}" name="{{indStat}}" (click)="
+                                    selectCultivationAdvice($event, 'fertilizerAdvise', indStat)
+                                  " [checked]="this.cropMarketPlanForm.controls['fertilizerAdvise'].value?.includes(indStat)">{{indStat}}
                                 </label>
                             </div>
                             <div class="col-auto lable-top">
@@ -190,9 +188,8 @@
                             </h3>
                             <div class="row g-3 align-items-center">
                                 <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['farmGateGrading']">
-                                    <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}farmGateGrading">
-                                        <input class="form-check-input" type="radio" formControlName="farmGateGrading" value="{{indType.displayValue}}"
-                                            id="{{indType.displayValue}}farmGateGrading"><span>{{indType.displayName}}</span>
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType}}farmGateGrading">
+                                        <input class="form-check-input" type="radio" formControlName="farmGateGrading" value="{{indType}}" id="{{indType}}farmGateGrading"><span>{{indType}}</span>
                                     </label>
                                 </div>
                             </div>
@@ -203,9 +200,8 @@
                         </h3>
                         <div class="row align-items-center">
                             <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['durationReceivingMoney']">
-                                <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}">
-                                    <input class="form-check-input" type="radio" formControlName="durationReceivingMoney" value="{{indType.displayValue}}"
-                                        id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
+                                <label class="form-check-label form-check bordered-radio" for="{{indType}}">
+                                    <input class="form-check-input" type="radio" formControlName="durationReceivingMoney" value="{{indType}}" id="{{indType}}"><span>{{indType}}</span>
                                 </label>
                             </div>
                             <div class="col-auto lable-top">
@@ -219,9 +215,8 @@
                             price?</h3>
                         <div class="row align-items-center">
                             <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['warehouseProduce']">
-                                <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}warehouseProduce">
-                                    <input class="form-check-input" type="radio" formControlName="warehouseProduce" value="{{indType.displayValue}}"
-                                        id="{{indType.displayValue}}warehouseProduce"><span>{{indType.displayName}}</span>
+                                <label class="form-check-label form-check bordered-radio" for="{{indType}}warehouseProduce">
+                                    <input class="form-check-input" type="radio" formControlName="warehouseProduce" value="{{indType}}" id="{{indType}}warehouseProduce"><span>{{indType}}</span>
                                 </label>
                             </div>
                         </div>

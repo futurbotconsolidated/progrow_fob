@@ -20,8 +20,8 @@
                                     <h3 class="form-title">A. Planned Season</h3>
                                     <select class="form-select" formControlName="plannedSeason">
                                         <option value="">...</option>
-                                        <option *ngFor="let indVal of fieldInforMaster['season']" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
+                                        <option *ngFor="let indVal of fieldInforMaster['season']" value="{{indVal}}">
+                                            {{indVal}}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-8">
@@ -56,24 +56,24 @@
                                             <label>Irrigation System</label>
                                             <select class="form-select" formControlName="irrigationSystem">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of fieldInforMaster['irrigationSystem']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of fieldInforMaster['irrigationSystem']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label>Water Sources</label>
                                             <select class="form-select" formControlName="waterSource">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of fieldInforMaster['waterSource']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of fieldInforMaster['waterSource']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label>Crop</label>
                                             <select class="form-select" formControlName="crop">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
 
 
@@ -87,8 +87,8 @@
                                             <div class="ratings">
                                                 <div class="star-rate">
                                                     <a *ngFor="let soilQualityStar of fieldInforMaster['soilQuality'];  let i = index;" href="javascript:void(0)"
-                                                        (click)="SoilQualityRating(soilQualityStar)" [ngClass]="{'active': (soilQualityStar.displayValue == selectedSoilQualityStar)}"><i
-                                                            class="fa fa-star" id="{{i}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
+                                                        (click)="SoilQualityRating(soilQualityStar)" [ngClass]="{'active': (soilQualityStar == selectedSoilQualityStar)}"><i class="fa fa-star"
+                                                            id="{{i}}"></i><span>{{soilQualityStar}}</span></a>
                                                     <input type="text" formControlName="soilQuality" hidden>
 
                                                 </div>
@@ -100,8 +100,8 @@
                                             <div class="ratings">
                                                 <div class="star-rate">
                                                     <a *ngFor="let waterQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)" (click)="WaterQualityRating(waterQualityStar)"
-                                                        [ngClass]="{'active': (waterQualityStar.displayValue == selectedWaterQualityStar)}"><i class="fa fa-star"
-                                                            id="{{waterQualityStar.displayValue}}"></i><span>{{waterQualityStar.displayValue}}</span></a>
+                                                        [ngClass]="{'active': (waterQualityStar == selectedWaterQualityStar)}"><i class="fa fa-star"
+                                                            id="{{waterQualityStar}}"></i><span>{{waterQualityStar}}</span></a>
                                                     <input type="text" formControlName="waterQuality" hidden>
 
 
@@ -114,8 +114,8 @@
                                             <div class="ratings">
                                                 <div class="star-rate">
                                                     <a *ngFor="let yieldQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)" (click)="YieldQualityRating(yieldQualityStar)"
-                                                        [ngClass]="{'active': (yieldQualityStar.displayValue == selectedYieldQualityStar)}"><i class="fa fa-star"
-                                                            id="{{yieldQualityStar.displayValue}}"></i><span>{{yieldQualityStar.displayValue}}</span></a>
+                                                        [ngClass]="{'active': (yieldQualityStar == selectedYieldQualityStar)}"><i class="fa fa-star"
+                                                            id="{{yieldQualityStar}}"></i><span>{{yieldQualityStar}}</span></a>
                                                     <input type="text" formControlName="yieldQuality" hidden>
 
                                                 </div>
@@ -150,8 +150,8 @@
                                         <h3 class="form-title">A. Historical Season</h3>
                                         <select class="form-select" formControlName="historicalSeason">
                                             <option value="">...</option>
-                                            <option *ngFor="let indVal of fieldInforMaster['season']" value="{{indVal.displayValue}}">
-                                                {{indVal.displayName}}</option>
+                                            <option *ngFor="let indVal of fieldInforMaster['season']" value="{{indVal}}">
+                                                {{indVal}}</option>
                                         </select>
                                     </div>
                                     <div class="col-md-7">
@@ -174,24 +174,24 @@
                                                 <label>Irrigation System</label>
                                                 <select class="form-select" formControlName="irrigationSystem">
                                                     <option value="">...</option>
-                                                    <option *ngFor="let indVal of fieldInforMaster['irrigationSystem']" value="{{indVal.displayValue}}">
-                                                        {{indVal.displayName}}</option>
+                                                    <option *ngFor="let indVal of fieldInforMaster['irrigationSystem']" value="{{indVal}}">
+                                                        {{indVal}}</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-2 lable-top">
                                                 <label>Water Sources</label>
                                                 <select class="form-select" formControlName="waterSource">
                                                     <option value="">...</option>
-                                                    <option *ngFor="let indVal of fieldInforMaster['waterSource']" value="{{indVal.displayValue}}">
-                                                        {{indVal.displayName}}</option>
+                                                    <option *ngFor="let indVal of fieldInforMaster['waterSource']" value="{{indVal}}">
+                                                        {{indVal}}</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-2 lable-top">
                                                 <label>Crop</label>
                                                 <select class="form-select" formControlName="crop">
                                                     <option value="">...</option>
-                                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
-                                                        {{indVal.displayName}}</option>
+                                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                                        {{indVal}}</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-2 lable-top">
@@ -199,8 +199,8 @@
                                                 <div class="ratings">
                                                     <div class="star-rate">
                                                         <a *ngFor="let soilQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)" (click)="HistoSoilQualityRating(soilQualityStar)"
-                                                            [ngClass]="{'active': (soilQualityStar.displayValue == selectedHistoSoilQualityStar)}"><i class="fa fa-star"
-                                                                id="{{soilQualityStar.displayValue}}"></i><span>{{soilQualityStar.displayValue}}</span></a>
+                                                            [ngClass]="{'active': (soilQualityStar == selectedHistoSoilQualityStar)}"><i class="fa fa-star"
+                                                                id="{{soilQualityStar}}"></i><span>{{soilQualityStar}}</span></a>
                                                         <input type="text" formControlName="soilQuality" hidden>
 
                                                     </div>
@@ -212,9 +212,8 @@
                                                 <div class="ratings">
                                                     <div class="star-rate">
                                                         <a *ngFor="let waterQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)"
-                                                            (click)="HistoWaterQualityRating(waterQualityStar)"
-                                                            [ngClass]="{'active': (waterQualityStar.displayValue == selectedHistoWaterQualityStar)}"><i class="fa fa-star"
-                                                                id="{{waterQualityStar.displayValue}}"></i><span>{{waterQualityStar.displayValue}}</span></a>
+                                                            (click)="HistoWaterQualityRating(waterQualityStar)" [ngClass]="{'active': (waterQualityStar == selectedHistoWaterQualityStar)}"><i
+                                                                class="fa fa-star" id="{{waterQualityStar}}"></i><span>{{waterQualityStar}}</span></a>
                                                         <input type="text" formControlName="waterQuality" hidden>
 
                                                     </div>
@@ -226,9 +225,8 @@
                                                 <div class="ratings">
                                                     <div class="star-rate">
                                                         <a *ngFor="let yieldQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)"
-                                                            (click)="HistoYieldQualityRating(yieldQualityStar)"
-                                                            [ngClass]="{'active': (yieldQualityStar.displayValue == selectedHistoYieldQualityStar)}"><i class="fa fa-star"
-                                                                id="{{yieldQualityStar.displayValue}}"></i><span>{{yieldQualityStar.displayValue}}</span></a>
+                                                            (click)="HistoYieldQualityRating(yieldQualityStar)" [ngClass]="{'active': (yieldQualityStar == selectedHistoYieldQualityStar)}"><i
+                                                                class="fa fa-star" id="{{yieldQualityStar}}"></i><span>{{yieldQualityStar}}</span></a>
                                                         <input type="text" formControlName="yieldQuality" hidden>
 
                                                     </div>
@@ -267,9 +265,8 @@
                                     <input class="form-control" formControlName="fieldOwnId" placeholder="{{i+1}}" [attr.value]="i+1">
                                 </div>
                                 <div class="col-md-3" *ngFor="let indGen of fieldInforMaster['ownerShipType']">
-                                    <label class="form-check-label form-check bordered-radio" for="{{indGen.displayValue}}{{i}}">
-                                        <input class="form-check-input" type="radio" formControlName="ownerType" id="{{indGen.displayValue}}{{i}}"
-                                            value="{{indGen.displayValue}}">{{indGen.displayName}}</label>
+                                    <label class="form-check-label form-check bordered-radio" for="{{indGen}}{{i}}">
+                                        <input class="form-check-input" type="radio" formControlName="ownerType" id="{{indGen}}{{i}}" value="{{indGen}}">{{indGen}}</label>
                                 </div>
 
                                 <div class="col-md-7 lable-top mt-3">
@@ -306,8 +303,8 @@
                                     <label>Water Source</label>
                                     <select class="form-select" formControlName="waterSource">
                                         <option value="">...</option>
-                                        <option *ngFor="let indVal of fieldInforMaster['waterSource']" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
+                                        <option *ngFor="let indVal of fieldInforMaster['waterSource']" value="{{indVal}}">
+                                            {{indVal}}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2 lable-top">
@@ -335,8 +332,8 @@
                                     <label>Yes/No</label>
                                     <select class="form-select" formControlName="yesNo">
                                         <option value="">...</option>
-                                        <option *ngFor="let indVal of fieldInforMaster['yesNo']" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
+                                        <option *ngFor="let indVal of fieldInforMaster['yesNo']" value="{{indVal}}">
+                                            {{indVal}}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2 lable-top">
@@ -348,8 +345,8 @@
                                     <label>Have you received the last test result?</label>
                                     <select class="form-select" formControlName="testResult">
                                         <option value="">...</option>
-                                        <option *ngFor="let indVal of fieldInforMaster['yesNo']" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
+                                        <option *ngFor="let indVal of fieldInforMaster['yesNo']" value="{{indVal}}">
+                                            {{indVal}}</option>
                                     </select>
                                 </div>
                                 <div class="col-auto add-another">
@@ -372,9 +369,8 @@
                             <div class="select-advice interested-child">
 
                                 <div class="col-auto" *ngFor="let indType of fieldInforMaster['cropCycleOnReports']">
-                                    <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}">
-                                        <input class="form-check-input" type="radio" formControlName="cropCycleOnReports" value="{{indType.displayValue}}"
-                                            id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType}}">
+                                        <input class="form-check-input" type="radio" formControlName="cropCycleOnReports" value="{{indType}}" id="{{indType}}"><span>{{indType}}</span>
                                     </label>
                                 </div>
                             </div>

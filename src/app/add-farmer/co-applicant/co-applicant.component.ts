@@ -302,13 +302,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please select Address Proof Type.', 'Error!');
         return;
       }
-      const A = this.demoGraphicMaster['addressProofType']
-        .filter(
-          (x: any) => this.coApplicantForm.value.addressProof == x.displayValue
-        )
-        .map((y: any) => {
-          return y.displayName;
-        });
+      const A = this.coApplicantForm.value.addressProof;
       this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
@@ -321,14 +315,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please select Address Proof Type.', 'Error!');
         return;
       }
-      const A = this.demoGraphicMaster['addressProofType']
-        .filter(
-          (x: any) =>
-            this.coApplicantForm.value.addressProofcoa2 == x.displayValue
-        )
-        .map((y: any) => {
-          return y.displayName;
-        });
+      const A = this.coApplicantForm.value.addressProofcoa2;
       this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;

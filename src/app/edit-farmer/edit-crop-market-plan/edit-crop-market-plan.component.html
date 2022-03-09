@@ -9,30 +9,30 @@
                         <div class="d-flex-profile kcc-details">
                             <p><span>Where do you procure the seed for different crops?</span>
                                 <span><b *ngFor="let x of cropMrktPlanDisp?.seedProcure">
-                                        {{getDisplayName('seedProcure',x)}}, </b>
+                                        {{x}}, </b>
                                     <b>{{cropMrktPlanDisp?.seedProcureOther}}</b></span>
                             </p>
 
                             <p><span>If used hybrid variety seeds, what difference do you observe in comparison to local
-                                    varieties?</span><span><b>{{getDisplayName('varietyComparison',cropMrktPlanDisp?.varietyComparison)}}</b></span>
+                                    varieties?</span><span><b>{{cropMrktPlanDisp?.varietyComparison}}</b></span>
                             </p>
 
                             <p><span>Where do you purchase your fertilizers and pesticides from for the cultivation
                                     cycle?</span>
                                 <span><b *ngFor="let x of cropMrktPlanDisp?.fertilizerPurchase">
-                                        {{getDisplayName('fertilizerPurchase',x)}}, </b>
+                                        {{x}}, </b>
                                     <b>{{cropMrktPlanDisp?.fertilizerPurchaseOther}}</b></span>
                             </p>
 
                             <p><span>How satisfied are you with the fertilizer and pesticide quality/service from the
                                     local input
-                                    supplier?</span><span><b>{{getDisplayName('pesticideQuality',cropMrktPlanDisp?.pesticideQuality)}}
+                                    supplier?</span><span><b>{{cropMrktPlanDisp?.pesticideQuality}}
                                     </b></span></p>
 
                             <p><span>Who advises you on application of
                                     fertilizers/pesticides?</span>
                                 <span><b *ngFor="let x of cropMrktPlanDisp?.fertilizerAdvise">
-                                        {{getDisplayName('fertilizerAdvise',x)}},</b>
+                                        {{x}},</b>
                                     <b>{{cropMrktPlanDisp?.fertilizerAdviseOther}}</b></span>
 
 
@@ -78,13 +78,13 @@
                         <div class="d-flex-profile kcc-details py-4">
                             <p><span>Where do you sell the produce?</span><span><b>N/A</b></span></p>
                             <p><span>Are you satisfied with the existing farm gate grading
-                                    method?</span><span><b>{{getDisplayName('farmGateGrading',cropMrktPlanDisp?.farmGateGrading)}}</b></span>
+                                    method?</span><span><b>{{cropMrktPlanDisp?.farmGateGrading}}</b></span>
                             </p>
                             <p><span>How long does it take before receiving money for the produce
-                                    sold?</span><span><b>{{getDisplayName('durationReceivingMoney',cropMrktPlanDisp?.durationReceivingMoney)}}</b></span>
+                                    sold?</span><span><b>{{cropMrktPlanDisp?.durationReceivingMoney}}</b></span>
                             </p>
                             <p><span> Would you like to warehouse your produce before selling at the highest
-                                    price?</span><span><b>{{getDisplayName('warehouseProduce',cropMrktPlanDisp?.warehouseProduce)}}
+                                    price?</span><span><b>{{cropMrktPlanDisp?.warehouseProduce}}
                                     </b></span></p>
 
                         </div>

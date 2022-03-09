@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { CommonService } from '../../shared/common.service';
-import { ActivatedRoute } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-summary',
@@ -15,10 +12,7 @@ export class SummaryComponent implements OnInit {
   userInfo: any;
   /* END: Variables */
 
-  constructor(
-    public commonService: CommonService,
-    public oauthService: OAuthService
-  ) {
+  constructor(public oauthService: OAuthService) {
     this.userInfo = this.oauthService.getIdentityClaims();
   }
 

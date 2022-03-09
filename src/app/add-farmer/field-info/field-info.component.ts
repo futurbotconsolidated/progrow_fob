@@ -373,8 +373,8 @@ export class FieldInfoComponent implements OnInit {
       console.log(this.plannedFieldDetails);
       drawnItems.addLayer(layer);
       let fimi_ob = {
-        'field_index': this.plannedFieldDetails.length-1,
-        'leaflet_id': layer._leaflet_id
+        field_index: this.plannedFieldDetails.length - 1,
+        leaflet_id: layer._leaflet_id,
       };
       this.fieldIndexMapIds.push(fimi_ob);
       var area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
@@ -393,16 +393,14 @@ export class FieldInfoComponent implements OnInit {
       let layers = e.layers;
       let count = this.count;
       console.log(this.fieldIndexMapIds);
-      layers.eachLayer(function(layer: any) {
+      layers.eachLayer(function (layer: any) {
         console.log(layer);
         let area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
         let area_hec = (area_sq_meter / 10000).toFixed(2);
         layer
-        .bindPopup(
-          `Field ID : ${count} <br/> Area : ${area_hec} (Hectare)`
-        )
-        .openPopup();
-        });
+          .bindPopup(`Field ID : ${count} <br/> Area : ${area_hec} (Hectare)`)
+          .openPopup();
+      });
     });
 
     map.on(L.Draw.Event.DELETED, (e: any) => {
@@ -412,16 +410,16 @@ export class FieldInfoComponent implements OnInit {
       console.log(this.fieldIndexMapIds);
       let fieldIndexMapIds_var = this.fieldIndexMapIds;
       var field_index = -1;
-      layers.eachLayer(function(layer: any) {
+      layers.eachLayer(function (layer: any) {
         fieldIndexMapIds_var.forEach((x: any, index: number) => {
           console.log(x);
-          if(layer._leaflet_id == x.leaflet_id){
+          if (layer._leaflet_id == x.leaflet_id) {
             field_index = x.field_index;
           }
         });
-      });   
-      console.log(field_index);   
-      if(field_index){
+      });
+      console.log(field_index);
+      if (field_index) {
         this.removePlannedFieldDetails(field_index);
       }
     });
@@ -660,37 +658,37 @@ export class FieldInfoComponent implements OnInit {
   }
 
   SoilQualityRating(soilQualityStar: any) {
-    this.selectedSoilQualityStar = soilQualityStar.displayValue;
+    this.selectedSoilQualityStar = soilQualityStar;
     // let a = (this.fieldInfoForm.get('plannedFieldDetails') as FormArray)
     //   .controls;
     // console.log(a);
 
     // a.get('soilQuality').patchValue(soilQualityStar.displayValue);
-    console.log('Value of SoilQualityStar', soilQualityStar.displayValue);
+    console.log('Value of SoilQualityStar', soilQualityStar);
   }
 
   WaterQualityRating(waterQualityStar: any) {
-    this.selectedWaterQualityStar = waterQualityStar.displayValue;
-    console.log('Value of waterQualityStar', waterQualityStar.displayValue);
+    this.selectedWaterQualityStar = waterQualityStar;
+    console.log('Value of waterQualityStar', waterQualityStar);
   }
 
   YieldQualityRating(yieldQualityStar: any) {
-    this.selectedYieldQualityStar = yieldQualityStar.displayValue;
-    console.log('Value of yieldQualityStar', yieldQualityStar.displayValue);
+    this.selectedYieldQualityStar = yieldQualityStar;
+    console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 
   HistoSoilQualityRating(soilQualityStar: any) {
-    this.selectedHistoSoilQualityStar = soilQualityStar.displayValue;
+    this.selectedHistoSoilQualityStar = soilQualityStar;
     console.log('Value of SoilQualityStar', soilQualityStar);
   }
 
   HistoWaterQualityRating(waterQualityStar: any) {
-    this.selectedHistoWaterQualityStar = waterQualityStar.displayValue;
+    this.selectedHistoWaterQualityStar = waterQualityStar;
     console.log('Value of waterQualityStar', waterQualityStar);
   }
 
   HistoYieldQualityRating(yieldQualityStar: any) {
-    this.selectedHistoYieldQualityStar = yieldQualityStar.displayValue;
+    this.selectedHistoYieldQualityStar = yieldQualityStar;
     console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 

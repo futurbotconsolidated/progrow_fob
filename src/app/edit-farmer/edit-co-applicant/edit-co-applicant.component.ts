@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonService } from '../../shared/common.service';
 
 @Component({
   selector: 'app-edit-co-applicant',
@@ -8,9 +7,8 @@ import { CommonService } from '../../shared/common.service';
 })
 export class EditCoApplicantComponent implements OnInit {
   coApplicantDisp = {} as any;
-  constructor(private commonService: CommonService) {
+  constructor() {
     const A: any = localStorage.getItem('farmer-details');
-
     if (A) {
       const coArray = JSON.parse(A).co_applicant_details;
       this.coApplicantDisp =
@@ -19,8 +17,4 @@ export class EditCoApplicantComponent implements OnInit {
     }
   }
   ngOnInit(): void {}
-  // get Name from Master Json
-  getDisplayName(dataProperty: string, id: any) {
-    return this.commonService.getDisplayName('demoGraphic', dataProperty, id);
-  }
 }

@@ -69,8 +69,8 @@
                 <label class="required">Select ID</label>
                 <select class="flex-1 form-select" formControlName="addressProof">
                   <option value="">...</option>
-                  <option *ngFor="let indVal of  demoGraphicMaster['addressProofType']" value="{{ indVal.displayValue }}">
-                    {{ indVal.displayName }}
+                  <option *ngFor="let indVal of  demoGraphicMaster['addressProofType']" value="{{ indVal }}">
+                    {{ indVal }}
                   </option>
                 </select>
                 <div *ngIf="isSubmitted && f['addressProof'].errors" class="form-text text-danger">
@@ -153,9 +153,9 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.B Gender</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen.displayValue }}gender1">
-                  <input class="form-check-input" type="radio" formControlName="gender" value="{{ indGen.displayValue }}" id="{{ indGen.displayValue }}gender1" /><span>{{
-                    indGen.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen }}gender1">
+                  <input class="form-check-input" type="radio" formControlName="gender" value="{{ indGen }}" id="{{ indGen }}gender1" /><span>{{
+                    indGen
                     }}</span>
                 </label>
               </div>
@@ -163,18 +163,18 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.C Religion</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion.displayValue }}religion1">
-                  <input class="form-check-input" type="radio" formControlName="religion" value="{{ indReligion.displayValue }}" id="{{ indReligion.displayValue }}religion1" /><span>{{
-                    indReligion.displayName }}</span>
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion }}religion1">
+                  <input class="form-check-input" type="radio" formControlName="religion" value="{{ indReligion }}" id="{{ indReligion }}religion1" /><span>{{
+                    indReligion }}</span>
                 </label>
               </div>
             </div>
             <div class="form-details-inner">
               <h3 class="form-title">4.D Caste/Tribe</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste.displayValue }}caste1">
-                  <input class="form-check-input" type="radio" formControlName="caste" value="{{ indCaste.displayValue }}" id="{{ indCaste.displayValue }}caste1" /><span>{{
-                    indCaste.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste }}caste1">
+                  <input class="form-check-input" type="radio" formControlName="caste" value="{{ indCaste }}" id="{{ indCaste }}caste1" /><span>{{
+                    indCaste
                     }}</span>
                 </label>
               </div>
@@ -186,8 +186,8 @@
                   <label>Educational Qualification</label>
                   <select class="flex-1 form-select" formControlName="educationQualification">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal.displayValue }}">
-                      {{ indVal.displayName }}
+                    <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal }}">
+                      {{ indVal }}
                     </option>
                   </select>
                 </div>
@@ -195,8 +195,8 @@
                   <label>Occupation</label>
                   <select class="flex-1 form-select" formControlName="occupation">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of demoGraphicMaster['occupation']" value="{{ indVal.displayValue }}">
-                      {{ indVal.displayName }}
+                    <option *ngFor="let indVal of demoGraphicMaster['occupation']" value="{{ indVal }}">
+                      {{ indVal }}
                     </option>
                   </select>
                 </div>
@@ -332,9 +332,9 @@
             <div class="form-details-inner">
               <h3 class="form-title">5.B Property status</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat.displayValue }}propStatus1">
-                  <input class="form-check-input" type="radio" formControlName="propertyStatus" value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}propStatus1" /><span>{{
-                    indStat.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat }}propStatus1">
+                  <input class="form-check-input" type="radio" formControlName="propertyStatus" value="{{ indStat }}" id="{{ indStat }}propStatus1" /><span>{{
+                    indStat
                     }}</span>
                 </label>
               </div>
@@ -348,8 +348,8 @@
             <div class="form-details-inner">
               <h3 class="form-title required">5.C Communication/Permanent address</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat.displayValue }}">
-                  <input class="form-check-input" type="radio" formControlName="commOrPerAddress" value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}" /><span>{{ indStat.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat }}">
+                  <input class="form-check-input" type="radio" formControlName="commOrPerAddress" value="{{ indStat }}" id="{{ indStat }}" /><span>{{ indStat
                     }}</span>
                 </label>
                 <div *ngIf="isSubmitted && f['commOrPerAddress'].errors" class="form-text text-danger">
@@ -430,8 +430,8 @@
                     <label>Relation</label>
                     <select class="form-select" formControlName="relation">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['relation']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indVal of demoGraphicMaster['relation']" value="{{ indVal }}">
+                        {{ indVal }}
                       </option>
                     </select>
                   </div>
@@ -439,8 +439,8 @@
                     <label>Education</label>
                     <select class="flex-1 form-select" formControlName="education">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal }}">
+                        {{ indVal }}
                       </option>
                     </select>
                   </div>
@@ -449,8 +449,8 @@
 
                     <select class="flex-1 form-select" formControlName="occupation">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['occupation']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indVal of demoGraphicMaster['occupation']" value="{{ indVal }}">
+                        {{ indVal }}
                       </option>
                     </select>
                   </div>
@@ -459,8 +459,8 @@
 
                     <select class="flex-1 form-select" formControlName="dependency">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['dependency']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indVal of demoGraphicMaster['dependency']" value="{{ indVal }}">
+                        {{ indVal }}
                       </option>
                     </select>
                   </div>
@@ -543,8 +543,8 @@
                 <label class="">Select ID</label>
                 <select class="flex-1 form-select" formControlName="addressProofcoa2">
                   <option value="">...</option>
-                  <option *ngFor="let indVal of demoGraphicMaster['addressProofType']" value="{{ indVal.displayValue }}">
-                    {{ indVal.displayName }}
+                  <option *ngFor="let indVal of demoGraphicMaster['addressProofType']" value="{{ indVal }}">
+                    {{ indVal }}
                   </option>
                 </select>
                 <div *ngIf="isSubmitted && f['addressProofcoa2'].errors" class="form-text text-danger">
@@ -627,9 +627,9 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.B Gender</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen.displayValue }}gender2">
-                  <input class="form-check-input" type="radio" formControlName="gendercoa2" value="{{ indGen.displayValue }}" id="{{ indGen.displayValue }}gender2" /><span>{{
-                    indGen.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen }}gender2">
+                  <input class="form-check-input" type="radio" formControlName="gendercoa2" value="{{ indGen }}" id="{{ indGen }}gender2" /><span>{{
+                    indGen
                     }}</span>
                 </label>
               </div>
@@ -637,18 +637,18 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.C Religion</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion.displayValue }}religion2">
-                  <input class="form-check-input" type="radio" formControlName="religioncoa2" value="{{ indReligion.displayValue }}" id="{{ indReligion.displayValue }}religion2" /><span>{{
-                    indReligion.displayName }}</span>
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion }}religion2">
+                  <input class="form-check-input" type="radio" formControlName="religioncoa2" value="{{ indReligion }}" id="{{ indReligion }}religion2" /><span>{{
+                    indReligion }}</span>
                 </label>
               </div>
             </div>
             <div class="form-details-inner">
               <h3 class="form-title">4.D Caste/Tribe</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste.displayValue }}caste2">
-                  <input class="form-check-input" type="radio" formControlName="castecoa2" value="{{ indCaste.displayValue }}" id="{{ indCaste.displayValue }}caste2" /><span>{{
-                    indCaste.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste }}caste2">
+                  <input class="form-check-input" type="radio" formControlName="castecoa2" value="{{ indCaste }}" id="{{ indCaste }}caste2" /><span>{{
+                    indCaste
                     }}</span>
                 </label>
               </div>
@@ -660,8 +660,8 @@
                   <label>Educational Qualification</label>
                   <select class="flex-1 form-select" formControlName="educationQualificationcoa2">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal.displayValue }}">
-                      {{ indVal.displayName }}
+                    <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal }}">
+                      {{ indVal }}
                     </option>
                   </select>
                 </div>
@@ -669,8 +669,8 @@
                   <label>Occupation</label>
                   <select class="flex-1 form-select" formControlName="occupationcoa2">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of demoGraphicMaster['occupation']" value="{{ indVal.displayValue }}">
-                      {{ indVal.displayName }}
+                    <option *ngFor="let indVal of demoGraphicMaster['occupation']" value="{{ indVal }}">
+                      {{ indVal }}
                     </option>
                   </select>
                 </div>
@@ -802,9 +802,9 @@
             <div class="form-details-inner">
               <h3 class="form-title">5.B Property status</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat.displayValue }}propStatus2">
-                  <input class="form-check-input" type="radio" formControlName="propertyStatuscoa2" value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}propStatus2" /><span>{{
-                    indStat.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat }}propStatus2">
+                  <input class="form-check-input" type="radio" formControlName="propertyStatuscoa2" value="{{ indStat }}" id="{{ indStat }}propStatus2" /><span>{{
+                    indStat
                     }}</span>
                 </label>
               </div>
@@ -818,10 +818,9 @@
             <div class="form-details-inner">
               <h3 class="form-title">5.C Communication/Permanent address</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio " *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat.displayValue }}"
-                  for="{{ indStat.displayValue }}coa2">
-                  <input class="form-check-input" type="radio" formControlName="commOrPerAddresscoa2" value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}coa2" /><span>{{
-                    indStat.displayName
+                <label class="form-check-label form-check bordered-radio " *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat }}coa2">
+                  <input class="form-check-input" type="radio" formControlName="commOrPerAddresscoa2" value="{{ indStat }}" id="{{ indStat }}coa2" /><span>{{
+                    indStat
                     }}</span>
                 </label>
                 <div *ngIf="isSubmitted && f['commOrPerAddresscoa2'].errors" class="form-text text-danger">
@@ -901,8 +900,8 @@
                     <label>Relation</label>
                     <select class="form-select" formControlName="relation">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['relation']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indVal of demoGraphicMaster['relation']" value="{{ indVal }}">
+                        {{ indVal }}
                       </option>
                     </select>
                   </div>
@@ -910,8 +909,8 @@
                     <label>Education</label>
                     <select class="flex-1 form-select" formControlName="education">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal }}">
+                        {{ indVal }}
                       </option>
                     </select>
                   </div>
@@ -920,8 +919,8 @@
 
                     <select class="flex-1 form-select" formControlName="occupation">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['occupation']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indVal of demoGraphicMaster['occupation']" value="{{ indVal }}">
+                        {{ indVal }}
                       </option>
                     </select>
                   </div>
@@ -930,8 +929,8 @@
 
                     <select class="flex-1 form-select" formControlName="dependency">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['dependency']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indVal of demoGraphicMaster['dependency']" value="{{ indVal }}">
+                        {{ indVal }}
                       </option>
                     </select>
                   </div>

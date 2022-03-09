@@ -330,14 +330,7 @@ export class DemographicInfoComponent implements OnInit {
         this.toastr.error('please select Address Proof Type.', 'Error!');
         return;
       }
-      const A = this.demoGraphicMaster['addressProofType']
-        .filter(
-          (x: any) =>
-            this.demographicInfoForm.value.addressProof == x.displayValue
-        )
-        .map((y: any) => {
-          return y.displayName;
-        });
+      const A = this.demographicInfoForm.value.addressProof;
       this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;

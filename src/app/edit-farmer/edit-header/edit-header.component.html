@@ -17,7 +17,7 @@
                         {{demographicDisp?.farmerDetails?.lastName}}</span>
                 </div>
                 <div class="edit-picture-gap profile-date"><img src="../../../assets/images/profile-date.svg" alt=""><span> {{demographicDisp?.farmerDetails?.dob}}</span></div>
-                <div class="edit-picture-gap gender"><img src="../../../assets/images/profile-gender.svg" alt=""><span>{{getDisplayName('gender',demographicDisp?.farmerDetails?.gender)}}</span>
+                <div class="edit-picture-gap gender"><img src="../../../assets/images/profile-gender.svg" alt=""><span>{{demographicDisp?.farmerDetails?.gender}}</span>
                 </div>
                 <div class="edit-picture-gap phone-num"><img src="../../../assets/images/profile-phone.svg" alt=""><span>{{demographicDisp?.address?.mobileNumber}}</span></div>
             </div>
@@ -39,8 +39,8 @@
                 <li>
                     <span><img src="../../../assets/images/profile-religion.svg" alt=""></span>
                     <div><span><b>Religion:
-                            </b>{{getDisplayName('religion',demographicDisp?.farmerDetails?.religion)}}</span><br><span><b>Caste:</b>
-                            {{getDisplayName('caste',demographicDisp?.farmerDetails?.caste)}}</span></div>
+                            </b>{{demographicDisp?.farmerDetails?.religion}}</span><br><span><b>Caste:</b>
+                            {{demographicDisp?.farmerDetails?.caste}}</span></div>
                 </li>
                 <li>
                     <span><img src="../../../assets/images/profile-address.svg" alt=""></span>

@@ -31,10 +31,10 @@
                                 <tbody>
                                     <tr *ngFor="let x of financialPlanDisp?.loanReqPlaned">
                                         <td>{{x.fieldId}}</td>
-                                        <td>{{getDisplayName('cropLoanProduct',x.cropLoanProduct,'financialPlan')}}</td>
+                                        <td>{{x.cropLoanProduct}}</td>
                                         <td>{{x.hectares}}</td>
                                         <td>{{x.plannedCultivationArea}}</td>
-                                        <td>{{getDisplayName('crops',x.crop,'commonData')}} </td>
+                                        <td>{{x.crop}} </td>
                                     </tr>
                                 </tbody>
                             </table>

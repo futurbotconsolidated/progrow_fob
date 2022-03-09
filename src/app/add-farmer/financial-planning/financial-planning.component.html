@@ -16,8 +16,8 @@
                                 <div class="col-md-3 lable-top">
                                     <label>Crop-Loan Product</label>
                                     <select class="form-select" formControlName="cropLoanProduct">
-                                        <option *ngFor="let indVal of financialMaster['cropLoanProduct']" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
+                                        <option *ngFor="let indVal of financialMaster['cropLoanProduct']" value="{{indVal}}">
+                                            {{indVal}}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3 lable-top">
@@ -32,8 +32,8 @@
                                     <label>Crop</label>
                                     <select class="form-select" formControlName="crop">
                                         <option value="">...</option>
-                                        <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
-                                            {{indVal.displayName}}</option>
+                                        <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                            {{indVal}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -158,16 +158,16 @@
                                             <label>Crop</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label>Sold at</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
 
 
@@ -190,16 +190,16 @@
                                             <label>Crop</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label>Sold at</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
@@ -229,16 +229,16 @@
                                             <label>Crop</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label>Sold at</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
@@ -259,16 +259,16 @@
                                             <label>Crop</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3 lable-top">
                                             <label>Sold at</label>
                                             <select class="form-select">
                                                 <option value="">...</option>
-                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal.displayValue}}">
-                                                    {{indVal.displayName}}</option>
+                                                <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal}}">
+                                                    {{indVal}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-2 lable-top">
@@ -353,9 +353,8 @@
                             <h3 class="form-title">5A. Which Bank do you avail KCC loan from? </h3>
                             <div class="display-flex">
                                 <div class="flex-1" *ngFor="let indType of financialMaster['KCCLoanBank']">
-                                    <label class="form-check-label form-check bordered-radio" for="{{indType.displayValue}}">
-                                        <input class="form-check-input" type="radio" formControlName="KCCLoanBank" value="{{indType.displayValue}}"
-                                            id="{{indType.displayValue}}"><span>{{indType.displayName}}</span>
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType}}">
+                                        <input class="form-check-input" type="radio" formControlName="KCCLoanBank" value="{{indType}}" id="{{indType}}"><span>{{indType}}</span>
                                     </label>
                                 </div>
                                 <div class="col-auto lable-top">
@@ -458,8 +457,8 @@
                                         <label>Insurance type</label>
                                         <select class="form-select" formControlName="insuranceType">
                                             <option value="">...</option>
-                                            <option *ngFor="let indVal of financialMaster['insuranceType']" value="{{indVal.displayValue}}">
-                                                {{indVal.displayName}}</option>
+                                            <option *ngFor="let indVal of financialMaster['insuranceType']" value="{{indVal}}">
+                                                {{indVal}}</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 lable-top">
@@ -587,18 +586,18 @@
                             8. What is the reason for preferring any of the above agents? Rank order.
                         </h3>
                         <div class="agent-rank-order">
-                            <label class="form-check-label form-check bordered-check" *ngFor="let indStat of financialMaster['reasonAgent']" for="{{ indStat.displayValue }}reasonAgent">
-                                <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}reasonAgent" (click)="
+                            <label class="form-check-label form-check bordered-check" *ngFor="let indStat of financialMaster['reasonAgent']" for="{{ indStat }}reasonAgent">
+                                <input class="form-check-input" type="checkbox" id="{{ indStat }}reasonAgent" (click)="
                                 selectCheckboxArray(
                                     $event,
                                     'reasonAgent',
-                                    indStat.displayValue
+                                    indStat
                                     )
                                 " [checked]="
                                     this.financialForm.controls[
                                     'reasonAgent'
-                                    ].value?.includes(indStat.displayValue)
-                                " /><span>{{ indStat.displayName }}</span>
+                                    ].value?.includes(indStat)
+                                " /><span>{{ indStat }}</span>
                             </label>
                         </div>
                     </div>
@@ -606,18 +605,18 @@
                         <h3 class="form-title">9. What is the collateral being pledged against credit outside KCC? </h3>
                         <div class="row">
                             <div class="col-auto" *ngFor="let indStat of financialMaster['pledgedCollateral']">
-                                <label class="form-check-label form-check bordered-check" for="{{ indStat.displayValue }}pledgedCollateral">
-                                    <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}pledgedCollateral" (click)="
+                                <label class="form-check-label form-check bordered-check" for="{{ indStat }}pledgedCollateral">
+                                    <input class="form-check-input" type="checkbox" id="{{ indStat }}pledgedCollateral" (click)="
                                     selectCheckboxArray(
                                         $event,
                                         'pledgedCollateral',
-                                        indStat.displayValue
+                                        indStat
                                         )
                                     " [checked]="
                                         this.financialForm.controls[
                                         'pledgedCollateral'
-                                        ].value?.includes(indStat.displayValue)
-                                    " /><span>{{ indStat.displayName }}</span>
+                                        ].value?.includes(indStat)
+                                    " /><span>{{ indStat }}</span>
                                 </label>
                             </div>
                             <div class="col-auto lable-top">
@@ -666,18 +665,18 @@
                             </h3>
                             <div class="row align-items-center">
                                 <div class="select-advice innovative-way">
-                                    <label class="form-check-label form-check bordered-check" *ngFor="let indStat of financialMaster['farmMachinery']" for="{{ indStat.displayValue }}farmMachinery">
-                                        <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}farmMachinery" (click)="
+                                    <label class="form-check-label form-check bordered-check" *ngFor="let indStat of financialMaster['farmMachinery']" for="{{ indStat }}farmMachinery">
+                                        <input class="form-check-input" type="checkbox" id="{{ indStat }}farmMachinery" (click)="
                                         selectCheckboxArray(
                                               $event,
                                               'farmMachinery',
-                                              indStat.displayValue
+                                              indStat
                                             )
                                           " [checked]="
                                             this.financialForm.controls[
                                               'farmMachinery'
-                                            ].value?.includes(indStat.displayValue)
-                                          " /><span>{{ indStat.displayName }}</span>
+                                            ].value?.includes(indStat)
+                                          " /><span>{{ indStat }}</span>
                                     </label>
                                 </div>
                             </div>
@@ -716,11 +715,3 @@
         </div>
     </article>
 </div>
-<!-- 
-<div class="main-farmer">
-    <app-sidenav></app-sidenav>
-    <article class="right-sec">
-        <app-header></app-header>
-
-    </article>
-</div> -->

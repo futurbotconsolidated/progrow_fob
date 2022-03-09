@@ -64,11 +64,11 @@
                                     <tr *ngFor="let x of plannedDetails; let i = index">
                                         <td>{{x.fieldId}}</td>
                                         <td>{{x.fieldArea}}</td>
-                                        <td>{{getDisplayName('irrigationSystem',x.irrigationSystem,'fieldInfo')}}</td>
-                                        <td>{{getDisplayName('waterSource',x.waterSource,'fieldInfo')}}</td>
-                                        <td>{{getDisplayName('crops',x.crop,'commonData')}}</td>
-                                        <td>{{getDisplayName('soilQuality',x.soilQuality,'fieldInfo')}}</td>
-                                        <td>{{getDisplayName('soilQuality',x.waterQuality,'fieldInfo')}}</td>
+                                        <td>{{x.irrigationSystem}}</td>
+                                        <td>{{x.waterSource}}</td>
+                                        <td>{{x.crop}}</td>
+                                        <td>{{x.soilQuality}}</td>
+                                        <td>{{x.waterQuality}}</td>
                                         <td>{{x.expectedProduce}}</td>
                                         <td>{{getDepth(i,'Bore')}}</td>
                                         <td>{{getDepth(i,'Pump')}}</td>
@@ -104,7 +104,7 @@
                                 <tbody>
                                     <tr *ngFor="let x of ownerShipDetails">
                                         <td>{{x.fieldOwnId}}</td>
-                                        <td>{{getDisplayName('ownerShipType',x.ownerType,'fieldInfo')}}</td>
+                                        <td>{{x.ownerType}}</td>
                                         <td>{{x.fieldOwnCoOwner}}</td>
                                         <td>{{x.fieldOwnCoPh}}</td>
                                         <td>{{x.dependency}} <a href="javascript:void(0);">View</a></td>
@@ -143,9 +143,9 @@
                                 <tbody>
                                     <tr *ngFor="let x of typesOfTests">
                                         <td>{{x?.typeOfTest}}</td>
-                                        <td>{{getDisplayName('yesNo',x?.yesNo,'fieldInfo')}}</td>
+                                        <td>{{x?.yesNo}}</td>
                                         <td>{{x?.lastDone}}</td>
-                                        <td>{{getDisplayName('yesNo',x?.testResult,'fieldInfo')}}</td>
+                                        <td>{{x?.testResult}}</td>
                                         <td>{{x?.dependency}} <a href="javascript:void(0);">View</a></td>
                                     </tr>
                                 </tbody>
