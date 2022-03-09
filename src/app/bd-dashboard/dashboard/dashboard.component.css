@@ -17,6 +17,9 @@ ul.nav-pills li.nav-item:focus-visible {
 .lsn-tv-div{
   display: none;
 }
+table.dataTable tbody tr {
+	cursor: default;
+}
 @media only screen and (min-device-width: 992px) and (max-device-width: 1200px) {
   .lsn-tv-div {
     position: fixed;

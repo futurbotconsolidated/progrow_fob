@@ -380,7 +380,20 @@ export class FieldInfoComponent implements OnInit {
       var area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
       var area_hec = (area_sq_meter / 10000).toFixed(2);
       this.fieldArea.push(area_hec);
-
+      (
+        this.fieldInfoForm.get('plannedFieldDetails') as FormArray
+      ).controls.forEach((x: any, index: number) => {
+        if (this.plannedFieldDetails.length - 1 == index) {
+          x.get('fieldArea').setValue(area_hec);
+        }
+      });
+      (
+        this.fieldInfoForm.get('historicalFieldDetails') as FormArray
+      ).controls.forEach((x: any, index: number) => {
+        if (this.historicalFieldDetails.length - 1 == index) {
+          x.get('fieldArea').setValue(area_hec);
+        }
+      });
       layer
         .bindPopup(
           `Field ID : ${this.count} <br/> Area : ${area_hec} (Hectare)`
@@ -393,13 +406,35 @@ export class FieldInfoComponent implements OnInit {
       let layers = e.layers;
       let count = this.count;
       console.log(this.fieldIndexMapIds);
+      let fieldIndexMapIds_var = this.fieldIndexMapIds;
+      var field_index = -1;
+      var area_hec = '';
       layers.eachLayer(function (layer: any) {
         console.log(layer);
         let area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
-        let area_hec = (area_sq_meter / 10000).toFixed(2);
+        area_hec = (area_sq_meter / 10000).toFixed(2);
+        fieldIndexMapIds_var.forEach((x: any, index: number) => {
+          if (layer._leaflet_id == x.leaflet_id) {
+            field_index = x.field_index;
+          }
+        });
         layer
           .bindPopup(`Field ID : ${count} <br/> Area : ${area_hec} (Hectare)`)
           .openPopup();
+      });
+      (
+        this.fieldInfoForm.get('plannedFieldDetails') as FormArray
+      ).controls.forEach((x: any, index: number) => {
+        if (field_index == index) {
+          x.get('fieldArea').setValue(area_hec);
+        }
+      });
+      (
+        this.fieldInfoForm.get('historicalFieldDetails') as FormArray
+      ).controls.forEach((x: any, index: number) => {
+        if (field_index == index) {
+          x.get('fieldArea').setValue(area_hec);
+        }
       });
     });
 
@@ -407,20 +442,25 @@ export class FieldInfoComponent implements OnInit {
       console.log('Event.DELETED', e);
       let layers = e.layers;
       this.count--;
-      console.log(this.fieldIndexMapIds);
       let fieldIndexMapIds_var = this.fieldIndexMapIds;
       var field_index = -1;
+      var fimi_index = -1;
       layers.eachLayer(function (layer: any) {
         fieldIndexMapIds_var.forEach((x: any, index: number) => {
-          console.log(x);
           if (layer._leaflet_id == x.leaflet_id) {
             field_index = x.field_index;
+            fimi_index = index;
           }
         });
       });
-      console.log(field_index);
-      if (field_index) {
+      if (field_index >= 0) {
         this.removePlannedFieldDetails(field_index);
+        this.removeHistoFieldDetail(field_index);
+        this.removeFieldOwnershipDetail(field_index);
+        this.removeEnumerate(field_index);
+        if (this.fieldIndexMapIds[fimi_index]) {
+          delete this.fieldIndexMapIds[fimi_index];
+        }
       }
     });
 
