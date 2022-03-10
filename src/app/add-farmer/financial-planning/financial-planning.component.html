@@ -474,12 +474,12 @@
                                         <div class="two-radio">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" id="Amount-Yes{{i}}" formControlName="isSettlementAmountCredited" value="Yes"><label
-                                                    class="form-check-label" for="Amount-Yes">
+                                                    class="form-check-label" for="Amount-Yes{{i}}">
                                                     Yes</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" id="Amount-No{{i}}" formControlName="isSettlementAmountCredited" value="No"><label class="form-check-label"
-                                                    for="Amount-No">
+                                                    for="Amount-No{{i}}">
                                                     No</label>
                                             </div>
                                         </div>
@@ -489,11 +489,11 @@
                                         <div class="two-radio">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" id="disbursement-Yes{{i}}" formControlName="isDisbursementSatisfied" value="Yes"><label
-                                                    class="form-check-label" for="disbursement-Yes"> Yes</label>
+                                                    class="form-check-label" for="disbursement-Yes{{i}}"> Yes</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" id="disbursement-No{{i}}" formControlName="isDisbursementSatisfied" value="No"><label
-                                                    class="form-check-label" for="disbursement-No"> No</label>
+                                                    class="form-check-label" for="disbursement-No{{i}}"> No</label>
                                             </div>
                                         </div>
                                     </div>
@@ -583,7 +583,7 @@
                     </div>
                     <div class="form-details">
                         <h3 class="form-title">
-                            8. What is the reason for preferring any of the above agents? Rank order.
+                            8. What is the reason for preferring any of the above agents?
                         </h3>
                         <div class="agent-rank-order">
                             <label class="form-check-label form-check bordered-check" *ngFor="let indStat of financialMaster['reasonAgent']" for="{{ indStat }}reasonAgent">
@@ -661,7 +661,7 @@
                             </div>
                         </div>
                         <div class="form-details-inner">
-                            <h3 class="form-title">11B. Any of the following Farm Machinery do you Own/Rent? Rank order.
+                            <h3 class="form-title">11B. Any of the following Farm Machinery do you Own/Rent?
                             </h3>
                             <div class="row align-items-center">
                                 <div class="select-advice innovative-way">

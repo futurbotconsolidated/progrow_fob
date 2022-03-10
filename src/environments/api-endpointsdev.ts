@@ -4,6 +4,6 @@ export const baseUrl =
 
 export const endPoints = {
   getAllFarmers: '/get_all_farmers',
-  registerFarmer: '/registerFarmer',
-  getFarmer: '/getFarmer',
+  registerFarmer: '/register_farmer',
+  getFarmer: '/get_farmer',
 };

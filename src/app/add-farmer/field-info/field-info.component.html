@@ -148,7 +148,7 @@
                                         <h3 class="form-title">A. Historical Season</h3>
                                         <select class="form-select" formControlName="historicalSeason">
                                             <option value="">...</option>
-                                            <option *ngFor="let indVal of fieldInforMaster['season']" value="{{indVal}}">
+                                            <option *ngFor="let indVal of commonMaster['season']" value="{{indVal}}">
                                                 {{indVal}}</option>
                                         </select>
                                     </div>
@@ -238,7 +238,7 @@
                                             <div class="col-auto add-another">
                                                 <a *ngIf="getHistoFieldDetailsControls().length!=1  && i!=getHistoFieldDetailsControls().length-1" href="javascript:void(0)" class="delete-item "
                                                     (click)="removeHistoFieldDetail(i)"><i class="fa fa-trash-o text-danger"></i></a>
-                                                <a *ngIf="i==getHistoFieldDetailsControls().length-1" href="javascript:void(0)" (click)="addHistoFieldDetail()">+ Add</a>
+                                                <a *ngIf="i==getHistoFieldDetailsControls().length-1" href="javascript:void(0)" (click)="addHistoFieldDetail()">+ Add Another</a>
                                             </div>
                                         </div>
                                     </div>

@@ -372,13 +372,13 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.new.imageSrc2 =
         this.coApplicantForm.value.NREGABackImagecoa2 || '';
     } else if (type === 'FARMER_PROFILE') {
-      this.fileUpload.popupTitle = 'Upload Farmer Profile';
+      this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =
         this.coApplicantForm.value.profileImg || '';
     } else if (type === 'FARMER_PROFILEcoa2') {
-      this.fileUpload.popupTitle = 'Upload Farmer Profile';
+      this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =

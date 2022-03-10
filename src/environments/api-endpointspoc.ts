@@ -3,7 +3,7 @@ export const baseUrl =
   'https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding';
 
 export const endPoints = {
-  getAllFarmers: '/getAllFarmers',
-  registerFarmer: '/registerFarmer',
-  getFarmer: '/getFarmer',
+  getAllFarmers: '/get_all_farmers',
+  registerFarmer: '/register_farmer',
+  getFarmer: '/get_farmer',
 };

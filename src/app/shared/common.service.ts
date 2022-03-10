@@ -57,19 +57,4 @@ export class CommonService {
     return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }
   /* END: API Calls */
-
-  /* START: NON-API Calls */
-  getDisplayName(pageProperty: string, dataProperty: string, id: any) {
-    if (id === '' || id === null) return 'N/A';
-    const A = this.masterData[pageProperty][dataProperty].filter(
-      (x: any) => x.displayValue == id
-    );
-    if (Array.isArray(A) && A.length) {
-      return A[0].displayName;
-    } else {
-      return 'N/A';
-    }
-  }
-
-  /* END: NON-API Calls */
 }

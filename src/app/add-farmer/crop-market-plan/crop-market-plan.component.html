@@ -47,7 +47,7 @@
                                 <label>Year-Season</label>
                                 <select class="form-select" formControlName="year1">
                                     <option value="">...</option>
-                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']" [value]="crpSesn">{{crpSesn}}</option>
+                                    <option *ngFor="let crpSesn of commonMaster['season']" [value]="crpSesn">{{crpSesn}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">
@@ -77,7 +77,7 @@
                                 <label>Year-Season</label>
                                 <select class="form-select" formControlName="year2">
                                     <option value="">...</option>
-                                    <option *ngFor="let crpSesn of cropMarketPlanMaster['cropYearSeason']" [value]="crpSesn">{{crpSesn}}</option>
+                                    <option *ngFor="let crpSesn of commonMaster['season']" [value]="crpSesn">{{crpSesn}}</option>
                                 </select>
                             </div>
                             <div class="col-md-1 lable-top">

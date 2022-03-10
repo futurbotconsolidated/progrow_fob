@@ -139,12 +139,8 @@
                     <input type="text" class="form-control" formControlName="middleName" placeholder="" />
                   </div>
                   <div class="farmer-details-inner lable-top">
-                    <label class="required">Last Name</label>
+                    <label>Last Name</label>
                     <input type="text" class="form-control" formControlName="lastName" placeholder="" />
-                    <div *ngIf="isSubmitted && f['lastName'].errors" class="form-text text-danger">
-                      <small *ngIf="f['lastName'].errors['required']">
-                        Last Name is required</small>
-                    </div>
                   </div>
                   <div class="farmer-details-inner lable-top">
                     <label>Date Of Birth</label>
@@ -552,7 +548,7 @@
                   <a href="javascript:void(0)" class="delete-item" (click)="removePropertyOwnership(i)"><i class="fa fa-trash-o text-danger"></i></a>
                 </div>
                 <div class="col-auto add-another" *ngIf="i == getPropertyOwnershipControls().length - 1">
-                  <a href="javascript:void(0);" (click)="addPropertyOwnership()">+ Add More</a>
+                  <a href="javascript:void(0);" (click)="addPropertyOwnership()">+ Add Another</a>
                 </div>
               </div>
             </div>
@@ -700,7 +696,7 @@
 <div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header p-2">
+      <div class="modal-header p-2 common_button_color">
         <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
       </div>
       <div class="modal-body">

@@ -19,7 +19,12 @@
                 <div class="edit-picture-gap profile-date"><img src="../../../assets/images/profile-date.svg" alt=""><span> {{demographicDisp?.farmerDetails?.dob}}</span></div>
                 <div class="edit-picture-gap gender"><img src="../../../assets/images/profile-gender.svg" alt=""><span>{{demographicDisp?.farmerDetails?.gender}}</span>
                 </div>
-                <div class="edit-picture-gap phone-num"><img src="../../../assets/images/profile-phone.svg" alt=""><span>{{demographicDisp?.address?.mobileNumber}}</span></div>
+                <div class="edit-picture-gap phone-num">
+                    <a href="tel:{{demographicDisp?.address?.mobileNumber}}">
+                        <img src="../../../assets/images/profile-phone.svg" alt="">
+                        <span>{{demographicDisp?.address?.mobileNumber}}</span>
+                    </a>
+                </div>
             </div>
             <div class="pro-right">
                 <div class="language">

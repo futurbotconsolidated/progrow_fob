@@ -89,7 +89,7 @@ export class DemographicInfoComponent implements OnInit {
       NREGAFrontImage: new FormControl(''),
       NREGABackImage: new FormControl(''),
       middleName: new FormControl(''),
-      lastName: new FormControl('', [Validators.required]),
+      lastName: new FormControl(''),
       dob: new FormControl(''),
       gender: new FormControl(''),
       religion: new FormControl(''),
@@ -321,7 +321,7 @@ export class DemographicInfoComponent implements OnInit {
         this.toastr.error('please enter PAN Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload PAN Card';
+      this.fileUpload.popupTitle = 'Upload PAN Card Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =
         this.demographicInfoForm.value.PANFrontImage || '';
@@ -343,7 +343,7 @@ export class DemographicInfoComponent implements OnInit {
         this.toastr.error('please enter Passport Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload Passport';
+      this.fileUpload.popupTitle = 'Upload Passport Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.fileUpload.new.imageSrc1 =
@@ -355,7 +355,7 @@ export class DemographicInfoComponent implements OnInit {
         this.toastr.error('please enter NREGA Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload NREGA';
+      this.fileUpload.popupTitle = 'Upload NREGA Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.fileUpload.new.imageSrc1 =
@@ -363,7 +363,7 @@ export class DemographicInfoComponent implements OnInit {
       this.fileUpload.new.imageSrc2 =
         this.demographicInfoForm.value.NREGABackImage || '';
     } else if (type === 'FARMER_PROFILE') {
-      this.fileUpload.popupTitle = 'Upload Farmer Profile';
+      this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =
