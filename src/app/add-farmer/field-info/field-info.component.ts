@@ -372,8 +372,12 @@ export class FieldInfoComponent implements OnInit {
       this.addEnumerate();
       console.log(this.plannedFieldDetails);
       drawnItems.addLayer(layer);
+      var pfd_last_index = -1;
+      (this.fieldInfoForm.get('plannedFieldDetails') as FormArray).controls.forEach((x: any, index: number) => {
+        pfd_last_index = index;
+      });
       let fimi_ob = {
-        field_index: this.plannedFieldDetails.length - 1,
+        'field_index': pfd_last_index,
         leaflet_id: layer._leaflet_id,
       };
       this.fieldIndexMapIds.push(fimi_ob);
@@ -383,14 +387,14 @@ export class FieldInfoComponent implements OnInit {
       (
         this.fieldInfoForm.get('plannedFieldDetails') as FormArray
       ).controls.forEach((x: any, index: number) => {
-        if (this.plannedFieldDetails.length - 1 == index) {
+        if (pfd_last_index == index) {
           x.get('fieldArea').setValue(area_hec);
         }
       });
       (
         this.fieldInfoForm.get('historicalFieldDetails') as FormArray
       ).controls.forEach((x: any, index: number) => {
-        if (this.historicalFieldDetails.length - 1 == index) {
+        if (pfd_last_index == index) {
           x.get('fieldArea').setValue(area_hec);
         }
       });

@@ -209,10 +209,10 @@ export const data = {
     ],
   },
   commonData: {
-    crops: ['Mustard', 'Cumin', 'Gram', 'Isabgol', 'Cotton'],
+    crops: ['Mustard', 'Cumin', 'Gram', 'Isabgol', 'Cotton', 'Wheat', 'Barley', 'Peas', 'Rice', 'Maize', 'Jowar', 'Bajra', 'Tur', 'Moong', 'Urad', 'Jute', 'Groundnut', 'Soybean', 'Seasonal Fruits', 'Vegetables', 'Fodder Crops'],
   },
   fieldInfo: {
-    season: ['Kharif 2022', 'Rabi 2021'],
+    season: ['Rabi 2022', 'Kharif 2022', 'Rabi 2021', 'Kharif 2021', 'Rabi 2020', 'Kharif 2020', 'Rabi 2019', 'Kharif 2019'],
     irrigationSystem: ['Surface Irrigation'],
     waterSource: ['Pond', 'Well', 'Canal'],
     ownerShipType: [
