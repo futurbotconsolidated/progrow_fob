@@ -1,9 +1,21 @@
-<aside class="left-menu">
+<aside class="left-menu" [class]="lsn_tv_show? 'lsn-tv-active' : 'lsn-tv-inactive'">
     <div class="left-sticky-menu">
         <div class="logo">
             <a routerLink="/bd/dashboard"><img src="../../../assets/images/logo.png" alt=""></a>
         </div>
         <ul class="navigation">
+            <li [class]="lsn_current_url == '/add/concept-cards'? 'active' : ''"><a disabled>Concept Cards</a></li>
+            <li [class]="lsn_current_url == '/add/demographic-info'? 'active' : ''"><a disabled>Demographic Info</a></li>
+            <li [class]="lsn_current_url == '/add/field-info'? 'active' : ''"><a disabled>Field Info</a></li>
+            <li [class]="lsn_current_url == '/add/financial-planning'? 'active' : ''"><a disabled>Financial Planning</a></li>
+            <li [class]="lsn_current_url == '/add/crop-market-plan'? 'active' : ''"><a disabled>Crop Market Plan</a></li>
+            <li [class]="lsn_current_url == '/add/produce-aggregator'? 'active' : ''"><a disabled>FRCM as Produce Aggregator</a></li>
+            <li [class]="lsn_current_url == '/add/technology-adoption'? 'active' : ''"><a disabled>Technology Adoption</a></li>
+            <li [class]="lsn_current_url == '/add/co-applicant'? 'active' : ''"><a disabled>Co-Applicant Details</a></li>
+            <li [class]="lsn_current_url == '/add/info-declaration'? 'active' : ''"><a disabled>Information & Declaration</a></li>
+        </ul>
+
+        <!-- <ul class="navigation">
             <li routerLinkActive="active"><a routerLink="/add/concept-cards">Concept Cards</a></li>
             <li routerLinkActive="active"><a routerLink="/add/demographic-info">Demographic Info</a></li>
             <li routerLinkActive="active"><a routerLink="/add/field-info">Field Info</a></li>
@@ -13,6 +25,11 @@
             <li routerLinkActive="active"><a routerLink="/add/technology-adoption">Technology Adoption</a></li>
             <li routerLinkActive="active"><a routerLink="/add/co-applicant">Co-Applicant Details</a></li>
             <li routerLinkActive="active"><a routerLink="/add/info-declaration">Information & Declaration</a></li>
-        </ul>
+        </ul> -->
+
     </div>
 </aside>
+<div class="lsn-tv-div" [class]="lsn_tv_show? 'lsn-tv-extend' : 'lsn-tv-collapse'">
+    <a *ngIf="!lsn_tv_show" (click)="showLeftSide(true)"><i class="fa fa-angle-double-right"></i></a>
+    <a *ngIf="lsn_tv_show" (click)="showLeftSide(false)"><i class="fa fa-angle-double-left"></i></a>
+</div>

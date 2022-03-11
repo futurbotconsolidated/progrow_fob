@@ -14,17 +14,17 @@
                             <p>
                                 <span>Do you think that you require help in farm yield improvisation?</span>
                                 <span><b>
-                                        {{getDisplayName('booleanValues',techAdoptionDisp?.farmYieldImprovisation)}}
+                                        {{techAdoptionDisp?.farmYieldImprovisation}}
                                     </b>
                                 </span>
                             </p>
                             <p><span> Model farm case studies are available to support claims. Does it help to provide
                                     confidence?</span><span><b>
-                                        {{getDisplayName('booleanValues',techAdoptionDisp?.farmCaseStudies)}}</b></span>
+                                        {{techAdoptionDisp?.farmCaseStudies}}</b></span>
                             </p>
                             <p><span> Would you be comfortable to pay for technology if there is definite margin of
                                     improvement? </span><span><b>
-                                        {{getDisplayName('booleanValues',techAdoptionDisp?.payForTechnology)}}</b></span>
+                                        {{techAdoptionDisp?.payForTechnology}}</b></span>
                             </p>
 
                         </div>
@@ -35,29 +35,20 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="actual-facts summery-bg full-height">
-                        <h4 class="summery-heading"><span>Awareness</span><a href="javascript:void(0)"> <img
-                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Awareness</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <p>Are you aware of the following technologies? In your opinion, how helpful are they to you?
                         </p>
                         <div class="d-flex-profile kcc-details">
-                            <p><span>Tissue culture / Hybrid seeds</span><span><b>N/A</b></span></p>
-                            <p><span>Poly house</span><span><b>N/A</b></span></p>
-                            <p><span>Micro irrigation</span><span><b>N/A</b></span></p>
-                            <p><span>IoT sensors which help to track farm requirements of
-                                    nutrition</span><span><b>N/A</b></span></p>
-                            <p><span>Drones to track farm requirements of
-                                    nutrition/spraying</span><span><b>N/A</b></span></p>
-                            <p><span>Weather data to help plan in advance for taking preventive measures on
-                                    farm</span><span><b>N/A</b></span></p>
-                            <p><span>Satellite based tracking of crop health</span><span><b>N/A</b></span>
+                            <p *ngFor="let elem of technologyAdoptionMaster['technologyOpinions']">
+                                <span>{{elem.title}}</span>
+                                <span><b>{{techAdoptionDisp[elem.formCntrlName] || 'N/A'}}</b></span>
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="actual-facts summery-bg full-height">
-                        <h4 class="summery-heading"><span>Comment</span><a href="javascript:void(0)"> <img
-                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Comment</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile">
                             <p>
                                 <span>

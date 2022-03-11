@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonService } from '../../shared/common.service';
 
 @Component({
   selector: 'app-edit-demographic-info',
@@ -8,7 +7,7 @@ import { CommonService } from '../../shared/common.service';
 })
 export class EditDemographicInfoComponent implements OnInit {
   demographicDisp = {} as any;
-  constructor(private commonService: CommonService) {
+  constructor() {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.demographicDisp = JSON.parse(A).demographic_info;
@@ -16,8 +15,4 @@ export class EditDemographicInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-  // get Name from Master Json
-  getDisplayName(dataProperty: string, id: any) {
-    return this.commonService.getDisplayName('demoGraphic', dataProperty, id);
-  }
 }

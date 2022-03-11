@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
   FormControl,
@@ -7,23 +9,20 @@ import {
   FormArray,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { data } from '../../shared/fob_master_data';
 
 // import 'leaflet';
 declare const L: any;
 import 'leaflet-draw';
 import '../../../../node_modules/leaflet-draw/dist/leaflet.draw-src.js';
-import {
-  season,
-  irrigationSystem,
-  waterSource,
-  ownerShipType,
-  cropCycleOnReports,
-  crops,
-  soilQuality,
-  yesNo,
-} from '../../shared/modal/global-field-values';
 import { AddFarmerService } from '../add-farmer.service';
 import { ToastrService } from 'ngx-toastr';
+
+enum SaveStatus {
+  Saving = 'Saving...',
+  Saved = 'Saved.',
+  Idle = '',
+}
 
 @Component({
   selector: 'app-field-info',
@@ -31,7 +30,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./field-info.component.css'],
 })
 export class FieldInfoComponent implements OnInit {
-  SoilQualityStar: any[] = soilQuality;
+  /* START: Variables */
+  fieldInforMaster = <any>{};
+  commonMaster = <any>{};
+
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
+    SaveStatus.Idle;
+  SoilQualityStar = [] as any;
   selectedSoilQualityStar: any;
   selectedWaterQualityStar: any;
   selectedYieldQualityStar: any;
@@ -48,35 +53,34 @@ export class FieldInfoComponent implements OnInit {
   enumerate!: FormArray;
   testType!: FormArray;
 
-  plannedSeasonList = <any>[];
-  irrigationSystemList = <any>[];
-  waterSourceList = <any>[];
-  ownerShipTypeList = <any>[];
-  cropCycleOnReportsList = <any>[];
-  soilQualityList = <any>[];
   selectedCoordinates = <any>[];
   drawnCoordinates = <any>[];
-  cropsList = <any>[];
-  yesNoList = <any>[];
+
   field_boundary: any;
   count = 0;
   fieldArea = <any>[];
   editFieldArea = <any>[];
+  fieldIndexMapIds = <any>[];
+
+  farmerId = ''; // edit feature
+  /* END: Variables */
+
   constructor(
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
     public router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.fieldInfoForm = this.formBuilder.group({
-      plannedSeason: new FormControl('kharif_2022', [Validators.required]),
+      plannedSeason: new FormControl('', [Validators.required]),
       plannedCrops: new FormControl('', [Validators.required]),
       plannedFieldDetails: new FormArray([]),
       historicalFieldDetails: new FormArray([]),
       fieldOwnership: new FormArray([]),
       testType: new FormArray([this.createTestType()]),
       enumerate: new FormArray([]),
-      cropCycleOnReports: new FormControl('May be', [Validators.required]), //radio
+      cropCycleOnReports: new FormControl('', [Validators.required]), //radio
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {
@@ -84,24 +88,50 @@ export class FieldInfoComponent implements OnInit {
       this.saveData();
       console.log(this.nextRoute);
     });
+
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
   ngOnInit(): void {
-    this.plannedSeasonList = season;
-    this.irrigationSystemList = irrigationSystem;
-    this.waterSourceList = waterSource;
-    this.ownerShipTypeList = ownerShipType;
-    this.cropCycleOnReportsList = cropCycleOnReports;
-    this.cropsList = crops;
-    this.soilQualityList = soilQuality;
-    this.yesNoList = yesNo;
+    this.fieldInforMaster = data.fieldInfo; // read master data
+    this.commonMaster = data.commonData; // read master data
+
+    this.SoilQualityStar = this.fieldInforMaster['soilQuality'];
 
     this.selectedCoordinates = [];
     this.fieldArea = [];
     this.editFieldArea = [];
+    this.fieldIndexMapIds = [];
+    // -----------------------start auto save --------------------
+    // draft feature is not required in edit operation
+    if (!this.farmerId) {
+      this.fieldInfoForm.valueChanges
+        .pipe(
+          tap(() => {
+            this.saveStatus = SaveStatus.Saving;
+          })
+        )
+        .subscribe(async (form_values) => {
+          let draft_farmer_new = {} as any;
+          if (localStorage.getItem('draft_farmer_new')) {
+            draft_farmer_new = JSON.parse(
+              localStorage.getItem('draft_farmer_new') as any
+            );
+          }
+          draft_farmer_new['field_info_form'] = form_values;
+          localStorage.setItem(
+            'draft_farmer_new',
+            JSON.stringify(draft_farmer_new)
+          );
+          this.saveStatus = SaveStatus.Saved;
+          if (this.saveStatus === SaveStatus.Saved) {
+            this.saveStatus = SaveStatus.Idle;
+          }
+        });
+    }
+    // -----------------------End auto save --------------------
 
     let fieldInfo: any = localStorage.getItem('field-info-form');
-
     if (fieldInfo) {
       fieldInfo = JSON.parse(fieldInfo);
       this.bindItemsInEdit(fieldInfo);
@@ -340,13 +370,34 @@ export class FieldInfoComponent implements OnInit {
       this.addHistoFieldDetail();
       this.addFieldOwnershipDetail();
       this.addEnumerate();
-
+      console.log(this.plannedFieldDetails);
       drawnItems.addLayer(layer);
+      var pfd_last_index = -1;
+      (this.fieldInfoForm.get('plannedFieldDetails') as FormArray).controls.forEach((x: any, index: number) => {
+        pfd_last_index = index;
+      });
+      let fimi_ob = {
+        'field_index': pfd_last_index,
+        leaflet_id: layer._leaflet_id,
+      };
+      this.fieldIndexMapIds.push(fimi_ob);
       var area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
-      console.log(area_sq_meter);
       var area_hec = (area_sq_meter / 10000).toFixed(2);
       this.fieldArea.push(area_hec);
-
+      (
+        this.fieldInfoForm.get('plannedFieldDetails') as FormArray
+      ).controls.forEach((x: any, index: number) => {
+        if (pfd_last_index == index) {
+          x.get('fieldArea').setValue(area_hec);
+        }
+      });
+      (
+        this.fieldInfoForm.get('historicalFieldDetails') as FormArray
+      ).controls.forEach((x: any, index: number) => {
+        if (pfd_last_index == index) {
+          x.get('fieldArea').setValue(area_hec);
+        }
+      });
       layer
         .bindPopup(
           `Field ID : ${this.count} <br/> Area : ${area_hec} (Hectare)`
@@ -354,10 +405,67 @@ export class FieldInfoComponent implements OnInit {
         .openPopup();
     });
 
-    map.on(L.Draw.Event.DELETED, (event: any) => {
-      var layer = event.layer;
+    map.on(L.Draw.Event.EDITED, (e: any) => {
+      console.log('Event.EDITED', e);
+      let layers = e.layers;
+      let count = this.count;
+      console.log(this.fieldIndexMapIds);
+      let fieldIndexMapIds_var = this.fieldIndexMapIds;
+      var field_index = -1;
+      var area_hec = '';
+      layers.eachLayer(function (layer: any) {
+        console.log(layer);
+        let area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+        area_hec = (area_sq_meter / 10000).toFixed(2);
+        fieldIndexMapIds_var.forEach((x: any, index: number) => {
+          if (layer._leaflet_id == x.leaflet_id) {
+            field_index = x.field_index;
+          }
+        });
+        layer
+          .bindPopup(`Field ID : ${count} <br/> Area : ${area_hec} (Hectare)`)
+          .openPopup();
+      });
+      (
+        this.fieldInfoForm.get('plannedFieldDetails') as FormArray
+      ).controls.forEach((x: any, index: number) => {
+        if (field_index == index) {
+          x.get('fieldArea').setValue(area_hec);
+        }
+      });
+      (
+        this.fieldInfoForm.get('historicalFieldDetails') as FormArray
+      ).controls.forEach((x: any, index: number) => {
+        if (field_index == index) {
+          x.get('fieldArea').setValue(area_hec);
+        }
+      });
+    });
+
+    map.on(L.Draw.Event.DELETED, (e: any) => {
+      console.log('Event.DELETED', e);
+      let layers = e.layers;
       this.count--;
-      // this.removePlannedFieldDetails();
+      let fieldIndexMapIds_var = this.fieldIndexMapIds;
+      var field_index = -1;
+      var fimi_index = -1;
+      layers.eachLayer(function (layer: any) {
+        fieldIndexMapIds_var.forEach((x: any, index: number) => {
+          if (layer._leaflet_id == x.leaflet_id) {
+            field_index = x.field_index;
+            fimi_index = index;
+          }
+        });
+      });
+      if (field_index >= 0) {
+        this.removePlannedFieldDetails(field_index);
+        this.removeHistoFieldDetail(field_index);
+        this.removeFieldOwnershipDetail(field_index);
+        this.removeEnumerate(field_index);
+        if (this.fieldIndexMapIds[fimi_index]) {
+          delete this.fieldIndexMapIds[fimi_index];
+        }
+      }
     });
 
     map.on('draw:editvertex', (e: any) => {
@@ -482,7 +590,7 @@ export class FieldInfoComponent implements OnInit {
   createFieldOwnershipDetails(): FormGroup {
     return this.formBuilder.group({
       fieldOwnId: new FormControl('', [Validators.required]),
-      ownerType: new FormControl('Owned (Joint/Self)', []),
+      ownerType: new FormControl('', []),
       fieldOwnCoOwner: new FormControl('', [Validators.required]),
       fieldOwnCoPh: new FormControl('', [Validators.required]),
     });
@@ -546,7 +654,6 @@ export class FieldInfoComponent implements OnInit {
   }
 
   saveData() {
-    let url = `/add/${this.nextRoute}`;
     let fieldArr = [];
     console.log(this.count);
     let obj;
@@ -588,49 +695,60 @@ export class FieldInfoComponent implements OnInit {
       'field-info-form',
       JSON.stringify(this.fieldInfoForm.value)
     );
+    const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
     // this.toastr.error('Please Plot at least One Field', 'Error!');
     // return;
   }
 
   SoilQualityRating(soilQualityStar: any) {
-    this.selectedSoilQualityStar = soilQualityStar.displayValue;
+    this.selectedSoilQualityStar = soilQualityStar;
     // let a = (this.fieldInfoForm.get('plannedFieldDetails') as FormArray)
     //   .controls;
     // console.log(a);
 
     // a.get('soilQuality').patchValue(soilQualityStar.displayValue);
-    console.log('Value of SoilQualityStar', soilQualityStar.displayValue);
+    console.log('Value of SoilQualityStar', soilQualityStar);
   }
 
   WaterQualityRating(waterQualityStar: any) {
-    this.selectedWaterQualityStar = waterQualityStar.displayValue;
-    console.log('Value of waterQualityStar', waterQualityStar.displayValue);
+    this.selectedWaterQualityStar = waterQualityStar;
+    console.log('Value of waterQualityStar', waterQualityStar);
   }
 
   YieldQualityRating(yieldQualityStar: any) {
-    this.selectedYieldQualityStar = yieldQualityStar.displayValue;
-    console.log('Value of yieldQualityStar', yieldQualityStar.displayValue);
+    this.selectedYieldQualityStar = yieldQualityStar;
+    console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 
   HistoSoilQualityRating(soilQualityStar: any) {
-    this.selectedHistoSoilQualityStar = soilQualityStar.displayValue;
+    this.selectedHistoSoilQualityStar = soilQualityStar;
     console.log('Value of SoilQualityStar', soilQualityStar);
   }
 
   HistoWaterQualityRating(waterQualityStar: any) {
-    this.selectedHistoWaterQualityStar = waterQualityStar.displayValue;
+    this.selectedHistoWaterQualityStar = waterQualityStar;
     console.log('Value of waterQualityStar', waterQualityStar);
   }
 
   HistoYieldQualityRating(yieldQualityStar: any) {
-    this.selectedHistoYieldQualityStar = yieldQualityStar.displayValue;
+    this.selectedHistoYieldQualityStar = yieldQualityStar;
     console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 
   validateNo(e: any): boolean {
     const charCode = e.which ? e.which : e.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+  validateDecimalNo(e: any): boolean {
+    const charCode = e.which ? e.which : e.keyCode;
+    if (
+      (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46) ||
+      (charCode == 46 && e.target.value.indexOf('.') !== -1)
+    ) {
       return false;
     }
     return true;

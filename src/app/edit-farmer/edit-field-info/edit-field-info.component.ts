@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+
 declare const L: any;
 import 'leaflet-draw';
 
@@ -20,10 +21,8 @@ export class EditFieldInfoComponent implements OnInit {
 
   constructor(private spinner: NgxSpinnerService) {
     const A: any = localStorage.getItem('farmer-details');
-
     if (A) {
       this.fieldInfo = JSON.parse(A).fieldInfo;
-      console.log(this.fieldInfo);
     }
   }
 

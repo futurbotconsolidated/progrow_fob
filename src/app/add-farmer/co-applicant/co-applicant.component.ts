@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
 import {
   FormGroup,
   FormControl,
@@ -13,22 +14,7 @@ import { CommonService } from '../../shared/common.service';
 import { validatePANNumber } from '../../shared/custom-validators';
 
 declare var $: any;
-
-import {
-  religion,
-  gender,
-  caste,
-  propertyStatus,
-  commOrPerAddress,
-  relation,
-  education,
-  occupation,
-  dependency,
-  ownerShipType,
-  particular,
-  addressProofType,
-  propertyType,
-} from '../../shared/modal/global-field-values';
+import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
 
 enum SaveStatus {
@@ -47,6 +33,10 @@ function sleep(ms: number): Promise<any> {
   styleUrls: ['./co-applicant.component.css'],
 })
 export class CoApplicantComponent implements OnInit {
+  /* START: Varaibles */
+  coApplicantMaster = <any>{};
+  demoGraphicMaster = <any>{};
+
   isSubmitted = false;
   fileUpload = {
     fileFor: '',
@@ -61,20 +51,6 @@ export class CoApplicantComponent implements OnInit {
     imageHeading2: 'Back Image',
   } as any;
 
-  religionList = <any>[];
-  genderList = <any>[];
-  casteList = <any>[];
-  propertyStatusList = <any>[];
-  addressStatusList = <any>[];
-  relationList = <any>[];
-  educationList = <any>[];
-  occupationList = <any>[];
-  dependencyList = <any>[];
-  ownershipTypeList = <any>[];
-  particularList = <any>[];
-  addressProofList: any = [];
-  propertyTypeList: any = [];
-
   pinCodeAPIData: any = [];
   pinCodeAPIDatacoa2: any = [];
   permPinCodeAPIData: any = [];
@@ -87,6 +63,7 @@ export class CoApplicantComponent implements OnInit {
   nextRoute: any;
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
+  /* END: Varaibles */
 
   constructor(
     public router: Router,
@@ -113,9 +90,9 @@ export class CoApplicantComponent implements OnInit {
       middleName: new FormControl(''),
       lastName: new FormControl('', [Validators.required]),
       dob: new FormControl(''),
-      gender: new FormControl('male'),
-      religion: new FormControl('hindu'),
-      caste: new FormControl('sc'),
+      gender: new FormControl(''),
+      religion: new FormControl(''),
+      caste: new FormControl(''),
       educationQualification: new FormControl(''),
       occupation: new FormControl(''),
       annualIncome: new FormControl('', [Validators.pattern('^[0-9]*$')]),
@@ -148,9 +125,9 @@ export class CoApplicantComponent implements OnInit {
       permPincode: new FormControl(''),
       permState: new FormControl(''),
 
-      propertyStatus: new FormControl('own'),
+      propertyStatus: new FormControl(''),
       monthlyRent: new FormControl(''),
-      commOrPerAddress: new FormControl('same_above', [Validators.required]),
+      commOrPerAddress: new FormControl('', [Validators.required]),
       familyMembers: new FormArray([this.createFamilyMembers()]),
 
       profileImgcoa2: new FormControl(''),
@@ -169,9 +146,9 @@ export class CoApplicantComponent implements OnInit {
       middleNamecoa2: new FormControl(''),
       lastNamecoa2: new FormControl(''),
       dobcoa2: new FormControl(''),
-      gendercoa2: new FormControl('male'),
-      religioncoa2: new FormControl('hindu'),
-      castecoa2: new FormControl('sc'),
+      gendercoa2: new FormControl(''),
+      religioncoa2: new FormControl(''),
+      castecoa2: new FormControl(''),
       educationQualificationcoa2: new FormControl(''),
       occupationcoa2: new FormControl(''),
       annualIncomecoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
@@ -199,28 +176,41 @@ export class CoApplicantComponent implements OnInit {
       permPincodecoa2: new FormControl(''),
       permStatecoa2: new FormControl(''),
 
-      propertyStatuscoa2: new FormControl('own'),
+      propertyStatuscoa2: new FormControl(''),
       monthlyRentcoa2: new FormControl(''),
-      commOrPerAddresscoa2: new FormControl('same_above'),
+      commOrPerAddresscoa2: new FormControl(''),
       familyMemberscoa2: new FormArray([this.createFamilyMembers()]),
     });
   }
 
   ngOnInit(): void {
-    this.addressProofList = addressProofType;
-    this.propertyTypeList = propertyType;
-    this.religionList = religion;
-    this.genderList = gender;
-    this.casteList = caste;
-    this.propertyStatusList = propertyStatus;
-    this.addressStatusList = commOrPerAddress;
-    this.relationList = relation;
-    this.occupationList = occupation;
-    this.educationList = education;
-    this.dependencyList = dependency;
-    this.ownershipTypeList = ownerShipType;
-    this.particularList = particular;
-
+    this.coApplicantMaster = data.coApplicant; // read master data
+    this.demoGraphicMaster = data.demoGraphic; // read master data
+    // ----------------------- Start auto save --------------------
+    this.coApplicantForm.valueChanges
+      .pipe(
+        tap(() => {
+          this.saveStatus = SaveStatus.Saving;
+        })
+      )
+      .subscribe(async (form_values) => {
+        let draft_farmer_new = {} as any;
+        if (localStorage.getItem('draft_farmer_new')) {
+          draft_farmer_new = JSON.parse(
+            localStorage.getItem('draft_farmer_new') as any
+          );
+        }
+        draft_farmer_new['co_applicant_form'] = form_values;
+        localStorage.setItem(
+          'draft_farmer_new',
+          JSON.stringify(draft_farmer_new)
+        );
+        this.saveStatus = SaveStatus.Saved;
+        if (this.saveStatus === SaveStatus.Saved) {
+          this.saveStatus = SaveStatus.Idle;
+        }
+      });
+    // ----------------------- End auto save --------------------
     let demoInfo: any = localStorage.getItem('co-applicant-form');
     if (demoInfo) {
       demoInfo = JSON.parse(demoInfo);
@@ -294,7 +284,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter PAN Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload PAN Card';
+      this.fileUpload.popupTitle = 'Upload PAN Card Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =
         this.coApplicantForm.value.PANFrontImage || '';
@@ -303,7 +293,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter PAN Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload PAN Card';
+      this.fileUpload.popupTitle = 'Upload PAN Card Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =
         this.coApplicantForm.value.PANFrontImagecoa2 || '';
@@ -312,13 +302,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please select Address Proof Type.', 'Error!');
         return;
       }
-      const A = this.addressProofList
-        .filter(
-          (x: any) => this.coApplicantForm.value.addressProof == x.displayValue
-        )
-        .map((y: any) => {
-          return y.displayName;
-        });
+      const A = this.coApplicantForm.value.addressProof;
       this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
@@ -331,14 +315,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please select Address Proof Type.', 'Error!');
         return;
       }
-      const A = this.addressProofList
-        .filter(
-          (x: any) =>
-            this.coApplicantForm.value.addressProofcoa2 == x.displayValue
-        )
-        .map((y: any) => {
-          return y.displayName;
-        });
+      const A = this.coApplicantForm.value.addressProofcoa2;
       this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
@@ -351,7 +328,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter Passport Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload Passport';
+      this.fileUpload.popupTitle = 'Upload Passport Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.fileUpload.new.imageSrc1 =
@@ -363,7 +340,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter Passport Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload Passport';
+      this.fileUpload.popupTitle = 'Upload Passport Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.fileUpload.new.imageSrc1 =
@@ -375,7 +352,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter NREGA Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload NREGA';
+      this.fileUpload.popupTitle = 'Upload NREGA Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.fileUpload.new.imageSrc1 =
@@ -387,7 +364,7 @@ export class CoApplicantComponent implements OnInit {
         this.toastr.error('please enter NREGA Number.', 'Error!');
         return;
       }
-      this.fileUpload.popupTitle = 'Upload NREGA';
+      this.fileUpload.popupTitle = 'Upload NREGA Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.fileUpload.new.imageSrc1 =
@@ -395,13 +372,13 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.new.imageSrc2 =
         this.coApplicantForm.value.NREGABackImagecoa2 || '';
     } else if (type === 'FARMER_PROFILE') {
-      this.fileUpload.popupTitle = 'Upload Farmer Profile';
+      this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =
         this.coApplicantForm.value.profileImg || '';
     } else if (type === 'FARMER_PROFILEcoa2') {
-      this.fileUpload.popupTitle = 'Upload Farmer Profile';
+      this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.imageSrc1 =
@@ -414,10 +391,10 @@ export class CoApplicantComponent implements OnInit {
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
 
-      if (file.size > 300000) {
-        this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
-        return;
-      }
+      // if (file.size > 300000) {
+      //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
+      //   return;
+      // }
       if (file.type.split('/')[0] != 'image') {
         this.toastr.error('Only Image files are allowed.', 'Error!');
         return;
@@ -542,6 +519,13 @@ export class CoApplicantComponent implements OnInit {
         profileImgcoa2: '',
       });
     }
+  }
+  validateNo(e: any): boolean {
+    const charCode = e.which ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
   }
   getPinCodeData(event: any, type: string) {
     // clear values

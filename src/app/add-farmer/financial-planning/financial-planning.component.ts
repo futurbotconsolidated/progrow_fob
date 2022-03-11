@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+
 import {
   FormGroup,
   FormControl,
@@ -7,40 +10,140 @@ import {
   FormArray,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import {
-  cropLoanProduct,
-  crops,
-  availKCCLoan,
-  houseLoan,
-} from '../../shared/modal/global-field-values';
+import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
+enum SaveStatus {
+  Saving = 'Saving...',
+  Saved = 'Saved.',
+  Idle = '',
+}
+
 @Component({
   selector: 'app-financial-planning',
   templateUrl: './financial-planning.component.html',
   styleUrls: ['./financial-planning.component.css'],
 })
 export class FinancialPlanningComponent implements OnInit {
-  cropLoanProductList: any = [];
+  /* START: Variables */
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
+  insuranceDetails!: FormArray;
   nextRoute: any;
-  cropsList = <any>[];
-  kccLoanList = <any>[];
-  houseLoanList = <any>[];
+
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
+    SaveStatus.Idle;
 
   financialForm = new FormGroup({});
+  financialMaster = <any>{};
+  commonMaster = <any>{};
+  interestedFRCMLoanProductsArray = {
+    thead: ['Yes', 'No', 'May Be'],
+    tbody: [
+      { formControlName: 'housingLoan', displayLabel: 'Housing Loan' },
+      {
+        formControlName: 'tractorFinanceLoan',
+        displayLabel: 'Tractor Finance Loan',
+      },
+      {
+        formControlName: 'FRCMCropInsurance',
+        displayLabel: 'FRCM Crop Insurance',
+      },
+      { formControlName: 'personalLoan', displayLabel: 'Personal Loan' },
+    ],
+  };
+
+  preferredCreditSourceRankOrderArray = [
+    'Commission Agent/ Arhatiya',
+    'Family/Friends',
+    'Input Supplier',
+    'Local Sahookar',
+    'Gold Loan',
+  ];
+
+  farmerId = ''; // edit feature
+  /* END: Variables */
 
   constructor(
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
-    public router: Router
+    public router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.financialForm = this.formBuilder.group({
       loanReqPlaned: new FormArray([]),
-      ownerType: new FormControl([]),
+
+      interestedFRCMLoanProductsComment: new FormControl(''),
+      housingLoan: new FormControl(''),
+      tractorFinanceLoan: new FormControl(''),
+      FRCMCropInsurance: new FormControl(''),
+      personalLoan: new FormControl(''),
+
+      cultivationCost: new FormGroup({
+        seedPlanned1: new FormControl(''),
+        seedPlanned2: new FormControl(''),
+        seedHistorical: new FormControl(''),
+
+        labourPlanned1: new FormControl(''),
+        labourPlanned2: new FormControl(''),
+        labourHistorical: new FormControl(''),
+
+        farmElectricityPlanned1: new FormControl(''),
+        farmElectricityPlanned2: new FormControl(''),
+        farmElectricityHistorical: new FormControl(''),
+
+        machineryPlanned1: new FormControl(''),
+        machineryPlanned2: new FormControl(''),
+        machineryHistorical: new FormControl(''),
+      }),
+
+      groceryExpense: new FormControl(''),
+      medicalExpense: new FormControl(''),
+      educationExpense: new FormControl(''),
+      rentalExpense: new FormControl(''),
+      electricityExpense: new FormControl(''),
+      interestExpense: new FormControl(''),
+      otherExpense: new FormControl(''),
+
+      KCCLoanBank: new FormControl(''),
+      KCCLoanBankOther: new FormControl(''),
+      KCCLoanCreditedAmount: new FormControl(''),
+      KCCLoanDisbursementDate: new FormControl(''),
+      KCCLoanRepaymentAmount: new FormControl(''),
+      KCCLoanRepaymentDate: new FormControl(''),
+      loanLandSize: new FormControl(''),
+
+      takenOtherLoan: new FormControl(''),
+      otherLoanBank: new FormControl(''),
+      otherLoanCreditedAmount: new FormControl(''),
+      otherLoanDisbursementDate: new FormControl(''),
+      otherLoanRepaymentAmount: new FormControl(''),
+      otherLoanRepaymentDate: new FormControl(''),
+
+      PMFBYAmountPaid: new FormControl(''),
+      PMFBYPaymentDate: new FormControl(''),
+
+      insuranceDetails: new FormArray([this.createInsuranceDetails()]),
+
+      preferredCreditSourceRankOrder: new FormControl([]),
+      commissionAgentROICharge: new FormControl(''),
+      familyROICharge: new FormControl(''),
+      inputSupplierROICharge: new FormControl(''),
+      localSahookarROICharge: new FormControl(''),
+      goldLoanROICharge: new FormControl(''),
+      commissionAgentLoanAmount: new FormControl(''),
+      familyLoanAmount: new FormControl(''),
+      inputSupplierLoanAmount: new FormControl(''),
+      localSahookarLoanAmount: new FormControl(''),
+      goldLoanLoanAmount: new FormControl(''),
+
+      reasonAgent: new FormControl([]),
+      pledgedCollateral: new FormControl([]),
+      pledgedCollateralOther: new FormControl(''),
+      availedFarmLoanWaiver: new FormControl(''),
+      availedFarmLoanWaiverOther: new FormControl(''),
+      ownTractor: new FormControl(''),
+      farmMachinery: new FormControl([]),
       bankDetails: new FormArray([this.createBankDetails()]),
-      availKccLoan: new FormControl('SBI', [Validators.required]), //radio creditedAmount
-      creditedAmount: new FormControl('', [Validators.required]),
     });
 
     this.addFarmerService.getMessage().subscribe((data) => {
@@ -48,27 +151,70 @@ export class FinancialPlanningComponent implements OnInit {
       this.saveData();
       console.log(this.nextRoute);
     });
+
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
   ngOnInit(): void {
-    this.cropLoanProductList = cropLoanProduct;
-    this.cropsList = crops;
-    this.kccLoanList = availKCCLoan;
-    this.houseLoanList = houseLoan;
+    this.financialMaster = data.financialPlan; // read master data
+    this.commonMaster = data.commonData; // read master data
 
-    let finPlan: any = localStorage.getItem('financial-planing');
-    if (finPlan) {
-      finPlan = JSON.parse(finPlan);
-      this.financialForm.patchValue(finPlan);
-      console.log(finPlan);
+    // -----------------------start auto save --------------------
+    // draft feature is not required in edit operation
+    if (!this.farmerId) {
+      this.financialForm.valueChanges
+        .pipe(
+          tap(() => {
+            this.saveStatus = SaveStatus.Saving;
+          })
+        )
+        .subscribe(async (form_values) => {
+          let draft_farmer_new = {} as any;
+          if (localStorage.getItem('draft_farmer_new')) {
+            draft_farmer_new = JSON.parse(
+              localStorage.getItem('draft_farmer_new') as any
+            );
+          }
+          draft_farmer_new['financial_planing'] = form_values;
+          localStorage.setItem(
+            'draft_farmer_new',
+            JSON.stringify(draft_farmer_new)
+          );
+          this.saveStatus = SaveStatus.Saved;
+          if (this.saveStatus === SaveStatus.Saved) {
+            this.saveStatus = SaveStatus.Idle;
+          }
+        });
     }
+    // -----------------------End auto save --------------------
+    // if case is for EDIT and else case is for NEW/DRAFT
+    if (this.farmerId) {
+      let editForm: any = localStorage.getItem('edit-financial-planing');
+      if (editForm) {
+        editForm = JSON.parse(editForm);
+        this.financialForm.patchValue(editForm);
+      } else {
+        const A: any = localStorage.getItem('farmer-details');
+        if (A) {
+          const B = JSON.parse(A).financial_planning;
+          this.financialForm.patchValue(B);
+        }
+      }
+    } else {
+      let finPlan: any = localStorage.getItem('financial-planing');
+      if (finPlan) {
+        finPlan = JSON.parse(finPlan);
+        this.financialForm.patchValue(finPlan);
+        console.log(finPlan);
+      }
 
-    let fieldInfo: any = localStorage.getItem('field-info');
-    if (fieldInfo) {
-      fieldInfo = JSON.parse(fieldInfo);
-      fieldInfo.forEach((element: any) => {
-        this.addLoanReqPlaned();
-      });
+      let fieldInfo: any = localStorage.getItem('field-info');
+      if (fieldInfo) {
+        fieldInfo = JSON.parse(fieldInfo);
+        fieldInfo.forEach((element: any) => {
+          this.addLoanReqPlaned();
+        });
+      }
     }
   }
 
@@ -89,6 +235,7 @@ export class FinancialPlanningComponent implements OnInit {
 
   ngAfterContentInit() {}
 
+  /* START: Add Dynamic crop loan requirement  :FormArray */
   createLoanReqPlaned(): FormGroup {
     return this.formBuilder.group({
       fieldId: new FormControl('', [Validators.required]),
@@ -111,7 +258,9 @@ export class FinancialPlanningComponent implements OnInit {
   removeLoanReqPlaned(index: any) {
     this.loanReqPlaned.removeAt(index);
   }
+  /* END: Add Dynamic crop loan requirement  :FormArray */
 
+  /* START: Add Dynamic Bank Details: FormArray */
   createBankDetails(): FormGroup {
     return this.formBuilder.group({
       bankName: new FormControl('', [Validators.required]),
@@ -133,14 +282,71 @@ export class FinancialPlanningComponent implements OnInit {
   removeBankDetails(index: any) {
     this.bankDetails.removeAt(index);
   }
+  /* END: Add Dynamic Bank Details: FormArray */
+
+  /* START: Add Dynamic Insurance Details: FormArray */
+  createInsuranceDetails(): FormGroup {
+    return this.formBuilder.group({
+      insuranceType: new FormControl(''),
+      monthYearTaken: new FormControl(''),
+      premiumPaid: new FormControl(''),
+      isSettlementAmountCredited: new FormControl(''),
+      isDisbursementSatisfied: new FormControl(''),
+    });
+  }
+
+  getInsuranceDetailsControls() {
+    return (this.financialForm.get('insuranceDetails') as FormArray).controls;
+  }
+
+  addInsuranceDetails(): void {
+    this.insuranceDetails = this.financialForm.get(
+      'insuranceDetails'
+    ) as FormArray;
+    this.insuranceDetails.push(this.createInsuranceDetails());
+  }
+
+  removeInsuranceDetails(index: any) {
+    this.insuranceDetails.removeAt(index);
+  }
+  /* END: Add Dynamic Insurance Details: FormArray */
+
+  selectCheckboxArray(event: any, formCtlName: any, formVal: any) {
+    formVal = String(formVal);
+    let aryValCurr = this.financialForm.controls[formCtlName].value;
+    let aryValNew: any = [];
+    if (Array.isArray(aryValCurr)) {
+      aryValNew = [...aryValCurr];
+    } else if (aryValCurr) {
+      aryValNew = String(aryValCurr).split(',');
+    }
+    if (aryValNew.includes(formVal) && !event.target.checked) {
+      aryValNew.splice(aryValNew.indexOf(formVal), 1);
+    } else {
+      aryValNew.push(formVal);
+    }
+    // update the form value
+    // @ts-ignore: Object is possibly 'null'.
+    this.financialForm.get(formCtlName).setValue(aryValNew);
+    if (this.financialForm.controls[formCtlName].pristine) {
+      // @ts-ignore: Object is possibly 'null'.
+      this.financialForm.get(formCtlName).markAsDirty();
+    }
+  }
 
   saveData() {
-    let url = `/add/${this.nextRoute}`;
-    console.log(url);
-    localStorage.setItem(
-      'financial-planing',
-      JSON.stringify(this.financialForm.value)
-    );
+    if (this.farmerId) {
+      localStorage.setItem(
+        'edit-financial-planing',
+        JSON.stringify(this.financialForm.value)
+      );
+    } else {
+      localStorage.setItem(
+        'financial-planing',
+        JSON.stringify(this.financialForm.value)
+      );
+    }
+    const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
   }
 }

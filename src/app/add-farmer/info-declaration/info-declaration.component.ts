@@ -67,6 +67,7 @@ export class InfoDeclarationComponent implements OnInit {
 
     console.log(obj);
 
+
     this.addFarmerService.registerFarmer(obj).subscribe(
       (res: any) => {
         this.spinner.hide();
@@ -76,7 +77,17 @@ export class InfoDeclarationComponent implements OnInit {
         } else {
           console.log(res);
           this.toastr.success('Farmer Registration Success.');
-          localStorage.clear();
+          localStorage.removeItem('demographic-info');
+          localStorage.removeItem('demographic-info-form');
+          localStorage.removeItem('field-info');
+          localStorage.removeItem('field-info-form');
+          localStorage.removeItem('crop-market-planing');
+          localStorage.removeItem('financial-planing');
+          localStorage.removeItem('produce-aggregator');
+          localStorage.removeItem('technology-adoption');
+          localStorage.removeItem('co-applicant');
+          localStorage.removeItem('co-applicant-form');
+          localStorage.removeItem('draft_farmer_new');
           this.router.navigate(['/bd/dashboard']);
         }
       },

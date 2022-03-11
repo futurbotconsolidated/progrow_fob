@@ -14,39 +14,39 @@ import { EditDeclarationComponent } from './edit-declaration/edit-declaration.co
 
 const routes: Routes = [
   {
-    path: 'summary/:farmerid',
+    path: 'summary/:farmerId',
     component: SummaryComponent,
   },
   {
-    path: 'demographic-info/:farmerid',
+    path: 'demographic-info/:farmerId',
     component: EditDemographicInfoComponent,
   },
   {
-    path: 'field-info/:farmerid',
+    path: 'field-info/:farmerId',
     component: EditFieldInfoComponent,
   },
   {
-    path: 'financial-plan/:farmerid',
+    path: 'financial-plan/:farmerId',
     component: EditFinancialPlanningComponent,
   },
   {
-    path: 'crop-market-plan/:farmerid',
+    path: 'crop-market-plan/:farmerId',
     component: EditCropMarketPlanComponent,
   },
   {
-    path: 'fop/:farmerid',
+    path: 'fop/:farmerId',
     component: EditFpoComponent,
   },
   {
-    path: 'tech-adoption/:farmerid',
+    path: 'tech-adoption/:farmerId',
     component: EditTechAdoptionComponent,
   },
   {
-    path: 'co-applicant/:farmerid',
+    path: 'co-applicant/:farmerId',
     component: EditCoApplicantComponent,
   },
   {
-    path: 'declaration/:farmerid',
+    path: 'declaration/:farmerId',
     component: EditDeclarationComponent,
   },
 ];

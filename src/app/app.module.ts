@@ -9,6 +9,7 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
+import { NgxIndexedDBModule } from 'ngx-indexed-db';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';

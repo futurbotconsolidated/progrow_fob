@@ -26,22 +26,13 @@ export class AppComponent {
       })
       .then((res: any) => {
         if (
-          !this.oauthService.hasValidIdToken() &&
-          !this.oauthService.getAccessToken() &&
+          !this.oauthService.hasValidIdToken() ||
           !this.oauthService.hasValidAccessToken()
         ) {
+          sessionStorage.clear();
           this.oauthService.initCodeFlow();
         } else {
-          if (
-            (!this.oauthService.hasValidIdToken() ||
-              !this.oauthService.hasValidAccessToken()) &&
-            this.oauthService.getAccessToken()
-          ) {
-            this.oauthService.logOut();
-            this.oauthService.initImplicitFlow();
-          } else {
-            this.router.navigate(['/bd/dashboard']);
-          }
+          this.router.navigate(['/bd/dashboard']);
         }
       });
   }

@@ -1,0 +1,38 @@
+.lsn-tv-div{
+    display: none;
+  }
+.left-menu ul.navigation li.active a{
+    color: #608e50;
+}
+.left-menu ul.navigation li.active a::after {
+	border-bottom-color:#608e50;
+}
+@media only screen and (min-device-width: 992px) and (max-device-width: 1200px) {
+.lsn-tv-div {
+	position: fixed;
+	top: 46px;
+	z-index: 9999;
+    background-color: #D4EACD;
+    display: inline-block;
+}
+.lsn-tv-extend{
+    left: 229px;
+}
+.lsn-tv-collapse{
+    left: 0px;
+}
+.lsn-tv-div a{
+    display: inline-block;
+    padding: 0px 8px;
+}
+.lsn-tv-div a .fa{
+    font-size: 35px;  
+    color: #000;  
+}
+.lsn-tv-inactive{
+    display: none;
+}
+.lsn-tv-active{
+    display: block;
+}
+}
