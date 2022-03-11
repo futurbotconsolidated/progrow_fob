@@ -200,7 +200,8 @@ export const data = {
       'Repayment period',
     ],
     insuranceType: [
-      'Multiple Peril Crop Insurance (MPCI) and Crop-Hail Insurance',
+      'Multiple Peril Crop Insurance (MPCI)',
+      'Crop-Hail Insurance',
       'Animal Agricultural Insurance',
       'Crop Agricultural Insurance',
       'Farm Property and Equipment Agricultural Insurance',
