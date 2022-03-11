@@ -585,12 +585,16 @@ export class DemographicInfoComponent implements OnInit {
           // panImg: formValue.PANFrontImage,
 
           passportNumber: formValue.passportNumber,
-          passportFrontImage: formValue.passportFrontImage,
-          passportBackImage: formValue.passportBackImage,
+          passportFrontImage: '',
+          passportBackImage: '',
+          // passportFrontImage: formValue.passportFrontImage,
+          // passportBackImage: formValue.passportBackImage,
 
           NREGANumber: formValue.NREGANumber,
-          NREGAFrontImage: formValue.NREGAFrontImage,
-          NREGABackImage: formValue.NREGABackImage,
+          NREGAFrontImage: '',
+          NREGABackImage: '',
+          // NREGAFrontImage: formValue.NREGAFrontImage,
+          // NREGABackImage: formValue.NREGABackImage,
         },
         addressProof: {
           selectedIdProof: formValue.addressProof,
