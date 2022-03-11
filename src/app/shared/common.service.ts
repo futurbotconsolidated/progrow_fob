@@ -29,25 +29,27 @@ export class CommonService {
 
   /* START: API Calls */
   getExistingFarmers() {
-    // headers = headers.set('Bd-id', '1');
+    headers = headers.delete('Farmer-Id');
     headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
-    headers = headers.set('Authorization', this.token || '');
+    headers = headers.set('Authorization', this.token);
     return this.http.get(this.baseUrl + this.endPoints.getAllFarmers, {
       headers,
     });
   }
 
   getFarmersPipeline() {
+    headers = headers.delete('Farmer-Id');
     headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
-    headers = headers.set('Authorization', this.token || '');
+    headers = headers.set('Authorization', this.token);
     return this.http.get(this.baseUrl + this.endPoints.getAllFarmers, {
       headers,
     });
   }
 
   getFarmerDetailsById(id: any) {
+    headers = headers.delete('Bd-id');
     headers = headers.set('Farmer-Id', String(id));
-    headers = headers.set('Authorization', this.token || '');
+    headers = headers.set('Authorization', this.token);
     return this.http.get(this.baseUrl + this.endPoints.getFarmer, {
       headers,
     });
