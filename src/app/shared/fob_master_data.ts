@@ -188,7 +188,6 @@ export const data = {
     pledgedCollateral: [
       'Output is sold to the credit supplier',
       'Agricultural Land',
-      'Gold',
     ],
     reasonAgent: [
       'Working Capital cycle requirement',

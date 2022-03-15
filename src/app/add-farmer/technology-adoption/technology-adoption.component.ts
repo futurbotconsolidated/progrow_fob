@@ -24,7 +24,8 @@ export class TechnologyAdoptionComponent implements OnInit {
   technologyAdoptionForm = new FormGroup({});
   technologyAdoptionMaster = <any>{};
   nextRoute: any;
-  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle = SaveStatus.Idle;
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
+    SaveStatus.Idle;
   /* END: Variable */
 
   constructor(
@@ -36,7 +37,6 @@ export class TechnologyAdoptionComponent implements OnInit {
 
     this.technologyAdoptionForm = this.formBuilder.group({
       farmYieldImprovisation: new FormControl('', [Validators.required]),
-      farmCaseStudies: new FormControl('', [Validators.required]),
       payForTechnology: new FormControl('', [Validators.required]),
       payForTechnologyComment: new FormControl('', [Validators.required]),
       tissueCulture: new FormControl(),
@@ -59,24 +59,29 @@ export class TechnologyAdoptionComponent implements OnInit {
   ngOnInit(): void {
     // -----------------------start auto save --------------------
     this.technologyAdoptionForm.valueChanges
-    .pipe(
-      tap(() => {
-        this.saveStatus = SaveStatus.Saving;
-      })
-    )
-    .subscribe(async (form_values) => {
-      let draft_farmer_new = {} as any;
-      if(localStorage.getItem('draft_farmer_new')){
-        draft_farmer_new = JSON.parse(localStorage.getItem('draft_farmer_new') as any);    
-      }
-      draft_farmer_new['technology_adoption'] = form_values;
-      localStorage.setItem('draft_farmer_new', JSON.stringify(draft_farmer_new));
-      this.saveStatus = SaveStatus.Saved;
-      if (this.saveStatus === SaveStatus.Saved) {
-        this.saveStatus = SaveStatus.Idle;
-      }
-    });
-    // -----------------------End auto save --------------------    
+      .pipe(
+        tap(() => {
+          this.saveStatus = SaveStatus.Saving;
+        })
+      )
+      .subscribe(async (form_values) => {
+        let draft_farmer_new = {} as any;
+        if (localStorage.getItem('draft_farmer_new')) {
+          draft_farmer_new = JSON.parse(
+            localStorage.getItem('draft_farmer_new') as any
+          );
+        }
+        draft_farmer_new['technology_adoption'] = form_values;
+        localStorage.setItem(
+          'draft_farmer_new',
+          JSON.stringify(draft_farmer_new)
+        );
+        this.saveStatus = SaveStatus.Saved;
+        if (this.saveStatus === SaveStatus.Saved) {
+          this.saveStatus = SaveStatus.Idle;
+        }
+      });
+    // -----------------------End auto save --------------------
     let techAdopt: any = localStorage.getItem('technology-adoption');
     if (techAdopt) {
       techAdopt = JSON.parse(techAdopt);
