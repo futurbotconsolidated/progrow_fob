@@ -184,7 +184,8 @@ export class DashboardComponent implements OnInit {
       accessToken:
         'pk.eyJ1IjoicHVybmFyYW0iLCJhIjoiY2tpenBvZWpsMDNlaTMzcWpiZ2liZjEydiJ9.Mdj1w5dXDfCGCpIH5MlI2g',
       container: mapViewType, // container ID
-      style: 'mapbox://styles/mapbox/satellite-v9?optimize=true', // style URL
+      style: 'mapbox://styles/mapbox/satellite-streets-v11?optimize=true', // style URL
+      // style: 'mapbox://styles/mapbox/satellite-v9?optimize=true', // style URL
       zoom: 3, // starting zoom
       center: [78, 20],
     });
