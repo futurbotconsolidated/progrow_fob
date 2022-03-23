@@ -56,7 +56,10 @@ export class CommonService {
   }
 
   getPinCodeData(data: any) {
-    return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
+    return this.http.get(
+      `https://api.worldpostallocations.com/?postalcode=${data}&countrycode=IN`
+    );
+    // return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }
   /* END: API Calls */
 }

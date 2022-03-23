@@ -561,34 +561,34 @@ export class CoApplicantComponent implements OnInit {
       this.commonService.getPinCodeData(event.target.value.trim()).subscribe(
         (res: any) => {
           this.spinner.hide();
-          if (res && res[0].Status != 'Success') {
+          if (res && !res.status) {
             alert('Failed to fetch PinCode Details, please try again...');
           } else {
             if (type === 'ADDRESS') {
-              this.pinCodeAPIData = res[0].PostOffice;
+              this.pinCodeAPIData = res.result;
 
               this.coApplicantForm.patchValue({
-                city: this.pinCodeAPIData[0].District,
-                state: this.pinCodeAPIData[0].State,
+                city: this.pinCodeAPIData[0].district,
+                state: this.pinCodeAPIData[0].state,
               });
             } else if (type === 'ADDRESScoa2') {
-              this.pinCodeAPIDatacoa2 = res[0].PostOffice;
+              this.pinCodeAPIDatacoa2 = res.result;
               this.coApplicantForm.patchValue({
-                citycoa2: this.pinCodeAPIDatacoa2[0].District,
-                statecoa2: this.pinCodeAPIDatacoa2[0].State,
+                citycoa2: this.pinCodeAPIDatacoa2[0].district,
+                statecoa2: this.pinCodeAPIDatacoa2[0].state,
               });
             } else if (type === 'PERMANENT_ADDRESS') {
-              this.permPinCodeAPIData = res[0].PostOffice;
+              this.permPinCodeAPIData = res.result;
 
               this.coApplicantForm.patchValue({
-                permCity: this.permPinCodeAPIData[0].District,
-                permState: this.permPinCodeAPIData[0].State,
+                permCity: this.permPinCodeAPIData[0].district,
+                permState: this.permPinCodeAPIData[0].state,
               });
             } else if (type === 'PERMANENT_ADDRESScoa2') {
-              this.permPinCodeAPIDatacoa2 = res[0].PostOffice;
+              this.permPinCodeAPIDatacoa2 = res.result;
               this.coApplicantForm.patchValue({
-                permCitycoa2: this.permPinCodeAPIDatacoa2[0].District,
-                permStatecoa2: this.permPinCodeAPIDatacoa2[0].State,
+                permCitycoa2: this.permPinCodeAPIDatacoa2[0].district,
+                permStatecoa2: this.permPinCodeAPIDatacoa2[0].state,
               });
             }
           }

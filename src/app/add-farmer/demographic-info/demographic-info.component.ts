@@ -704,20 +704,20 @@ export class DemographicInfoComponent implements OnInit {
       this.commonService.getPinCodeData(event.target.value.trim()).subscribe(
         (res: any) => {
           this.spinner.hide();
-          if (res && res[0].Status != 'Success') {
-            alert(`${res[0].Message}`);
+          if (res && !res.status) {
+            alert(`${res.message}`);
           } else {
             if (type === 'ADDRESS') {
-              this.pinCodeAPIData = res[0].PostOffice;
+              this.pinCodeAPIData = res.result;
               this.demographicInfoForm.patchValue({
-                city: this.pinCodeAPIData[0].District,
-                state: this.pinCodeAPIData[0].State,
+                city: this.pinCodeAPIData[0].district,
+                state: this.pinCodeAPIData[0].state,
               });
             } else if (type === 'PERMANENT_ADDRESS') {
-              this.permPinCodeAPIData = res[0].PostOffice;
+              this.permPinCodeAPIData = res.result;
               this.demographicInfoForm.patchValue({
-                permCity: this.permPinCodeAPIData[0].District,
-                permState: this.permPinCodeAPIData[0].State,
+                permCity: this.permPinCodeAPIData[0].district,
+                permState: this.permPinCodeAPIData[0].state,
               });
             }
           }
