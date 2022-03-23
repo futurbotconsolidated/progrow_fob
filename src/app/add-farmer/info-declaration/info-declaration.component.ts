@@ -61,14 +61,6 @@ export class InfoDeclarationComponent implements OnInit {
     let coAppInfo: any;
 
     if (this.farmerId) {
-      demoInfo = localStorage.getItem('demographic-info');
-      fieldInfo = localStorage.getItem('field-info');
-      cropInfo = localStorage.getItem('crop-market-planing');
-      finInfo = localStorage.getItem('financial-planing');
-      prodInfo = localStorage.getItem('produce-aggregator');
-      techAdoptionInfo = localStorage.getItem('technology-adoption');
-      coAppInfo = localStorage.getItem('co-applicant');
-    } else {
       demoInfo = localStorage.getItem('edit-demographic-info');
       fieldInfo = localStorage.getItem('edit-field-info');
       cropInfo = localStorage.getItem('edit-crop-market-planing');
@@ -76,6 +68,14 @@ export class InfoDeclarationComponent implements OnInit {
       prodInfo = localStorage.getItem('edit-produce-aggregator');
       techAdoptionInfo = localStorage.getItem('edit-technology-adoption');
       coAppInfo = localStorage.getItem('edit-co-applicant');
+    } else {
+      demoInfo = localStorage.getItem('demographic-info');
+      fieldInfo = localStorage.getItem('field-info');
+      cropInfo = localStorage.getItem('crop-market-planing');
+      finInfo = localStorage.getItem('financial-planing');
+      prodInfo = localStorage.getItem('produce-aggregator');
+      techAdoptionInfo = localStorage.getItem('technology-adoption');
+      coAppInfo = localStorage.getItem('co-applicant');
     }
     const INPUT_OBJ = {
       farmer_id: this.farmerId,
