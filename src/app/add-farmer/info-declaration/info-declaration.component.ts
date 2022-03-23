@@ -5,6 +5,8 @@ import { AddFarmerService } from '../add-farmer.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-info-declaration',
@@ -12,21 +14,29 @@ import { OAuthService } from 'angular-oauth2-oidc';
   styleUrls: ['./info-declaration.component.css'],
 })
 export class InfoDeclarationComponent implements OnInit {
+  /* START: Variables */
   declarationForm = new FormGroup({
     agreedTerms: new FormControl('', Validators.required),
   });
   canSubmit: boolean;
   userInfo: any;
 
+  indexedDBName = 'registerFarmer'; // indexed db related
+  farmerId = ''; // edit feature
+  /* END: Variables */
+
   constructor(
     private addFarmerService: AddFarmerService,
     private toastr: ToastrService,
     private router: Router,
     private spinner: NgxSpinnerService,
-    public oauthService: OAuthService
+    public oauthService: OAuthService,
+    private dbService: NgxIndexedDBService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.canSubmit = false;
     this.userInfo = this.oauthService.getIdentityClaims();
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
   ngOnInit(): void {}
@@ -42,19 +52,36 @@ export class InfoDeclarationComponent implements OnInit {
 
   saveData() {
     this.spinner.show();
+    let demoInfo: any;
+    let fieldInfo: any;
+    let cropInfo: any;
+    let finInfo: any;
+    let prodInfo: any;
+    let techAdoptionInfo: any;
+    let coAppInfo: any;
 
-    let demoInfo: any = localStorage.getItem('demographic-info');
-    let fieldInfo: any = localStorage.getItem('field-info');
-    let cropInfo: any = localStorage.getItem('crop-market-planing');
-    let finInfo: any = localStorage.getItem('financial-planing');
-    let prodInfo: any = localStorage.getItem('produce-aggregator');
-    let techAdoptionInfo: any = localStorage.getItem('technology-adoption');
-    let coAppInfo: any = localStorage.getItem('co-applicant');
-
-    let obj = {
+    if (this.farmerId) {
+      demoInfo = localStorage.getItem('demographic-info');
+      fieldInfo = localStorage.getItem('field-info');
+      cropInfo = localStorage.getItem('crop-market-planing');
+      finInfo = localStorage.getItem('financial-planing');
+      prodInfo = localStorage.getItem('produce-aggregator');
+      techAdoptionInfo = localStorage.getItem('technology-adoption');
+      coAppInfo = localStorage.getItem('co-applicant');
+    } else {
+      demoInfo = localStorage.getItem('edit-demographic-info');
+      fieldInfo = localStorage.getItem('edit-field-info');
+      cropInfo = localStorage.getItem('edit-crop-market-planing');
+      finInfo = localStorage.getItem('edit-financial-planing');
+      prodInfo = localStorage.getItem('edit-produce-aggregator');
+      techAdoptionInfo = localStorage.getItem('edit-technology-adoption');
+      coAppInfo = localStorage.getItem('edit-co-applicant');
+    }
+    const INPUT_OBJ = {
+      farmer_id: this.farmerId,
       bd_id: this.userInfo['custom:access_type'],
-      pan_number: JSON.parse(demoInfo).identityProof.panNumber,
       mobile: JSON.parse(demoInfo).address.mobileNumber,
+      pan_number: JSON.parse(demoInfo).identityProof.panNumber,
       demographic_info: JSON.parse(demoInfo),
       field_info: JSON.parse(fieldInfo),
       crop_market_plan: JSON.parse(cropInfo),
@@ -65,38 +92,145 @@ export class InfoDeclarationComponent implements OnInit {
       is_required_yn: true,
     };
 
-    console.log(obj);
+    console.log(INPUT_OBJ);
 
-
-    this.addFarmerService.registerFarmer(obj).subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.message != 'Success' || !res.status) {
-          this.toastr.error(`${res.message}!`);
-          return;
-        } else {
-          console.log(res);
-          this.toastr.success('Farmer Registration Success.');
-          localStorage.removeItem('demographic-info');
-          localStorage.removeItem('demographic-info-form');
-          localStorage.removeItem('field-info');
-          localStorage.removeItem('field-info-form');
-          localStorage.removeItem('crop-market-planing');
-          localStorage.removeItem('financial-planing');
-          localStorage.removeItem('produce-aggregator');
-          localStorage.removeItem('technology-adoption');
-          localStorage.removeItem('co-applicant');
-          localStorage.removeItem('co-applicant-form');
-          localStorage.removeItem('draft_farmer_new');
-          this.router.navigate(['/bd/dashboard']);
+    // update farmer
+    if (this.farmerId) {
+      this.addFarmerService.updateFarmer(INPUT_OBJ).subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res.message != 'Success' || !res.status) {
+            this.toastr.error(`${res.message}!`);
+            return;
+          } else {
+            // check count of indexed-db files data
+            this.dbService.count(this.indexedDBName).subscribe((filesCount) => {
+              if (filesCount) {
+                this.dbService
+                  .getAll(this.indexedDBName)
+                  .subscribe((files: any) => {
+                    const form = new FormData();
+                    form.append('farmerId', res.farmerId);
+                    files.forEach((x: any) => {
+                      form.append(x.fileFor, x.file, x.file.name);
+                    });
+                    // call file upload api
+                    this.addFarmerService.documentUpload(form).subscribe(
+                      (res: any) => {
+                        if (res.message != 'Success' || !res.status) {
+                          this.toastr.error(`${res.message}!`);
+                          return;
+                        } else {
+                          this.clearRoute();
+                        }
+                      },
+                      (error: any) => {
+                        this.spinner.hide();
+                        this.toastr.error(
+                          'Failed to upload a document details, please try again...'
+                        );
+                      }
+                    );
+                  });
+              } else {
+                this.clearRoute();
+              }
+            });
+          }
+        },
+        (error: any) => {
+          this.spinner.hide();
+          this.toastr.error(
+            'Failed to update farmer details, please try again...'
+          );
         }
-      },
-      (error: any) => {
-        this.spinner.hide();
-        this.toastr.error(
-          'Failed to register farmer details, please try again...'
-        );
-      }
-    );
+      );
+    } else {
+      this.addFarmerService.registerFarmer(INPUT_OBJ).subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res.message != 'Success' || !res.status) {
+            this.toastr.error(`${res.message}!`);
+            return;
+          } else {
+            // check count of indexed-db files data
+            this.dbService.count(this.indexedDBName).subscribe((filesCount) => {
+              if (filesCount) {
+                this.dbService
+                  .getAll(this.indexedDBName)
+                  .subscribe((files: any) => {
+                    const form = new FormData();
+                    form.append('farmerId', res.farmerId);
+                    files.forEach((x: any) => {
+                      form.append(x.fileFor, x.file, x.file.name);
+                    });
+                    // call file upload api
+                    this.addFarmerService.documentUpload(form).subscribe(
+                      (res: any) => {
+                        if (res.message != 'Success' || !res.status) {
+                          this.toastr.error(`${res.message}!`);
+                          return;
+                        } else {
+                          this.clearRoute();
+                        }
+                      },
+                      (error: any) => {
+                        this.spinner.hide();
+                        this.toastr.error(
+                          'Failed to upload a document details, please try again...'
+                        );
+                      }
+                    );
+                  });
+              } else {
+                this.clearRoute();
+              }
+            });
+          }
+        },
+        (error: any) => {
+          this.spinner.hide();
+          this.toastr.error(
+            'Failed to register farmer details, please try again...'
+          );
+        }
+      );
+    }
+  }
+  clearRoute() {
+    if (this.farmerId) {
+      this.toastr.success('Farmer Update Success.');
+      localStorage.removeItem('edit-demographic-info');
+      localStorage.removeItem('edit-demographic-info-form');
+      localStorage.removeItem('edit-field-info');
+      localStorage.removeItem('edit-field-info-form');
+      localStorage.removeItem('edit-crop-market-planing');
+      localStorage.removeItem('edit-financial-planing');
+      localStorage.removeItem('edit-produce-aggregator');
+      localStorage.removeItem('edit-technology-adoption');
+      localStorage.removeItem('edit-co-applicant');
+      localStorage.removeItem('edit-co-applicant-form');
+      localStorage.removeItem('draft_farmer_new');
+    } else {
+      this.toastr.success('Farmer Registration Success.');
+      localStorage.removeItem('demographic-info');
+      localStorage.removeItem('demographic-info-form');
+      localStorage.removeItem('field-info');
+      localStorage.removeItem('field-info-form');
+      localStorage.removeItem('crop-market-planing');
+      localStorage.removeItem('financial-planing');
+      localStorage.removeItem('produce-aggregator');
+      localStorage.removeItem('technology-adoption');
+      localStorage.removeItem('co-applicant');
+      localStorage.removeItem('co-applicant-form');
+      localStorage.removeItem('draft_farmer_new');
+    }
+
+    // clear indexed db data
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
+      console.log('success? ', successDeleted);
+    });
+
+    this.router.navigate(['/bd/dashboard']);
   }
 }

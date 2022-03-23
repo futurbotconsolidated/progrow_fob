@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
   FormControl,
@@ -63,6 +64,8 @@ export class CoApplicantComponent implements OnInit {
   nextRoute: any;
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
+
+  farmerId = ''; // edit feature
   /* END: Varaibles */
 
   constructor(
@@ -71,7 +74,8 @@ export class CoApplicantComponent implements OnInit {
     private addFarmerService: AddFarmerService,
     private toastr: ToastrService,
     public commonService: CommonService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.coApplicantForm = this.formBuilder.group({
       profileImg: new FormControl(''),
@@ -181,42 +185,65 @@ export class CoApplicantComponent implements OnInit {
       commOrPerAddresscoa2: new FormControl(''),
       familyMemberscoa2: new FormArray([this.createFamilyMembers()]),
     });
+
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
   ngOnInit(): void {
     this.coApplicantMaster = data.coApplicant; // read master data
     this.demoGraphicMaster = data.demoGraphic; // read master data
     // ----------------------- Start auto save --------------------
-    this.coApplicantForm.valueChanges
-      .pipe(
-        tap(() => {
-          this.saveStatus = SaveStatus.Saving;
-        })
-      )
-      .subscribe(async (form_values) => {
-        let draft_farmer_new = {} as any;
-        if (localStorage.getItem('draft_farmer_new')) {
-          draft_farmer_new = JSON.parse(
-            localStorage.getItem('draft_farmer_new') as any
+    // draft feature is not required in edit operation
+    if (!this.farmerId) {
+      this.coApplicantForm.valueChanges
+        .pipe(
+          tap(() => {
+            this.saveStatus = SaveStatus.Saving;
+          })
+        )
+        .subscribe(async (form_values) => {
+          let draft_farmer_new = {} as any;
+          if (localStorage.getItem('draft_farmer_new')) {
+            draft_farmer_new = JSON.parse(
+              localStorage.getItem('draft_farmer_new') as any
+            );
+          }
+          draft_farmer_new['co_applicant_form'] = form_values;
+          localStorage.setItem(
+            'draft_farmer_new',
+            JSON.stringify(draft_farmer_new)
           );
-        }
-        draft_farmer_new['co_applicant_form'] = form_values;
-        localStorage.setItem(
-          'draft_farmer_new',
-          JSON.stringify(draft_farmer_new)
-        );
-        this.saveStatus = SaveStatus.Saved;
-        if (this.saveStatus === SaveStatus.Saved) {
-          this.saveStatus = SaveStatus.Idle;
-        }
-      });
-    // ----------------------- End auto save --------------------
-    let demoInfo: any = localStorage.getItem('co-applicant-form');
-    if (demoInfo) {
-      demoInfo = JSON.parse(demoInfo);
-      this.coApplicantForm.patchValue(demoInfo);
-      console.log(demoInfo);
+          this.saveStatus = SaveStatus.Saved;
+          if (this.saveStatus === SaveStatus.Saved) {
+            this.saveStatus = SaveStatus.Idle;
+          }
+        });
     }
+    // ----------------------- End auto save --------------------
+    // if case is for EDIT and else case is for NEW/DRAFT
+    if (this.farmerId) {
+      let editForm: any = localStorage.getItem('edit-coapplicant-form');
+      if (editForm) {
+        editForm = JSON.parse(editForm);
+        this.coApplicantForm.patchValue(editForm);
+      } else {
+        const A: any = localStorage.getItem('farmer-details');
+        if (A) {
+          const B = JSON.parse(A).co_applicant_details;
+          this.coApplicantForm.patchValue(B);
+        }
+      }
+    } else {
+      let demoInfo: any = localStorage.getItem('co-applicant-form');
+      if (demoInfo) {
+        demoInfo = JSON.parse(demoInfo);
+        this.coApplicantForm.patchValue(demoInfo);
+        console.log(demoInfo);
+      }
+    }
+
+    //--------------------------EDIT--------
+    this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
   ngAfterViewInit(): void {
     this.addFarmerService.getMessage().subscribe((data) => {
@@ -719,14 +746,18 @@ export class CoApplicantComponent implements OnInit {
 
       coapparr.push(obj);
       coapparr.push(objcoa2);
-      // console.log(coapparr);
-      localStorage.setItem('co-applicant', JSON.stringify(coapparr));
-      localStorage.setItem('co-applicant-form', JSON.stringify(formValue));
-      // console.log(JSON.stringify(obj).length, JSON.stringify(formValue).length);
-      //console.log(localStorage.getItem('co-applicant'));
-
-      const url = `/add/${this.nextRoute}`;
-      this.router.navigate([url]);
+      if (this.farmerId) {
+        localStorage.setItem('edit-co-applicant', JSON.stringify(obj));
+        localStorage.setItem(
+          'edit-co-applicant-form',
+          JSON.stringify(formValue)
+        );
+      } else {
+        localStorage.setItem('co-applicant', JSON.stringify(coapparr));
+        localStorage.setItem('co-applicant-form', JSON.stringify(formValue));
+      }
     }
+    const url = `/add/${this.nextRoute}/${this.farmerId}`;
+    this.router.navigate([url]);
   }
 }

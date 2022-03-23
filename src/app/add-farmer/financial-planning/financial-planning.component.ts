@@ -192,12 +192,22 @@ export class FinancialPlanningComponent implements OnInit {
       let editForm: any = localStorage.getItem('edit-financial-planing');
       if (editForm) {
         editForm = JSON.parse(editForm);
+        console.log(this.financialForm);
         this.financialForm.patchValue(editForm);
+        console.log(this.financialForm);
+
+        this.editDynamicBindFormArray(editForm.bankDetails);
       } else {
         const A: any = localStorage.getItem('farmer-details');
         if (A) {
           const B = JSON.parse(A).financial_planning;
+          console.log(this.financialForm);
+
           this.financialForm.patchValue(B);
+          console.log(this.financialForm);
+
+          this.editDynamicBindFormArray(B.bankDetails);
+          console.log(this.financialForm);
         }
       }
     } else {
@@ -281,6 +291,23 @@ export class FinancialPlanningComponent implements OnInit {
 
   removeBankDetails(index: any) {
     this.bankDetails.removeAt(index);
+  }
+
+  editDynamicBindFormArray(dataArray: any) {
+    this.bankDetails = this.financialForm.get('bankDetails') as FormArray;
+
+    if (Array.isArray(dataArray) && dataArray.length) {
+      dataArray.forEach((x: any) => {
+        this.bankDetails.push(
+          this.formBuilder.group({
+            bankName: new FormControl(x.bankName),
+            accountNum: new FormControl(x.accountNum),
+            IFSCode: new FormControl(x.IFSCode),
+            customerID: new FormControl(x.customerID),
+          })
+        );
+      });
+    }
   }
   /* END: Add Dynamic Bank Details: FormArray */
 

@@ -130,30 +130,46 @@ export class FieldInfoComponent implements OnInit {
         });
     }
     // -----------------------End auto save --------------------
+    // if case is for EDIT and else case is for NEW/DRAFT
+    if (this.farmerId) {
+      let editForm: any = localStorage.getItem('edit-field-info-form');
+      console.log(editForm);
 
-    let fieldInfo: any = localStorage.getItem('field-info-form');
-    if (fieldInfo) {
-      fieldInfo = JSON.parse(fieldInfo);
-      this.bindItemsInEdit(fieldInfo);
-    }
+      if (editForm) {
+        editForm = JSON.parse(editForm);
+        this.bindItemsInEdit(editForm);
+      } else {
+        const A: any = localStorage.getItem('farmer-details');
+        if (A) {
+          const B = JSON.parse(A).fieldInfo;
+          this.fieldInfoForm.patchValue(B);
+        }
+      }
+    } else {
+      let fieldInfo: any = localStorage.getItem('field-info-form');
+      if (fieldInfo) {
+        fieldInfo = JSON.parse(fieldInfo);
+        this.bindItemsInEdit(fieldInfo);
+      }
 
-    let map_info: any = localStorage.getItem('field-info');
-    map_info = JSON.parse(map_info);
+      let map_info: any = localStorage.getItem('field-info');
+      map_info = JSON.parse(map_info);
 
-    if (map_info) {
-      this.editFieldArea = [];
+      if (map_info) {
+        this.editFieldArea = [];
 
-      map_info.forEach((el: any) => {
-        this.editFieldArea.push(el.field_area_ha);
-        let arr = el.field_boundary.geometry.coordinates;
-        let co: any = [];
-        arr.forEach((x: any) => {
-          console.log(el);
+        map_info.forEach((el: any) => {
+          this.editFieldArea.push(el.field_area_ha);
+          let arr = el.field_boundary.geometry.coordinates;
+          let co: any = [];
+          arr.forEach((x: any) => {
+            console.log(el);
 
-          co.push([x[0], x[1]]);
+            co.push([x[0], x[1]]);
+          });
+          this.selectedCoordinates.push(co);
         });
-        this.selectedCoordinates.push(co);
-      });
+      }
     }
     console.log(this.selectedCoordinates);
   }
@@ -373,11 +389,13 @@ export class FieldInfoComponent implements OnInit {
       console.log(this.plannedFieldDetails);
       drawnItems.addLayer(layer);
       var pfd_last_index = -1;
-      (this.fieldInfoForm.get('plannedFieldDetails') as FormArray).controls.forEach((x: any, index: number) => {
+      (
+        this.fieldInfoForm.get('plannedFieldDetails') as FormArray
+      ).controls.forEach((x: any, index: number) => {
         pfd_last_index = index;
       });
       let fimi_ob = {
-        'field_index': pfd_last_index,
+        field_index: pfd_last_index,
         leaflet_id: layer._leaflet_id,
       };
       this.fieldIndexMapIds.push(fimi_ob);
@@ -690,11 +708,19 @@ export class FieldInfoComponent implements OnInit {
     }
     console.log(fieldArr);
 
-    localStorage.setItem('field-info', JSON.stringify(fieldArr));
-    localStorage.setItem(
-      'field-info-form',
-      JSON.stringify(this.fieldInfoForm.value)
-    );
+    if (this.farmerId) {
+      localStorage.setItem('edit-field-info', JSON.stringify(obj));
+      localStorage.setItem(
+        'edit-field-info-form',
+        JSON.stringify(this.fieldInfoForm.value)
+      );
+    } else {
+      localStorage.setItem('field-info', JSON.stringify(fieldArr));
+      localStorage.setItem(
+        'field-info-form',
+        JSON.stringify(this.fieldInfoForm.value)
+      );
+    }
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
     // this.toastr.error('Please Plot at least One Field', 'Error!');

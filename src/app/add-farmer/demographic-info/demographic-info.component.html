@@ -90,6 +90,19 @@
             <h3 class="form-title">3. Others details</h3>
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
+                <label>Voter Id</label>
+                <input type="text" class="form-control" formControlName="voterIdNumber" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('VOTERID')">
+                  Upload VoterId Image
+                </button>
+              </div>
+            </div>
+
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
                 <label>Passport Number</label>
                 <input type="text" class="form-control" formControlName="passportNumber" />
               </div>
