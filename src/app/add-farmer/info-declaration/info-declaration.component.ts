@@ -8,6 +8,8 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { ActivatedRoute } from '@angular/router';
 
+declare var $: any;
+
 @Component({
   selector: 'app-info-declaration',
   templateUrl: './info-declaration.component.html',
@@ -115,22 +117,35 @@ export class InfoDeclarationComponent implements OnInit {
                       form.append(x.fileFor, x.file, x.file.name);
                     });
                     // call file upload api
-                    this.addFarmerService.documentUpload(form).subscribe(
-                      (res: any) => {
-                        if (res.message != 'Success' || !res.status) {
-                          this.toastr.error(`${res.message}!`);
-                          return;
-                        } else {
-                          this.clearRoute();
-                        }
-                      },
-                      (error: any) => {
-                        this.spinner.hide();
-                        this.toastr.error(
-                          'Failed to upload a document details, please try again...'
-                        );
+                    $.ajax(
+                      {
+                        "url": "https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding/document_upload",
+                        "method": "POST",
+                        "timeout": 0,
+                        "processData": false,
+                        "mimeType": "multipart/form-data",
+                        "contentType": false,
+                        "data": form
                       }
-                    );
+                    ).done(function (response: any) {
+                      console.log(response);
+                    });  
+                    // this.addFarmerService.documentUpload(form).subscribe(
+                    //   (res: any) => {
+                    //     if (res.message != 'Success' || !res.status) {
+                    //       this.toastr.error(`${res.message}!`);
+                    //       return;
+                    //     } else {
+                    //       this.clearRoute();
+                    //     }
+                    //   },
+                    //   (error: any) => {
+                    //     this.spinner.hide();
+                    //     this.toastr.error(
+                    //       'Failed to upload a document details, please try again...'
+                    //     );
+                    //   }
+                    // );
                   });
               } else {
                 this.clearRoute();
@@ -165,22 +180,42 @@ export class InfoDeclarationComponent implements OnInit {
                       form.append(x.fileFor, x.file, x.file.name);
                     });
                     // call file upload api
-                    this.addFarmerService.documentUpload(form).subscribe(
-                      (res: any) => {
-                        if (res.message != 'Success' || !res.status) {
-                          this.toastr.error(`${res.message}!`);
-                          return;
-                        } else {
-                          this.clearRoute();
-                        }
-                      },
-                      (error: any) => {
-                        this.spinner.hide();
-                        this.toastr.error(
-                          'Failed to upload a document details, please try again...'
-                        );
+                    $.ajax(
+                      {
+                        "url": "https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding/document_upload",
+                        "method": "POST",
+                        "timeout": 0,
+                        "processData": false,
+                        "mimeType": "multipart/form-data",
+                        "contentType": false,
+                        "data": form
                       }
-                    );
+                    ).done(function (response: any) {
+                      console.log(response);
+                      if (response.message != 'Success' || !response.status) {
+                        alert(response.message);
+                        //this.toastr.error(`${response.message}!`);
+                        return;
+                      } else {
+                        //this.clearRoute();
+                      }
+                    });                     
+                    // this.addFarmerService.documentUpload(form).subscribe(
+                    //   (res: any) => {
+                    //     if (res.message != 'Success' || !res.status) {
+                    //       this.toastr.error(`${res.message}!`);
+                    //       return;
+                    //     } else {
+                    //       this.clearRoute();
+                    //     }
+                    //   },
+                    //   (error: any) => {
+                    //     this.spinner.hide();
+                    //     this.toastr.error(
+                    //       'Failed to upload a document details, please try again...'
+                    //     );
+                    //   }
+                    // );
                   });
               } else {
                 this.clearRoute();

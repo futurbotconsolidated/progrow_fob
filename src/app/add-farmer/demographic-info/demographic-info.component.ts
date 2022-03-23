@@ -633,9 +633,6 @@ export class DemographicInfoComponent implements OnInit {
   }
 
   validateAndNext() {
-    this.dbService.getAll(this.indexedDBName).subscribe((farmerFiles: any) => {
-      console.log(farmerFiles);
-    });
     this.isSubmitted = true;
     if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
