@@ -264,8 +264,8 @@
                   <label class="required">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="taluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.Name }}">
-                      {{ indVal.Name }}
+                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation  }}">
+                      {{ indVal.postalLocation }}
                     </option>
                   </select>
                   <div *ngIf="isSubmitted && f['taluk'].errors" class="form-text text-danger">
@@ -419,8 +419,8 @@
                   <label class="required">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="permTaluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.Name }}">
-                      {{ indVal.Name }}
+                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation  }}">
+                      {{ indVal.postalLocation }}
                     </option>
                   </select>
                   <div *ngIf="isSubmitted && f['permTaluk'].errors" class="form-text text-danger">
