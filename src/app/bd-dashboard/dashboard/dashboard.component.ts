@@ -409,7 +409,10 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('edit-field-info-form');
     localStorage.removeItem('edit-financial-planing');
     localStorage.removeItem('edit-crop-market-planing');
+    localStorage.removeItem('edit-technology-adoption');
     localStorage.removeItem('edit-produce-aggregator');
+    localStorage.removeItem('edit-co-applicant');
+    localStorage.removeItem('edit-co-applicant-form');
   }
   /* END: Non-API Function Calls */
 
@@ -434,56 +437,8 @@ export class DashboardComponent implements OnInit {
 
   getFarmersPipeline() {
     // Other Variables
-    const farmersPipeline = [
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '2 - 4 Ha',
-      //   crop_type: 'Mustard',
-      //   frcm_score: '80-100',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '4 - 6 Ha',
-      //   crop_type: 'Cumin',
-      //   frcm_score: '60-80',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '6 - 8 Ha',
-      //   crop_type: 'Mustard',
-      //   frcm_score: '80-100',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '2 - 4 Ha',
-      //   crop_type: 'Cumin',
-      //   frcm_score: '60-80',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '4 - 6 Ha',
-      //   crop_type: 'Mustard',
-      //   frcm_score: '60-100',
-      // },
-    ] as any;
-
-    this.allPipelineFarmers = farmersPipeline;
+    this.allPipelineFarmers = [];
     return;
-    this.spinner.show();
-    this.commonService.getFarmersPipeline().subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.message != 'Success' || !res.status) {
-          alert('Failed to fetch farmers pipeline data, please try again...');
-        } else {
-          this.allPipelineFarmers = res.data;
-        }
-      },
-      (error: any) => {
-        this.spinner.hide();
-        alert('Failed to fetch farmers pipeline data, please try again...');
-      }
-    );
   }
   /* END: API Function Calls */
 

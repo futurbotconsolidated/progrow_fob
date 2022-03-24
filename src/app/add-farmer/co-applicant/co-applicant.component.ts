@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
 import { validatePANNumber } from '../../shared/custom-validators';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 declare var $: any;
 import { data } from '../../shared/fob_master_data';
@@ -65,6 +66,63 @@ export class CoApplicantComponent implements OnInit {
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
 
+  // indexed db variables
+  displayCoApplicant1ProfileImage = '' as any;
+  displayCoApplicant2ProfileImage = '' as any;
+  displayFarmerProfileImage = '' as any;
+  indexedDBPageName = 'coapplicant';
+  concatePage1 = 'coapplicant1';
+  concatePage2 = 'coapplicant2';
+  indexedDBName = 'registerFarmer';
+  indexedDBFileNameManage = {
+    coa1: {
+      panCard: {
+        front: `${this.concatePage1}_PANCardFront`,
+        back: '',
+      },
+      addressProof: {
+        front: `${this.concatePage1}_addressProofFront`,
+        back: `${this.concatePage1}_addressProofBack`,
+      },
+      passport: {
+        front: `${this.concatePage1}_passportFront`,
+        back: `${this.concatePage1}_passportBack`,
+      },
+      NREGA: {
+        front: `${this.concatePage1}_NREGAFront`,
+        back: `${this.concatePage1}_NREGABack`,
+      },
+      voterId: {
+        front: `${this.concatePage1}_voterIdFront`,
+        back: `${this.concatePage1}_voterIdBack`,
+      },
+      farmerProfile: { front: `${this.concatePage1}_farmerProfileImage` },
+    },
+    coa2: {
+      panCard: {
+        front: `${this.concatePage2}_PANCardFront`,
+        back: '',
+      },
+      addressProof: {
+        front: `${this.concatePage2}_addressProofFront`,
+        back: `${this.concatePage2}_addressProofBack`,
+      },
+      passport: {
+        front: `${this.concatePage2}_passportFront`,
+        back: `${this.concatePage2}_passportBack`,
+      },
+      NREGA: {
+        front: `${this.concatePage2}_NREGAFront`,
+        back: `${this.concatePage2}_NREGABack`,
+      },
+      voterId: {
+        front: `${this.concatePage2}_voterIdFront`,
+        back: `${this.concatePage2}_voterIdBack`,
+      },
+      farmerProfile: { front: `${this.concatePage2}_farmerProfileImage` },
+    },
+  };
+
   farmerId = ''; // edit feature
   /* END: Varaibles */
 
@@ -75,22 +133,14 @@ export class CoApplicantComponent implements OnInit {
     private toastr: ToastrService,
     public commonService: CommonService,
     private spinner: NgxSpinnerService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private dbService: NgxIndexedDBService
   ) {
+    // create form group
     this.coApplicantForm = this.formBuilder.group({
-      profileImg: new FormControl(''),
-      addressProof: new FormControl('', [Validators.required]),
-      addressProofFrontImage: new FormControl(''),
-      addressProofBackImage: new FormControl(''),
+      // co-applicat 1
+      salutation: new FormControl(''),
       firstName: new FormControl('', [Validators.required]),
-      PANnumber: new FormControl('', [validatePANNumber]),
-      PANFrontImage: new FormControl(''),
-      passportNumber: new FormControl(''),
-      passportFrontImage: new FormControl(''),
-      passportBackImage: new FormControl(''),
-      NREGANumber: new FormControl(''),
-      NREGAFrontImage: new FormControl(''),
-      NREGABackImage: new FormControl(''),
       middleName: new FormControl(''),
       lastName: new FormControl('', [Validators.required]),
       dob: new FormControl(''),
@@ -100,6 +150,7 @@ export class CoApplicantComponent implements OnInit {
       educationQualification: new FormControl(''),
       occupation: new FormControl(''),
       annualIncome: new FormControl('', [Validators.pattern('^[0-9]*$')]),
+
       address1: new FormControl('', [Validators.required]),
       address2: new FormControl(''),
       taluk: new FormControl('', [Validators.required]),
@@ -111,13 +162,12 @@ export class CoApplicantComponent implements OnInit {
       ]),
       state: new FormControl('', [Validators.required]),
       landmark: new FormControl(''),
+
       phoneNumber: new FormControl('', [
         Validators.required,
         Validators.pattern('^[0-9]*$'),
       ]),
 
-      // mobile1: new FormControl('', [Validators.pattern('^[0-9]*$')]),
-      // mobile2: new FormControl(''),
       yrsInAddress: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       yrsInCity: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       email: new FormControl('', [Validators.email]),
@@ -134,19 +184,15 @@ export class CoApplicantComponent implements OnInit {
       commOrPerAddress: new FormControl('', [Validators.required]),
       familyMembers: new FormArray([this.createFamilyMembers()]),
 
-      profileImgcoa2: new FormControl(''),
-      addressProofcoa2: new FormControl(''),
-      addressProofFrontImagecoa2: new FormControl(''),
-      addressProofBackImagecoa2: new FormControl(''),
+      addressProof: new FormControl('', [Validators.required]),
+      PANnumber: new FormControl('', [validatePANNumber]),
+      passportNumber: new FormControl(''),
+      voterIdNumber: new FormControl(''),
+      NREGANumber: new FormControl(''),
+
+      // co-applicat 2
+      salutationcoa2: new FormControl(''),
       firstNamecoa2: new FormControl(''),
-      PANnumbercoa2: new FormControl(''),
-      PANFrontImagecoa2: new FormControl(''),
-      passportNumbercoa2: new FormControl(''),
-      passportFrontImagecoa2: new FormControl(''),
-      passportBackImagecoa2: new FormControl(''),
-      NREGANumbercoa2: new FormControl(''),
-      NREGAFrontImagecoa2: new FormControl(''),
-      NREGABackImagecoa2: new FormControl(''),
       middleNamecoa2: new FormControl(''),
       lastNamecoa2: new FormControl(''),
       dobcoa2: new FormControl(''),
@@ -156,6 +202,7 @@ export class CoApplicantComponent implements OnInit {
       educationQualificationcoa2: new FormControl(''),
       occupationcoa2: new FormControl(''),
       annualIncomecoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
+
       address1coa2: new FormControl(''),
       address2coa2: new FormControl(''),
       talukcoa2: new FormControl(''),
@@ -167,8 +214,7 @@ export class CoApplicantComponent implements OnInit {
       statecoa2: new FormControl(''),
       landmarkcoa2: new FormControl(''),
       phoneNumbercoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
-      // mobile1coa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
-      // mobile2coa2: new FormControl(''),
+
       yrsInAddresscoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       yrsInCitycoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       emailcoa2: new FormControl('', [Validators.email]),
@@ -184,11 +230,18 @@ export class CoApplicantComponent implements OnInit {
       monthlyRentcoa2: new FormControl(''),
       commOrPerAddresscoa2: new FormControl(''),
       familyMemberscoa2: new FormArray([this.createFamilyMembers()]),
+
+      addressProofcoa2: new FormControl(''),
+      PANnumbercoa2: new FormControl(''),
+      passportNumbercoa2: new FormControl(''),
+      voterIdNumbercoa2: new FormControl(''),
+      NREGANumbercoa2: new FormControl(''),
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
+  /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
     this.coApplicantMaster = data.coApplicant; // read master data
     this.demoGraphicMaster = data.demoGraphic; // read master data
@@ -241,10 +294,8 @@ export class CoApplicantComponent implements OnInit {
         console.log(demoInfo);
       }
     }
-
-    //--------------------------EDIT--------
-    this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
+
   ngAfterViewInit(): void {
     this.addFarmerService.getMessage().subscribe((data) => {
       this.nextRoute = data.routeName;
@@ -255,7 +306,9 @@ export class CoApplicantComponent implements OnInit {
   get f() {
     return this.coApplicantForm.controls;
   }
+  /* END: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
 
+  /* START: NON-API Function Calls-------------------------------------------------------------- */
   createFamilyMembers(): FormGroup {
     return this.formBuilder.group({
       name: new FormControl(''),
@@ -297,6 +350,15 @@ export class CoApplicantComponent implements OnInit {
     }
   }
 
+  validateNo(e: any): boolean {
+    const charCode = e.which ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
+  /* START: functions used indexed-db ============================================ */
   openFileModalPopup(type: string) {
     this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
@@ -313,8 +375,15 @@ export class CoApplicantComponent implements OnInit {
       }
       this.fileUpload.popupTitle = 'Upload PAN Card Image';
       this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.coApplicantForm.value.PANFrontImage || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.panCard.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
     } else if (type === 'PANcoa2') {
       if (!this.coApplicantForm.value.PANnumbercoa2) {
         this.toastr.error('please enter PAN Number.', 'Error!');
@@ -322,8 +391,15 @@ export class CoApplicantComponent implements OnInit {
       }
       this.fileUpload.popupTitle = 'Upload PAN Card Image';
       this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.coApplicantForm.value.PANFrontImagecoa2 || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.panCard.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
     } else if (type === 'ADDRESS_PROOF') {
       if (!this.coApplicantForm.value.addressProof) {
         this.toastr.error('please select Address Proof Type.', 'Error!');
@@ -333,10 +409,25 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.coApplicantForm.value.addressProofFrontImage || '';
-      this.fileUpload.new.imageSrc2 =
-        this.coApplicantForm.value.addressProofBackImage || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.addressProof.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.addressProof.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 = farmer?.file;
+        });
     } else if (type === 'ADDRESS_PROOFcoa2') {
       if (!this.coApplicantForm.value.addressProofcoa2) {
         this.toastr.error('please select Address Proof Type.', 'Error!');
@@ -346,10 +437,25 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.coApplicantForm.value.addressProofFrontImagecoa2 || '';
-      this.fileUpload.new.imageSrc2 =
-        this.coApplicantForm.value.addressProofBackImagecoa2 || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.addressProof.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.addressProof.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 = farmer?.file;
+        });
     } else if (type === 'PASSPORT') {
       if (!this.coApplicantForm.value.passportNumber) {
         this.toastr.error('please enter Passport Number.', 'Error!');
@@ -358,10 +464,25 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload Passport Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.coApplicantForm.value.passportFrontImage || '';
-      this.fileUpload.new.imageSrc2 =
-        this.coApplicantForm.value.passportBackImage || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.passport.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.passport.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 = farmer?.file;
+        });
     } else if (type === 'PASSPORTcoa2') {
       if (!this.coApplicantForm.value.passportNumbercoa2) {
         this.toastr.error('please enter Passport Number.', 'Error!');
@@ -370,10 +491,25 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload Passport Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.coApplicantForm.value.passportFrontImagecoa2 || '';
-      this.fileUpload.new.imageSrc2 =
-        this.coApplicantForm.value.passportBackImagecoa2 || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.passport.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.passport.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 = farmer?.file;
+        });
     } else if (type === 'NREGA') {
       if (!this.coApplicantForm.value.NREGANumber) {
         this.toastr.error('please enter NREGA Number.', 'Error!');
@@ -382,10 +518,25 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload NREGA Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.coApplicantForm.value.NREGAFrontImage || '';
-      this.fileUpload.new.imageSrc2 =
-        this.coApplicantForm.value.NREGABackImage || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.NREGA.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.NREGA.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 = farmer?.file;
+        });
     } else if (type === 'NREGAcoa2') {
       if (!this.coApplicantForm.value.NREGANumbercoa2) {
         this.toastr.error('please enter NREGA Number.', 'Error!');
@@ -394,22 +545,51 @@ export class CoApplicantComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload NREGA Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.coApplicantForm.value.NREGAFrontImagecoa2 || '';
-      this.fileUpload.new.imageSrc2 =
-        this.coApplicantForm.value.NREGABackImagecoa2 || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.NREGA.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.NREGA.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 = farmer?.file;
+        });
     } else if (type === 'FARMER_PROFILE') {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.coApplicantForm.value.profileImg || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.farmerProfile.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
     } else if (type === 'FARMER_PROFILEcoa2') {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.coApplicantForm.value.profileImgcoa2 || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.farmerProfile.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
     }
     $('#fileUploadModalPopup').modal('show');
   }
@@ -427,133 +607,314 @@ export class CoApplicantComponent implements OnInit {
         return;
       }
 
+      /* START: reading file and Patching the Selected File */
+      let selectedImageFor = '';
       reader.readAsDataURL(file);
       reader.onload = () => {
         const imageSrc = reader.result;
 
         if (this.fileUpload.fileFor === 'PAN' && type == 'FRONT_IMAGE') {
           this.fileUpload.new.imageSrc1 = imageSrc;
-          this.coApplicantForm.patchValue({
-            PANFrontImage: imageSrc,
-          });
+          selectedImageFor = this.indexedDBFileNameManage.coa1.panCard.front;
         } else if (
           this.fileUpload.fileFor === 'PANcoa2' &&
           type == 'FRONT_IMAGE'
         ) {
           this.fileUpload.new.imageSrc1 = imageSrc;
-          this.coApplicantForm.patchValue({
-            PANFrontImagecoa2: imageSrc,
-          });
+          selectedImageFor = this.indexedDBFileNameManage.coa2.panCard.front;
         } else if (this.fileUpload.fileFor === 'ADDRESS_PROOF') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.coApplicantForm.patchValue({
-              addressProofFrontImage: imageSrc,
-            });
+            selectedImageFor =
+              this.indexedDBFileNameManage.coa1.addressProof.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            this.coApplicantForm.patchValue({
-              addressProofBackImage: imageSrc,
-            });
+            selectedImageFor =
+              this.indexedDBFileNameManage.coa1.addressProof.back;
           }
         } else if (this.fileUpload.fileFor === 'ADDRESS_PROOFcoa2') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.coApplicantForm.patchValue({
-              addressProofFrontImagecoa2: imageSrc,
-            });
+            selectedImageFor =
+              this.indexedDBFileNameManage.coa2.addressProof.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            this.coApplicantForm.patchValue({
-              addressProofBackImagecoa2: imageSrc,
-            });
+            selectedImageFor =
+              this.indexedDBFileNameManage.coa2.addressProof.back;
           }
         } else if (this.fileUpload.fileFor === 'PASSPORT') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.coApplicantForm.patchValue({
-              passportFrontImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.coa1.passport.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            this.coApplicantForm.patchValue({
-              passportBackImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.coa1.passport.back;
           }
         } else if (this.fileUpload.fileFor === 'PASSPORTcoa2') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.coApplicantForm.patchValue({
-              passportFrontImagecoa2: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.coa2.passport.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            this.coApplicantForm.patchValue({
-              passportBackImagecoa2: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.coa2.passport.back;
           }
         } else if (this.fileUpload.fileFor === 'NREGA') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.coApplicantForm.patchValue({
-              NREGAFrontImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.coa1.NREGA.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            this.coApplicantForm.patchValue({
-              NREGABackImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.coa1.NREGA.back;
           }
         } else if (this.fileUpload.fileFor === 'NREGAcoa2') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.coApplicantForm.patchValue({
-              NREGAFrontImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.coa2.NREGA.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            this.coApplicantForm.patchValue({
-              NREGABackImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.coa2.NREGA.back;
           }
         } else if (this.fileUpload.fileFor === 'FARMER_PROFILE') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.coApplicantForm.patchValue({
-              profileImg: imageSrc,
-            });
+            selectedImageFor =
+              this.indexedDBFileNameManage.coa1.farmerProfile.front;
           }
         } else if (this.fileUpload.fileFor === 'FARMER_PROFILEcoa2') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.coApplicantForm.patchValue({
-              profileImgcoa2: imageSrc,
-            });
+            selectedImageFor =
+              this.indexedDBFileNameManage.coa2.farmerProfile.front;
           }
         }
 
-        console.log(this.fileUpload);
+        /* START: ngx-indexed-db feature to store files(images/docs) */
+        // if file already exist then delete then add
+        this.dbService
+          .getByIndex(this.indexedDBName, 'fileFor', selectedImageFor)
+          .subscribe((file: any) => {
+            if (file && file !== undefined && Object.keys(file).length) {
+              // delete if exists
+              this.dbService
+                .deleteByKey(this.indexedDBName, file.id)
+                .subscribe((status) => {
+                  console.log('Deleted?:', status);
+                });
+              // then add new
+              this.dbService
+                .add(this.indexedDBName, {
+                  pageName: this.indexedDBPageName,
+                  fileFor: selectedImageFor,
+                  file: imageSrc,
+                })
+                .subscribe((key) => {
+                  console.log(key.id); //unique key for each item
+                });
+            } else {
+              // add new
+              this.dbService
+                .add(this.indexedDBName, {
+                  pageName: this.indexedDBPageName,
+                  fileFor: selectedImageFor,
+                  file: imageSrc,
+                })
+                .subscribe((key) => {
+                  console.log(key.id); //unique key for each item
+                });
+            }
+          });
+        /* END: ngx-indexed-db feature to store files(images/docs) */
       };
+      /* END: reading file and Patching the Selected File */
     }
   }
+
   removeImage(event: any, type: string) {
     if (type == 'FARMER_PROFILE') {
-      this.coApplicantForm.patchValue({
-        profileImg: '',
-      });
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          this.indexedDBFileNameManage.coa1.farmerProfile.front
+        )
+        .subscribe((file: any) => {
+          if (file && file !== undefined && Object.keys(file).length) {
+            // delete if exists
+            this.dbService
+              .deleteByKey(this.indexedDBName, file.id)
+              .subscribe((status) => {
+                console.log('Deleted?:', status);
+                if (status) this.displayCoApplicant1ProfileImage = '';
+              });
+          }
+        });
     } else if (type == 'FARMER_PROFILEcoa2') {
-      this.coApplicantForm.patchValue({
-        profileImgcoa2: '',
-      });
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          this.indexedDBFileNameManage.coa2.farmerProfile.front
+        )
+        .subscribe((file: any) => {
+          if (file && file !== undefined && Object.keys(file).length) {
+            // delete if exists
+            this.dbService
+              .deleteByKey(this.indexedDBName, file.id)
+              .subscribe((status) => {
+                console.log('Deleted?:', status);
+                if (status) this.displayCoApplicant2ProfileImage = '';
+              });
+          }
+        });
     }
   }
-  validateNo(e: any): boolean {
-    const charCode = e.which ? e.which : e.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false;
+
+  getIndexedDBImage(type: string) {
+    if (type == 'FARMER_PROFILE') {
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          this.indexedDBFileNameManage.coa1.farmerProfile.front
+        )
+        .subscribe((file: any) => {
+          if (file && file !== undefined && Object.keys(file).length) {
+            this.displayCoApplicant1ProfileImage = file.file;
+          }
+        });
+    } else if (type == 'FARMER_PROFILEcoa2') {
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          this.indexedDBFileNameManage.coa2.farmerProfile.front
+        )
+        .subscribe((file: any) => {
+          if (file && file !== undefined && Object.keys(file).length) {
+            this.displayCoApplicant2ProfileImage = file.file;
+          }
+        });
     }
-    return true;
   }
+  /* END: functions used indexed-db ============================================ */
+
+  validateAndNext() {
+    this.isSubmitted = true;
+    if (this.coApplicantForm.invalid) {
+      this.toastr.error('please enter values for required fields', 'Error!');
+      return;
+    } else {
+      const formValue = this.coApplicantForm.value;
+      const coapparr = <any>[];
+      const obj = {
+        identityProof: {
+          panNumber: formValue.PANnumber,
+          passportNumber: formValue.passportNumber,
+          NREGANumber: formValue.NREGANumber,
+          voterIdNumber: formValue.voterIdNumber,
+        },
+        addressProof: {
+          selectedIdProof: formValue.addressProof,
+        },
+        farmerDetails: {
+          salutation: formValue.salutation,
+          firstName: formValue.firstName,
+          middleName: formValue.middleName,
+          lastName: formValue.lastName,
+          dob: formValue.dob,
+          gender: formValue.gender,
+          religion: formValue.religion,
+          caste: formValue.caste,
+        },
+        address: {
+          addressLine1: formValue.address1,
+          addressLine2: formValue.address2,
+          pincode: formValue.pinCode,
+          taluk: formValue.taluk,
+          city: formValue.city,
+          state: formValue.state,
+          landmark: formValue.landmark,
+          mobileNumber: formValue.phoneNumber,
+          email: formValue.email,
+          yrsInAddress: formValue.yrsInAddress,
+          yrsInCity: formValue.yrsInCity,
+        },
+        commOrPerAddress: formValue.commOrPerAddress,
+        otherDetails: {
+          educationalQualification: formValue.educationalQualification,
+          occupation: formValue.occupation,
+          fpoName: formValue.annualIncome,
+        },
+        familyMembers: formValue.familyMembers,
+        propertyStatus: formValue.propertyStatus,
+        monthlyRent: formValue.monthlyRent,
+      };
+
+      const objcoa2 = {
+        identityProof: {
+          panNumber: formValue.PANnumbercoa2,
+          passportNumber: formValue.passportNumbercoa2,
+          NREGANumber: formValue.NREGANumbercoa2,
+          voterIdNumber: formValue.voterIdNumbercoa2,
+        },
+        addressProof: {
+          selectedIdProof: formValue.addressProofcoa2,
+        },
+        farmerDetails: {
+          salutation: formValue.salutationcoa2,
+          firstName: formValue.firstNamecoa2,
+          middleName: formValue.middleNamecoa2,
+          lastName: formValue.lastNamecoa2,
+          dob: formValue.dobcoa2,
+          gender: formValue.gendercoa2,
+          religion: formValue.religioncoa2,
+          caste: formValue.castecoa2,
+        },
+        address: {
+          addressLine1: formValue.address1coa2,
+          addressLine2: formValue.address2coa2,
+          pincode: formValue.pinCodecoa2,
+          taluk: formValue.talukcoa2,
+          city: formValue.citycoa2,
+          state: formValue.statecoa2,
+          landmark: formValue.landmarkcoa2,
+          mobileNumber: formValue.phoneNumbercoa2,
+          email: formValue.emailcoa2,
+          yrsInAddress: formValue.yrsInAddresscoa2,
+          yrsInCity: formValue.yrsInCitycoa2,
+        },
+        commOrPerAddress: formValue.commOrPerAddresscoa2,
+        otherDetails: {
+          educationalQualification: formValue.educationalQualificationcoa2,
+          occupation: formValue.occupationcoa2,
+          fpoName: formValue.annualIncomecoa2,
+        },
+        familyMembers: formValue.familyMemberscoa2,
+        propertyStatus: formValue.propertyStatuscoa2,
+        monthlyRent: formValue.monthlyRentcoa2,
+      };
+
+      coapparr.push(obj);
+      coapparr.push(objcoa2);
+      console.log(coapparr);
+
+      if (this.farmerId) {
+        localStorage.setItem('edit-co-applicant', JSON.stringify(obj));
+        localStorage.setItem(
+          'edit-co-applicant-form',
+          JSON.stringify(formValue)
+        );
+      } else {
+        localStorage.setItem('co-applicant', JSON.stringify(coapparr));
+        localStorage.setItem('co-applicant-form', JSON.stringify(formValue));
+      }
+      const url = `/add/${this.nextRoute}/${this.farmerId}`;
+      this.router.navigate([url]);
+    }
+  }
+  /* END: NON-API Function Calls------------------------------------------------------------------------ */
+
+  /* START: API Function Calls------------------------------------------------------------------------ */
   getPinCodeData(event: any, type: string) {
     // clear values
     if (type === 'ADDRESS') {
@@ -628,136 +989,5 @@ export class CoApplicantComponent implements OnInit {
     }
   }
 
-  validateAndNext() {
-    this.isSubmitted = true;
-    if (this.coApplicantForm.invalid) {
-      this.toastr.error('please enter values for required fields', 'Error!');
-      return;
-    } else {
-      const formValue = this.coApplicantForm.value;
-      const coapparr = <any>[];
-      const obj = {
-        profileImg: '',
-        // profileImg: formValue.profileImg,
-        identityProof: {
-          panNumber: formValue.PANnumber,
-          panImg: '',
-          // panImg: formValue.PANFrontImage,
-        },
-        addressProof: {
-          selectedIdProof: formValue.addressProof,
-          selectedIdProofFrontImg: '',
-          selectedIdProofBackImg: '',
-          // selectedIdProofFrontImg: formValue.addressProofFrontImage,
-          // selectedIdProofBackImg: formValue.addressProofBackImage,
-        },
-        passportNumber: formValue.passportNumber,
-        passportFrontImage: '',
-        // passportFrontImage: formValue.passportFrontImage,
-        passportBackImage: '',
-        // passportBackImage: formValue.passportBackImage,
-        NREGANumber: formValue.NREGANumber,
-        NREGAFrontImage: '',
-        // NREGAFrontImage: formValue.NREGAFrontImage,
-        NREGABackImage: '',
-        // NREGABackImage: formValue.NREGABackImage,
-        farmerDetails: {
-          firstName: formValue.firstName,
-          middleName: formValue.middleName,
-          lastName: formValue.lastName,
-          dob: formValue.dob,
-          gender: formValue.gender,
-          religion: formValue.religion,
-          caste: formValue.caste,
-        },
-        address: {
-          addressLine1: formValue.address1,
-          addressLine2: formValue.address2,
-          pincode: formValue.pinCode,
-          mobileNumber: formValue.phoneNumber,
-          taluk: formValue.taluk,
-          city: formValue.city,
-          state: formValue.state,
-          landmark: formValue.landmark,
-          yrsInAddress: formValue.yrsInAddress,
-          yrsInCity: formValue.yrsInCity,
-        },
-        email: formValue.email,
-        propertyStatus: formValue.propertyStatus,
-        monthlyRent: formValue.monthlyRent,
-        commOrPerAddress: formValue.commOrPerAddress,
-        otherDetails: {
-          educationalQualification: formValue.educationalQualification,
-          occupation: formValue.occupation,
-          fpoName: formValue.annualIncome,
-        },
-        familyMembers: formValue.familyMembers,
-      };
-
-      const objcoa2 = {
-        profileImg: '', //formValue.profileImgcoa2,
-        identityProof: {
-          panNumber: formValue.PANnumbercoa2,
-          panImg: '', //formValue.PANFrontImagecoa2,
-        },
-        addressProof: {
-          selectedIdProof: formValue.addressProofcoa2,
-          selectedIdProofFrontImg: '', //formValue.addressProofFrontImagecoa2,
-          selectedIdProofBackImg: '', //formValue.addressProofBackImagecoa2,
-        },
-        passportNumber: formValue.passportNumbercoa2,
-        passportFrontImage: '', // formValue.passportFrontImagecoa2,
-        passportBackImage: '', //formValue.passportBackImagecoa2,
-        NREGANumber: formValue.NREGANumbercoa2,
-        NREGAFrontImage: '', // formValue.NREGAFrontImagecoa2,
-        NREGABackImage: '', //formValue.NREGABackImagecoa2,
-        farmerDetails: {
-          firstName: formValue.firstNamecoa2,
-          middleName: formValue.middleNamecoa2,
-          lastName: formValue.lastNamecoa2,
-          dob: formValue.dobcoa2,
-          gender: formValue.gendercoa2,
-          religion: formValue.religioncoa2,
-          caste: formValue.castecoa2,
-        },
-        address: {
-          addressLine1: formValue.address1coa2,
-          addressLine2: formValue.address2coa2,
-          pincode: formValue.pinCodecoa2,
-          mobileNumber: formValue.phoneNumbercoa2,
-          taluk: formValue.talukcoa2,
-          city: formValue.citycoa2,
-          state: formValue.statecoa2,
-          landmark: formValue.landmarkcoa2,
-          yrsInAddress: formValue.yrsInAddresscoa2,
-          yrsInCity: formValue.yrsInCitycoa2,
-        },
-        email: formValue.emailcoa2,
-        propertyStatus: formValue.propertyStatuscoa2,
-        monthlyRent: formValue.monthlyRentcoa2,
-        commOrPerAddress: formValue.commOrPerAddresscoa2,
-        otherDetails: {
-          educationalQualification: formValue.educationalQualificationcoa2,
-          occupation: formValue.occupationcoa2,
-          fpoName: formValue.annualIncomecoa2,
-        },
-        familyMembers: formValue.familyMemberscoa2,
-      };
-
-      coapparr.push(obj);
-      coapparr.push(objcoa2);
-      if (this.farmerId) {
-        localStorage.setItem('edit-co-applicant', JSON.stringify(obj));
-        localStorage.setItem(
-          'edit-co-applicant-form',
-          JSON.stringify(formValue)
-        );
-      } else {
-        localStorage.setItem('co-applicant', JSON.stringify(coapparr));
-        localStorage.setItem('co-applicant-form', JSON.stringify(formValue));
-      }
-    }
-    const url = `/add/${this.nextRoute}/${this.farmerId}`;
-    this.router.navigate([url]);
-  }
+  /* END: API Function Calls------------------------------------------------------------------------ */
 }

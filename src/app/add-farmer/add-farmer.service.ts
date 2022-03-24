@@ -48,7 +48,7 @@ export class AddFarmerService {
 
   documentUpload(data: any) {
     headers = headers.set('Authorization', this.token);
-    headers = headers.set('Content-Type', 'multipart/form-data');
+    headers = headers.set('Content-Type', 'application/json');
     return this.http.post(this.baseUrl + this.endPoints.documentUpload, data, {
       headers,
     });

@@ -36,6 +36,7 @@ function sleep(ms: number): Promise<any> {
 export class DemographicInfoComponent implements OnInit {
   /* START: Varaibles */
   demoGraphicMaster = <any>{};
+
   isSubmitted = false;
   fileUpload = {
     fileFor: '',
@@ -61,10 +62,36 @@ export class DemographicInfoComponent implements OnInit {
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
 
-  farmerId = ''; // edit feature
-
+  // indexed db variables
+  displayFarmerProfileImage = '' as any;
   indexedDBPageName = 'demographic_info';
+  concatePage = 'demographic';
   indexedDBName = 'registerFarmer';
+  indexedDBFileNameManage = {
+    panCard: {
+      front: `${this.concatePage}_PANCardFront`,
+      back: '',
+    },
+    addressProof: {
+      front: `${this.concatePage}_addressProofFront`,
+      back: `${this.concatePage}_addressProofBack`,
+    },
+    passport: {
+      front: `${this.concatePage}_passportFront`,
+      back: `${this.concatePage}_passportBack`,
+    },
+    NREGA: {
+      front: `${this.concatePage}_NREGAFront`,
+      back: `${this.concatePage}_NREGABack`,
+    },
+    voterId: {
+      front: `${this.concatePage}_voterIdFront`,
+      back: `${this.concatePage}_voterIdBack`,
+    },
+    farmerProfile: { front: `${this.concatePage}_farmerProfileImage` },
+  };
+
+  farmerId = ''; // edit feature
   /* END: Varaibles */
 
   constructor(
@@ -79,7 +106,6 @@ export class DemographicInfoComponent implements OnInit {
   ) {
     // create form group
     this.demographicInfoForm = this.formBuilder.group({
-      profileImg: new FormControl(''),
       salutation: new FormControl(''),
       firstName: new FormControl('', [Validators.required]),
       middleName: new FormControl(''),
@@ -144,25 +170,11 @@ export class DemographicInfoComponent implements OnInit {
       agriculturalInterest: new FormControl(''),
       innovativeWaysFarming: [Array()],
 
-      // id number and image related
       addressProof: new FormControl('', [Validators.required]),
-      addressProofFrontIndexedDBKey: new FormControl(''),
-      addressProofBackIndexedDBKey: new FormControl(''),
-
       PANnumber: new FormControl('', [validatePANNumber]),
-      PANFrontIndexedDBKey: new FormControl(''),
-
       passportNumber: new FormControl(''),
-      passportFrontIndexedDBKey: new FormControl(''),
-      passportBackIndexedDBKey: new FormControl(''),
-
       voterIdNumber: new FormControl(''),
-      voterIdFrontIndexedDBKey: new FormControl(''),
-      voterIdBackIndexedDBKey: new FormControl(''),
-
       NREGANumber: new FormControl(''),
-      NREGAFrontIndexedDBKey: new FormControl(''),
-      NREGABackIndexedDBKey: new FormControl(''),
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
@@ -247,10 +259,6 @@ export class DemographicInfoComponent implements OnInit {
   /* END: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
 
   /* START: NON-API Function Calls-------------------------------------------------------------- */
-  bindExistingFormArray(type: string) {
-    if (type == 'edit') {
-    }
-  }
   createPropertyOwnership(): FormGroup {
     return this.formBuilder.group({
       propertyType: new FormControl(''),
@@ -334,6 +342,7 @@ export class DemographicInfoComponent implements OnInit {
     }
   }
 
+  /* START: functions used indexed-db ============================================ */
   openFileModalPopup(type: string) {
     this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
@@ -351,7 +360,11 @@ export class DemographicInfoComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload PAN Card Image';
       this.fileUpload.new.isImage1Required = true;
       this.dbService
-        .getByKey(this.indexedDBName, this.val['PANFrontIndexedDBKey'])
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.panCard.front}`
+        )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc1 = farmer?.file;
         });
@@ -366,20 +379,24 @@ export class DemographicInfoComponent implements OnInit {
       this.fileUpload.new.isImage2Required = true;
 
       this.dbService
-        .getByKey(this.indexedDBName, this.val['addressProofFrontIndexedDBKey'])
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.addressProof.front}`
+        )
         .subscribe((farmer: any) => {
-          console.log(farmer);
-
           this.fileUpload.new.imageSrc1 = farmer?.file;
-          console.log(this.fileUpload.new.imageSrc1);
         });
 
       this.dbService
-        .getByKey(this.indexedDBName, this.val['addressProofBackIndexedDBKey'])
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.addressProof.back}`
+        )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc2 = farmer?.file;
         });
-      console.log(this.demographicInfoForm.value);
     } else if (type === 'PASSPORT') {
       if (!this.demographicInfoForm.value.passportNumber) {
         this.toastr.error('please enter Passport Number.', 'Error!');
@@ -390,12 +407,21 @@ export class DemographicInfoComponent implements OnInit {
       this.fileUpload.new.isImage2Required = true;
 
       this.dbService
-        .getByKey(this.indexedDBName, this.val['passportFrontIndexedDBKey'])
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.passport.front}`
+        )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc1 = farmer?.file;
         });
+
       this.dbService
-        .getByKey(this.indexedDBName, this.val['passportBackIndexedDBKey'])
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.passport.back}`
+        )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc2 = farmer?.file;
         });
@@ -409,12 +435,21 @@ export class DemographicInfoComponent implements OnInit {
       this.fileUpload.new.isImage2Required = true;
 
       this.dbService
-        .getByKey(this.indexedDBName, this.val['NREGAFrontIndexedDBKey'])
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.NREGA.front}`
+        )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc1 = farmer?.file;
         });
+
       this.dbService
-        .getByKey(this.indexedDBName, this.val['NREGABackIndexedDBKey'])
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.NREGA.back}`
+        )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc2 = farmer?.file;
         });
@@ -426,14 +461,22 @@ export class DemographicInfoComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload Voter Id Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-
       this.dbService
-        .getByKey(this.indexedDBName, this.val['voterIdFrontIndexedDBKey'])
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.voterId.front}`
+        )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc1 = farmer?.file;
         });
+
       this.dbService
-        .getByKey(this.indexedDBName, this.val['voterIdBackIndexedDBKey'])
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.voterId.back}`
+        )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc2 = farmer?.file;
         });
@@ -441,8 +484,15 @@ export class DemographicInfoComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.demographicInfoForm.value.profileImg || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.farmerProfile.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 = farmer?.file;
+        });
     }
     $('#fileUploadModalPopup').modal('show');
   }
@@ -463,103 +513,132 @@ export class DemographicInfoComponent implements OnInit {
 
       /* START: reading file and Patching the Selected File */
       let selectedImageFor = '';
-      let selectedImageFormVariableKey = '';
       reader.readAsDataURL(file);
       reader.onload = () => {
         const imageSrc = reader.result;
 
         if (this.fileUpload.fileFor === 'PAN' && type == 'FRONT_IMAGE') {
           this.fileUpload.new.imageSrc1 = imageSrc;
-          selectedImageFor = 'PANFrontImage';
-          selectedImageFormVariableKey = 'PANFrontIndexedDBKey';
+          selectedImageFor = this.indexedDBFileNameManage.panCard.front;
         } else if (this.fileUpload.fileFor === 'ADDRESS_PROOF') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = 'addressProofFrontImage';
-            selectedImageFormVariableKey = 'addressProofFrontIndexedDBKey';
+            selectedImageFor = this.indexedDBFileNameManage.addressProof.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = 'addressProofBackImage';
-            selectedImageFormVariableKey = 'addressProofBackIndexedDBKey';
+            selectedImageFor = this.indexedDBFileNameManage.addressProof.back;
           }
         } else if (this.fileUpload.fileFor === 'PASSPORT') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = 'passportFrontImage';
-            selectedImageFormVariableKey = 'passportFrontIndexedDBKey';
+            selectedImageFor = this.indexedDBFileNameManage.passport.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = 'passportBackImage';
-            selectedImageFormVariableKey = 'passportBackIndexedDBKey';
+            selectedImageFor = this.indexedDBFileNameManage.passport.back;
           }
         } else if (this.fileUpload.fileFor === 'NREGA') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = 'NREGAFrontImage';
-            selectedImageFormVariableKey = 'NREGAFrontIndexedDBKey';
+            selectedImageFor = this.indexedDBFileNameManage.NREGA.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = 'NREGABackImage';
-            selectedImageFormVariableKey = 'NREGABackIndexedDBKey';
+            selectedImageFor = this.indexedDBFileNameManage.NREGA.back;
           }
         } else if (this.fileUpload.fileFor === 'VOTERID') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = 'voterIdFrontImage';
-            selectedImageFormVariableKey = 'voterIdFrontIndexedDBKey';
+            selectedImageFor = this.indexedDBFileNameManage.voterId.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = 'voterIdBackImage';
-            selectedImageFormVariableKey = 'voterIdBackIndexedDBKey';
+            selectedImageFor = this.indexedDBFileNameManage.voterId.back;
           }
         } else if (this.fileUpload.fileFor === 'FARMER_PROFILE') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = 'profileImg';
-            this.demographicInfoForm.patchValue({
-              profileImg: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.farmerProfile.front;
+            this.displayFarmerProfileImage = imageSrc;
           }
         }
 
         /* START: ngx-indexed-db feature to store files(images/docs) */
-        let indexedDBGeneratedKey: any;
-        // if (this.demographicInfoForm.value[selectedImageFor] == '') {
+        // if file already exist then delete then add
         this.dbService
-          .add(this.indexedDBName, {
-            pageName: this.indexedDBPageName,
-            fileFor: `DemoGraphic_${selectedImageFor}`,
-            file: file,
-          })
-          .subscribe((key) => {
-            indexedDBGeneratedKey = key.id; //unique key for each item
-            this.demographicInfoForm.controls[
-              selectedImageFormVariableKey
-            ].setValue(indexedDBGeneratedKey);
+          .getByIndex(this.indexedDBName, 'fileFor', selectedImageFor)
+          .subscribe((file: any) => {
+            if (file && file !== undefined && Object.keys(file).length) {
+              // delete if exists
+              this.dbService
+                .deleteByKey(this.indexedDBName, file.id)
+                .subscribe((status) => {
+                  console.log('Deleted?:', status);
+                });
+              // then add new
+              this.dbService
+                .add(this.indexedDBName, {
+                  pageName: this.indexedDBPageName,
+                  fileFor: selectedImageFor,
+                  file: imageSrc,
+                })
+                .subscribe((key) => {
+                  console.log(key.id); //unique key for each item
+                });
+            } else {
+              // add new
+              this.dbService
+                .add(this.indexedDBName, {
+                  pageName: this.indexedDBPageName,
+                  fileFor: selectedImageFor,
+                  file: imageSrc,
+                })
+                .subscribe((key) => {
+                  console.log(key.id); //unique key for each item
+                });
+            }
           });
-        // } else {
-        // this.dbService
-        //   .updateByKey(this.indexedDBName, {
-        //     id: this.demographicInfoForm.value[selectedImageFor],
-        //     fileFor: `${selectedImageFor}`,
-        //     file: file
-        //   })
-        //   .subscribe((item) => {
-        //     console.log('item: ', item);
-        //   });
-        // }
         /* END: ngx-indexed-db feature to store files(images/docs) */
       };
       /* END: reading file and Patching the Selected File */
     }
   }
+
   removeImage(event: any, type: string) {
     if (type == 'FARMER_PROFILE') {
-      this.demographicInfoForm.patchValue({
-        profileImg: '',
-      });
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          this.indexedDBFileNameManage.farmerProfile.front
+        )
+        .subscribe((file: any) => {
+          if (file && file !== undefined && Object.keys(file).length) {
+            // delete if exists
+            this.dbService
+              .deleteByKey(this.indexedDBName, file.id)
+              .subscribe((status) => {
+                console.log('Deleted?:', status);
+                if (status) this.displayFarmerProfileImage = '';
+              });
+          }
+        });
     }
   }
+
+  getIndexedDBImage(type: string) {
+    if (type == 'FARMER_PROFILE') {
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          this.indexedDBFileNameManage.farmerProfile.front
+        )
+        .subscribe((file: any) => {
+          if (file && file !== undefined && Object.keys(file).length) {
+            this.displayFarmerProfileImage = file.file;
+          }
+        });
+    }
+  }
+  /* END: functions used indexed-db ============================================ */
 
   // patch edit farmer details
   patchFarmerDetails() {
@@ -569,8 +648,6 @@ export class DemographicInfoComponent implements OnInit {
       const B = JSON.parse(A).demographic_info;
       // create form group
       this.demographicInfoForm.patchValue({
-        profileImg: B.profileImg,
-
         salutation: B.farmerDetails['salutation'],
         firstName: B.farmerDetails['firstName'],
 
@@ -640,26 +717,14 @@ export class DemographicInfoComponent implements OnInit {
     } else {
       const formValue = this.demographicInfoForm.value;
       const obj = {
-        // profileImg: '',
-        profileImg: formValue.profileImg,
         identityProof: {
           panNumber: formValue.PANnumber,
-          panImg: '',
-
           passportNumber: formValue.passportNumber,
-          passportFrontImage: '',
-          passportBackImage: '',
-
           NREGANumber: formValue.NREGANumber,
-          NREGAFrontImage: '',
-          NREGABackImage: '',
-
           voterIdNumber: formValue.voterIdNumber,
         },
         addressProof: {
           selectedIdProof: formValue.addressProof,
-          selectedIdProofFrontImg: '',
-          selectedIdProofBackImg: '',
         },
         farmerDetails: {
           salutation: formValue.salutation,
@@ -738,12 +803,6 @@ export class DemographicInfoComponent implements OnInit {
     }
   }
 
-  // getByKey(key: any) {
-  //   if (!key) return '';
-  //   this.dbService.getByKey(this.indexedDBName, key).subscribe((farmerFile) => {
-  //     console.log(farmerFile);
-  //   });
-  // }
   /* END: NON-API Function Calls------------------------------------------------------------------------ */
 
   /* START: API Function Calls-------------------------------------------------------------------------- */

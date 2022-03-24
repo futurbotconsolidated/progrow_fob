@@ -29,7 +29,7 @@
               <h4>Profile Picture</h4>
               <div class="update-profile">
                 <div class="pro-img">
-                  <img class="profile-pic" [hidden]="!demographicInfoForm.value.profileImg" src="{{demographicInfoForm.value.profileImg}}" />
+                  <img class="profile-pic" [hidden]="!displayFarmerProfileImage" src="{{displayFarmerProfileImage}}" />
                 </div>
                 <div class="pro-update">
                   <a class="avatar" (click)="openFileModalPopup('FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
