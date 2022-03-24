@@ -65,16 +65,16 @@ export class InfoDeclarationComponent implements OnInit {
     if (this.farmerId) {
       demoInfo = localStorage.getItem('edit-demographic-info');
       fieldInfo = localStorage.getItem('edit-field-info');
-      cropInfo = localStorage.getItem('edit-crop-market-planing');
       finInfo = localStorage.getItem('edit-financial-planing');
+      cropInfo = localStorage.getItem('edit-crop-market-planing');
       prodInfo = localStorage.getItem('edit-produce-aggregator');
       techAdoptionInfo = localStorage.getItem('edit-technology-adoption');
       coAppInfo = localStorage.getItem('edit-co-applicant');
     } else {
       demoInfo = localStorage.getItem('demographic-info');
       fieldInfo = localStorage.getItem('field-info');
-      cropInfo = localStorage.getItem('crop-market-planing');
       finInfo = localStorage.getItem('financial-planing');
+      cropInfo = localStorage.getItem('crop-market-planing');
       prodInfo = localStorage.getItem('produce-aggregator');
       techAdoptionInfo = localStorage.getItem('technology-adoption');
       coAppInfo = localStorage.getItem('co-applicant');
@@ -85,7 +85,8 @@ export class InfoDeclarationComponent implements OnInit {
       mobile: JSON.parse(demoInfo).address.mobileNumber,
       pan_number: JSON.parse(demoInfo).identityProof.panNumber,
       demographic_info: JSON.parse(demoInfo),
-      field_info: JSON.parse(fieldInfo),
+      field_info: [],
+      // field_info: JSON.parse(fieldInfo),
       crop_market_plan: JSON.parse(cropInfo),
       financial_planning: JSON.parse(finInfo),
       produce_aggregator: JSON.parse(prodInfo),
@@ -117,19 +118,17 @@ export class InfoDeclarationComponent implements OnInit {
                       form.append(x.fileFor, x.file, x.file.name);
                     });
                     // call file upload api
-                    $.ajax(
-                      {
-                        "url": "https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding/document_upload",
-                        "method": "POST",
-                        "timeout": 0,
-                        "processData": false,
-                        "mimeType": "multipart/form-data",
-                        "contentType": false,
-                        "data": form
-                      }
-                    ).done(function (response: any) {
+                    $.ajax({
+                      url: 'https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding/document_upload',
+                      method: 'POST',
+                      timeout: 0,
+                      processData: false,
+                      mimeType: 'multipart/form-data',
+                      contentType: false,
+                      data: form,
+                    }).done(function (response: any) {
                       console.log(response);
-                    });  
+                    });
                     // this.addFarmerService.documentUpload(form).subscribe(
                     //   (res: any) => {
                     //     if (res.message != 'Success' || !res.status) {
@@ -180,17 +179,15 @@ export class InfoDeclarationComponent implements OnInit {
                       form.append(x.fileFor, x.file, x.file.name);
                     });
                     // call file upload api
-                    $.ajax(
-                      {
-                        "url": "https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding/document_upload",
-                        "method": "POST",
-                        "timeout": 0,
-                        "processData": false,
-                        "mimeType": "multipart/form-data",
-                        "contentType": false,
-                        "data": form
-                      }
-                    ).done(function (response: any) {
+                    $.ajax({
+                      url: 'https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding/document_upload',
+                      method: 'POST',
+                      timeout: 0,
+                      processData: false,
+                      mimeType: 'multipart/form-data',
+                      contentType: false,
+                      data: form,
+                    }).done(function (response: any) {
                       console.log(response);
                       if (response.message != 'Success' || !response.status) {
                         alert(response.message);
@@ -199,7 +196,7 @@ export class InfoDeclarationComponent implements OnInit {
                       } else {
                         //this.clearRoute();
                       }
-                    });                     
+                    });
                     // this.addFarmerService.documentUpload(form).subscribe(
                     //   (res: any) => {
                     //     if (res.message != 'Success' || !res.status) {

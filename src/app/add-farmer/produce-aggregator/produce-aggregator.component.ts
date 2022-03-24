@@ -86,6 +86,8 @@ export class ProduceAggregatorComponent implements OnInit {
     // -----------------------End auto save --------------------
     // if case is for EDIT and else case is for NEW/DRAFT
     if (this.farmerId) {
+      console.log('here edit produce aggregator');
+
       let editForm: any = localStorage.getItem('edit-produce-aggregator');
       if (editForm) {
         editForm = JSON.parse(editForm);
