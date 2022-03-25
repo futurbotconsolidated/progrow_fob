@@ -576,6 +576,7 @@ export class CoApplicantComponent implements OnInit {
         )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.displayCoApplicant1ProfileImage = farmer?.file;
         });
     } else if (type === 'FARMER_PROFILEcoa2') {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
@@ -589,6 +590,7 @@ export class CoApplicantComponent implements OnInit {
         )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.displayCoApplicant2ProfileImage = farmer?.file;
         });
     }
     $('#fileUploadModalPopup').modal('show');
@@ -679,12 +681,14 @@ export class CoApplicantComponent implements OnInit {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor =
               this.indexedDBFileNameManage.coa1.farmerProfile.front;
+            this.displayCoApplicant1ProfileImage = imageSrc;
           }
         } else if (this.fileUpload.fileFor === 'FARMER_PROFILEcoa2') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor =
               this.indexedDBFileNameManage.coa2.farmerProfile.front;
+            this.displayCoApplicant2ProfileImage = imageSrc;
           }
         }
 
@@ -893,10 +897,12 @@ export class CoApplicantComponent implements OnInit {
         propertyStatus: formValue.propertyStatuscoa2,
         monthlyRent: formValue.monthlyRentcoa2,
       };
+      console.log(this.coApplicantForm);
 
       coapparr.push(obj);
       coapparr.push(objcoa2);
-      console.log(coapparr);
+      console.log(obj, objcoa2, coapparr);
+      return;
 
       if (this.farmerId) {
         localStorage.setItem('edit-co-applicant', JSON.stringify(obj));

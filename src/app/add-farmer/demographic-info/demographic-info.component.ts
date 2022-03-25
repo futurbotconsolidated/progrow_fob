@@ -492,6 +492,7 @@ export class DemographicInfoComponent implements OnInit {
         )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.displayFarmerProfileImage = farmer?.file;
         });
     }
     $('#fileUploadModalPopup').modal('show');
