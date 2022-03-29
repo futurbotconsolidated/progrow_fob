@@ -224,6 +224,20 @@ export class DemographicInfoComponent implements OnInit {
       if (editForm) {
         editForm = JSON.parse(editForm);
         this.demographicInfoForm.patchValue(editForm);
+
+        //  call pincode apis again when we come back to the page again
+        if (this.val.pinCode) {
+          this.getPinCodeData(
+            { target: { value: this.val.pinCode } },
+            'ADDRESS'
+          );
+        }
+        if (this.val.permPincode) {
+          this.getPinCodeData(
+            { target: { value: this.val.permPincode } },
+            'PERMANENT_ADDRESS'
+          );
+        }
       } else {
         this.patchFarmerDetails(); // bind/patch fresh api data
       }
@@ -755,10 +769,25 @@ export class DemographicInfoComponent implements OnInit {
         agriculturalInterest: B.agricultureChildrenInterested,
         innovativeWaysFarming: B.innovativeFarmingWays,
       });
+
+      if (B.address['pincode']) {
+        this.getPinCodeData(
+          { target: { value: B.address['pincode'] } },
+          'ADDRESS'
+        );
+      }
+      if (B.permAddress?.pincode) {
+        this.getPinCodeData(
+          { target: { value: B.permAddress?.pincode } },
+          'PERMANENT_ADDRESS'
+        );
+      }
     }
   }
 
   validateAndNext() {
+    console.log(this.demographicInfoForm);
+
     this.isSubmitted = true;
     if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
@@ -832,7 +861,6 @@ export class DemographicInfoComponent implements OnInit {
         monthlyRent: formValue.monthlyRent,
       };
 
-      console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
       if (this.farmerId) {
         localStorage.setItem('edit-demographic-info', JSON.stringify(obj));
         localStorage.setItem(
@@ -857,14 +885,16 @@ export class DemographicInfoComponent implements OnInit {
 
   /* START: API Function Calls-------------------------------------------------------------------------- */
   getPinCodeData(event: any, type: string) {
+    console.log(event, type);
+
     // clear values
-    if (type === 'ADDRESS') {
+    if (type === 'ADDRESS' && !this.farmerId) {
       this.demographicInfoForm.patchValue({
         city: '',
         state: '',
       });
       this.pinCodeAPIData.length = 0;
-    } else if (type === 'PERMANENT_ADDRESS') {
+    } else if (type === 'PERMANENT_ADDRESS' && !this.farmerId) {
       this.demographicInfoForm.patchValue({
         permCity: '',
         permState: '',
