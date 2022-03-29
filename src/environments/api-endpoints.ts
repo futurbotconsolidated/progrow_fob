@@ -7,6 +7,7 @@ export const endPoints = {
   updateFarmer: '/update_farmer',
   getFarmer: '/get_farmer',
   documentUpload: '/document_upload',
+  getDocument: '/farmer_presigned_s3_url',
 };
 
 // OLD

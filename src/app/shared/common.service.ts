@@ -46,6 +46,19 @@ export class CommonService {
     });
   }
 
+  getDocumentByFarmerId(inputObject: any) {
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.getDocument,
+      inputObject,
+      {
+        headers,
+      }
+    );
+  }
+
   getPinCodeData(data: any) {
     return this.http.get(
       `https://api.worldpostallocations.com/?postalcode=${data}&countrycode=IN`
@@ -53,4 +66,18 @@ export class CommonService {
     // return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }
   /* END: API Calls */
+
+  /* START: Non-API Calls */
+  fetchFarmerDocument(fileFor: string) {
+    const A: any = localStorage.getItem('farmer-files');
+    if (A) {
+      const B = JSON.parse(A);
+      if (B.hasOwnProperty(fileFor)) {
+        return B[fileFor];
+      } else {
+        return '';
+      }
+    }
+  }
+  /* END: Non-API Calls */
 }

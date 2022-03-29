@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { tap } from 'rxjs/operators';
 import { CommonService } from '../../shared/common.service';
-import { ActivatedRoute } from '@angular/router';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import {
   FormGroup,
@@ -178,11 +177,17 @@ export class DemographicInfoComponent implements OnInit {
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
+    console.log(this.farmerId);
   }
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
     this.demoGraphicMaster = data.demoGraphic; // read master data
+
+    // populate
+    this.commonService.fetchFarmerDocument(
+      this.indexedDBFileNameManage.farmerProfile.front
+    );
 
     // ----------------------- Start auto save --------------------
     // draft feature is not required in edit operation
@@ -246,7 +251,10 @@ export class DemographicInfoComponent implements OnInit {
   ngAfterViewInit(): void {
     this.addFarmerService.getMessage().subscribe((data) => {
       this.nextRoute = data.routeName;
-      this.validateAndNext();
+      if (this.router.url?.includes('/add/demographic-info')) {
+        this.validateAndNext();
+        console.log(data.routeName);
+      }
     });
   }
   // convenience getter for easy access to form fields
@@ -366,7 +374,11 @@ export class DemographicInfoComponent implements OnInit {
           `${this.indexedDBFileNameManage.panCard.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.panCard.front
+            );
         });
     } else if (type === 'ADDRESS_PROOF') {
       if (!this.demographicInfoForm.value.addressProof) {
@@ -385,7 +397,11 @@ export class DemographicInfoComponent implements OnInit {
           `${this.indexedDBFileNameManage.addressProof.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.addressProof.front
+            );
         });
 
       this.dbService
@@ -395,7 +411,11 @@ export class DemographicInfoComponent implements OnInit {
           `${this.indexedDBFileNameManage.addressProof.back}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 = farmer?.file;
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.addressProof.back
+            );
         });
     } else if (type === 'PASSPORT') {
       if (!this.demographicInfoForm.value.passportNumber) {
@@ -413,7 +433,11 @@ export class DemographicInfoComponent implements OnInit {
           `${this.indexedDBFileNameManage.passport.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.passport.front
+            );
         });
 
       this.dbService
@@ -423,7 +447,11 @@ export class DemographicInfoComponent implements OnInit {
           `${this.indexedDBFileNameManage.passport.back}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 = farmer?.file;
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.passport.back
+            );
         });
     } else if (type === 'NREGA') {
       if (!this.demographicInfoForm.value.NREGANumber) {
@@ -441,7 +469,11 @@ export class DemographicInfoComponent implements OnInit {
           `${this.indexedDBFileNameManage.NREGA.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.NREGA.front
+            );
         });
 
       this.dbService
@@ -451,7 +483,11 @@ export class DemographicInfoComponent implements OnInit {
           `${this.indexedDBFileNameManage.NREGA.back}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 = farmer?.file;
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.NREGA.back
+            );
         });
     } else if (type === 'VOTERID') {
       if (!this.demographicInfoForm.value.voterIdNumber) {
@@ -468,7 +504,11 @@ export class DemographicInfoComponent implements OnInit {
           `${this.indexedDBFileNameManage.voterId.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.voterId.front
+            );
         });
 
       this.dbService
@@ -478,7 +518,11 @@ export class DemographicInfoComponent implements OnInit {
           `${this.indexedDBFileNameManage.voterId.back}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 = farmer?.file;
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.voterId.back
+            );
         });
     } else if (type === 'FARMER_PROFILE') {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
@@ -491,7 +535,11 @@ export class DemographicInfoComponent implements OnInit {
           `${this.indexedDBFileNameManage.farmerProfile.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.farmerProfile.front
+            );
           this.displayFarmerProfileImage = farmer?.file;
         });
     }
@@ -784,6 +832,7 @@ export class DemographicInfoComponent implements OnInit {
         monthlyRent: formValue.monthlyRent,
       };
 
+      console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
       if (this.farmerId) {
         localStorage.setItem('edit-demographic-info', JSON.stringify(obj));
         localStorage.setItem(

@@ -142,7 +142,7 @@ export class CoApplicantComponent implements OnInit {
       salutation: new FormControl(''),
       firstName: new FormControl('', [Validators.required]),
       middleName: new FormControl(''),
-      lastName: new FormControl('', [Validators.required]),
+      lastName: new FormControl(''),
       dob: new FormControl(''),
       gender: new FormControl(''),
       religion: new FormControl(''),
@@ -299,7 +299,10 @@ export class CoApplicantComponent implements OnInit {
   ngAfterViewInit(): void {
     this.addFarmerService.getMessage().subscribe((data) => {
       this.nextRoute = data.routeName;
-      this.validateAndNext();
+      if (this.router.url?.includes('/add/co-applicant')) {
+        this.validateAndNext();
+        console.log(data.routeName);
+      }
     });
   }
   // convenience getter for easy access to form fields
@@ -382,7 +385,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa1.panCard.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.panCard.front
+            );
         });
     } else if (type === 'PANcoa2') {
       if (!this.coApplicantForm.value.PANnumbercoa2) {
@@ -398,7 +405,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa2.panCard.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.panCard.front
+            );
         });
     } else if (type === 'ADDRESS_PROOF') {
       if (!this.coApplicantForm.value.addressProof) {
@@ -416,7 +427,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa1.addressProof.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.addressProof.front
+            );
         });
 
       this.dbService
@@ -426,7 +441,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa1.addressProof.back}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 = farmer?.file;
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.addressProof.back
+            );
         });
     } else if (type === 'ADDRESS_PROOFcoa2') {
       if (!this.coApplicantForm.value.addressProofcoa2) {
@@ -444,7 +463,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa2.addressProof.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.addressProof.front
+            );
         });
 
       this.dbService
@@ -454,7 +477,81 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa2.addressProof.back}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 = farmer?.file;
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.addressProof.back
+            );
+        });
+    } else if (type === 'VOTERID') {
+      if (!this.coApplicantForm.value.voterIdNumber) {
+        this.toastr.error('please enter  Voter Id Number.', 'Error!');
+        return;
+      }
+      this.fileUpload.popupTitle = 'Upload VoterId Image';
+      this.fileUpload.new.isImage1Required = true;
+      this.fileUpload.new.isImage2Required = true;
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.voterId.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.voterId.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.voterId.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.voterId.back
+            );
+        });
+    } else if (type === 'VOTERIDcoa2') {
+      if (!this.coApplicantForm.value.voterIdNumbercoa2) {
+        this.toastr.error('please enter  Voter Id Number.', 'Error!');
+        return;
+      }
+      this.fileUpload.popupTitle = 'Upload VoterId Image';
+      this.fileUpload.new.isImage1Required = true;
+      this.fileUpload.new.isImage2Required = true;
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.voterId.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.voterId.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.voterId.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.voterId.back
+            );
         });
     } else if (type === 'PASSPORT') {
       if (!this.coApplicantForm.value.passportNumber) {
@@ -471,7 +568,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa1.passport.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.passport.front
+            );
         });
 
       this.dbService
@@ -481,7 +582,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa1.passport.back}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 = farmer?.file;
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.passport.back
+            );
         });
     } else if (type === 'PASSPORTcoa2') {
       if (!this.coApplicantForm.value.passportNumbercoa2) {
@@ -498,7 +603,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa2.passport.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.passport.front
+            );
         });
 
       this.dbService
@@ -508,7 +617,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa2.passport.back}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 = farmer?.file;
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.passport.back
+            );
         });
     } else if (type === 'NREGA') {
       if (!this.coApplicantForm.value.NREGANumber) {
@@ -525,7 +638,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa1.NREGA.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.NREGA.front
+            );
         });
 
       this.dbService
@@ -535,7 +652,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa1.NREGA.back}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 = farmer?.file;
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.NREGA.back
+            );
         });
     } else if (type === 'NREGAcoa2') {
       if (!this.coApplicantForm.value.NREGANumbercoa2) {
@@ -552,7 +673,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa2.NREGA.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.NREGA.front
+            );
         });
 
       this.dbService
@@ -562,7 +687,11 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa2.NREGA.back}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 = farmer?.file;
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.NREGA.back
+            );
         });
     } else if (type === 'FARMER_PROFILE') {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
@@ -575,8 +704,16 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa1.farmerProfile.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
-          this.displayCoApplicant1ProfileImage = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.farmerProfile.front
+            );
+          this.displayCoApplicant1ProfileImage =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.farmerProfile.front
+            );
         });
     } else if (type === 'FARMER_PROFILEcoa2') {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
@@ -589,8 +726,16 @@ export class CoApplicantComponent implements OnInit {
           `${this.indexedDBFileNameManage.coa2.farmerProfile.front}`
         )
         .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 = farmer?.file;
-          this.displayCoApplicant2ProfileImage = farmer?.file;
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.farmerProfile.front
+            );
+          this.displayCoApplicant2ProfileImage =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.farmerProfile.front
+            );
         });
     }
     $('#fileUploadModalPopup').modal('show');
@@ -643,6 +788,22 @@ export class CoApplicantComponent implements OnInit {
             this.fileUpload.new.imageSrc2 = imageSrc;
             selectedImageFor =
               this.indexedDBFileNameManage.coa2.addressProof.back;
+          }
+        } else if (this.fileUpload.fileFor === 'VOTERID') {
+          if (type === 'FRONT_IMAGE') {
+            this.fileUpload.new.imageSrc1 = imageSrc;
+            selectedImageFor = this.indexedDBFileNameManage.coa1.voterId.front;
+          } else if (type === 'BACK_IMAGE') {
+            this.fileUpload.new.imageSrc2 = imageSrc;
+            selectedImageFor = this.indexedDBFileNameManage.coa1.voterId.back;
+          }
+        } else if (this.fileUpload.fileFor === 'VOTERIDcoa2') {
+          if (type === 'FRONT_IMAGE') {
+            this.fileUpload.new.imageSrc1 = imageSrc;
+            selectedImageFor = this.indexedDBFileNameManage.coa2.voterId.front;
+          } else if (type === 'BACK_IMAGE') {
+            this.fileUpload.new.imageSrc2 = imageSrc;
+            selectedImageFor = this.indexedDBFileNameManage.coa2.voterId.back;
           }
         } else if (this.fileUpload.fileFor === 'PASSPORT') {
           if (type === 'FRONT_IMAGE') {
@@ -804,6 +965,8 @@ export class CoApplicantComponent implements OnInit {
 
   validateAndNext() {
     this.isSubmitted = true;
+    console.log(this.coApplicantForm);
+
     if (this.coApplicantForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
       return;
@@ -902,7 +1065,6 @@ export class CoApplicantComponent implements OnInit {
       coapparr.push(obj);
       coapparr.push(objcoa2);
       console.log(obj, objcoa2, coapparr);
-      return;
 
       if (this.farmerId) {
         localStorage.setItem('edit-co-applicant', JSON.stringify(obj));

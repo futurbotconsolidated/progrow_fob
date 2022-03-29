@@ -89,6 +89,18 @@
             <h3 class="form-title">3. Others Details</h3>
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
+                <label>Voter Id</label>
+                <input type="text" class="form-control" formControlName="voterIdNumber" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('VOTERID')">
+                  Upload VoterId Image
+                </button>
+              </div>
+            </div>
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
                 <label>Passport Number</label>
                 <input type="text" class="form-control" formControlName="passportNumber" />
               </div>
@@ -138,10 +150,6 @@
                   <div class="farmer-details-inner lable-top">
                     <label class="required">Last Name</label>
                     <input type="text" class="form-control" formControlName="lastName" placeholder="" />
-                    <div *ngIf="isSubmitted && f['lastName'].errors" class="form-text text-danger">
-                      <small *ngIf="f['lastName'].errors['required']">
-                        Last Name is required</small>
-                    </div>
                   </div>
                   <div class="farmer-details-inner lable-top">
                     <label>Date Of Birth</label>
@@ -561,6 +569,18 @@
           </div>
           <div class="form-details">
             <h3 class="form-title">3. Others Details</h3>
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label>Voter Id</label>
+                <input type="text" class="form-control" formControlName="voterIdNumbercoa2" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('VOTERIDcoa2')">
+                  Upload VoterId Image
+                </button>
+              </div>
+            </div>
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Passport Number</label>
@@ -995,7 +1015,7 @@
 
       </div>
       <div class="modal-footer p-2">
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
         <!-- <button type="button" class="btn btn-primary btn-sm">Save</button> -->
       </div>
     </div>

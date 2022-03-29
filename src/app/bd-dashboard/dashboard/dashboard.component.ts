@@ -399,76 +399,6 @@ export class DashboardComponent implements OnInit {
     }, 500);
   }
 
-  clearLocalStorageOnEditAndView() {
-    localStorage.removeItem('farmer-details'); // related to view and edit
-
-    // clear edit related localStorage variables before starting
-    localStorage.removeItem('edit-demographic-info');
-    localStorage.removeItem('edit-demographic-info-form');
-    localStorage.removeItem('edit-field-info');
-    localStorage.removeItem('edit-field-info-form');
-    localStorage.removeItem('edit-financial-planing');
-    localStorage.removeItem('edit-crop-market-planing');
-    localStorage.removeItem('edit-technology-adoption');
-    localStorage.removeItem('edit-produce-aggregator');
-    localStorage.removeItem('edit-co-applicant');
-    localStorage.removeItem('edit-co-applicant-form');
-  }
-  /* END: Non-API Function Calls */
-
-  /* START: API Function Calls */
-  getExistingFarmers() {
-    this.spinner.show();
-    this.commonService.getExistingFarmers().subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.message != 'Success' || !res.status) {
-          alert(`${res.message}`);
-        } else {
-          this.allExistingFarmers = res.data;
-        }
-      },
-      (error: any) => {
-        this.spinner.hide();
-        alert('Failed to fetch existing farmers data, please try again...');
-      }
-    );
-  }
-
-  getFarmersPipeline() {
-    // Other Variables
-    this.allPipelineFarmers = [];
-    return;
-  }
-  /* END: API Function Calls */
-
-  getFarmerDetailsById(farmerId: any, type: string) {
-    this.clearLocalStorageOnEditAndView(); // clear unwanted localStorage data
-
-    this.spinner.show();
-    this.commonService.getFarmerDetailsById(farmerId).subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.message != 'Success' || !res.status) {
-          this.toastr.error(`${res.message}!`);
-        } else {
-          localStorage.setItem('farmer-details', JSON.stringify(res.data));
-          if (type === 'view') {
-            this.router.navigate([`/edit/demographic-info/${farmerId}`]);
-          } else if (type === 'edit') {
-            this.router.navigate([`/add/demographic-info/${farmerId}`]);
-          }
-        }
-      },
-      (error: any) => {
-        this.spinner.hide();
-        this.toastr.error(
-          `Failed to fetch farmer details, please try again...`
-        );
-      }
-    );
-  }
-
   editDraftFarmer(farmerId: any) {
     if (localStorage.getItem('draft_farmers')) {
       let draft_farmers = [] as any;
@@ -547,4 +477,93 @@ export class DashboardComponent implements OnInit {
   showLeftSide(param: boolean) {
     this.lsn_tv_show = param;
   }
+
+  clearLocalStorageOnEditAndView() {
+    localStorage.removeItem('farmer-details'); // related to view and edit of farmer
+    localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
+
+    // clear edit related localStorage variables before starting
+    localStorage.removeItem('edit-demographic-info');
+    localStorage.removeItem('edit-demographic-info-form');
+    localStorage.removeItem('edit-field-info');
+    localStorage.removeItem('edit-field-info-form');
+    localStorage.removeItem('edit-financial-planing');
+    localStorage.removeItem('edit-crop-market-planing');
+    localStorage.removeItem('edit-technology-adoption');
+    localStorage.removeItem('edit-produce-aggregator');
+    localStorage.removeItem('edit-co-applicant');
+    localStorage.removeItem('edit-co-applicant-form');
+  }
+
+  /* END: Non-API Function Calls */
+
+  /* START: API Function Calls */
+  getExistingFarmers() {
+    this.spinner.show();
+    this.commonService.getExistingFarmers().subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (res.message != 'Success' || !res.status) {
+          alert(`${res.message}`);
+        } else {
+          this.allExistingFarmers = res.data;
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch existing farmers data, please try again...');
+      }
+    );
+  }
+
+  getFarmersPipeline() {
+    // Other Variables
+    this.allPipelineFarmers = [];
+    return;
+  }
+
+  getFarmerDetailsById(farmerId: any, type: string) {
+    this.clearLocalStorageOnEditAndView(); // clear unwanted localStorage data
+
+    this.spinner.show();
+    this.commonService.getFarmerDetailsById(farmerId).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (res.message != 'Success' || !res.status) {
+          this.toastr.error(`${res.message}!`);
+        } else {
+          this.getDocumentByFarmerId(farmerId); //read farmer related uploaded files
+          localStorage.setItem('farmer-details', JSON.stringify(res.data));
+          if (type === 'view') {
+            this.router.navigate([`/edit/demographic-info/${farmerId}`]);
+          } else if (type === 'edit') {
+            this.router.navigate([`/add/demographic-info/${farmerId}`]);
+          }
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        this.toastr.error(
+          `Failed to fetch farmer details, please try again...`
+        );
+      }
+    );
+  }
+
+  getDocumentByFarmerId(farmerId: any) {
+    const inputObject = { farmerId };
+    this.commonService.getDocumentByFarmerId(inputObject).subscribe(
+      (res: any) => {
+        if (res.message != 'Success' || !res.status) {
+          this.toastr.error(`${res.message}!`);
+        } else {
+          localStorage.setItem('farmer-files', JSON.stringify(res.data));
+        }
+      },
+      (error: any) => {
+        this.toastr.error(`Failed to fetch farmer files, please try again...`);
+      }
+    );
+  }
+  /* END: API Function Calls */
 }
