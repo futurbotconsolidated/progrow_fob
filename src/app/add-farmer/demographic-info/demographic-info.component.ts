@@ -247,6 +247,20 @@ export class DemographicInfoComponent implements OnInit {
         demoInfo = JSON.parse(demoInfo);
         this.demographicInfoForm.patchValue(demoInfo);
 
+        //  call pincode apis again when we come back to the page again
+        if (this.val.pinCode) {
+          this.getPinCodeData(
+            { target: { value: this.val.pinCode } },
+            'ADDRESS'
+          );
+        }
+        if (this.val.permPincode) {
+          this.getPinCodeData(
+            { target: { value: this.val.permPincode } },
+            'PERMANENT_ADDRESS'
+          );
+        }
+
         // this.familyMembers = this.demographicInfoForm.get(
         //   'familyMembers'
         // ) as FormArray;
