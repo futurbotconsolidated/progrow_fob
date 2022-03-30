@@ -57,7 +57,6 @@ export class FieldInfoComponent implements OnInit {
   drawnCoordinates = <any>[];
 
   field_boundary: any;
-  count = 0;
   fieldArea = <any>[];
   editFieldArea = <any>[];
   fieldIndexMapIds = <any>[];
@@ -399,8 +398,6 @@ export class FieldInfoComponent implements OnInit {
         },
       };
       this.drawnCoordinates.push(ob);
-
-      this.count++;
       this.addPlannedFieldDetails();
       this.addHistoFieldDetail();
       this.addFieldOwnershipDetail();
@@ -438,7 +435,7 @@ export class FieldInfoComponent implements OnInit {
       });
       layer
         .bindPopup(
-          `Field ID : ${this.count} <br/> Area : ${area_hec} (Hectare)`
+          `Field ID : ${pfd_last_index+1} <br/> Area : ${area_hec} (Hectare)`
         )
         .openPopup();
     });
@@ -446,24 +443,23 @@ export class FieldInfoComponent implements OnInit {
     map.on(L.Draw.Event.EDITED, (e: any) => {
       console.log('Event.EDITED', e);
       let layers = e.layers;
-      let count = this.count;
       console.log(this.fieldIndexMapIds);
       let fieldIndexMapIds_var = this.fieldIndexMapIds;
       var field_index = -1;
       var area_hec = '';
       var layer_latlngs = [] as any;
       layers.eachLayer(function (layer: any) {
-        let area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
-        area_hec = (area_sq_meter / 10000).toFixed(2);
         fieldIndexMapIds_var.forEach((x: any, index: number) => {
           if (layer._leaflet_id == x.leaflet_id) {
             field_index = x.field_index;  
-            layer_latlngs = layer.getLatLngs();       
+            layer_latlngs = layer.getLatLngs(); 
+            let area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+            area_hec = (area_sq_meter / 10000).toFixed(2); 
+            layer
+            .bindPopup(`Field ID : ${field_index+1} <br/> Area : ${area_hec} (Hectare)`)
+            .openPopup();     
           }
         });
-        layer
-          .bindPopup(`Field ID : ${count} <br/> Area : ${area_hec} (Hectare)`)
-          .openPopup();
       });
       let drawnLatLng: any[] = [];
       layer_latlngs[0].forEach((x: any) => {
@@ -493,7 +489,6 @@ export class FieldInfoComponent implements OnInit {
     map.on(L.Draw.Event.DELETED, (e: any) => {
       console.log('Event.DELETED', e);
       let layers = e.layers;
-      this.count--;
       let fieldIndexMapIds_var = this.fieldIndexMapIds;
       var field_index = -1;
       var fimi_index = -1;
@@ -725,27 +720,21 @@ export class FieldInfoComponent implements OnInit {
   }
 
   saveData() {
-    let fieldArr = [];
+    let fieldArr = [] as any;
     let obj;
-    for (var i = 0; i < this.count; i++) {
+    this.fieldIndexMapIds.forEach((x: any, i: number) => {
       this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
       this.fieldInfoForm.value.fieldOwnership[i].fieldOwnId = i + 1;
-      var drawnCoordinates_obj = {} as any;
-      this.fieldIndexMapIds.forEach((x: any, index: number) => {
-        if (i == x.field_index) { 
-          drawnCoordinates_obj = {
-            type: 'field-boundary',
-            geometry: {
-              coordinates: x.coordinates,
-              type: 'Polygon',
-            },
-          } as any;
-        }
-      });
+      var drawnCoordinates_obj = {
+        type: 'field-boundary',
+        geometry: {
+          coordinates: x.coordinates,
+          type: 'Polygon',
+        },
+      } as any;
       obj = {
-        // field_boundary: this.drawnCoordinates[i],
         field_boundary: drawnCoordinates_obj,
         field_area_ha: this.fieldArea[i],
         field_address: 'test',
@@ -769,7 +758,7 @@ export class FieldInfoComponent implements OnInit {
         is_required_yn: true,
       };
       fieldArr.push(obj);
-    }
+    });
     console.log(fieldArr);
 
     if (this.farmerId) {
