@@ -132,6 +132,15 @@ export class FieldInfoComponent implements OnInit {
     if (this.farmerId) {
       let editForm: any = localStorage.getItem('edit-field-info-form');
       if (editForm) {
+        let map_info: any = localStorage.getItem('edit-field-info');
+        map_info = JSON.parse(map_info);
+        if (map_info) {
+          this.editFieldArea = [];
+          map_info.forEach((el: any) => {
+            this.editFieldArea.push(el.field_area_ha);
+            this.selectedCoordinates.push(el.field_boundary.geometry.coordinates);
+          });
+        }
         editForm = JSON.parse(editForm);
         this.bindItemsInEdit(editForm);
       } else {
@@ -144,6 +153,7 @@ export class FieldInfoComponent implements OnInit {
           editFieldInfo.fieldOwnership = [] as any;
           editFieldInfo.testType = [] as any;
           editFieldInfo.enumerate = [] as any;
+          this.editFieldArea = [];
           B.forEach((fiv: any, findex: number) => {
             editFieldInfo.enumerate.push(fiv.enumerate_planned_season);
             editFieldInfo.fieldOwnership.push(fiv.field_ownership_detail);
@@ -153,6 +163,8 @@ export class FieldInfoComponent implements OnInit {
             editFieldInfo.cropCycleOnReports = fiv.undertaking_cultivation.uc;
             editFieldInfo.plannedSeason = fiv.planned_season_detail.plannedSeason;
             editFieldInfo.plannedCrops = fiv.planned_season_detail.plannedCrops;
+            this.editFieldArea.push(fiv.field_area_ha);
+            this.selectedCoordinates.push(fiv.field_boundary.geometry.coordinates);
           });
           this.bindItemsInEdit(editFieldInfo);
         }
@@ -170,12 +182,7 @@ export class FieldInfoComponent implements OnInit {
         this.editFieldArea = [];
         map_info.forEach((el: any) => {
           this.editFieldArea.push(el.field_area_ha);
-          let arr = el.field_boundary.geometry.coordinates;
-          let co: any = [];
-          arr.forEach((x: any) => {
-            co.push([x[0], x[1]]);
-          });
-          this.selectedCoordinates.push(co);
+          this.selectedCoordinates.push(el.field_boundary.geometry.coordinates);
         });
       }
     }    
@@ -275,15 +282,9 @@ export class FieldInfoComponent implements OnInit {
     const {
       coords: { latitude, longitude },
     } = position;
-    if (this.farmerId) {
-      const A: any = localStorage.getItem('farmer-details');      
-      if (A) {
-        const B = JSON.parse(A).fieldInfo;
-        if(B[0].field_boundary.geometry.coordinates[0]){
-          this.drawMap(B[0].field_boundary.geometry.coordinates[0][0], B[0].field_boundary.geometry.coordinates[0][1]);
-        } else {
-          this.drawMap(latitude, longitude);
-        }
+    if(this.selectedCoordinates.length){
+      if(this.selectedCoordinates[0][0][0] && this.selectedCoordinates[0][0][1]){
+        this.drawMap(this.selectedCoordinates[0][0][0], this.selectedCoordinates[0][0][1]);
       } else {
         this.drawMap(latitude, longitude);
       }
@@ -462,6 +463,7 @@ export class FieldInfoComponent implements OnInit {
         });
       });
       let drawnLatLng: any[] = [];
+      if(layer_latlngs.length && layer_latlngs[0] ){
       layer_latlngs[0].forEach((x: any) => {
         drawnLatLng.push([x.lat, x.lng]);
       });
@@ -470,6 +472,7 @@ export class FieldInfoComponent implements OnInit {
           this.fieldIndexMapIds[index].coordinates = drawnLatLng;
         }
       });
+      }
       (
         this.fieldInfoForm.get('plannedFieldDetails') as FormArray
       ).controls.forEach((x: any, index: number) => {
@@ -550,26 +553,8 @@ export class FieldInfoComponent implements OnInit {
       L.marker(e.latlng, { icon: myIcon }).addTo(locationlayerGroup);
     });
 
-    if (this.farmerId) {
-      const A: any = localStorage.getItem('farmer-details');      
-      if (A) {
-        const B = JSON.parse(A).fieldInfo;
-        B.forEach((fiv: any, index: number) => {
-          var polygon1 = L.polygon(fiv.field_boundary.geometry.coordinates);
-          drawnItems.addLayer(polygon1); 
-          let fimi_ob = {
-            field_index: index,
-            leaflet_id: polygon1._leaflet_id,
-            coordinates: fiv.field_boundary.geometry.coordinates,
-          };
-          this.fieldIndexMapIds.push(fimi_ob);
-        });
-      }     
-    }
-
     this.selectedCoordinates.forEach((x: any, index: number) => {
-      // console.log(this.editFieldArea[index]);
-      var polygon = L.polygon(x);//.addTo(map);
+      var polygon = L.polygon(x);
       polygon
         .bindPopup(
           `Field ID : ${index + 1} <br/> Area : ${
@@ -722,7 +707,13 @@ export class FieldInfoComponent implements OnInit {
   saveData() {
     let fieldArr = [] as any;
     let obj;
+    var field_id = 0;
     this.fieldIndexMapIds.forEach((x: any, i: number) => {
+      if (this.farmerId) {
+        field_id = i + 1;
+      } else {
+        field_id = 0;
+      }
       this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
@@ -735,8 +726,10 @@ export class FieldInfoComponent implements OnInit {
         },
       } as any;
       obj = {
+        field_id: field_id,
         field_boundary: drawnCoordinates_obj,
-        field_area_ha: this.fieldArea[i],
+        field_area_ha: this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
+        // field_area_ha: this.fieldArea[i],
         field_address: 'test',
         planned_season_detail: {
           plannedSeason: this.fieldInfoForm.value.plannedSeason,
