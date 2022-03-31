@@ -762,7 +762,7 @@ export class FieldInfoComponent implements OnInit {
         },
         field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
         enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
-        testOnFields: this.fieldInfoForm.value.testType[i],
+        test_on_fields: this.fieldInfoForm.value.testType[i],
         undertaking_cultivation: {
           uc: this.fieldInfoForm.value.cropCycleOnReports,
         },
