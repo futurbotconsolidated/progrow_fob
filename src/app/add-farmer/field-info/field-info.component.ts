@@ -728,9 +728,9 @@ export class FieldInfoComponent implements OnInit {
   saveData() {
     let fieldArr = [] as any;
     let obj;
-    var field_id = 0;
+    var field_ui_id = 0;
     this.fieldIndexMapIds.forEach((x: any, i: number) => {
-      field_id = i + 1;
+      field_ui_id = i + 1;
       this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
@@ -743,7 +743,7 @@ export class FieldInfoComponent implements OnInit {
         },
       } as any;
       obj = {
-        field_id: field_id,
+        field_ui_id: field_ui_id,
         field_boundary: drawnCoordinates_obj,
         field_area_ha: this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
         field_address: 'test',
