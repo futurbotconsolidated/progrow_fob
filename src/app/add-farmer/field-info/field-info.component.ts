@@ -525,10 +525,14 @@ export class FieldInfoComponent implements OnInit {
         this.removeHistoFieldDetail(field_index);
         this.removeFieldOwnershipDetail(field_index);
         this.removeEnumerate(field_index);
-        if (this.fieldIndexMapIds[fimi_index]) {
-          delete this.fieldIndexMapIds[fimi_index];
+        if (fieldIndexMapIds_var[fimi_index]) {          
+          delete fieldIndexMapIds_var[fimi_index];
         }
       }
+      var fieldIndexMapIds_v = fieldIndexMapIds_var.filter(function (el: any) {
+        return el != null;
+      });
+      this.fieldIndexMapIds = fieldIndexMapIds_v;
     });
 
     map.on('draw:editvertex', (e: any) => {
@@ -726,11 +730,7 @@ export class FieldInfoComponent implements OnInit {
     let obj;
     var field_id = 0;
     this.fieldIndexMapIds.forEach((x: any, i: number) => {
-      // if (this.farmerId) {
-      //   field_id = i + 1;
-      // } else {
-      //   field_id = 0;
-      // }
+      field_id = i + 1;
       this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
@@ -743,11 +743,9 @@ export class FieldInfoComponent implements OnInit {
         },
       } as any;
       obj = {
-        // field_id: field_id,
+        field_id: field_id,
         field_boundary: drawnCoordinates_obj,
-        field_area_ha:
-          this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
-        // field_area_ha: this.fieldArea[i],
+        field_area_ha: this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
         field_address: 'test',
         planned_season_detail: {
           plannedSeason: this.fieldInfoForm.value.plannedSeason,

@@ -202,6 +202,13 @@ export class FinancialPlanningComponent
           this.editDynamicBindFormArray(B.bankDetails);
         }
       }
+      let fieldInfo: any = localStorage.getItem('edit-field-info');
+      if (fieldInfo) {
+        fieldInfo = JSON.parse(fieldInfo);
+        fieldInfo.forEach((element: any) => {          
+          this.addLoanReqPlaned();
+        });
+      }      
     } else {
       let finPlan: any = localStorage.getItem('financial-planing');
       if (finPlan) {
