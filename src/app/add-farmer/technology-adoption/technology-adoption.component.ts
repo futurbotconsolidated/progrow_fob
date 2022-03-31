@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -22,7 +22,8 @@ enum SaveStatus {
   styleUrls: ['./technology-adoption.component.css'],
 })
 export class TechnologyAdoptionComponent implements OnInit {
-  /* START: Variable */
+  /* START: Varaibles ---------------------------------------------*/
+  private observableSubscription: any;
   technologyAdoptionForm = new FormGroup({});
   technologyAdoptionMaster = <any>{};
   nextRoute: any;
@@ -30,7 +31,7 @@ export class TechnologyAdoptionComponent implements OnInit {
     SaveStatus.Idle;
 
   farmerId = ''; // edit feature
-  /* END: Variable */
+  /* END: Varaibles ---------------------------------------------*/
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,14 +56,10 @@ export class TechnologyAdoptionComponent implements OnInit {
       );
     });
 
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      this.saveData();
-    });
-
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
+  /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
     // -----------------------start auto save --------------------
     // draft feature is not required in edit operation
@@ -116,7 +113,26 @@ export class TechnologyAdoptionComponent implements OnInit {
     //--------------------------EDIT--------
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
+  ngAfterViewInit(): void {
+    /** subscribe to Observables, which are triggered from header selections*/
+    this.observableSubscription = this.addFarmerService
+      .getMessage()
+      .subscribe((data) => {
+        this.nextRoute = data.routeName;
+        if (this.router.url?.includes('/add/technology-adoption')) {
+          this.saveData();
+          console.log(data.routeName);
+        }
+      });
+  }
 
+  ngOnDestroy(): void {
+    /** unsubscribe from Observables*/
+    this.observableSubscription.unsubscribe();
+  }
+  /* END: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
+
+  /* START: NON-API Function Calls-------------------------------------------------------------- */
   saveData() {
     if (this.farmerId) {
       localStorage.setItem(
@@ -132,4 +148,5 @@ export class TechnologyAdoptionComponent implements OnInit {
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
   }
+  /* END: NON-API Function Calls-------------------------------------------------------------- */
 }

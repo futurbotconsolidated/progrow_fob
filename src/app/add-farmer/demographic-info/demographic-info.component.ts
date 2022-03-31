@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -32,10 +32,13 @@ function sleep(ms: number): Promise<any> {
   templateUrl: './demographic-info.component.html',
   styleUrls: ['./demographic-info.component.css'],
 })
-export class DemographicInfoComponent implements OnInit {
-  /* START: Varaibles */
-  demoGraphicMaster = <any>{};
+export class DemographicInfoComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  /* START: Varaibles ---------------------------------------------*/
+  private observableSubscription: any;
 
+  demoGraphicMaster = <any>{};
   isSubmitted = false;
   fileUpload = {
     fileFor: '',
@@ -91,7 +94,7 @@ export class DemographicInfoComponent implements OnInit {
   };
 
   farmerId = ''; // edit feature
-  /* END: Varaibles */
+  /* END: Varaibles ---------------------------------------------*/
 
   constructor(
     public router: Router,
@@ -277,14 +280,23 @@ export class DemographicInfoComponent implements OnInit {
     }
   }
   ngAfterViewInit(): void {
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      if (this.router.url?.includes('/add/demographic-info')) {
-        this.validateAndNext();
-        console.log(data.routeName);
-      }
-    });
+    /** subscribe to Observables, which are triggered from header selections*/
+    this.observableSubscription = this.addFarmerService
+      .getMessage()
+      .subscribe((data) => {
+        this.nextRoute = data.routeName;
+        if (this.router.url?.includes('/add/demographic-info')) {
+          this.validateAndNext();
+          console.log(data.routeName);
+        }
+      });
   }
+
+  ngOnDestroy(): void {
+    /** unsubscribe from Observables*/
+    this.observableSubscription.unsubscribe();
+  }
+
   // convenience getter for easy access to form fields
   get f() {
     return this.demographicInfoForm.controls;
@@ -646,9 +658,7 @@ export class DemographicInfoComponent implements OnInit {
               // delete if exists
               this.dbService
                 .deleteByKey(this.indexedDBName, file.id)
-                .subscribe((status) => {
-                  console.log('Deleted?:', status);
-                });
+                .subscribe((status) => {});
               // then add new
               this.dbService
                 .add(this.indexedDBName, {
@@ -656,9 +666,7 @@ export class DemographicInfoComponent implements OnInit {
                   fileFor: selectedImageFor,
                   file: imageSrc,
                 })
-                .subscribe((key) => {
-                  console.log(key.id); //unique key for each item
-                });
+                .subscribe((key) => {});
             } else {
               // add new
               this.dbService
@@ -667,9 +675,7 @@ export class DemographicInfoComponent implements OnInit {
                   fileFor: selectedImageFor,
                   file: imageSrc,
                 })
-                .subscribe((key) => {
-                  console.log(key.id); //unique key for each item
-                });
+                .subscribe((key) => {});
             }
           });
         /* END: ngx-indexed-db feature to store files(images/docs) */
@@ -692,7 +698,6 @@ export class DemographicInfoComponent implements OnInit {
             this.dbService
               .deleteByKey(this.indexedDBName, file.id)
               .subscribe((status) => {
-                console.log('Deleted?:', status);
                 if (status) this.displayFarmerProfileImage = '';
               });
           }

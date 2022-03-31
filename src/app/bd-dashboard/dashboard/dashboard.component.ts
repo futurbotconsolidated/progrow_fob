@@ -6,6 +6,7 @@ import * as mapboxgl from 'mapbox-gl';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 import { mapData } from '../../../assets/overlay_data';
 
@@ -32,7 +33,8 @@ export class DashboardComponent implements OnInit {
     public router: Router,
     public commonService: CommonService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dbService: NgxIndexedDBService
   ) {
     localStorage.removeItem('farmer-details');
     this.userInfo = this.oauthService.getIdentityClaims();
@@ -149,6 +151,7 @@ export class DashboardComponent implements OnInit {
   }
 
   routePage() {
+    // add
     localStorage.removeItem('demographic-info');
     localStorage.removeItem('demographic-info-form');
     localStorage.removeItem('field-info');
@@ -159,6 +162,28 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('technology-adoption');
     localStorage.removeItem('co-applicant');
     localStorage.removeItem('co-applicant-form');
+
+    //  edit
+    localStorage.removeItem('farmer-details'); // related to view and edit of farmer
+    localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
+
+    // clear indexed db data
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
+      console.log('success? ', successDeleted);
+    });
+
+    // clear edit related localStorage variables before starting
+    localStorage.removeItem('edit-demographic-info');
+    localStorage.removeItem('edit-demographic-info-form');
+    localStorage.removeItem('edit-field-info');
+    localStorage.removeItem('edit-field-info-form');
+    localStorage.removeItem('edit-financial-planing');
+    localStorage.removeItem('edit-crop-market-planing');
+    localStorage.removeItem('edit-technology-adoption');
+    localStorage.removeItem('edit-produce-aggregator');
+    localStorage.removeItem('edit-co-applicant');
+    localStorage.removeItem('edit-co-applicant-form');
+
     this.router.navigate(['/add/concept-cards']);
   }
 
@@ -493,6 +518,11 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('edit-produce-aggregator');
     localStorage.removeItem('edit-co-applicant');
     localStorage.removeItem('edit-co-applicant-form');
+
+    // clear indexed db data
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
+      console.log('success? ', successDeleted);
+    });
   }
 
   /* END: Non-API Function Calls */

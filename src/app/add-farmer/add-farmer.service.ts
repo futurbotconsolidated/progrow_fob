@@ -35,7 +35,6 @@ export class AddFarmerService {
   }
 
   // save(formValue: any) {
-  //   console.log(formValue);
   //   return formValue;
   // }
 

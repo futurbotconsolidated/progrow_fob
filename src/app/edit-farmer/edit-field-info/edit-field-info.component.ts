@@ -41,8 +41,6 @@ export class EditFieldInfoComponent implements OnInit {
       });
 
       if (navigator.geolocation) {
-        console.log(this);
-
         navigator.geolocation.getCurrentPosition(
           this.setGeoLocation.bind(this)
         );
@@ -143,8 +141,6 @@ export class EditFieldInfoComponent implements OnInit {
     ).addTo(map);
 
     this.selectedCoordinates.forEach((x: any, index: number) => {
-      console.log(this.editFieldArea[index]);
-
       var polygon = L.polygon(x).addTo(map);
       polygon
         .bindPopup(

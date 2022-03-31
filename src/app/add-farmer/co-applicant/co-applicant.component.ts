@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -34,8 +34,10 @@ function sleep(ms: number): Promise<any> {
   templateUrl: './co-applicant.component.html',
   styleUrls: ['./co-applicant.component.css'],
 })
-export class CoApplicantComponent implements OnInit {
-  /* START: Varaibles */
+export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
+  /* START: Varaibles ---------------------------------------------*/
+  private observableSubscription: any;
+
   coApplicantMaster = <any>{};
   demoGraphicMaster = <any>{};
 
@@ -124,7 +126,7 @@ export class CoApplicantComponent implements OnInit {
   };
 
   farmerId = ''; // edit feature
-  /* END: Varaibles */
+  /* END: Varaibles ---------------------------------------------*/
 
   constructor(
     public router: Router,
@@ -140,7 +142,7 @@ export class CoApplicantComponent implements OnInit {
     this.coApplicantForm = this.formBuilder.group({
       // co-applicat 1
       salutation: new FormControl(''),
-      firstName: new FormControl('', [Validators.required]),
+      firstName: new FormControl(''),
       middleName: new FormControl(''),
       lastName: new FormControl(''),
       dob: new FormControl(''),
@@ -151,16 +153,16 @@ export class CoApplicantComponent implements OnInit {
       occupation: new FormControl(''),
       annualIncome: new FormControl('', [Validators.pattern('^[0-9]*$')]),
 
-      address1: new FormControl('', [Validators.required]),
+      address1: new FormControl(''),
       address2: new FormControl(''),
-      taluk: new FormControl('', [Validators.required]),
-      city: new FormControl('', [Validators.required]),
       pinCode: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(6),
       ]),
-      state: new FormControl('', [Validators.required]),
+      taluk: new FormControl(''),
+      city: new FormControl(''),
+      state: new FormControl(''),
       landmark: new FormControl(''),
 
       phoneNumber: new FormControl('', [
@@ -172,22 +174,22 @@ export class CoApplicantComponent implements OnInit {
       yrsInCity: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       email: new FormControl('', [Validators.email]),
 
+      commOrPerAddress: new FormControl(''),
       permAddressLine1: new FormControl(''),
       permAddressLine2: new FormControl(''),
+      permPincode: new FormControl(''),
       permTaluk: new FormControl(''),
       permCity: new FormControl(''),
-      permPincode: new FormControl(''),
       permState: new FormControl(''),
 
       propertyStatus: new FormControl(''),
       monthlyRent: new FormControl(''),
-      commOrPerAddress: new FormControl('', [Validators.required]),
       familyMembers: new FormArray([this.createFamilyMembers()]),
 
-      addressProof: new FormControl('', [Validators.required]),
+      addressProof: new FormControl(''),
       PANnumber: new FormControl('', [validatePANNumber]),
-      passportNumber: new FormControl(''),
       voterIdNumber: new FormControl(''),
+      passportNumber: new FormControl(''),
       NREGANumber: new FormControl(''),
 
       // co-applicat 2
@@ -205,36 +207,36 @@ export class CoApplicantComponent implements OnInit {
 
       address1coa2: new FormControl(''),
       address2coa2: new FormControl(''),
-      talukcoa2: new FormControl(''),
-      citycoa2: new FormControl(''),
       pinCodecoa2: new FormControl('', [
         Validators.minLength(6),
         Validators.maxLength(6),
       ]),
+      talukcoa2: new FormControl(''),
+      citycoa2: new FormControl(''),
       statecoa2: new FormControl(''),
       landmarkcoa2: new FormControl(''),
       phoneNumbercoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
 
+      emailcoa2: new FormControl('', [Validators.email]),
       yrsInAddresscoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       yrsInCitycoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
-      emailcoa2: new FormControl('', [Validators.email]),
 
+      commOrPerAddresscoa2: new FormControl(''),
       permAddressLine1coa2: new FormControl(''),
       permAddressLine2coa2: new FormControl(''),
+      permPincodecoa2: new FormControl(''),
       permTalukcoa2: new FormControl(''),
       permCitycoa2: new FormControl(''),
-      permPincodecoa2: new FormControl(''),
       permStatecoa2: new FormControl(''),
 
       propertyStatuscoa2: new FormControl(''),
       monthlyRentcoa2: new FormControl(''),
-      commOrPerAddresscoa2: new FormControl(''),
       familyMemberscoa2: new FormArray([this.createFamilyMembers()]),
 
       addressProofcoa2: new FormControl(''),
       PANnumbercoa2: new FormControl(''),
-      passportNumbercoa2: new FormControl(''),
       voterIdNumbercoa2: new FormControl(''),
+      passportNumbercoa2: new FormControl(''),
       NREGANumbercoa2: new FormControl(''),
     });
 
@@ -279,35 +281,93 @@ export class CoApplicantComponent implements OnInit {
       if (editForm) {
         editForm = JSON.parse(editForm);
         this.coApplicantForm.patchValue(editForm);
-      } else {
-        const A: any = localStorage.getItem('farmer-details');
-        if (A) {
-          const B = JSON.parse(A).co_applicant_details;
-          this.coApplicantForm.patchValue(B);
+
+        //  call pincode apis again when we come back to the page again
+        if (this.val.pinCode) {
+          this.getPinCodeData(
+            { target: { value: this.val.pinCode } },
+            'ADDRESS'
+          );
         }
+        if (this.val.permPincode) {
+          this.getPinCodeData(
+            { target: { value: this.val.permPincode } },
+            'PERMANENT_ADDRESS'
+          );
+        }
+        if (this.val.pinCodecoa2) {
+          this.getPinCodeData(
+            { target: { value: this.val.pinCodecoa2 } },
+            'ADDRESScoa2'
+          );
+        }
+        if (this.val.permPincodecoa2) {
+          this.getPinCodeData(
+            { target: { value: this.val.permPincodecoa2 } },
+            'PERMANENT_ADDRESScoa2'
+          );
+        }
+      } else {
+        this.patchFarmerDetails(); // bind/patch fresh api data
       }
     } else {
-      let demoInfo: any = localStorage.getItem('co-applicant-form');
-      if (demoInfo) {
-        demoInfo = JSON.parse(demoInfo);
-        this.coApplicantForm.patchValue(demoInfo);
-        console.log(demoInfo);
+      let coApplicant: any = localStorage.getItem('co-applicant-form');
+      if (coApplicant) {
+        coApplicant = JSON.parse(coApplicant);
+        this.coApplicantForm.patchValue(coApplicant);
+        //  call pincode apis again when we come back to the page again
+        if (this.val.pinCode) {
+          this.getPinCodeData(
+            { target: { value: this.val.pinCode } },
+            'ADDRESS'
+          );
+        }
+        if (this.val.permPincode) {
+          this.getPinCodeData(
+            { target: { value: this.val.permPincode } },
+            'PERMANENT_ADDRESS'
+          );
+        }
+        if (this.val.pinCodecoa2) {
+          this.getPinCodeData(
+            { target: { value: this.val.pinCodecoa2 } },
+            'ADDRESScoa2'
+          );
+        }
+        if (this.val.permPincodecoa2) {
+          this.getPinCodeData(
+            { target: { value: this.val.permPincodecoa2 } },
+            'PERMANENT_ADDRESScoa2'
+          );
+        }
       }
     }
   }
 
   ngAfterViewInit(): void {
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      if (this.router.url?.includes('/add/co-applicant')) {
-        this.validateAndNext();
-        console.log(data.routeName);
-      }
-    });
+    /** subscribe to Observables, which are triggered from header selections*/
+    this.observableSubscription = this.addFarmerService
+      .getMessage()
+      .subscribe((data) => {
+        this.nextRoute = data.routeName;
+        console.log(this.router.url);
+
+        if (this.router.url?.includes('/add/co-applicant')) {
+          this.validateAndNext();
+          console.log(data.routeName);
+        }
+      });
+  }
+  ngOnDestroy(): void {
+    /** unsubscribe from Observables*/
+    this.observableSubscription.unsubscribe();
   }
   // convenience getter for easy access to form fields
   get f() {
     return this.coApplicantForm.controls;
+  }
+  get val() {
+    return this.coApplicantForm.value;
   }
   /* END: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
 
@@ -862,9 +922,7 @@ export class CoApplicantComponent implements OnInit {
               // delete if exists
               this.dbService
                 .deleteByKey(this.indexedDBName, file.id)
-                .subscribe((status) => {
-                  console.log('Deleted?:', status);
-                });
+                .subscribe((status) => {});
               // then add new
               this.dbService
                 .add(this.indexedDBName, {
@@ -872,9 +930,7 @@ export class CoApplicantComponent implements OnInit {
                   fileFor: selectedImageFor,
                   file: imageSrc,
                 })
-                .subscribe((key) => {
-                  console.log(key.id); //unique key for each item
-                });
+                .subscribe((key) => {});
             } else {
               // add new
               this.dbService
@@ -883,9 +939,7 @@ export class CoApplicantComponent implements OnInit {
                   fileFor: selectedImageFor,
                   file: imageSrc,
                 })
-                .subscribe((key) => {
-                  console.log(key.id); //unique key for each item
-                });
+                .subscribe((key) => {});
             }
           });
         /* END: ngx-indexed-db feature to store files(images/docs) */
@@ -908,7 +962,6 @@ export class CoApplicantComponent implements OnInit {
             this.dbService
               .deleteByKey(this.indexedDBName, file.id)
               .subscribe((status) => {
-                console.log('Deleted?:', status);
                 if (status) this.displayCoApplicant1ProfileImage = '';
               });
           }
@@ -926,7 +979,6 @@ export class CoApplicantComponent implements OnInit {
             this.dbService
               .deleteByKey(this.indexedDBName, file.id)
               .subscribe((status) => {
-                console.log('Deleted?:', status);
                 if (status) this.displayCoApplicant2ProfileImage = '';
               });
           }
@@ -963,150 +1015,294 @@ export class CoApplicantComponent implements OnInit {
   }
   /* END: functions used indexed-db ============================================ */
 
+  // patch edit farmer details
+  patchFarmerDetails() {
+    const A: any = localStorage.getItem('farmer-details');
+
+    if (A) {
+      const C1 = JSON.parse(A).co_applicant_details[0];
+      const C2 = JSON.parse(A).co_applicant_details[1];
+
+      // Prefill: edit data
+      this.coApplicantForm.patchValue({
+        // Co-Applicant 1
+        salutation: C1.farmerDetails['salutation'],
+        firstName: C1.farmerDetails['firstName'],
+        middleName: C1.farmerDetails['middleName'],
+        lastName: C1.farmerDetails['lastName'],
+        dob: C1.farmerDetails['dob'],
+        gender: C1.farmerDetails['gender'],
+        religion: C1.farmerDetails['religion'],
+        caste: C1.farmerDetails['caste'],
+
+        educationalQualification: C1.otherDetails['educationalQualification'],
+        occupation: C1.otherDetails['occupation'],
+        annualIncome: C1.otherDetails['annualIncome'],
+
+        address1: C1.address['addressLine1'],
+        address2: C1.address['addressLine2'],
+        pinCode: C1.address['pincode'],
+        taluk: C1.address['taluk'],
+        city: C1.address['city'],
+        state: C1.address['state'],
+        landmark: C1.address['landmark'],
+        phoneNumber: C1.address['phoneNumber'],
+        email: C1.address['email'],
+        yrsInAddress: C1.yrsInAddress,
+        yrsInCity: C1.yrsInCity,
+
+        commOrPerAddress: C1.permAddress?.commOrPerAddress,
+        permAddressLine1: C1.permAddress?.addressLine1,
+        permAddressLine2: C1.permAddress?.addressLine2,
+        permPincode: C1.permAddress?.pincode,
+        permTaluk: C1.permAddress?.taluk,
+        permCity: C1.permAddress?.city,
+        permState: C1.permAddress?.state,
+
+        propertyStatus: C1.propertyStatus,
+        monthlyRent: C1.monthlyRent,
+        familyMembers: C1.familyMembers,
+
+        addressProof: C1.addressProof['selectedIdProof'],
+        PANnumber: C1.identityProof['panNumber'],
+        voterIdNumber: C1.identityProof['voterIdNumber'],
+        passportNumber: C1.identityProof['passportNumber'],
+        NREGANumber: C1.identityProof['NREGANumber'],
+
+        // Co-Applicant 1
+        salutationcoa2: C2.farmerDetails['salutation'],
+        firstNamecoa2: C2.farmerDetails['firstName'],
+        middleNamecoa2: C2.farmerDetails['middleName'],
+        lastNamecoa2: C2.farmerDetails['lastName'],
+        dobcoa2: C2.farmerDetails['dob'],
+        gendercoa2: C2.farmerDetails['gender'],
+        religioncoa2: C2.farmerDetails['religion'],
+        castecoa2: C2.farmerDetails['caste'],
+
+        educationQualificationcoa2: C2.otherDetails['educationalQualification'],
+        occupationcoa2: C2.otherDetails['occupation'],
+        annualIncomecoa2: C2.otherDetails['annualIncome'],
+
+        address1coa2: C2.address['addressLine1'],
+        address2coa2: C2.address['addressLine2'],
+        pinCodecoa2: C2.address['pincode'],
+        talukcoa2: C2.address['taluk'],
+        citycoa2: C2.address['city'],
+        statecoa2: C2.address['state'],
+        landmarkcoa2: C2.address['landmark'],
+        phoneNumbercoa2: C2.address['phoneNumber'],
+        emailcoa2: C2.address['email'],
+        yrsInAddresscoa2: C2.yrsInAddress,
+        yrsInCitycoa2: C2.yrsInCity,
+
+        commOrPerAddresscoa2: C2.permAddress?.commOrPerAddress,
+        permAddressLine1coa2: C2.permAddress?.addressLine1,
+        permAddressLine2coa2: C2.permAddress?.addressLine2,
+        permPincodecoa2: C2.permAddress?.pincode,
+        permTalukcoa2: C2.permAddress?.taluk,
+        permCitycoa2: C2.permAddress?.city,
+        permStatecoa2: C2.permAddress?.state,
+
+        propertyStatuscoa2: C2.propertyStatus,
+        monthlyRentcoa2: C2.monthlyRent,
+        familyMemberscoa2: C2.familyMembers,
+
+        addressProofcoa2: C2.addressProof['selectedIdProof'],
+        PANnumbercoa2: C2.identityProof['panNumber'],
+        voterIdNumbercoa2: C2.identityProof['voterIdNumber'],
+        passportNumbercoa2: C2.identityProof['passportNumber'],
+        NREGANumbercoa2: C2.identityProof['NREGANumber'],
+      });
+
+      if (C1.address['pincode']) {
+        this.getPinCodeData(
+          { target: { value: C1.address['pincode'] } },
+          'ADDRESS'
+        );
+      }
+      if (C1.permAddress?.pincode) {
+        this.getPinCodeData(
+          { target: { value: C1.permAddress?.pincode } },
+          'PERMANENT_ADDRESS'
+        );
+      }
+
+      if (C2.address['pincode']) {
+        this.getPinCodeData(
+          { target: { value: C2.address['pincode'] } },
+          'ADDRESScoa2'
+        );
+      }
+      if (C2.permAddress?.pincode) {
+        this.getPinCodeData(
+          { target: { value: C2.permAddress?.pincode } },
+          'PERMANENT_ADDRESScoa2'
+        );
+      }
+    }
+  }
+
   validateAndNext() {
     this.isSubmitted = true;
     console.log(this.coApplicantForm);
 
-    if (this.coApplicantForm.invalid) {
-      this.toastr.error('please enter values for required fields', 'Error!');
-      return;
-    } else {
-      const formValue = this.coApplicantForm.value;
-      const coapparr = <any>[];
-      const obj = {
-        identityProof: {
-          panNumber: formValue.PANnumber,
-          passportNumber: formValue.passportNumber,
-          NREGANumber: formValue.NREGANumber,
-          voterIdNumber: formValue.voterIdNumber,
-        },
-        addressProof: {
-          selectedIdProof: formValue.addressProof,
-        },
-        farmerDetails: {
-          salutation: formValue.salutation,
-          firstName: formValue.firstName,
-          middleName: formValue.middleName,
-          lastName: formValue.lastName,
-          dob: formValue.dob,
-          gender: formValue.gender,
-          religion: formValue.religion,
-          caste: formValue.caste,
-        },
-        address: {
-          addressLine1: formValue.address1,
-          addressLine2: formValue.address2,
-          pincode: formValue.pinCode,
-          taluk: formValue.taluk,
-          city: formValue.city,
-          state: formValue.state,
-          landmark: formValue.landmark,
-          mobileNumber: formValue.phoneNumber,
-          email: formValue.email,
-          yrsInAddress: formValue.yrsInAddress,
-          yrsInCity: formValue.yrsInCity,
-        },
+    // if (this.coApplicantForm.invalid) {
+    //   this.toastr.error('please enter values for required fields', 'Error!');
+    //   return;
+    // } else {
+    const formValue = this.coApplicantForm.value;
+    const coapparr = [] as any;
+    const obj = {
+      identityProof: {
+        panNumber: formValue.PANnumber,
+        voterIdNumber: formValue.voterIdNumber,
+        passportNumber: formValue.passportNumber,
+        NREGANumber: formValue.NREGANumber,
+      },
+      addressProof: {
+        selectedIdProof: formValue.addressProof,
+      },
+      farmerDetails: {
+        salutation: formValue.salutation,
+        firstName: formValue.firstName,
+        middleName: formValue.middleName,
+        lastName: formValue.lastName,
+        dob: formValue.dob,
+        gender: formValue.gender,
+        religion: formValue.religion,
+        caste: formValue.caste,
+      },
+      address: {
+        addressLine1: formValue.address1,
+        addressLine2: formValue.address2,
+        pincode: formValue.pinCode,
+        taluk: formValue.taluk,
+        city: formValue.city,
+        state: formValue.state,
+        landmark: formValue.landmark,
+        phoneNumber: formValue.phoneNumber,
+        email: formValue.email,
+        yrsInAddress: formValue.yrsInAddress,
+        yrsInCity: formValue.yrsInCity,
+      },
+
+      permAddress: {
         commOrPerAddress: formValue.commOrPerAddress,
-        otherDetails: {
-          educationalQualification: formValue.educationalQualification,
-          occupation: formValue.occupation,
-          fpoName: formValue.annualIncome,
-        },
-        familyMembers: formValue.familyMembers,
-        propertyStatus: formValue.propertyStatus,
-        monthlyRent: formValue.monthlyRent,
-      };
+        addressLine1: formValue.permAddressLine1,
+        addressLine2: formValue.permAddressLine2,
+        pincode: formValue.permPincode,
+        taluk: formValue.permTaluk,
+        city: formValue.permCity,
+        state: formValue.permState,
+      },
 
-      const objcoa2 = {
-        identityProof: {
-          panNumber: formValue.PANnumbercoa2,
-          passportNumber: formValue.passportNumbercoa2,
-          NREGANumber: formValue.NREGANumbercoa2,
-          voterIdNumber: formValue.voterIdNumbercoa2,
-        },
-        addressProof: {
-          selectedIdProof: formValue.addressProofcoa2,
-        },
-        farmerDetails: {
-          salutation: formValue.salutationcoa2,
-          firstName: formValue.firstNamecoa2,
-          middleName: formValue.middleNamecoa2,
-          lastName: formValue.lastNamecoa2,
-          dob: formValue.dobcoa2,
-          gender: formValue.gendercoa2,
-          religion: formValue.religioncoa2,
-          caste: formValue.castecoa2,
-        },
-        address: {
-          addressLine1: formValue.address1coa2,
-          addressLine2: formValue.address2coa2,
-          pincode: formValue.pinCodecoa2,
-          taluk: formValue.talukcoa2,
-          city: formValue.citycoa2,
-          state: formValue.statecoa2,
-          landmark: formValue.landmarkcoa2,
-          mobileNumber: formValue.phoneNumbercoa2,
-          email: formValue.emailcoa2,
-          yrsInAddress: formValue.yrsInAddresscoa2,
-          yrsInCity: formValue.yrsInCitycoa2,
-        },
+      otherDetails: {
+        educationalQualification: formValue.educationalQualification,
+        occupation: formValue.occupation,
+        annualIncome: formValue.annualIncome,
+      },
+      propertyStatus: formValue.propertyStatus,
+      monthlyRent: formValue.monthlyRent,
+      familyMembers: formValue.familyMembers,
+    };
+
+    const objcoa2 = {
+      identityProof: {
+        panNumber: formValue.PANnumbercoa2,
+        passportNumber: formValue.passportNumbercoa2,
+        NREGANumber: formValue.NREGANumbercoa2,
+        voterIdNumber: formValue.voterIdNumbercoa2,
+      },
+      addressProof: {
+        selectedIdProof: formValue.addressProofcoa2,
+      },
+      farmerDetails: {
+        salutation: formValue.salutationcoa2,
+        firstName: formValue.firstNamecoa2,
+        middleName: formValue.middleNamecoa2,
+        lastName: formValue.lastNamecoa2,
+        dob: formValue.dobcoa2,
+        gender: formValue.gendercoa2,
+        religion: formValue.religioncoa2,
+        caste: formValue.castecoa2,
+      },
+      address: {
+        addressLine1: formValue.address1coa2,
+        addressLine2: formValue.address2coa2,
+        pincode: formValue.pinCodecoa2,
+        taluk: formValue.talukcoa2,
+        city: formValue.citycoa2,
+        state: formValue.statecoa2,
+        landmark: formValue.landmarkcoa2,
+        mobileNumber: formValue.phoneNumbercoa2,
+        email: formValue.emailcoa2,
+        yrsInAddress: formValue.yrsInAddresscoa2,
+        yrsInCity: formValue.yrsInCitycoa2,
+      },
+
+      permAddress: {
         commOrPerAddress: formValue.commOrPerAddresscoa2,
-        otherDetails: {
-          educationalQualification: formValue.educationalQualificationcoa2,
-          occupation: formValue.occupationcoa2,
-          fpoName: formValue.annualIncomecoa2,
-        },
-        familyMembers: formValue.familyMemberscoa2,
-        propertyStatus: formValue.propertyStatuscoa2,
-        monthlyRent: formValue.monthlyRentcoa2,
-      };
-      console.log(this.coApplicantForm);
+        addressLine1: formValue.permAddressLine1coa2,
+        addressLine2: formValue.permAddressLine2coa2,
+        pincode: formValue.permPincodecoa2,
+        taluk: formValue.permTalukcoa2,
+        city: formValue.permCitycoa2,
+        state: formValue.permStatecoa2,
+      },
 
-      coapparr.push(obj);
-      coapparr.push(objcoa2);
-      console.log(obj, objcoa2, coapparr);
+      commOrPerAddress: formValue.commOrPerAddresscoa2,
+      otherDetails: {
+        educationalQualification: formValue.educationalQualificationcoa2,
+        occupation: formValue.occupationcoa2,
+        fpoName: formValue.annualIncomecoa2,
+      },
+      familyMembers: formValue.familyMemberscoa2,
+      propertyStatus: formValue.propertyStatuscoa2,
+      monthlyRent: formValue.monthlyRentcoa2,
+    };
+    console.log(this.coApplicantForm);
 
-      if (this.farmerId) {
-        localStorage.setItem('edit-co-applicant', JSON.stringify(obj));
-        localStorage.setItem(
-          'edit-co-applicant-form',
-          JSON.stringify(formValue)
-        );
-      } else {
-        localStorage.setItem('co-applicant', JSON.stringify(coapparr));
-        localStorage.setItem('co-applicant-form', JSON.stringify(formValue));
-      }
-      const url = `/add/${this.nextRoute}/${this.farmerId}`;
-      this.router.navigate([url]);
+    coapparr.push(obj);
+    coapparr.push(objcoa2);
+
+    if (this.farmerId) {
+      localStorage.setItem('edit-co-applicant', JSON.stringify(coapparr));
+      localStorage.setItem('edit-co-applicant-form', JSON.stringify(formValue));
+    } else {
+      localStorage.setItem('co-applicant', JSON.stringify(coapparr));
+      localStorage.setItem('co-applicant-form', JSON.stringify(formValue));
     }
+    const url = `/add/${this.nextRoute}/${this.farmerId}`;
+    this.router.navigate([url]);
+    // }
   }
   /* END: NON-API Function Calls------------------------------------------------------------------------ */
 
   /* START: API Function Calls------------------------------------------------------------------------ */
   getPinCodeData(event: any, type: string) {
     // clear values
-    if (type === 'ADDRESS') {
+    if (type === 'ADDRESS' && !this.farmerId) {
       this.coApplicantForm.patchValue({
         city: '',
         state: '',
       });
       this.pinCodeAPIData.length = 0;
-    } else if (type === 'ADDRESScoa2') {
+    } else if (type === 'ADDRESScoa2' && !this.farmerId) {
       this.coApplicantForm.patchValue({
-        city: '',
-        state: '',
+        citycoa2: '',
+        statecoa2: '',
       });
       this.pinCodeAPIDatacoa2.length = 0;
-    } else if (type === 'PERMANENT_ADDRESS') {
+    } else if (type === 'PERMANENT_ADDRESS' && !this.farmerId) {
       this.coApplicantForm.patchValue({
         permCity: '',
         permState: '',
       });
       this.permPinCodeAPIData.length = 0;
-    } else if (type === 'PERMANENT_ADDRESScoa2') {
+    } else if (type === 'PERMANENT_ADDRESScoa2' && !this.farmerId) {
       this.coApplicantForm.patchValue({
-        permCity: '',
-        permState: '',
+        permCitycoa2: '',
+        permStatecoa2: '',
       });
       this.permPinCodeAPIDatacoa2.length = 0;
     }

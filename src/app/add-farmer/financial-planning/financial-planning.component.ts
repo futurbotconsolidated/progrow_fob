@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
@@ -23,8 +23,12 @@ enum SaveStatus {
   templateUrl: './financial-planning.component.html',
   styleUrls: ['./financial-planning.component.css'],
 })
-export class FinancialPlanningComponent implements OnInit {
-  /* START: Variables */
+export class FinancialPlanningComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  /* START: Variables ---------------------------------------------*/
+  private observableSubscription: any;
+
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
   insuranceDetails!: FormArray;
@@ -61,7 +65,7 @@ export class FinancialPlanningComponent implements OnInit {
   ];
 
   farmerId = ''; // edit feature
-  /* END: Variables */
+  /* END: Variables ---------------------------------------------*/
 
   constructor(
     private formBuilder: FormBuilder,
@@ -146,15 +150,10 @@ export class FinancialPlanningComponent implements OnInit {
       bankDetails: new FormArray([this.createBankDetails()]),
     });
 
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      this.saveData();
-      console.log(this.nextRoute);
-    });
-
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
+  /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
     this.financialMaster = data.financialPlan; // read master data
     this.commonMaster = data.commonData; // read master data
@@ -192,22 +191,15 @@ export class FinancialPlanningComponent implements OnInit {
       let editForm: any = localStorage.getItem('edit-financial-planing');
       if (editForm) {
         editForm = JSON.parse(editForm);
-        console.log(this.financialForm);
         this.financialForm.patchValue(editForm);
-        console.log(this.financialForm);
 
         this.editDynamicBindFormArray(editForm.bankDetails);
       } else {
         const A: any = localStorage.getItem('farmer-details');
         if (A) {
           const B = JSON.parse(A).financial_planning;
-          console.log(this.financialForm);
-
           this.financialForm.patchValue(B);
-          console.log(this.financialForm);
-
           this.editDynamicBindFormArray(B.bankDetails);
-          console.log(this.financialForm);
         }
       }
     } else {
@@ -215,7 +207,6 @@ export class FinancialPlanningComponent implements OnInit {
       if (finPlan) {
         finPlan = JSON.parse(finPlan);
         this.financialForm.patchValue(finPlan);
-        console.log(finPlan);
       }
 
       let fieldInfo: any = localStorage.getItem('field-info');
@@ -227,6 +218,26 @@ export class FinancialPlanningComponent implements OnInit {
       }
     }
   }
+
+  ngAfterViewInit(): void {
+    /** subscribe to Observables, which are triggered from header selections*/
+    this.observableSubscription = this.addFarmerService
+      .getMessage()
+      .subscribe((data) => {
+        this.nextRoute = data.routeName;
+        if (this.router.url?.includes('/add/financial-planning')) {
+          this.saveData();
+          console.log(data.routeName);
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    /** unsubscribe from Observables*/
+    this.observableSubscription.unsubscribe();
+  }
+  /* END: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
+  /* START: NON-API Function Calls-------------------------------------------------------------- */
 
   numbersOnlyValidator(event: any) {
     const pattern = /^[0-9\-]*$/;
@@ -242,8 +253,6 @@ export class FinancialPlanningComponent implements OnInit {
     }
     return true;
   }
-
-  ngAfterContentInit() {}
 
   /* START: Add Dynamic crop loan requirement  :FormArray */
   createLoanReqPlaned(): FormGroup {
@@ -376,4 +385,5 @@ export class FinancialPlanningComponent implements OnInit {
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
   }
+  /* END: NON-API Function Calls-------------------------------------------------------------- */
 }

@@ -66,7 +66,7 @@
             <h3 class="form-title">2. Address proof</h3>
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
-                <label class="required">Select ID</label>
+                <label class="">Select ID</label>
                 <select class="flex-1 form-select" formControlName="addressProof">
                   <option value="">...</option>
                   <option *ngFor="let indVal of  demoGraphicMaster['addressProofType']" value="{{ indVal }}">
@@ -127,7 +127,7 @@
               <h3 class="form-title">4.A Farmer details</h3>
               <div class="farmer-details">
                 <div class="small-input">
-                  <select class="form-select">
+                  <select class="form-select" formControlName="salutation">
                     <option value="">...</option>
                     <option value="Mr.">Mr.</option>
                     <option value="Ms.">Ms.</option>
@@ -136,7 +136,7 @@
                 </div>
                 <div class="farmer-details">
                   <div class="farmer-details-inner lable-top">
-                    <label class="required">First Name</label>
+                    <label class="">First Name</label>
                     <input type="text" class="form-control" formControlName="firstName" placeholder="" />
                     <div *ngIf="isSubmitted && f['firstName'].errors" class="form-text text-danger">
                       <small *ngIf="f['firstName'].errors['required']">
@@ -148,8 +148,12 @@
                     <input type="text" class="form-control" formControlName="middleName" placeholder="" />
                   </div>
                   <div class="farmer-details-inner lable-top">
-                    <label class="required">Last Name</label>
+                    <label class="">Last Name</label>
                     <input type="text" class="form-control" formControlName="lastName" placeholder="" />
+                    <div *ngIf="isSubmitted && f['lastName'].errors" class="form-text text-danger">
+                      <small *ngIf="f['lastName'].errors['required']">
+                        Last Name is required</small>
+                    </div>
                   </div>
                   <div class="farmer-details-inner lable-top">
                     <label>Date Of Birth</label>
@@ -226,7 +230,7 @@
               </h3>
               <div class="display-flex">
                 <div class="flex-1 lable-top">
-                  <label class="required">Address line-1</label>
+                  <label class="">Address line-1</label>
                   <input type="text" class="form-control" formControlName="address1" placeholder="" />
                   <div *ngIf="isSubmitted && f['address1'].errors" class="form-text text-danger">
                     <small *ngIf="f['address1'].errors['required']">
@@ -240,7 +244,7 @@
               </div>
               <div class="display-flex">
                 <div class="flex-1 lable-top">
-                  <label class="required">Pin Code</label>
+                  <label class="">Pin Code</label>
                   <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')"
                     (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
@@ -253,7 +257,7 @@
                   </div>
                 </div>
                 <div class="flex-1 lable-top">
-                  <label class="required">Tahsil/Taluka/Mandal</label>
+                  <label class="">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="taluk">
                     <option value="">...</option>
                     <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation  }}">
@@ -266,7 +270,7 @@
                   </div>
                 </div>
                 <div class="flex-1 lable-top">
-                  <label class="required">District/City</label>
+                  <label class="">District/City</label>
                   <input type="text" class="form-control" formControlName="city" placeholder="" readonly />
                   <div *ngIf="isSubmitted && f['city'].errors" class="form-text text-danger">
                     <small *ngIf="f['city'].errors['required']">
@@ -274,7 +278,7 @@
                   </div>
                 </div>
                 <div class="flex-1 lable-top">
-                  <label class="required">State</label>
+                  <label class="">State</label>
                   <input type="text" class="form-control" formControlName="state" placeholder="" readonly />
                   <div *ngIf="isSubmitted && f['state'].errors" class="form-text text-danger">
                     <small *ngIf="f['state'].errors['required']">
@@ -288,7 +292,7 @@
                   <input type="text" class="form-control" formControlName="landmark" placeholder="" />
                 </div>
                 <div class="flex-1 lable-top">
-                  <label class="required">Phone No.</label>
+                  <label class="">Phone No.</label>
                   <input type="text" class="form-control" formControlName="phoneNumber" placeholder="" minlength="10" maxlength="10" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['phoneNumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['phoneNumber'].errors['required']">
@@ -354,7 +358,7 @@
               </div>
             </div>
             <div class="form-details-inner">
-              <h3 class="form-title required">5.C Communication/Permanent address</h3>
+              <h3 class="form-title ">5.C Communication/Permanent address</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat }}">
                   <input class="form-check-input" type="radio" formControlName="commOrPerAddress" value="{{ indStat }}" id="{{ indStat }}" /><span>{{ indStat
@@ -365,7 +369,7 @@
                     Field is required</small>
                 </div>
               </div>
-              <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddress!='different_address'">
+              <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddress!='Different address'">
                 <div class="flex-1 lable-top">
                   <label>Address line-1</label>
                   <input type="text" class="form-control" formControlName="permAddressLine1" placeholder="" />
@@ -376,9 +380,9 @@
                   <input type="text" class="form-control" formControlName="permAddressLine2" placeholder="" />
                 </div>
               </div>
-              <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddress!='different_address'">
+              <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddress!='Different address'">
                 <div class="flex-1 lable-top">
-                  <label class="required">Pin Code</label>
+                  <label class="">Pin Code</label>
                   <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
                   <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
                     <small *ngIf="f['permPincode'].errors['required']">
@@ -391,7 +395,7 @@
                 </div>
 
                 <div class="flex-1 lable-top">
-                  <label class="required">Tahsil/Taluka/Mandal</label>
+                  <label class="">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="permTaluk">
                     <option value="">...</option>
                     <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation  }}">
@@ -404,7 +408,7 @@
                   </div>
                 </div>
                 <div class="flex-1 lable-top">
-                  <label class="required">District/City</label>
+                  <label class="">District/City</label>
                   <input type="text" class="form-control" formControlName="permCity" placeholder="" readonly />
                   <div *ngIf="isSubmitted && f['permCity'].errors" class="form-text text-danger">
                     <small *ngIf="f['permCity'].errors['required']">
@@ -412,7 +416,7 @@
                   </div>
                 </div>
                 <div class="flex-1 lable-top">
-                  <label class="required">State</label>
+                  <label class="">State</label>
                   <input type="text" class="form-control" formControlName="permState" placeholder="" readonly />
                   <div *ngIf="isSubmitted && f['permState'].errors" class="form-text text-danger">
                     <small *ngIf="f['permState'].errors['required']">
@@ -609,7 +613,7 @@
               <h3 class="form-title">4.A Farmer details</h3>
               <div class="farmer-details">
                 <div class="small-input">
-                  <select class="form-select">
+                  <select class="form-select" formControlName="salutationcoa2">
                     <option value="">...</option>
                     <option value="Mr.">Mr.</option>
                     <option value="Ms.">Ms.</option>
@@ -848,7 +852,7 @@
                     Field is required</small>
                 </div>
               </div>
-              <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddresscoa2!='different_address'">
+              <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddresscoa2!='Different address'">
                 <div class="flex-1 lable-top">
                   <label>Address line-1</label>
                   <input type="text" class="form-control" formControlName="permAddressLine1coa2" placeholder="" />
@@ -859,7 +863,7 @@
                   <input type="text" class="form-control" formControlName="permAddressLine2coa2" placeholder="" />
                 </div>
               </div>
-              <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddresscoa2!='different_address'">
+              <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddresscoa2!='Different address'">
                 <div class="flex-1 lable-top">
                   <label class="">Pin Code</label>
                   <input type="text" class="form-control" formControlName="permPincodecoa2" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESScoa2')" />
