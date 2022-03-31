@@ -55,7 +55,7 @@ export class InfoDeclarationComponent implements OnInit {
   saveData() {
     this.spinner.show();
     let demoInfo: any;
-    let fieldInfo: any;
+    var fieldInfo: any;
     let cropInfo: any;
     let finInfo: any;
     let prodInfo: any;
@@ -65,6 +65,14 @@ export class InfoDeclarationComponent implements OnInit {
     if (this.farmerId) {
       demoInfo = localStorage.getItem('edit-demographic-info');
       fieldInfo = localStorage.getItem('edit-field-info');
+      var edit_fieldInfo = JSON.parse(fieldInfo);
+      if(!edit_fieldInfo.length){
+        var farmer_detail: any = localStorage.getItem('farmer-details');
+        if (farmer_detail) {
+          var edit_field_info = JSON.parse(farmer_detail).fieldInfo;
+          fieldInfo = JSON.stringify(edit_field_info);
+        }
+      }
       finInfo = localStorage.getItem('edit-financial-planing');
       cropInfo = localStorage.getItem('edit-crop-market-planing');
       prodInfo = localStorage.getItem('edit-produce-aggregator');

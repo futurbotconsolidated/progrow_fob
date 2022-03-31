@@ -146,9 +146,9 @@ export class FieldInfoComponent implements OnInit {
         editForm = JSON.parse(editForm);
         this.bindItemsInEdit(editForm);
       } else {
-        const A: any = localStorage.getItem('farmer-details');
-        if (A) {
-          const B = JSON.parse(A).fieldInfo;
+        const farmer_details: any = localStorage.getItem('farmer-details');
+        if (farmer_details) {
+          const edit_field_info = JSON.parse(farmer_details).fieldInfo;
           var editFieldInfo = {} as any;
           editFieldInfo.plannedFieldDetails = [] as any;
           editFieldInfo.historicalFieldDetails = [] as any;
@@ -156,7 +156,7 @@ export class FieldInfoComponent implements OnInit {
           editFieldInfo.testType = [] as any;
           editFieldInfo.enumerate = [] as any;
           this.editFieldArea = [];
-          B.forEach((fiv: any, findex: number) => {
+          edit_field_info.forEach((fiv: any, findex: number) => {
             editFieldInfo.enumerate.push(fiv.enumerate_planned_season);
             editFieldInfo.fieldOwnership.push(fiv.field_ownership_detail);
             editFieldInfo.historicalFieldDetails.push(
@@ -195,9 +195,11 @@ export class FieldInfoComponent implements OnInit {
         });
       }
     }
+    console.log(this.selectedCoordinates);
   }
 
   bindItemsInEdit(fieldValues: any) {
+    console.log(fieldValues);
     this.fieldInfoForm.patchValue(fieldValues);
     fieldValues.plannedFieldDetails.map((item: any) => {
       const plannedDetails = <any>{};
@@ -724,11 +726,11 @@ export class FieldInfoComponent implements OnInit {
     let obj;
     var field_id = 0;
     this.fieldIndexMapIds.forEach((x: any, i: number) => {
-      if (this.farmerId) {
-        field_id = i + 1;
-      } else {
-        field_id = 0;
-      }
+      // if (this.farmerId) {
+      //   field_id = i + 1;
+      // } else {
+      //   field_id = 0;
+      // }
       this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
@@ -741,7 +743,7 @@ export class FieldInfoComponent implements OnInit {
         },
       } as any;
       obj = {
-        field_id: field_id,
+        // field_id: field_id,
         field_boundary: drawnCoordinates_obj,
         field_area_ha:
           this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
@@ -760,7 +762,7 @@ export class FieldInfoComponent implements OnInit {
         },
         field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
         enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
-        testOnFields: this.fieldInfoForm.value.testType[i],
+        test_on_fields: this.fieldInfoForm.value.testType[i],
         undertaking_cultivation: {
           uc: this.fieldInfoForm.value.cropCycleOnReports,
         },
