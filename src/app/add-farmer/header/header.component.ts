@@ -45,6 +45,8 @@ export class HeaderComponent implements OnInit {
     } else if (this.router.url?.includes('/add/technology-adoption')) {
       this.addFarmerService.sendMessage('co-applicant');
     } else if (this.router.url?.includes('/add/co-applicant')) {
+      console.log('here');
+
       this.addFarmerService.sendMessage('info-declaration');
     } else {
       this.router.navigate(['/add/questionary']);
