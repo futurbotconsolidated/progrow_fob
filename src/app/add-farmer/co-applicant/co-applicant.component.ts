@@ -1018,8 +1018,8 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
   // patch edit farmer details
   patchFarmerDetails() {
     const A: any = localStorage.getItem('farmer-details');
-
-    if (A) {
+    const coData = JSON.parse(A).co_applicant_details;
+    if (A && Array.isArray(coData) && coData.length === 2) {
       const C1 = JSON.parse(A).co_applicant_details[0];
       const C2 = JSON.parse(A).co_applicant_details[1];
 
