@@ -16,21 +16,22 @@
                         {{demographicDisp?.farmerDetails?.middleName}}
                         {{demographicDisp?.farmerDetails?.lastName}}</span>
                 </div>
-                <div class="edit-picture-gap profile-date"><img src="../../../assets/images/profile-date.svg"
-                        alt=""><span> {{demographicDisp?.farmerDetails?.dob}}</span></div>
-                <div class="edit-picture-gap gender"><img src="../../../assets/images/profile-gender.svg"
-                        alt=""><span>{{getDisplayName('gender',demographicDisp?.farmerDetails?.gender)}}</span>
+                <div class="edit-picture-gap profile-date"><img src="../../../assets/images/profile-date.svg" alt=""><span> {{demographicDisp?.farmerDetails?.dob}}</span></div>
+                <div class="edit-picture-gap gender"><img src="../../../assets/images/profile-gender.svg" alt=""><span>{{demographicDisp?.farmerDetails?.gender}}</span>
                 </div>
-                <div class="edit-picture-gap phone-num"><img src="../../../assets/images/profile-phone.svg"
-                        alt=""><span>{{demographicDisp?.address?.mobileNumber}}</span></div>
+                <div class="edit-picture-gap phone-num">
+                    <a href="tel:{{demographicDisp?.address?.mobileNumber}}">
+                        <img src="../../../assets/images/profile-phone.svg" alt="">
+                        <span>{{demographicDisp?.address?.mobileNumber}}</span>
+                    </a>
+                </div>
             </div>
             <div class="pro-right">
                 <div class="language">
                     <select class="form-select" aria-label="Default select example">
                         <option selected>English</option>
-                        <option>English</option>
-                        <option>Germany</option>
-                        <option>French</option>
+                        <!-- <option>Germany</option>
+                        <option>French</option> -->
                     </select>
                 </div>
                 <div class="step-next">
@@ -43,14 +44,14 @@
                 <li>
                     <span><img src="../../../assets/images/profile-religion.svg" alt=""></span>
                     <div><span><b>Religion:
-                            </b>{{getDisplayName('religion',demographicDisp?.farmerDetails?.religion)}}</span><br><span><b>Caste:</b>
-                            {{getDisplayName('caste',demographicDisp?.farmerDetails?.caste)}}</span></div>
+                            </b>{{demographicDisp?.farmerDetails?.religion}}</span><br><span><b>Caste:</b>
+                            {{demographicDisp?.farmerDetails?.caste}}</span></div>
                 </li>
                 <li>
                     <span><img src="../../../assets/images/profile-address.svg" alt=""></span>
                     <div><span><b>KYC Valid Address: </b> {{demographicDisp?.address?.addressLine1}}
                             {{demographicDisp?.address?.addressLine2}} </span>
-                        <br><span><b>Communication Address:</b>N/A</span>
+                        <br><span><b>Communication Address: </b> N/A</span>
                     </div>
                 </li>
             </ul>

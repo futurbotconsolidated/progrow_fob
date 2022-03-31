@@ -3,14 +3,14 @@ name: PoC Environment Build Deploy
 on:
   push:
     branches:
-      - develop
+      - poc
       
 env:
   PIPELINE_TYPE: COMPONENT
   AWS_REGION: ap-south-1
   AWS_GITHUB_ROLE_ARN: arn:aws:iam::866696969036:role/Developer-ProGrowGithubRole
   PYTHON_VERSION: 3.9.8
-  AMI_NAME: "fob2-ui-${{ github.run_number }}"
+  AMI_NAME: "fob2-ui-poc-${{ github.run_number }}"
   AUTOSCALING_ID: "terraform-20220119014405456800000003"
   LAUNCH_TEMPLATE_ID: "lt-04cf6e5b5eeb4f991"
   ENVIRONMENT: "poc"

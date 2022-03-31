@@ -40,9 +40,7 @@ export class AddFarmerService {
   // }
 
   registerFarmer(data: any) {
-    // headers = headers.set('Bd-id', '1');
-    headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
-    headers = headers.set('Authorization', this.token || '');
+    headers = headers.set('Authorization', this.token);
     return this.http.post(this.baseUrl + this.endPoints.registerFarmer, data, {
       headers,
     });

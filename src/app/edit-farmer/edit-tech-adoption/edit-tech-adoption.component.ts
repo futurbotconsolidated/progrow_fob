@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonService } from '../../shared/common.service';
+import { data } from '../../shared/fob_master_data';
 
 @Component({
   selector: 'app-edit-tech-adoption',
@@ -7,8 +7,13 @@ import { CommonService } from '../../shared/common.service';
   styleUrls: ['./edit-tech-adoption.component.css'],
 })
 export class EditTechAdoptionComponent implements OnInit {
+  /* START: Variable */
   techAdoptionDisp = {} as any;
-  constructor(private commonService: CommonService) {
+  technologyAdoptionMaster = <any>{};
+  /* END: Variable */
+
+  constructor() {
+    this.technologyAdoptionMaster = data.technologyAdoption; // read master data
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.techAdoptionDisp = JSON.parse(A).technology_adoption;
@@ -16,13 +21,4 @@ export class EditTechAdoptionComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-
-  // get Name from Master Json
-  getDisplayName(dataProperty: string, id: any) {
-    return this.commonService.getDisplayName(
-      'technologyAdoption',
-      dataProperty,
-      id
-    );
-  }
 }

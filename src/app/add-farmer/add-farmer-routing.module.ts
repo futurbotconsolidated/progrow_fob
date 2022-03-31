@@ -26,7 +26,15 @@ const routes: Routes = [
     component: DemographicInfoComponent,
   },
   {
+    path: 'demographic-info/:farmerId',
+    component: DemographicInfoComponent,
+  },
+  {
     path: 'field-info',
+    component: FieldInfoComponent,
+  },
+  {
+    path: 'field-info/:farmerId',
     component: FieldInfoComponent,
   },
   {
@@ -34,7 +42,16 @@ const routes: Routes = [
     component: FinancialPlanningComponent,
   },
   {
+    path: 'financial-planning/:farmerId',
+    component: FinancialPlanningComponent,
+  },
+  {
     path: 'crop-market-plan',
+    component: CropMarketPlanComponent,
+  },
+
+  {
+    path: 'crop-market-plan/:farmerId',
     component: CropMarketPlanComponent,
   },
   {
@@ -42,7 +59,15 @@ const routes: Routes = [
     component: ProduceAggregatorComponent,
   },
   {
+    path: 'produce-aggregator/:farmerId',
+    component: ProduceAggregatorComponent,
+  },
+  {
     path: 'technology-adoption',
+    component: TechnologyAdoptionComponent,
+  },
+  {
+    path: 'technology-adoption/:farmerId',
     component: TechnologyAdoptionComponent,
   },
   {
@@ -50,7 +75,15 @@ const routes: Routes = [
     component: CoApplicantComponent,
   },
   {
+    path: 'co-applicant/:farmerId',
+    component: CoApplicantComponent,
+  },
+  {
     path: 'info-declaration',
+    component: InfoDeclarationComponent,
+  },
+  {
+    path: 'info-declaration/:farmerId',
     component: InfoDeclarationComponent,
   },
 ];

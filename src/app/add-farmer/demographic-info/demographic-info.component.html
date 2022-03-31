@@ -11,9 +11,8 @@
               <h3 class="form-title">1. Identity proof</h3>
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
-                  <label for="PANnumber">PAN Card number </label>
-                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber"
-                    placeholder="ABWRT0987T" />
+                  <label for="PANnumber">PAN Card Number </label>
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="ABWRT0987T" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
                       Please enter valid PAN Number</small>
@@ -21,9 +20,7 @@
                 </div>
                 <div class="farmer-details-inner lable-top">
                   <!-- Button trigger modal -->
-                  <button type="button" class="btn btn-secondary btn-sm h-100" data-bs-toggle="modal"
-                    (click)="openFileModalPopup('PAN')"> Upload PAN Card <i class="fa fa-picture-o fa-lg"
-                      aria-hidden="true"></i>
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PAN')"> Upload PAN Card Image
                   </button>
                 </div>
               </div>
@@ -32,12 +29,10 @@
               <h4>Profile Picture</h4>
               <div class="update-profile">
                 <div class="pro-img">
-                  <img class="profile-pic" [hidden]="!demographicInfoForm.value.profileImg"
-                    src="{{demographicInfoForm.value.profileImg}}" />
+                  <img class="profile-pic" [hidden]="!demographicInfoForm.value.profileImg" src="{{demographicInfoForm.value.profileImg}}" />
                 </div>
                 <div class="pro-update">
-                  <a class="avatar" (click)="openFileModalPopup('FARMER_PROFILE')"><svg
-                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <a class="avatar" (click)="openFileModalPopup('FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -50,8 +45,7 @@
                         d="M9.827,21.763,14.31,14l3.532,6.117a10.023,10.023,0,0,1-8.015,1.646ZM7.89,21.12A10.028,10.028,0,0,1,2.458,15h8.965L7.89,21.119ZM2.05,13A9.964,9.964,0,0,1,4.633,5.239L9.112,13ZM6.159,3.883a10.021,10.021,0,0,1,8.014-1.646L9.69,10,6.159,3.883Zm9.951-1A10.028,10.028,0,0,1,21.542,9H12.577L16.11,2.881ZM21.95,11a9.964,9.964,0,0,1-2.583,7.761L14.888,11h7.064Z" />
                     </svg><span>Retake</span></a>
 
-                  <a (click)="removeImage($event,'FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                      height="24" viewBox="0 0 24 24">
+                  <a (click)="removeImage($event,'FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -74,9 +68,8 @@
                 <label class="required">Select ID</label>
                 <select class="flex-1 form-select" formControlName="addressProof">
                   <option value="">...</option>
-                  <option *ngFor="let indVal of demoGraphicMaster['addressProofType']"
-                    value="{{ indVal.displayValue }}">
-                    {{ indVal.displayName }}
+                  <option *ngFor="let indVal of demoGraphicMaster['addressProofType']" value="{{ indVal }}">
+                    {{ indVal }}
                   </option>
                 </select>
                 <div *ngIf="isSubmitted && f['addressProof'].errors" class="form-text text-danger">
@@ -86,16 +79,15 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-secondary btn-sm h-100" data-bs-toggle="modal"
-                  (click)="openFileModalPopup('ADDRESS_PROOF')">
-                  Upload Address Proof <i class="fa fa-picture-o fa-lg" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('ADDRESS_PROOF')">
+                  Upload Address Proof Image
 
                 </button>
               </div>
             </div>
           </div>
           <div class="form-details">
-            <h3 class="form-title">3. Others Details</h3>
+            <h3 class="form-title">3. Others details</h3>
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Passport Number</label>
@@ -103,9 +95,8 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-secondary btn-sm h-100" data-bs-toggle="modal"
-                  (click)="openFileModalPopup('PASSPORT')">
-                  Upload Passport <i class="fa fa-picture-o fa-lg" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PASSPORT')">
+                  Upload Passport Image
                 </button>
               </div>
             </div>
@@ -116,9 +107,8 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-secondary btn-sm h-100" data-bs-toggle="modal"
-                  (click)="openFileModalPopup('NREGA')">Upload
-                  NREGA <i class="fa fa-picture-o fa-lg" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('NREGA')">
+                  Upload NREGA Image
                 </button>
               </div>
             </div>
@@ -128,9 +118,11 @@
               <h3 class="form-title">4.A Farmer details</h3>
               <div class="farmer-details">
                 <div class="small-input">
-                  <select class="form-select">
-                    <option selected>Mr.</option>
-                    <option>Mrs.</option>
+                  <select class="form-select" formControlName="salutation">
+                    <option value="">...</option>
+                    <option value="Mr.">Mr.</option>
+                    <option value="Ms.">Ms.</option>
+                    <option value="Mrs.">Mrs.</option>
                   </select>
                 </div>
                 <div class="farmer-details">
@@ -147,12 +139,8 @@
                     <input type="text" class="form-control" formControlName="middleName" placeholder="" />
                   </div>
                   <div class="farmer-details-inner lable-top">
-                    <label class="required">Last Name</label>
+                    <label>Last Name</label>
                     <input type="text" class="form-control" formControlName="lastName" placeholder="" />
-                    <div *ngIf="isSubmitted && f['lastName'].errors" class="form-text text-danger">
-                      <small *ngIf="f['lastName'].errors['required']">
-                        Last Name is required</small>
-                    </div>
                   </div>
                   <div class="farmer-details-inner lable-top">
                     <label>Date Of Birth</label>
@@ -166,10 +154,8 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.B Gender</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen.displayValue }}">
-                  <input class="form-check-input" type="radio" formControlName="gender"
-                    value="{{ indGen.displayValue }}" id="{{ indGen.displayValue }}" /><span>{{ indGen.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen }}gender">
+                  <input class="form-check-input" type="radio" formControlName="gender" value="{{ indGen }}" id="{{ indGen }}gender" /><span>{{ indGen
                     }}</span>
                 </label>
               </div>
@@ -177,34 +163,31 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.C Religion</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion.displayValue }}">
-                  <input class="form-check-input" type="radio" formControlName="religion"
-                    value="{{ indReligion.displayValue }}" id="{{ indReligion.displayValue }}" /><span>{{
-                    indReligion.displayName }}</span>
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion }}religion">
+                  <input class="form-check-input" type="radio" formControlName="religion" value="{{ indReligion }}" id="{{ indReligion }}religion" /><span>{{
+                    indReligion }}</span>
                 </label>
               </div>
             </div>
             <div class="form-details-inner">
               <h3 class="form-title">4.D Caste/Tribe</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste.displayValue }}">
-                  <input class="form-check-input" type="radio" formControlName="caste"
-                    value="{{ indCaste.displayValue }}" id="{{ indCaste.displayValue }}" /><span>{{ indCaste.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste }}caste">
+                  <input class="form-check-input" type="radio" formControlName="caste" value="{{ indCaste }}" id="{{ indCaste }}caste" /><span>{{
+                    indCaste
                     }}</span>
                 </label>
               </div>
             </div>
             <div class="form-details-inner">
-              <h3 class="form-title">4.E Others Details</h3>
+              <h3 class="form-title">4.E Others details</h3>
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
                   <label>Educational Qualification</label>
-                  <select class="flex-1 form-select" formControlName="educationQualification">
+                  <select class="flex-1 form-select" formControlName="educationalQualification">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal.displayValue }}">
-                      {{ indVal.displayName }}
+                    <option *ngFor="let indEdu of demoGraphicMaster['education']" value="{{ indEdu }}">
+                      {{ indEdu }}
                     </option>
                   </select>
                 </div>
@@ -213,15 +196,14 @@
                   <label>Occupation</label>
                   <select class="flex-1 form-select" formControlName="occupation">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of demoGraphicMaster['occupation']" value="{{ indVal.displayValue }}">
-                      {{ indVal.displayName }}
+                    <option *ngFor="let indOccup of demoGraphicMaster['occupation']" value="{{ indOccup }}">
+                      {{ indOccup }}
                     </option>
                   </select>
                 </div>
                 <div class="farmer-details-inner lable-top">
                   <label>Annual Income(₹)</label>
-                  <input type="text" class="form-control" formControlName="annualIncome" placeholder=""
-                    maxlength="10" />
+                  <input type="text" class="form-control" formControlName="annualIncome" placeholder="" maxlength="10" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['annualIncome'].errors" class="form-text text-danger">
                     <small *ngIf="f['annualIncome'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -253,8 +235,8 @@
               <div class="display-flex">
                 <div class="flex-1 lable-top">
                   <label class="required">Pin Code</label>
-                  <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6"
-                    (keypress)="validateNo($event)" maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" />
+                  <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6" (keypress)="validateNo($event)" maxlength="6"
+                    (keyup)="getPinCodeData($event,'ADDRESS')" />
                   <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
                     <small *ngIf="f['pinCode'].errors['required']">
                       PinCode is required</small>
@@ -269,8 +251,8 @@
                   <label class="required">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="taluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.Name }}">
-                      {{ indVal.Name }}
+                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation }}">
+                      {{ indVal.postalLocation }}
                     </option>
                   </select>
                   <div *ngIf="isSubmitted && f['taluk'].errors" class="form-text text-danger">
@@ -303,8 +285,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="required">Phone No.</label>
-                  <input type="text" class="form-control" formControlName="phoneNumber" placeholder="" minlength="10"
-                    maxlength="10" (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="phoneNumber" placeholder="" minlength="10" maxlength="10" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['phoneNumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['phoneNumber'].errors['required']">
                       Phone No. is required</small>
@@ -316,17 +297,23 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">Mobile 1</label>
-                  <input type="text" class="form-control" formControlName="mobile1" placeholder="" maxlength="10"
-                    (keypress)="validateNo($event)" />
-                  <div *ngIf="isSubmitted && f['mobile1'].errors" class="form-text text-danger">
+                  <input type="text" class="form-control" formControlName="mobile1" placeholder="" maxlength="10" (keypress)="validateNo($event)" />
+                  <div *ngIf="f['mobile1'].errors" class="form-text text-danger">
                     <small *ngIf="f['mobile1'].errors['pattern']">
                       Only Numbers are allowed</small>
+                    <small *ngIf="f['mobile1'].errors['minlength']">
+                      Please enter 10 Digits</small>
                   </div>
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">Mobile 2</label>
-                  <input type="text" class="form-control" formControlName="mobile2" placeholder="" maxlength="10"
-                    (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="mobile2" placeholder="" maxlength="10" (keypress)="validateNo($event)" />
+                  <div *ngIf="f['mobile2'].errors" class="form-text text-danger">
+                    <small *ngIf="f['mobile2'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                    <small *ngIf="f['mobile2'].errors['minlength']">
+                      Please enter 10 Digits</small>
+                  </div>
                 </div>
               </div>
               <div class="display-flex">
@@ -359,10 +346,9 @@
             <div class="form-details-inner">
               <h3 class="form-title">5.B Property status</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat.displayValue }}">
-                  <input class="form-check-input" type="radio" formControlName="propertyStatus"
-                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}" /><span>{{ indStat.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat }}propertyStatus">
+                  <input class="form-check-input" type="radio" formControlName="propertyStatus" value="{{ indStat }}" id="{{ indStat }}propertyStatus" /><span>{{
+                    indStat
                     }}</span>
                 </label>
               </div>
@@ -376,10 +362,9 @@
             <div class="form-details-inner">
               <h3 class="form-title required">5.C Communication/Permanent address</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio "
-                  *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat.displayValue }}">
-                  <input class="form-check-input" type="radio" formControlName="commOrPerAddress"
-                    value="{{ indStat.displayValue }}" id="{{ indStat.displayValue }}" /><span>{{ indStat.displayName
+                <label class="form-check-label form-check bordered-radio " *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat }}commOrPerAddress">
+                  <input class="form-check-input" type="radio" formControlName="commOrPerAddress" value="{{ indStat }}" id="{{ indStat }}commOrPerAddress" /><span>{{
+                    indStat
                     }}</span>
                 </label>
                 <div *ngIf="isSubmitted && f['commOrPerAddress'].errors" class="form-text text-danger">
@@ -387,10 +372,14 @@
                     Field is required</small>
                 </div>
               </div>
-              <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='different_address'">
+              <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='Different address'">
                 <div class="flex-1 lable-top">
-                  <label>Address line-1</label>
+                  <label class="required">Address line-1</label>
                   <input type="text" class="form-control" formControlName="permAddressLine1" placeholder="" />
+                  <div *ngIf="isSubmitted && f['permAddressLine1'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permAddressLine1'].errors['required']">
+                      Address is required</small>
+                  </div>
                 </div>
 
                 <div class="flex-1 lable-top">
@@ -398,11 +387,10 @@
                   <input type="text" class="form-control" formControlName="permAddressLine2" placeholder="" />
                 </div>
               </div>
-              <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='different_address'">
+              <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='Different address'">
                 <div class="flex-1 lable-top">
                   <label class="required">Pin Code</label>
-                  <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6"
-                    (keypress)="validateNo($event)" maxlength="6"
+                  <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6" (keypress)="validateNo($event)" maxlength="6"
                     (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
                   <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
                     <small *ngIf="f['permPincode'].errors['required']">
@@ -418,8 +406,8 @@
                   <label class="required">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="permTaluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.Name }}">
-                      {{ indVal.Name }}
+                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation }}">
+                      {{ indVal.postalLocation }}
                     </option>
                   </select>
                   <div *ngIf="isSubmitted && f['permTaluk'].errors" class="form-text text-danger">
@@ -452,8 +440,7 @@
               <h3 class="form-title">
                 6. How many members in the family? Record for each member.
               </h3>
-              <div class="mb-2" formArrayName="familyMembers"
-                *ngFor="let item of getFamilyMembersControls(); let i = index">
+              <div class="mb-2" formArrayName="familyMembers" *ngFor="let item of getFamilyMembersControls(); let i = index">
                 <div class="display-flex" [formGroupName]="i">
                   <div class="flex-2 lable-top">
                     <label>Name</label>
@@ -463,8 +450,8 @@
                     <label>Relation</label>
                     <select class="form-select" formControlName="relation">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['relation']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indRel of demoGraphicMaster['relation']" value="{{ indRel }}">
+                        {{ indRel }}
                       </option>
                     </select>
                   </div>
@@ -472,8 +459,8 @@
                     <label>Education</label>
                     <select class="flex-1 form-select" formControlName="education">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['education']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indEd of demoGraphicMaster['education']" value="{{ indEd }}">
+                        {{ indEd }}
                       </option>
                     </select>
                   </div>
@@ -482,8 +469,8 @@
 
                     <select class="flex-1 form-select" formControlName="occupation">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['occupation']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indOcp of demoGraphicMaster['occupation']" value="{{ indOcp }}">
+                        {{ indOcp }}
                       </option>
                     </select>
                   </div>
@@ -492,8 +479,8 @@
 
                     <select class="flex-1 form-select" formControlName="dependency">
                       <option value="">...</option>
-                      <option *ngFor="let indVal of demoGraphicMaster['dependency']" value="{{ indVal.displayValue }}">
-                        {{ indVal.displayName }}
+                      <option *ngFor="let indDep of demoGraphicMaster['dependency']" value="{{ indDep }}">
+                        {{ indDep }}
                       </option>
                     </select>
                   </div>
@@ -501,12 +488,7 @@
                       getFamilyMembersControls().length != 1 &&
                       i != getFamilyMembersControls().length - 1
                     " class="flex-1 add-another">
-                    <!-- <a class="text-danger" href="javascript:void(0);"
-                                            (click)="removeFamilyMembers(i)">-
-                                            Remove</a> -->
-
-                    <a href="javascript:void(0)" class="delete-item" (click)="removeFamilyMembers(i)"><i
-                        class="fa fa-trash-o text-danger"></i></a>
+                    <a href="javascript:void(0)" class="delete-item" (click)="removeFamilyMembers(i)"><i class="fa fa-trash-o text-danger"></i></a>
                   </div>
                   <div *ngIf="i == getFamilyMembersControls().length - 1" class="flex-1 add-another">
                     <a href="javascript:void(0);" (click)="addFamilyMembers()">+ Add Another</a>
@@ -516,32 +498,30 @@
             </div>
           </div>
           <div class="form-details">
-            <h3 class="form-title">7. Property Ownership</h3>
-            <div class="mb-2" formArrayName="propertyOwnership"
-              *ngFor="let item of getPropertyOwnershipControls(); let i = index">
+            <h3 class="form-title">7. Property ownership</h3>
+            <div class="mb-2" formArrayName="propertyOwnership" *ngFor="let item of getPropertyOwnershipControls(); let i = index">
               <div class="display-flex family-members" [formGroupName]="i">
                 <div class="flex-1 lable-top">
                   <label>Property Type</label>
                   <select class="form-select" formControlName="propertyType">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of demoGraphicMaster['propertyType']" value="{{ indVal.displayValue }}">
-                      {{ indVal.displayName }}
+                    <option *ngFor="let indVal of demoGraphicMaster['propertyType']" value="{{ indVal }}">
+                      {{ indVal }}
                     </option>
                   </select>
                 </div>
                 <div class="flex-1 lable-top">
                   <label>Upload pictures</label>
                   <div class="fileUpload">
-                    <span></span><img src="../../../assets/images/photo-camera.png" /><input type="file"
-                      class="form-control uploadlogo" />
+                    <span></span><img src="../../../assets/images/photo-camera.png" /><input type="file" class="form-control uploadlogo" />
                   </div>
                 </div>
                 <div class="flex-1 lable-top">
                   <label>Ownership Type</label>
                   <select class="form-select" formControlName="ownershipType">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of demoGraphicMaster['ownerShipType']" value="{{ indVal.displayValue }}">
-                      {{ indVal.displayName }}
+                    <option *ngFor="let indVal of demoGraphicMaster['ownerShipType']" value="{{ indVal }}">
+                      {{ indVal }}
                     </option>
                   </select>
                 </div>
@@ -549,18 +529,14 @@
                   <label>Particular</label>
                   <select class="form-select" formControlName="particular">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of demoGraphicMaster['particular']" value="{{ indVal.displayValue }}">
-                      {{ indVal.displayName }}
+                    <option *ngFor="let indVal of demoGraphicMaster['particular']" value="{{ indVal }}">
+                      {{ indVal }}
                     </option>
                   </select>
                 </div>
                 <div class="flex-1 lable-top">
                   <label>Cumulative value(₹)</label>
-                  <input type="text" name="" class="form-control" formControlName="cumulativeValue" maxlength="10" />
-                  <!-- <div *ngIf="isSubmitted && f['cumulativeValue'].errors" class="form-text text-danger">
-                    <small *ngIf="f['cumulativeValue'].errors['pattern']">
-                      Only Numbers are allowed</small>
-                  </div> -->
+                  <input type="text" name="" class="form-control" formControlName="cumulativeValue" maxlength="10" (keypress)="validateNo($event)" />
                 </div>
               </div>
 
@@ -569,14 +545,10 @@
                     getPropertyOwnershipControls().length != 1 &&
                     i != getPropertyOwnershipControls().length - 1
                   ">
-                  <!-- <a class="text-danger" href="javascript:void(0);"
-                                        (click)="removePropertyOwnership(i)">- Remove</a> -->
-
-                  <a href="javascript:void(0)" class="delete-item" (click)="removePropertyOwnership(i)"><i
-                      class="fa fa-trash-o text-danger"></i></a>
+                  <a href="javascript:void(0)" class="delete-item" (click)="removePropertyOwnership(i)"><i class="fa fa-trash-o text-danger"></i></a>
                 </div>
                 <div class="col-auto add-another" *ngIf="i == getPropertyOwnershipControls().length - 1">
-                  <a href="javascript:void(0);" (click)="addPropertyOwnership()">+ Add More</a>
+                  <a href="javascript:void(0);" (click)="addPropertyOwnership()">+ Add Another</a>
                 </div>
               </div>
             </div>
@@ -585,10 +557,9 @@
             <div class="form-details-inner">
               <h3 class="form-title">8A. What type of phone do you own?</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indType of demoGraphicMaster['phoneType']" for="{{ indType.displayValue }}">
-                  <input class="form-check-input" type="radio" formControlName="phoneType"
-                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}" /><span>{{ indType.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indType of demoGraphicMaster['phoneType']" for="{{ indType }}phoneType">
+                  <input class="form-check-input" type="radio" formControlName="phoneType" value="{{ indType }}" id="{{ indType }}phoneType" /><span>{{
+                    indType
                     }}</span>
                 </label>
               </div>
@@ -598,10 +569,9 @@
                 8B. Who is operating the phone in your family?
               </h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indType of demoGraphicMaster['phoneOperating']" for="{{ indType.displayValue }}">
-                  <input class="form-check-input" type="radio" formControlName="phoneOperating"
-                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}" /><span>{{ indType.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indType of demoGraphicMaster['phoneOperating']" for="{{ indType }}phoneOperating">
+                  <input class="form-check-input" type="radio" formControlName="phoneOperating" value="{{ indType }}" id="{{ indType }}phoneOperating" /><span>{{
+                    indType
                     }}</span>
                 </label>
               </div>
@@ -611,19 +581,18 @@
                 8C. Where all do you seek advice on cultivation?
               </h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-check"
-                  *ngFor="let indStat of demoGraphicMaster['cultivationAdvice']" for="{{ indStat.displayValue }}">
-                  <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}" (click)="
+                <label class="form-check-label form-check bordered-check" *ngFor="let indStat of demoGraphicMaster['cultivationAdvice']" for="{{ indStat }}cultivationAdvice">
+                  <input class="form-check-input" type="checkbox" id="{{ indStat }}cultivationAdvice" (click)="
                       selectCultivationAdvice(
                         $event,
                         'cultivationAdvice',
-                        indStat.displayValue
+                        indStat
                       )
                     " [checked]="
                       this.demographicInfoForm.controls[
                         'cultivationAdvice'
-                      ].value?.includes(indStat.displayValue)
-                    " /><span>{{ indStat.displayName }}</span>
+                      ].value?.includes(indStat)
+                    " /><span>{{ indStat }}</span>
                 </label>
                 <div class="lable-top">
                   <label>Mention other(if any)</label>
@@ -636,19 +605,18 @@
                 8D. What medium do you use to seek advice?
               </h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-check"
-                  *ngFor="let indStat of demoGraphicMaster['adviceMedium']" for="{{ indStat.displayValue }}">
-                  <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}" (click)="
+                <label class="form-check-label form-check bordered-check" *ngFor="let indStat of demoGraphicMaster['adviceMedium']" for="{{ indStat }}adviceMedium">
+                  <input class="form-check-input" type="checkbox" id="{{ indStat }}adviceMedium" (click)="
                       selectCultivationAdvice(
                         $event,
                         'adviceMedium',
-                        indStat.displayValue
+                        indStat
                       )
                     " [checked]="
                       this.demographicInfoForm.controls[
                         'adviceMedium'
-                      ].value?.includes(indStat.displayValue)
-                    " /><span>{{ indStat.displayName }}</span>
+                      ].value?.includes(indStat)
+                    " /><span>{{ indStat }}</span>
                 </label>
                 <div class="lable-top">
                   <label>Mention other(if any)</label>
@@ -663,19 +631,18 @@
               agriculture?
             </h3>
             <div class="farmer-details">
-              <label class="form-check-label form-check bordered-check"
-                *ngFor="let indStat of demoGraphicMaster['sourceOfIncome']" for="{{ indStat.displayValue }}">
-                <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}" (click)="
+              <label class="form-check-label form-check bordered-check" *ngFor="let indStat of demoGraphicMaster['sourceOfIncome']" for="{{ indStat }}sourceOfIncome">
+                <input class="form-check-input" type="checkbox" id="{{ indStat }}sourceOfIncome" (click)="
                     selectCultivationAdvice(
                       $event,
                       'sourceOfIncome',
-                      indStat.displayValue
+                      indStat
                     )
                   " [checked]="
                     this.demographicInfoForm.controls[
                       'sourceOfIncome'
-                    ].value?.includes(indStat.displayValue)
-                  " /><span>{{ indStat.displayName }}</span>
+                    ].value?.includes(indStat)
+                  " /><span>{{ indStat }}</span>
               </label>
               <div class="lable-top">
                 <label>Mention other(if any)</label>
@@ -689,10 +656,9 @@
                 10A. How interested are your children in agriculture?
               </h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio"
-                  *ngFor="let indType of demoGraphicMaster['agriculturalInterest']" for="{{ indType.displayValue }}">
-                  <input class="form-check-input" type="radio" formControlName="agriculturalInterest"
-                    value="{{ indType.displayValue }}" id="{{ indType.displayValue }}" /><span>{{ indType.displayName
+                <label class="form-check-label form-check bordered-radio" *ngFor="let indType of demoGraphicMaster['agriculturalInterest']" for="{{ indType }}agriculturalInterest">
+                  <input class="form-check-input" type="radio" formControlName="agriculturalInterest" value="{{ indType}}" id="{{ indType }}agriculturalInterest" /><span>{{
+                    indType
                     }}</span>
                 </label>
               </div>
@@ -703,19 +669,18 @@
                 with innovative ways in farming?
               </h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-check"
-                  *ngFor="let indStat of demoGraphicMaster['innovativeWaysFarming']" for="{{ indStat.displayValue }}">
-                  <input class="form-check-input" type="checkbox" id="{{ indStat.displayValue }}" (click)="
+                <label class="form-check-label form-check bordered-check" *ngFor="let indStat of demoGraphicMaster['innovativeWaysFarming']" for="{{ indStat }}innovativeWaysFarming">
+                  <input class="form-check-input" type="checkbox" id="{{ indStat }}innovativeWaysFarming" (click)="
                       selectCultivationAdvice(
                         $event,
                         'innovativeWaysFarming',
-                        indStat.displayValue
+                        indStat
                       )
                     " [checked]="
                       this.demographicInfoForm.controls[
                         'innovativeWaysFarming'
-                      ].value?.includes(indStat.displayValue)
-                    " /><span>{{ indStat.displayName }}</span>
+                      ].value?.includes(indStat)
+                    " /><span>{{ indStat }}</span>
                 </label>
               </div>
             </div>
@@ -728,11 +693,10 @@
 
 
 <!-- START: Common Modal Popup for File Upload and Preview -->
-<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel"
-  aria-hidden="true">
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header p-2">
+      <div class="modal-header p-2 common_button_color">
         <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
       </div>
       <div class="modal-body">
@@ -740,13 +704,11 @@
         <div class="row" [hidden]="!fileUpload.new.isImage1Required">
           <div class="col-md-6 mb-1">
             <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
-            <input class="form-control form-control-sm" id="formFileSm" type="file"
-              (change)="onFileChange($event,'FRONT_IMAGE')" accept="image/*">
+            <input class="form-control form-control-sm" id="formFileSm" type="file" (change)="onFileChange($event,'FRONT_IMAGE')" accept="image/*">
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
-            <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1"
-              style="height: 150px; width: 150px" />
+            <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" />
           </div>
 
         </div>
@@ -757,13 +719,11 @@
           <hr class="mt-1" />
           <div class="col-md-6 mb-1">
             <label for="formFileSm" class="form-label">{{fileUpload.imageHeading2}}</label>
-            <input class="form-control form-control-sm" id="formFileSm" type="file"
-              (change)="onFileChange($event,'BACK_IMAGE')" accept="image/*">
+            <input class="form-control form-control-sm" id="formFileSm" type="file" (change)="onFileChange($event,'BACK_IMAGE')" accept="image/*">
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
-            <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2"
-              style="height: 150px; width: 150px" />
+            <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" />
           </div>
 
         </div>

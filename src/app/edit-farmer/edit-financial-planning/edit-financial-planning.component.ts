@@ -6,13 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./edit-financial-planning.component.css'],
 })
 export class EditFinancialPlanningComponent implements OnInit {
-  financialInfo = {} as any;
+  financialPlanDisp = {} as any;
   constructor() {
     const A: any = localStorage.getItem('farmer-details');
-
     if (A) {
-      this.financialInfo = JSON.parse(A).financial_planning;
-      console.log(this.financialInfo?.loanReqPlaned);
+      this.financialPlanDisp = JSON.parse(A).financial_planning;
     }
   }
 

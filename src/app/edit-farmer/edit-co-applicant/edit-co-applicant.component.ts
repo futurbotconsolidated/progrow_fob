@@ -9,9 +9,10 @@ export class EditCoApplicantComponent implements OnInit {
   coApplicantDisp = {} as any;
   constructor() {
     const A: any = localStorage.getItem('farmer-details');
-
     if (A) {
-      this.coApplicantDisp = JSON.parse(A).co_applicant_details;
+      const coArray = JSON.parse(A).co_applicant_details;
+      this.coApplicantDisp =
+        Array.isArray(coArray) && coArray.length ? coArray[0] : null;
       console.log(this.coApplicantDisp);
     }
   }
