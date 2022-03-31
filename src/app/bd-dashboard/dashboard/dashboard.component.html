@@ -225,7 +225,8 @@
                           <th>Date of Registration</th>
                           <th>Address</th>
                           <th>Status</th>
-                          <!-- <th></th> -->
+                          <th>Added By</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -246,7 +247,8 @@
                             {{ (x.address.addressLine1.length>20)? (x.address.addressLine1 | slice:0:20)+'...':(x.address.addressLine1) }}
                           </td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
-                          <!-- <td (click)="getFarmerDetailsById(x.farmerId,'edit')" class="cursor-pointer"><i class="fa fa-edit"></i></td> -->
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')" title="BD ID: {{x.bd_id}}">{{x.bd_name}}</td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'edit')" class="cursor-pointer"><i class="fa fa-edit"></i></td>
                         </tr>
                       </tbody>
                     </table>

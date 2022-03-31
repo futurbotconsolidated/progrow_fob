@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
@@ -23,8 +23,12 @@ enum SaveStatus {
   templateUrl: './financial-planning.component.html',
   styleUrls: ['./financial-planning.component.css'],
 })
-export class FinancialPlanningComponent implements OnInit {
-  /* START: Variables */
+export class FinancialPlanningComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  /* START: Variables ---------------------------------------------*/
+  private observableSubscription: any;
+
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
   insuranceDetails!: FormArray;
@@ -61,7 +65,7 @@ export class FinancialPlanningComponent implements OnInit {
   ];
 
   farmerId = ''; // edit feature
-  /* END: Variables */
+  /* END: Variables ---------------------------------------------*/
 
   constructor(
     private formBuilder: FormBuilder,
@@ -146,15 +150,10 @@ export class FinancialPlanningComponent implements OnInit {
       bankDetails: new FormArray([this.createBankDetails()]),
     });
 
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      this.saveData();
-      console.log(this.nextRoute);
-    });
-
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
+  /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
     this.financialMaster = data.financialPlan; // read master data
     this.commonMaster = data.commonData; // read master data
@@ -193,19 +192,29 @@ export class FinancialPlanningComponent implements OnInit {
       if (editForm) {
         editForm = JSON.parse(editForm);
         this.financialForm.patchValue(editForm);
+
+        this.editDynamicBindFormArray(editForm.bankDetails);
       } else {
         const A: any = localStorage.getItem('farmer-details');
         if (A) {
           const B = JSON.parse(A).financial_planning;
           this.financialForm.patchValue(B);
+          this.editDynamicBindFormArray(B.bankDetails);
         }
       }
+      
+      let fieldInfo: any = localStorage.getItem('edit-field-info');
+      if (fieldInfo) {
+        fieldInfo = JSON.parse(fieldInfo);
+        fieldInfo.forEach((element: any) => {          
+          this.addLoanReqPlaned();
+        });
+      }      
     } else {
       let finPlan: any = localStorage.getItem('financial-planing');
       if (finPlan) {
         finPlan = JSON.parse(finPlan);
         this.financialForm.patchValue(finPlan);
-        console.log(finPlan);
       }
 
       let fieldInfo: any = localStorage.getItem('field-info');
@@ -217,6 +226,26 @@ export class FinancialPlanningComponent implements OnInit {
       }
     }
   }
+
+  ngAfterViewInit(): void {
+    /** subscribe to Observables, which are triggered from header selections*/
+    this.observableSubscription = this.addFarmerService
+      .getMessage()
+      .subscribe((data) => {
+        this.nextRoute = data.routeName;
+        if (this.router.url?.includes('/add/financial-planning')) {
+          this.saveData();
+          console.log(data.routeName);
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    /** unsubscribe from Observables*/
+    this.observableSubscription.unsubscribe();
+  }
+  /* END: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
+  /* START: NON-API Function Calls-------------------------------------------------------------- */
 
   numbersOnlyValidator(event: any) {
     const pattern = /^[0-9\-]*$/;
@@ -232,8 +261,6 @@ export class FinancialPlanningComponent implements OnInit {
     }
     return true;
   }
-
-  ngAfterContentInit() {}
 
   /* START: Add Dynamic crop loan requirement  :FormArray */
   createLoanReqPlaned(): FormGroup {
@@ -281,6 +308,23 @@ export class FinancialPlanningComponent implements OnInit {
 
   removeBankDetails(index: any) {
     this.bankDetails.removeAt(index);
+  }
+
+  editDynamicBindFormArray(dataArray: any) {
+    this.bankDetails = this.financialForm.get('bankDetails') as FormArray;
+
+    if (Array.isArray(dataArray) && dataArray.length) {
+      dataArray.forEach((x: any) => {
+        this.bankDetails.push(
+          this.formBuilder.group({
+            bankName: new FormControl(x.bankName),
+            accountNum: new FormControl(x.accountNum),
+            IFSCode: new FormControl(x.IFSCode),
+            customerID: new FormControl(x.customerID),
+          })
+        );
+      });
+    }
   }
   /* END: Add Dynamic Bank Details: FormArray */
 
@@ -349,4 +393,5 @@ export class FinancialPlanningComponent implements OnInit {
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
   }
+  /* END: NON-API Function Calls-------------------------------------------------------------- */
 }

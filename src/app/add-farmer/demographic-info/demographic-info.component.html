@@ -29,7 +29,7 @@
               <h4>Profile Picture</h4>
               <div class="update-profile">
                 <div class="pro-img">
-                  <img class="profile-pic" [hidden]="!demographicInfoForm.value.profileImg" src="{{demographicInfoForm.value.profileImg}}" />
+                  <img class="profile-pic" [hidden]="!displayFarmerProfileImage" src="{{displayFarmerProfileImage}}" />
                 </div>
                 <div class="pro-update">
                   <a class="avatar" (click)="openFileModalPopup('FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -88,6 +88,19 @@
           </div>
           <div class="form-details">
             <h3 class="form-title">3. Others details</h3>
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label>Voter Id</label>
+                <input type="text" class="form-control" formControlName="voterIdNumber" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('VOTERID')">
+                  Upload VoterId Image
+                </button>
+              </div>
+            </div>
+
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Passport Number</label>
@@ -251,7 +264,9 @@
                   <label class="required">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="taluk">
                     <option value="">...</option>
+
                     <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation }}">
+
                       {{ indVal.postalLocation }}
                     </option>
                   </select>
@@ -406,7 +421,9 @@
                   <label class="required">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="permTaluk">
                     <option value="">...</option>
+
                     <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation }}">
+
                       {{ indVal.postalLocation }}
                     </option>
                   </select>

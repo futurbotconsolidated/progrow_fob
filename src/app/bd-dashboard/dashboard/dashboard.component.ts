@@ -6,6 +6,7 @@ import * as mapboxgl from 'mapbox-gl';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 import { mapData } from '../../../assets/overlay_data';
 
@@ -32,7 +33,8 @@ export class DashboardComponent implements OnInit {
     public router: Router,
     public commonService: CommonService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dbService: NgxIndexedDBService
   ) {
     localStorage.removeItem('farmer-details');
     this.userInfo = this.oauthService.getIdentityClaims();
@@ -149,6 +151,7 @@ export class DashboardComponent implements OnInit {
   }
 
   routePage() {
+    // add
     localStorage.removeItem('demographic-info');
     localStorage.removeItem('demographic-info-form');
     localStorage.removeItem('field-info');
@@ -159,6 +162,28 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('technology-adoption');
     localStorage.removeItem('co-applicant');
     localStorage.removeItem('co-applicant-form');
+
+    //  edit
+    localStorage.removeItem('farmer-details'); // related to view and edit of farmer
+    localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
+
+    // clear indexed db data
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
+      console.log('success? ', successDeleted);
+    });
+
+    // clear edit related localStorage variables before starting
+    localStorage.removeItem('edit-demographic-info');
+    localStorage.removeItem('edit-demographic-info-form');
+    localStorage.removeItem('edit-field-info');
+    localStorage.removeItem('edit-field-info-form');
+    localStorage.removeItem('edit-financial-planing');
+    localStorage.removeItem('edit-crop-market-planing');
+    localStorage.removeItem('edit-technology-adoption');
+    localStorage.removeItem('edit-produce-aggregator');
+    localStorage.removeItem('edit-co-applicant');
+    localStorage.removeItem('edit-co-applicant-form');
+
     this.router.navigate(['/add/concept-cards']);
   }
 
@@ -184,7 +209,8 @@ export class DashboardComponent implements OnInit {
       accessToken:
         'pk.eyJ1IjoicHVybmFyYW0iLCJhIjoiY2tpenBvZWpsMDNlaTMzcWpiZ2liZjEydiJ9.Mdj1w5dXDfCGCpIH5MlI2g',
       container: mapViewType, // container ID
-      style: 'mapbox://styles/mapbox/satellite-v9?optimize=true', // style URL
+      style: 'mapbox://styles/mapbox/satellite-streets-v11?optimize=true', // style URL
+      // style: 'mapbox://styles/mapbox/satellite-v9?optimize=true', // style URL
       zoom: 3, // starting zoom
       center: [78, 20],
     });
@@ -398,119 +424,6 @@ export class DashboardComponent implements OnInit {
     }, 500);
   }
 
-  clearLocalStorageOnEditAndView() {
-    localStorage.removeItem('farmer-details'); // related to view and edit
-
-    // clear edit related localStorage variables before starting
-    localStorage.removeItem('edit-demographic-info');
-    localStorage.removeItem('edit-demographic-info-form');
-    localStorage.removeItem('edit-financial-planing');
-    localStorage.removeItem('edit-crop-market-planing');
-    localStorage.removeItem('edit-produce-aggregator');
-  }
-  /* END: Non-API Function Calls */
-
-  /* START: API Function Calls */
-  getExistingFarmers() {
-    this.spinner.show();
-    this.commonService.getExistingFarmers().subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.message != 'Success' || !res.status) {
-          alert(`${res.message}`);
-        } else {
-          this.allExistingFarmers = res.data;
-        }
-      },
-      (error: any) => {
-        this.spinner.hide();
-        alert('Failed to fetch existing farmers data, please try again...');
-      }
-    );
-  }
-
-  getFarmersPipeline() {
-    // Other Variables
-    const farmersPipeline = [
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '2 - 4 Ha',
-      //   crop_type: 'Mustard',
-      //   frcm_score: '80-100',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '4 - 6 Ha',
-      //   crop_type: 'Cumin',
-      //   frcm_score: '60-80',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '6 - 8 Ha',
-      //   crop_type: 'Mustard',
-      //   frcm_score: '80-100',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '2 - 4 Ha',
-      //   crop_type: 'Cumin',
-      //   frcm_score: '60-80',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '4 - 6 Ha',
-      //   crop_type: 'Mustard',
-      //   frcm_score: '60-100',
-      // },
-    ] as any;
-
-    this.allPipelineFarmers = farmersPipeline;
-    return;
-    this.spinner.show();
-    this.commonService.getFarmersPipeline().subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.message != 'Success' || !res.status) {
-          alert('Failed to fetch farmers pipeline data, please try again...');
-        } else {
-          this.allPipelineFarmers = res.data;
-        }
-      },
-      (error: any) => {
-        this.spinner.hide();
-        alert('Failed to fetch farmers pipeline data, please try again...');
-      }
-    );
-  }
-  /* END: API Function Calls */
-
-  getFarmerDetailsById(farmerId: any, type: string) {
-    this.clearLocalStorageOnEditAndView(); // clear unwanted localStorage data
-
-    this.spinner.show();
-    this.commonService.getFarmerDetailsById(farmerId).subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.message != 'Success' || !res.status) {
-          this.toastr.error(`${res.message}!`);
-        } else {
-          localStorage.setItem('farmer-details', JSON.stringify(res.data));
-          if (type === 'view') {
-            this.router.navigate([`/edit/demographic-info/${farmerId}`]);
-          } else if (type === 'edit') {
-            this.router.navigate([`/add/demographic-info/${farmerId}`]);
-          }
-        }
-      },
-      (error: any) => {
-        this.spinner.hide();
-        this.toastr.error(
-          `Failed to fetch farmer details, please try again...`
-        );
-      }
-    );
-  }
-
   editDraftFarmer(farmerId: any) {
     if (localStorage.getItem('draft_farmers')) {
       let draft_farmers = [] as any;
@@ -589,4 +502,98 @@ export class DashboardComponent implements OnInit {
   showLeftSide(param: boolean) {
     this.lsn_tv_show = param;
   }
+
+  clearLocalStorageOnEditAndView() {
+    localStorage.removeItem('farmer-details'); // related to view and edit of farmer
+    localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
+
+    // clear edit related localStorage variables before starting
+    localStorage.removeItem('edit-demographic-info');
+    localStorage.removeItem('edit-demographic-info-form');
+    localStorage.removeItem('edit-field-info');
+    localStorage.removeItem('edit-field-info-form');
+    localStorage.removeItem('edit-financial-planing');
+    localStorage.removeItem('edit-crop-market-planing');
+    localStorage.removeItem('edit-technology-adoption');
+    localStorage.removeItem('edit-produce-aggregator');
+    localStorage.removeItem('edit-co-applicant');
+    localStorage.removeItem('edit-co-applicant-form');
+
+    // clear indexed db data
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
+      console.log('success? ', successDeleted);
+    });
+  }
+
+  /* END: Non-API Function Calls */
+
+  /* START: API Function Calls */
+  getExistingFarmers() {
+    this.spinner.show();
+    this.commonService.getExistingFarmers().subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (res.message != 'Success' || !res.status) {
+          alert(`${res.message}`);
+        } else {
+          this.allExistingFarmers = res.data;
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch existing farmers data, please try again...');
+      }
+    );
+  }
+
+  getFarmersPipeline() {
+    // Other Variables
+    this.allPipelineFarmers = [];
+    return;
+  }
+
+  getFarmerDetailsById(farmerId: any, type: string) {
+    this.clearLocalStorageOnEditAndView(); // clear unwanted localStorage data
+
+    this.spinner.show();
+    this.commonService.getFarmerDetailsById(farmerId).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (res.message != 'Success' || !res.status) {
+          this.toastr.error(`${res.message}!`);
+        } else {
+          this.getDocumentByFarmerId(farmerId); //read farmer related uploaded files
+          localStorage.setItem('farmer-details', JSON.stringify(res.data));
+          if (type === 'view') {
+            this.router.navigate([`/edit/demographic-info/${farmerId}`]);
+          } else if (type === 'edit') {
+            this.router.navigate([`/add/demographic-info/${farmerId}`]);
+          }
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        this.toastr.error(
+          `Failed to fetch farmer details, please try again...`
+        );
+      }
+    );
+  }
+
+  getDocumentByFarmerId(farmerId: any) {
+    const inputObject = { farmerId };
+    this.commonService.getDocumentByFarmerId(inputObject).subscribe(
+      (res: any) => {
+        if (res.message != 'Success' || !res.status) {
+          this.toastr.error(`${res.message}!`);
+        } else {
+          localStorage.setItem('farmer-files', JSON.stringify(res.data));
+        }
+      },
+      (error: any) => {
+        this.toastr.error(`Failed to fetch farmer files, please try again...`);
+      }
+    );
+  }
+  /* END: API Function Calls */
 }

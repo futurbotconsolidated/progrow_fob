@@ -13,7 +13,6 @@ export class EditCoApplicantComponent implements OnInit {
       const coArray = JSON.parse(A).co_applicant_details;
       this.coApplicantDisp =
         Array.isArray(coArray) && coArray.length ? coArray[0] : null;
-      console.log(this.coApplicantDisp);
     }
   }
   ngOnInit(): void {}
