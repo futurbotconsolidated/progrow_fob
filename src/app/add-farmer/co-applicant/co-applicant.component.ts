@@ -149,7 +149,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       gender: new FormControl(''),
       religion: new FormControl(''),
       caste: new FormControl(''),
-      educationQualification: new FormControl(''),
+      educationalQualification: new FormControl(''),
       occupation: new FormControl(''),
       annualIncome: new FormControl('', [Validators.pattern('^[0-9]*$')]),
 
@@ -201,7 +201,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       gendercoa2: new FormControl(''),
       religioncoa2: new FormControl(''),
       castecoa2: new FormControl(''),
-      educationQualificationcoa2: new FormControl(''),
+      educationalQualificationcoa2: new FormControl(''),
       occupationcoa2: new FormControl(''),
       annualIncomecoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
 
@@ -1079,7 +1079,8 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         religioncoa2: C2.farmerDetails['religion'],
         castecoa2: C2.farmerDetails['caste'],
 
-        educationQualificationcoa2: C2.otherDetails['educationalQualification'],
+        educationalQualificationcoa2:
+          C2.otherDetails['educationalQualification'],
         occupationcoa2: C2.otherDetails['occupation'],
         annualIncomecoa2: C2.otherDetails['annualIncome'],
 
