@@ -202,6 +202,7 @@ export class FinancialPlanningComponent
           this.editDynamicBindFormArray(B.bankDetails);
         }
       }
+      
       let fieldInfo: any = localStorage.getItem('edit-field-info');
       if (fieldInfo) {
         fieldInfo = JSON.parse(fieldInfo);
