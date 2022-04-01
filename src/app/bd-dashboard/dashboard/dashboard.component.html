@@ -204,13 +204,13 @@
                     <div class="col-sm-3 mb-3">
                       <div class="form-group">
                         <label for="live">Select Filter:</label>
-                        <select id="live" class="flex-1 form-select" name="searchValue" (change)="selectlive($event)">
-                          <option value="">...</option>
-                          <option value="today" [selected]="searchValue == 'today'">Today</option>
-                          <option value="this_week" [selected]="searchValue == 'this_week'">This Week</option>
-                          <option value="two_week" [selected]="searchValue == 'two_week'">Last Two Week</option>
-                          <option value="three_week" [selected]="searchValue == 'three_week'">Last Three Week</option>
-                          <option value="this_month" [selected]="searchValue == 'this_month'">This Month</option>
+                        <select id="live" class="flex-1 form-select" name="filterType" (change)="onChangeFilter($event)">
+                          <option value="all" [selected]="filterType == 'all'">All</option>
+                          <option value="today" [selected]="filterType == 'today'">Today</option>
+                          <option value="this_week" [selected]="filterType == 'this_week'">This Week</option>
+                          <option value="two_week" [selected]="filterType == 'two_week'">Last Two Week</option>
+                          <option value="three_week" [selected]="filterType == 'three_week'">Last Three Week</option>
+                          <option value="this_month" [selected]="filterType == 'this_month'">This Month</option>
                         </select>
                       </div>
                     </div>

@@ -241,6 +241,21 @@ export class DemographicInfoComponent
             'PERMANENT_ADDRESS'
           );
         }
+
+        // patch farmer Profile image
+        this.dbService
+          .getByIndex(
+            this.indexedDBName,
+            'fileFor',
+            `${this.indexedDBFileNameManage.farmerProfile.front}`
+          )
+          .subscribe((farmer: any) => {
+            this.displayFarmerProfileImage =
+              farmer?.file ||
+              this.commonService.fetchFarmerDocument(
+                this.indexedDBFileNameManage.farmerProfile.front
+              );
+          });
       } else {
         this.patchFarmerDetails(); // bind/patch fresh api data
       }
@@ -724,8 +739,25 @@ export class DemographicInfoComponent
 
   // patch edit farmer details
   patchFarmerDetails() {
-    const A: any = localStorage.getItem('farmer-details');
+    // patch farmer Profile image
+    this.dbService
+      .getByIndex(
+        this.indexedDBName,
+        'fileFor',
+        `${this.indexedDBFileNameManage.farmerProfile.front}`
+      )
+      .subscribe((farmer: any) => {
+        console.log(farmer);
 
+        this.displayFarmerProfileImage =
+          farmer?.file ||
+          this.commonService.fetchFarmerDocument(
+            this.indexedDBFileNameManage.farmerProfile.front
+          );
+      });
+
+    // other details
+    const A: any = localStorage.getItem('farmer-details');
     if (A) {
       const B = JSON.parse(A).demographic_info;
       // create form group
