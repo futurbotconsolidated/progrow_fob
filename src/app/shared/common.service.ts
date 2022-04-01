@@ -31,7 +31,7 @@ export class CommonService {
   getExistingFarmers(filterValue: string) {
     headers = headers.delete('Farmer-Id');
     headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
-    // headers = headers.set('Filter-Type', filterValue);
+    headers = headers.set('Filter-Type', filterValue);
     headers = headers.set('Authorization', this.token);
     return this.http.get(this.baseUrl + this.endPoints.getAllFarmers, {
       headers,

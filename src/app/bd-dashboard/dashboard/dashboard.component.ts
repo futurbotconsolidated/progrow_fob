@@ -540,6 +540,7 @@ export class DashboardComponent implements OnInit {
 
   /* START: API Function Calls */
   getExistingFarmers(filterType: string) {
+    this.allExistingFarmers.length = 0;
     this.spinner.show();
     this.commonService.getExistingFarmers(filterType).subscribe(
       (res: any) => {
