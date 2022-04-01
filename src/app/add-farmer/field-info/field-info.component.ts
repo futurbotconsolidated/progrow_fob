@@ -37,9 +37,9 @@ export class FieldInfoComponent implements OnInit {
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
   SoilQualityStar = [] as any;
-  selectedSoilQualityStar: any;
-  selectedWaterQualityStar: any;
-  selectedYieldQualityStar: any;
+  selectedSoilQualityStar = [] as any;
+  selectedWaterQualityStar = [] as any;
+  selectedYieldQualityStar = [] as any;
 
   selectedHistoSoilQualityStar: any;
   selectedHistoWaterQualityStar: any;
@@ -116,7 +116,12 @@ export class FieldInfoComponent implements OnInit {
               localStorage.getItem('draft_farmer_new') as any
             );
           }
+          var fimi_coordinates = [] as any;
+          this.fieldIndexMapIds.forEach((fimi_value: any) => {
+            fimi_coordinates.push(fimi_value.coordinates);            
+          });
           draft_farmer_new['field_info_form'] = form_values;
+          draft_farmer_new['field_info_coordinates'] = fimi_coordinates;
           localStorage.setItem(
             'draft_farmer_new',
             JSON.stringify(draft_farmer_new)
@@ -181,6 +186,10 @@ export class FieldInfoComponent implements OnInit {
     } else {
       let fieldInfo: any = localStorage.getItem('field-info-form');
       if (fieldInfo) {
+        let fieldInfoCoordinates: any = localStorage.getItem('field-info-coordinates');
+        if(fieldInfoCoordinates){
+          fieldInfoCoordinates = JSON.parse(fieldInfoCoordinates);
+        }
         fieldInfo = JSON.parse(fieldInfo);
         this.bindItemsInEdit(fieldInfo);
       }
@@ -789,18 +798,18 @@ export class FieldInfoComponent implements OnInit {
     // return;
   }
 
-  SoilQualityRating(soilQualityStar: any) {
-    this.selectedSoilQualityStar = soilQualityStar;
+  SoilQualityRating(soilQualityStar: any, i: number) {
+    this.selectedSoilQualityStar[i] = soilQualityStar;
     console.log('Value of SoilQualityStar', soilQualityStar);
   }
 
-  WaterQualityRating(waterQualityStar: any) {
-    this.selectedWaterQualityStar = waterQualityStar;
+  WaterQualityRating(waterQualityStar: any, i: number) {
+    this.selectedWaterQualityStar[i] = waterQualityStar;
     console.log('Value of waterQualityStar', waterQualityStar);
   }
 
-  YieldQualityRating(yieldQualityStar: any) {
-    this.selectedYieldQualityStar = yieldQualityStar;
+  YieldQualityRating(yieldQualityStar: any, i: number) {
+    this.selectedYieldQualityStar[i] = yieldQualityStar;
     console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 

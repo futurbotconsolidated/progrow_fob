@@ -86,9 +86,9 @@
                                             <label>Soil Quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
-                                                    <a *ngFor="let soilQualityStar of fieldInforMaster['soilQuality'];  let i = index;" href="javascript:void(0)"
-                                                        (click)="SoilQualityRating(soilQualityStar)" [ngClass]="{'active': (soilQualityStar == selectedSoilQualityStar)}"><i class="fa fa-star"
-                                                            id="{{i}}"></i><span>{{soilQualityStar}}</span></a>
+                                                    <a *ngFor="let soilQualityStar of fieldInforMaster['soilQuality'];  let sqsi = index;" href="javascript:void(0)"
+                                                        (click)="SoilQualityRating(soilQualityStar, i)" [ngClass]="{'active': (soilQualityStar == selectedSoilQualityStar[i])}"><i class="fa fa-star"
+                                                            id="sqs_{{i+1}}_{{sqsi}}"></i><span>{{soilQualityStar}}</span></a>
                                                     <input type="text" formControlName="soilQuality" hidden>
 
                                                 </div>
@@ -99,9 +99,9 @@
                                             <label>Perceived Water Quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
-                                                    <a *ngFor="let waterQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)" (click)="WaterQualityRating(waterQualityStar)"
-                                                        [ngClass]="{'active': (waterQualityStar == selectedWaterQualityStar)}"><i class="fa fa-star"
-                                                            id="{{waterQualityStar}}"></i><span>{{waterQualityStar}}</span></a>
+                                                    <a *ngFor="let waterQualityStar of fieldInforMaster['soilQuality']; let wqsi = index;" href="javascript:void(0)" (click)="WaterQualityRating(waterQualityStar, i)"
+                                                        [ngClass]="{'active': (waterQualityStar == selectedWaterQualityStar[i])}"><i class="fa fa-star"
+                                                            id="wqs_{{i+1}}_{{wqsi}}"></i><span>{{waterQualityStar}}</span></a>
                                                     <input type="text" formControlName="waterQuality" hidden>
 
 
@@ -113,9 +113,9 @@
                                             <label>Perceived Yield Quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
-                                                    <a *ngFor="let yieldQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)" (click)="YieldQualityRating(yieldQualityStar)"
-                                                        [ngClass]="{'active': (yieldQualityStar == selectedYieldQualityStar)}"><i class="fa fa-star"
-                                                            id="{{yieldQualityStar}}"></i><span>{{yieldQualityStar}}</span></a>
+                                                    <a *ngFor="let yieldQualityStar of fieldInforMaster['soilQuality']; let yqsi = index;" href="javascript:void(0)" (click)="YieldQualityRating(yieldQualityStar, i)"
+                                                        [ngClass]="{'active': (yieldQualityStar == selectedYieldQualityStar[i])}"><i class="fa fa-star"
+                                                            id="wqs_{{i+1}}_{{yqsi}}"></i><span>{{yieldQualityStar}}</span></a>
                                                     <input type="text" formControlName="yieldQuality" hidden>
 
                                                 </div>
@@ -198,7 +198,7 @@
                                                     <div class="star-rate">
                                                         <a *ngFor="let soilQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)" (click)="HistoSoilQualityRating(soilQualityStar)"
                                                             [ngClass]="{'active': (soilQualityStar == selectedHistoSoilQualityStar)}"><i class="fa fa-star"
-                                                                id="{{soilQualityStar}}"></i><span>{{soilQualityStar}}</span></a>
+                                                                id="{{soilQualityStar}}_{{i}}"></i><span>{{soilQualityStar}}</span></a>
                                                         <input type="text" formControlName="soilQuality" hidden>
 
                                                     </div>

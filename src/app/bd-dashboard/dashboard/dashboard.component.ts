@@ -450,6 +450,12 @@ export class DashboardComponent implements OnInit {
               JSON.stringify(dfarm.field_info_form)
             );
           }
+          if (dfarm.field_info_coordinates) {
+            localStorage.setItem(
+              'field-info-coordinates',
+              JSON.stringify(dfarm.field_info_coordinates)
+            );
+          }
           if (dfarm.crop_market_planing) {
             localStorage.setItem(
               'crop-market-planing',
