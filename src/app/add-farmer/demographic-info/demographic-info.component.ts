@@ -960,7 +960,9 @@ export class DemographicInfoComponent
         (res: any) => {
           this.spinner.hide();
           if (res && !res.status) {
+
             alert(`${res[0].Message}`);
+
           } else {
             if (type === 'ADDRESS') {
               this.pinCodeAPIData = res.result;

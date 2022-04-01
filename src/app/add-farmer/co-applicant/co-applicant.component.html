@@ -260,7 +260,9 @@
                   <label class="">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="taluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation  }}">
+
+                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation }}">
+
                       {{ indVal.postalLocation }}
                     </option>
                   </select>
@@ -398,7 +400,9 @@
                   <label class="">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="permTaluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation  }}">
+
+                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation }}">
+
                       {{ indVal.postalLocation }}
                     </option>
                   </select>
@@ -742,7 +746,9 @@
                   <label class="">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="talukcoa2">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of pinCodeAPIDatacoa2" value="{{ indVal.postalLocation  }}">
+
+                    <option *ngFor="let indVal of pinCodeAPIDatacoa2" value="{{ indVal.postalLocation }}">
+
                       {{ indVal.postalLocation }}
                     </option>
                   </select>
@@ -881,7 +887,9 @@
                   <label class="">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="permTalukcoa2">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of permPinCodeAPIDatacoa2" value="{{ indVal.postalLocation  }}">
+
+                    <option *ngFor="let indVal of permPinCodeAPIDatacoa2" value="{{ indVal.postalLocation }}">
+
                       {{ indVal.postalLocation }}
                     </option>
                   </select>
