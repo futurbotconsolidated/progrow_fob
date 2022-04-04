@@ -288,7 +288,7 @@ export class DashboardComponent implements OnInit {
              <div class="col-md-6 text-left">
                <label class="fw-bold">Date of registration</label>
                <p class="text-capitalize">${formatDate(
-                 elem['registrationDate'],
+                 elem['createdDate'],
                  'EE, MMM d, y',
                  'en_IN'
                )}</p>
