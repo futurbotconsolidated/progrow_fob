@@ -9,4 +9,5 @@ export const endPoints = {
   getFarmer: '/get_farmer',
   documentUpload: '/document_upload',
   getDocument: '/farmer_presigned_s3_url',
+  getKycData: '/kycCheck',
 };
