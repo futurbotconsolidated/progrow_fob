@@ -186,6 +186,7 @@ export class DemographicInfoComponent
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
     // this.getKycData();
+
     this.demoGraphicMaster = data.demoGraphic; // read master data
 
     // populate
