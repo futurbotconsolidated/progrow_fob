@@ -77,7 +77,7 @@ export class FieldInfoComponent implements OnInit {
       plannedFieldDetails: new FormArray([]),
       historicalFieldDetails: new FormArray([]),
       fieldOwnership: new FormArray([]),
-      testType: new FormArray([this.createTestType()]),
+      testType: new FormArray([]),
       enumerate: new FormArray([]),
       cropCycleOnReports: new FormControl('', [Validators.required]), //radio
     });
@@ -204,7 +204,9 @@ export class FieldInfoComponent implements OnInit {
         });
       }
     }
-    console.log(this.selectedCoordinates);
+    if(!(this.fieldInfoForm.get('testType') as FormArray).controls.length){
+      this.addTestType();
+    }
   }
 
   bindItemsInEdit(fieldValues: any) {

@@ -147,7 +147,7 @@ export class FinancialPlanningComponent
       availedFarmLoanWaiverOther: new FormControl(''),
       ownTractor: new FormControl(''),
       farmMachinery: new FormControl([]),
-      bankDetails: new FormArray([this.createBankDetails()]),
+      bankDetails: new FormArray([]),
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
@@ -254,6 +254,9 @@ export class FinancialPlanningComponent
           this.addLoanReqPlaned(field_data);
         });
       }
+    }
+    if(!(this.financialForm.get('bankDetails') as FormArray).controls.length){
+      this.addBankDetails();
     }
   }
 

@@ -245,7 +245,7 @@
                             {{ x.createdDate | date:'EE, MMM d, y' }}
                           </td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">
-                            {{ (x.address.addressLine1.length>20)? (x.address.addressLine1 | slice:0:20)+'...':(x.address.addressLine1) }}
+                            {{ (x.address.addressLine1.length>8)? (x.address.addressLine1 | slice:0:8)+'...':(x.address.addressLine1) }}
                           </td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')"
