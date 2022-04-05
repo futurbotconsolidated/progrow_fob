@@ -82,10 +82,6 @@ export class FieldInfoComponent implements OnInit {
       cropCycleOnReports: new FormControl('', [Validators.required]), //radio
     });
 
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      this.saveData();
-    });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
@@ -141,6 +137,7 @@ export class FieldInfoComponent implements OnInit {
         map_info = JSON.parse(map_info);
         if (map_info) {
           this.editFieldArea = [];
+          this.selectedCoordinates = [];
           map_info.forEach((el: any) => {
             this.editFieldArea.push(el.field_area_ha);
             this.selectedCoordinates.push(
@@ -161,6 +158,7 @@ export class FieldInfoComponent implements OnInit {
           editFieldInfo.testType = [] as any;
           editFieldInfo.enumerate = [] as any;
           this.editFieldArea = [];
+          this.selectedCoordinates = [];
           edit_field_info.forEach((fiv: any, findex: number) => {
             editFieldInfo.enumerate.push(fiv.enumerate_planned_season);
             editFieldInfo.fieldOwnership.push(fiv.field_ownership_detail);
@@ -198,6 +196,7 @@ export class FieldInfoComponent implements OnInit {
       map_info = JSON.parse(map_info);
       if (map_info) {
         this.editFieldArea = [];
+        this.selectedCoordinates = [];
         map_info.forEach((el: any) => {
           this.editFieldArea.push(el.field_area_ha);
           this.selectedCoordinates.push(el.field_boundary.geometry.coordinates);
@@ -293,6 +292,12 @@ export class FieldInfoComponent implements OnInit {
 
       navigator.geolocation.getCurrentPosition(this.setGeoLocation.bind(this));
     }
+    this.addFarmerService.getMessage().subscribe((data) => {
+      this.nextRoute = data.routeName;
+      if(data.routeName == 'financial-planning'){
+        this.saveData();
+      }
+    });
   }
 
   setGeoLocation(position: { coords: { latitude: any; longitude: any } }) {
@@ -774,7 +779,7 @@ export class FieldInfoComponent implements OnInit {
         },
         field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
         enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
-        test_on_fields: this.fieldInfoForm.value.testType[i],
+        test_on_fields: this.fieldInfoForm.value.testType[i] || '',
         undertaking_cultivation: {
           uc: this.fieldInfoForm.value.cropCycleOnReports,
         },
