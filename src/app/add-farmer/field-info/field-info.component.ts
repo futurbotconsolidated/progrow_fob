@@ -82,7 +82,6 @@ export class FieldInfoComponent implements OnInit {
       cropCycleOnReports: new FormControl('', [Validators.required]), //radio
     });
 
-
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
@@ -114,7 +113,7 @@ export class FieldInfoComponent implements OnInit {
           }
           var fimi_coordinates = [] as any;
           this.fieldIndexMapIds.forEach((fimi_value: any) => {
-            fimi_coordinates.push(fimi_value.coordinates);            
+            fimi_coordinates.push(fimi_value.coordinates);
           });
           draft_farmer_new['field_info_form'] = form_values;
           draft_farmer_new['field_info_coordinates'] = fimi_coordinates;
@@ -168,7 +167,10 @@ export class FieldInfoComponent implements OnInit {
             editFieldInfo.plannedFieldDetails.push(
               fiv.planned_season_detail.plannedFieldDetails
             );
-            editFieldInfo.testType.push(fiv.test_on_fields);
+
+            if (fiv.test_on_fields) {
+              editFieldInfo.testType.push(fiv.test_on_fields);
+            }
             editFieldInfo.cropCycleOnReports = fiv.undertaking_cultivation.uc;
             editFieldInfo.plannedSeason =
               fiv.planned_season_detail.plannedSeason;
@@ -184,8 +186,10 @@ export class FieldInfoComponent implements OnInit {
     } else {
       let fieldInfo: any = localStorage.getItem('field-info-form');
       if (fieldInfo) {
-        let fieldInfoCoordinates: any = localStorage.getItem('field-info-coordinates');
-        if(fieldInfoCoordinates){
+        let fieldInfoCoordinates: any = localStorage.getItem(
+          'field-info-coordinates'
+        );
+        if (fieldInfoCoordinates) {
           fieldInfoCoordinates = JSON.parse(fieldInfoCoordinates);
         }
         fieldInfo = JSON.parse(fieldInfo);
@@ -203,7 +207,7 @@ export class FieldInfoComponent implements OnInit {
         });
       }
     }
-    if(!(this.fieldInfoForm.get('testType') as FormArray).controls.length){
+    if (!(this.fieldInfoForm.get('testType') as FormArray).controls.length) {
       this.addTestType();
     }
   }
@@ -294,7 +298,7 @@ export class FieldInfoComponent implements OnInit {
     }
     this.addFarmerService.getMessage().subscribe((data) => {
       this.nextRoute = data.routeName;
-      if(data.routeName == 'financial-planning'){
+      if (data.routeName == 'financial-planning') {
         this.saveData();
       }
     });
@@ -542,7 +546,7 @@ export class FieldInfoComponent implements OnInit {
         // this.removeHistoFieldDetail(field_index);
         this.removeFieldOwnershipDetail(field_index);
         this.removeEnumerate(field_index);
-        if (fieldIndexMapIds_var[fimi_index]) {          
+        if (fieldIndexMapIds_var[fimi_index]) {
           delete fieldIndexMapIds_var[fimi_index];
         }
       }
@@ -764,7 +768,8 @@ export class FieldInfoComponent implements OnInit {
         field_ui_id: field_ui_id,
         field_name: this.fieldInfoForm.value.plannedFieldDetails[i].fieldName,
         field_boundary: drawnCoordinates_obj,
-        field_area_ha: this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
+        field_area_ha:
+          this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
         field_address: 'test',
         planned_season_detail: {
           plannedSeason: this.fieldInfoForm.value.plannedSeason,
