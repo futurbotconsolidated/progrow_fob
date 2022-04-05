@@ -28,9 +28,10 @@ export class CommonService {
   }
 
   /* START: API Calls */
-  getExistingFarmers() {
+  getExistingFarmers(filterValue: string) {
     headers = headers.delete('Farmer-Id');
     headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
+    headers = headers.set('Filter-Type', filterValue);
     headers = headers.set('Authorization', this.token);
     return this.http.get(this.baseUrl + this.endPoints.getAllFarmers, {
       headers,
@@ -39,6 +40,7 @@ export class CommonService {
 
   getFarmerDetailsById(id: any) {
     headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
     headers = headers.set('Farmer-Id', String(id));
     headers = headers.set('Authorization', this.token);
     return this.http.get(this.baseUrl + this.endPoints.getFarmer, {
@@ -48,6 +50,7 @@ export class CommonService {
 
   getDocumentByFarmerId(inputObject: any) {
     headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
     headers = headers.delete('Farmer-Id');
     headers = headers.set('Authorization', this.token);
     return this.http.post(
@@ -65,11 +68,27 @@ export class CommonService {
     );
     // return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }
+
+  getKycData(inputObject: any) {
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.getKycData,
+      inputObject,
+      {
+        headers,
+      }
+    );
+  }
   /* END: API Calls */
 
   /* START: Non-API Calls */
   fetchFarmerDocument(fileFor: string) {
-    const A: any = localStorage.getItem('farmer-files');
+    const A = localStorage.getItem('farmer-files');
+    console.log(A);
+
     if (A) {
       const B = JSON.parse(A);
       if (B.hasOwnProperty(fileFor)) {

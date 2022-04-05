@@ -185,6 +185,7 @@ export class DemographicInfoComponent
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
+    // this.getKycData();
     this.demoGraphicMaster = data.demoGraphic; // read master data
 
     // populate
@@ -241,6 +242,21 @@ export class DemographicInfoComponent
             'PERMANENT_ADDRESS'
           );
         }
+
+        // patch farmer Profile image
+        this.dbService
+          .getByIndex(
+            this.indexedDBName,
+            'fileFor',
+            `${this.indexedDBFileNameManage.farmerProfile.front}`
+          )
+          .subscribe((farmer: any) => {
+            this.displayFarmerProfileImage =
+              farmer?.file ||
+              this.commonService.fetchFarmerDocument(
+                this.indexedDBFileNameManage.farmerProfile.front
+              );
+          });
       } else {
         this.patchFarmerDetails(); // bind/patch fresh api data
       }
@@ -724,8 +740,25 @@ export class DemographicInfoComponent
 
   // patch edit farmer details
   patchFarmerDetails() {
-    const A: any = localStorage.getItem('farmer-details');
+    // patch farmer Profile image
+    this.dbService
+      .getByIndex(
+        this.indexedDBName,
+        'fileFor',
+        `${this.indexedDBFileNameManage.farmerProfile.front}`
+      )
+      .subscribe((farmer: any) => {
+        console.log(farmer);
 
+        this.displayFarmerProfileImage =
+          farmer?.file ||
+          this.commonService.fetchFarmerDocument(
+            this.indexedDBFileNameManage.farmerProfile.front
+          );
+      });
+
+    // other details
+    const A: any = localStorage.getItem('farmer-details');
     if (A) {
       const B = JSON.parse(A).demographic_info;
       // create form group
@@ -928,9 +961,7 @@ export class DemographicInfoComponent
         (res: any) => {
           this.spinner.hide();
           if (res && !res.status) {
-
             alert(`${res[0].Message}`);
-
           } else {
             if (type === 'ADDRESS') {
               this.pinCodeAPIData = res.result;
@@ -954,5 +985,30 @@ export class DemographicInfoComponent
       );
     }
   }
+
+  getKycData() {
+    // event: any, type: string, value: string
+    const INPUT_OBJ = {
+      id_type: 'PAN',
+      id_no: 'HRLPK3534C',
+    };
+    // console.log(event, type, value);
+    this.spinner.show();
+    this.commonService.getKycData(INPUT_OBJ).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (res && !res.status) {
+          alert(`${res[0].Message}`);
+        } else {
+          console.log(res);
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch KYC Details, please try againn...');
+      }
+    );
+  }
+
   /* END: API Function Calls---------------------------------------------------------------------------- */
 }

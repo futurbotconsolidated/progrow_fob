@@ -66,7 +66,7 @@ export class InfoDeclarationComponent implements OnInit {
       demoInfo = localStorage.getItem('edit-demographic-info');
       fieldInfo = localStorage.getItem('edit-field-info');
       var edit_fieldInfo = JSON.parse(fieldInfo);
-      if(!edit_fieldInfo.length){
+      if (!edit_fieldInfo.length) {
         var farmer_detail: any = localStorage.getItem('farmer-details');
         if (farmer_detail) {
           var edit_field_info = JSON.parse(farmer_detail).fieldInfo;
@@ -90,6 +90,8 @@ export class InfoDeclarationComponent implements OnInit {
     const INPUT_OBJ = {
       farmer_id: this.farmerId,
       bd_id: this.userInfo['custom:access_type'],
+      created_by: `${this.userInfo['name']}<${this.userInfo?.email}>`,
+      updated_by: `${this.userInfo['name']}<${this.userInfo?.email}>`,
       mobile: JSON.parse(demoInfo).address.mobileNumber,
       pan_number: JSON.parse(demoInfo).identityProof.panNumber,
       demographic_info: JSON.parse(demoInfo),

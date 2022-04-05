@@ -37,9 +37,9 @@ export class FieldInfoComponent implements OnInit {
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
   SoilQualityStar = [] as any;
-  selectedSoilQualityStar: any;
-  selectedWaterQualityStar: any;
-  selectedYieldQualityStar: any;
+  selectedSoilQualityStar = [] as any;
+  selectedWaterQualityStar = [] as any;
+  selectedYieldQualityStar = [] as any;
 
   selectedHistoSoilQualityStar: any;
   selectedHistoWaterQualityStar: any;
@@ -48,7 +48,7 @@ export class FieldInfoComponent implements OnInit {
   nextRoute: any;
   fieldInfoForm = new FormGroup({});
   plannedFieldDetails!: FormArray;
-  historicalFieldDetails!: FormArray;
+  // historicalFieldDetails!: FormArray;
   fieldOwnership!: FormArray;
   enumerate!: FormArray;
   testType!: FormArray;
@@ -75,16 +75,11 @@ export class FieldInfoComponent implements OnInit {
       plannedSeason: new FormControl('', [Validators.required]),
       plannedCrops: new FormControl('', [Validators.required]),
       plannedFieldDetails: new FormArray([]),
-      historicalFieldDetails: new FormArray([]),
+      // historicalFieldDetails: new FormArray([]),
       fieldOwnership: new FormArray([]),
-      testType: new FormArray([this.createTestType()]),
+      testType: new FormArray([]),
       enumerate: new FormArray([]),
       cropCycleOnReports: new FormControl('', [Validators.required]), //radio
-    });
-
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      this.saveData();
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
@@ -116,7 +111,12 @@ export class FieldInfoComponent implements OnInit {
               localStorage.getItem('draft_farmer_new') as any
             );
           }
+          var fimi_coordinates = [] as any;
+          this.fieldIndexMapIds.forEach((fimi_value: any) => {
+            fimi_coordinates.push(fimi_value.coordinates);
+          });
           draft_farmer_new['field_info_form'] = form_values;
+          draft_farmer_new['field_info_coordinates'] = fimi_coordinates;
           localStorage.setItem(
             'draft_farmer_new',
             JSON.stringify(draft_farmer_new)
@@ -136,6 +136,7 @@ export class FieldInfoComponent implements OnInit {
         map_info = JSON.parse(map_info);
         if (map_info) {
           this.editFieldArea = [];
+          this.selectedCoordinates = [];
           map_info.forEach((el: any) => {
             this.editFieldArea.push(el.field_area_ha);
             this.selectedCoordinates.push(
@@ -151,21 +152,25 @@ export class FieldInfoComponent implements OnInit {
           const edit_field_info = JSON.parse(farmer_details).fieldInfo;
           var editFieldInfo = {} as any;
           editFieldInfo.plannedFieldDetails = [] as any;
-          editFieldInfo.historicalFieldDetails = [] as any;
+          // editFieldInfo.historicalFieldDetails = [] as any;
           editFieldInfo.fieldOwnership = [] as any;
           editFieldInfo.testType = [] as any;
           editFieldInfo.enumerate = [] as any;
           this.editFieldArea = [];
+          this.selectedCoordinates = [];
           edit_field_info.forEach((fiv: any, findex: number) => {
             editFieldInfo.enumerate.push(fiv.enumerate_planned_season);
             editFieldInfo.fieldOwnership.push(fiv.field_ownership_detail);
-            editFieldInfo.historicalFieldDetails.push(
-              fiv.historical_season_detail.historicalFieldDetails
-            );
+            // editFieldInfo.historicalFieldDetails.push(
+            //   fiv.historical_season_detail.historicalFieldDetails
+            // );
             editFieldInfo.plannedFieldDetails.push(
               fiv.planned_season_detail.plannedFieldDetails
             );
-            editFieldInfo.testType.push(fiv.test_on_fields);
+
+            if (fiv.test_on_fields) {
+              editFieldInfo.testType.push(fiv.test_on_fields);
+            }
             editFieldInfo.cropCycleOnReports = fiv.undertaking_cultivation.uc;
             editFieldInfo.plannedSeason =
               fiv.planned_season_detail.plannedSeason;
@@ -181,6 +186,12 @@ export class FieldInfoComponent implements OnInit {
     } else {
       let fieldInfo: any = localStorage.getItem('field-info-form');
       if (fieldInfo) {
+        let fieldInfoCoordinates: any = localStorage.getItem(
+          'field-info-coordinates'
+        );
+        if (fieldInfoCoordinates) {
+          fieldInfoCoordinates = JSON.parse(fieldInfoCoordinates);
+        }
         fieldInfo = JSON.parse(fieldInfo);
         this.bindItemsInEdit(fieldInfo);
       }
@@ -189,13 +200,16 @@ export class FieldInfoComponent implements OnInit {
       map_info = JSON.parse(map_info);
       if (map_info) {
         this.editFieldArea = [];
+        this.selectedCoordinates = [];
         map_info.forEach((el: any) => {
           this.editFieldArea.push(el.field_area_ha);
           this.selectedCoordinates.push(el.field_boundary.geometry.coordinates);
         });
       }
     }
-    console.log(this.selectedCoordinates);
+    if (!(this.fieldInfoForm.get('testType') as FormArray).controls.length) {
+      this.addTestType();
+    }
   }
 
   bindItemsInEdit(fieldValues: any) {
@@ -204,6 +218,7 @@ export class FieldInfoComponent implements OnInit {
     fieldValues.plannedFieldDetails.map((item: any) => {
       const plannedDetails = <any>{};
       plannedDetails['fieldId'] = new FormControl(item.fieldId);
+      plannedDetails['fieldName'] = new FormControl(item.fieldName);
       plannedDetails['fieldArea'] = new FormControl(item.fieldArea);
       plannedDetails['irrigationSystem'] = new FormControl(
         item.irrigationSystem
@@ -221,23 +236,23 @@ export class FieldInfoComponent implements OnInit {
       this.plannedFieldDetails.push(new FormGroup(plannedDetails));
     });
 
-    fieldValues.historicalFieldDetails.map((item: any) => {
-      const histDetails = <any>{};
-      histDetails['fieldId'] = new FormControl(item.fieldId);
-      histDetails['fieldArea'] = new FormControl(item.fieldArea);
-      histDetails['irrigationSystem'] = new FormControl(item.irrigationSystem);
-      histDetails['waterSource'] = new FormControl(item.waterSource);
-      histDetails['crop'] = new FormControl(item.crop);
-      histDetails['soilQuality'] = new FormControl(item.soilQuality);
-      histDetails['waterQuality'] = new FormControl(item.waterQuality);
-      histDetails['yieldQuality'] = new FormControl(item.yieldQuality);
-      histDetails['historicalCrops'] = new FormControl(item.historicalCrops);
-      histDetails['historicalSeason'] = new FormControl(item.historicalSeason);
-      this.historicalFieldDetails = this.fieldInfoForm.get(
-        'historicalFieldDetails'
-      ) as FormArray;
-      this.historicalFieldDetails.push(new FormGroup(histDetails));
-    });
+    // fieldValues.historicalFieldDetails.map((item: any) => {
+    //   const histDetails = <any>{};
+    //   histDetails['fieldId'] = new FormControl(item.fieldId);
+    //   histDetails['fieldArea'] = new FormControl(item.fieldArea);
+    //   histDetails['irrigationSystem'] = new FormControl(item.irrigationSystem);
+    //   histDetails['waterSource'] = new FormControl(item.waterSource);
+    //   histDetails['crop'] = new FormControl(item.crop);
+    //   histDetails['soilQuality'] = new FormControl(item.soilQuality);
+    //   histDetails['waterQuality'] = new FormControl(item.waterQuality);
+    //   histDetails['yieldQuality'] = new FormControl(item.yieldQuality);
+    //   histDetails['historicalCrops'] = new FormControl(item.historicalCrops);
+    //   histDetails['historicalSeason'] = new FormControl(item.historicalSeason);
+    //   this.historicalFieldDetails = this.fieldInfoForm.get(
+    //     'historicalFieldDetails'
+    //   ) as FormArray;
+    //   this.historicalFieldDetails.push(new FormGroup(histDetails));
+    // });
 
     fieldValues.enumerate.map((item: any) => {
       const enumerateDetails = <any>{};
@@ -281,6 +296,12 @@ export class FieldInfoComponent implements OnInit {
 
       navigator.geolocation.getCurrentPosition(this.setGeoLocation.bind(this));
     }
+    this.addFarmerService.getMessage().subscribe((data) => {
+      this.nextRoute = data.routeName;
+      if (data.routeName == 'financial-planning') {
+        this.saveData();
+      }
+    });
   }
 
   setGeoLocation(position: { coords: { latitude: any; longitude: any } }) {
@@ -411,7 +432,7 @@ export class FieldInfoComponent implements OnInit {
       };
       this.drawnCoordinates.push(ob);
       this.addPlannedFieldDetails();
-      this.addHistoFieldDetail();
+      // this.addHistoFieldDetail();
       this.addFieldOwnershipDetail();
       this.addEnumerate();
       console.log(this.plannedFieldDetails);
@@ -438,13 +459,13 @@ export class FieldInfoComponent implements OnInit {
           x.get('fieldArea').setValue(area_hec);
         }
       });
-      (
-        this.fieldInfoForm.get('historicalFieldDetails') as FormArray
-      ).controls.forEach((x: any, index: number) => {
-        if (pfd_last_index == index) {
-          x.get('fieldArea').setValue(area_hec);
-        }
-      });
+      // (
+      //   this.fieldInfoForm.get('historicalFieldDetails') as FormArray
+      // ).controls.forEach((x: any, index: number) => {
+      //   if (pfd_last_index == index) {
+      //     x.get('fieldArea').setValue(area_hec);
+      //   }
+      // });
       layer
         .bindPopup(
           `Field ID : ${pfd_last_index + 1} <br/> Area : ${area_hec} (Hectare)`
@@ -497,13 +518,13 @@ export class FieldInfoComponent implements OnInit {
           x.get('fieldArea').setValue(area_hec);
         }
       });
-      (
-        this.fieldInfoForm.get('historicalFieldDetails') as FormArray
-      ).controls.forEach((x: any, index: number) => {
-        if (field_index == index) {
-          x.get('fieldArea').setValue(area_hec);
-        }
-      });
+      // (
+      //   this.fieldInfoForm.get('historicalFieldDetails') as FormArray
+      // ).controls.forEach((x: any, index: number) => {
+      //   if (field_index == index) {
+      //     x.get('fieldArea').setValue(area_hec);
+      //   }
+      // });
     });
 
     map.on(L.Draw.Event.DELETED, (e: any) => {
@@ -522,10 +543,10 @@ export class FieldInfoComponent implements OnInit {
       });
       if (field_index >= 0) {
         this.removePlannedFieldDetails(field_index);
-        this.removeHistoFieldDetail(field_index);
+        // this.removeHistoFieldDetail(field_index);
         this.removeFieldOwnershipDetail(field_index);
         this.removeEnumerate(field_index);
-        if (fieldIndexMapIds_var[fimi_index]) {          
+        if (fieldIndexMapIds_var[fimi_index]) {
           delete fieldIndexMapIds_var[fimi_index];
         }
       }
@@ -597,6 +618,7 @@ export class FieldInfoComponent implements OnInit {
   createFieldDetails(): FormGroup {
     return this.formBuilder.group({
       fieldId: new FormControl('', [Validators.required]),
+      fieldName: new FormControl('', [Validators.required]),
       fieldArea: new FormControl('', [Validators.required]),
       irrigationSystem: new FormControl('', [Validators.required]),
       waterSource: new FormControl('', [Validators.required]),
@@ -628,36 +650,36 @@ export class FieldInfoComponent implements OnInit {
     this.plannedFieldDetails.removeAt(index);
   }
 
-  createHistoFieldDetails(): FormGroup {
-    return this.formBuilder.group({
-      historicalSeason: new FormControl('', [Validators.required]),
-      historicalCrops: new FormControl('', [Validators.required]),
-      fieldId: new FormControl('', [Validators.required]),
-      fieldArea: new FormControl('', [Validators.required]),
-      irrigationSystem: new FormControl('', [Validators.required]),
-      waterSource: new FormControl('', [Validators.required]),
-      crop: new FormControl('', [Validators.required]),
-      soilQuality: new FormControl(' ', [Validators.required]),
-      waterQuality: new FormControl(' ', [Validators.required]),
-      yieldQuality: new FormControl(' ', [Validators.required]),
-    });
-  }
+  // createHistoFieldDetails(): FormGroup {
+  //   return this.formBuilder.group({
+  //     historicalSeason: new FormControl('', [Validators.required]),
+  //     historicalCrops: new FormControl('', [Validators.required]),
+  //     fieldId: new FormControl('', [Validators.required]),
+  //     fieldArea: new FormControl('', [Validators.required]),
+  //     irrigationSystem: new FormControl('', [Validators.required]),
+  //     waterSource: new FormControl('', [Validators.required]),
+  //     crop: new FormControl('', [Validators.required]),
+  //     soilQuality: new FormControl(' ', [Validators.required]),
+  //     waterQuality: new FormControl(' ', [Validators.required]),
+  //     yieldQuality: new FormControl(' ', [Validators.required]),
+  //   });
+  // }
 
-  getHistoFieldDetailsControls() {
-    return (this.fieldInfoForm.get('historicalFieldDetails') as FormArray)
-      .controls;
-  }
+  // getHistoFieldDetailsControls() {
+  //   return (this.fieldInfoForm.get('historicalFieldDetails') as FormArray)
+  //     .controls;
+  // }
 
-  addHistoFieldDetail(): void {
-    this.historicalFieldDetails = this.fieldInfoForm.get(
-      'historicalFieldDetails'
-    ) as FormArray;
-    this.historicalFieldDetails.push(this.createHistoFieldDetails());
-  }
+  // addHistoFieldDetail(): void {
+  //   this.historicalFieldDetails = this.fieldInfoForm.get(
+  //     'historicalFieldDetails'
+  //   ) as FormArray;
+  //   this.historicalFieldDetails.push(this.createHistoFieldDetails());
+  // }
 
-  removeHistoFieldDetail(index: any) {
-    this.historicalFieldDetails.removeAt(index);
-  }
+  // removeHistoFieldDetail(index: any) {
+  //   this.historicalFieldDetails.removeAt(index);
+  // }
 
   createFieldOwnershipDetails(): FormGroup {
     return this.formBuilder.group({
@@ -732,7 +754,7 @@ export class FieldInfoComponent implements OnInit {
     this.fieldIndexMapIds.forEach((x: any, i: number) => {
       field_ui_id = i + 1;
       this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
-      this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
+      // this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
       this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
       this.fieldInfoForm.value.fieldOwnership[i].fieldOwnId = i + 1;
       var drawnCoordinates_obj = {
@@ -744,8 +766,10 @@ export class FieldInfoComponent implements OnInit {
       } as any;
       obj = {
         field_ui_id: field_ui_id,
+        field_name: this.fieldInfoForm.value.plannedFieldDetails[i].fieldName,
         field_boundary: drawnCoordinates_obj,
-        field_area_ha: this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
+        field_area_ha:
+          this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
         field_address: 'test',
         planned_season_detail: {
           plannedSeason: this.fieldInfoForm.value.plannedSeason,
@@ -753,14 +777,14 @@ export class FieldInfoComponent implements OnInit {
           plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
         },
         historical_season_detail: {
-          historicalSeason: this.fieldInfoForm.value.historicalSeason,
-          historicalCrops: this.fieldInfoForm.value.historicalCrops,
-          historicalFieldDetails:
-            this.fieldInfoForm.value.historicalFieldDetails[i],
+          // historicalSeason: this.fieldInfoForm.value.historicalSeason,
+          // historicalCrops: this.fieldInfoForm.value.historicalCrops,
+          // historicalFieldDetails:
+          //   this.fieldInfoForm.value.historicalFieldDetails[i],
         },
         field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
         enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
-        test_on_fields: this.fieldInfoForm.value.testType[i],
+        test_on_fields: this.fieldInfoForm.value.testType[i] || '',
         undertaking_cultivation: {
           uc: this.fieldInfoForm.value.cropCycleOnReports,
         },
@@ -789,18 +813,18 @@ export class FieldInfoComponent implements OnInit {
     // return;
   }
 
-  SoilQualityRating(soilQualityStar: any) {
-    this.selectedSoilQualityStar = soilQualityStar;
+  SoilQualityRating(soilQualityStar: any, i: number) {
+    this.selectedSoilQualityStar[i] = soilQualityStar;
     console.log('Value of SoilQualityStar', soilQualityStar);
   }
 
-  WaterQualityRating(waterQualityStar: any) {
-    this.selectedWaterQualityStar = waterQualityStar;
+  WaterQualityRating(waterQualityStar: any, i: number) {
+    this.selectedWaterQualityStar[i] = waterQualityStar;
     console.log('Value of waterQualityStar', waterQualityStar);
   }
 
-  YieldQualityRating(yieldQualityStar: any) {
-    this.selectedYieldQualityStar = yieldQualityStar;
+  YieldQualityRating(yieldQualityStar: any, i: number) {
+    this.selectedYieldQualityStar[i] = yieldQualityStar;
     console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 

@@ -26,6 +26,8 @@ export class DashboardComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   searchValue = '';
   lsn_tv_show = false;
+
+  filterType = 'this_month';
   /* END: Variables */
 
   constructor(
@@ -38,6 +40,10 @@ export class DashboardComponent implements OnInit {
   ) {
     localStorage.removeItem('farmer-details');
     this.userInfo = this.oauthService.getIdentityClaims();
+    const A = localStorage.getItem('filter-value');
+    if (!A) {
+      this.filterType = 'this_month';
+    }
   }
 
   ngOnInit(): void {
@@ -64,26 +70,27 @@ export class DashboardComponent implements OnInit {
       localStorage.setItem('draft_farmers', JSON.stringify(draft_farmers));
       localStorage.removeItem('draft_farmer_new');
     }
-    let obj_search = JSON.parse(localStorage.getItem('search-value') as any);
-    if (obj_search && obj_search.minDate != '' && obj_search.maxDate != '') {
-      this.searchValue = obj_search.searchValue;
-      $.fn['dataTable'].ext.search.push(
-        (settings: any, data: any, dataIndex: any) => {
-          const regDate = data[3];
-          if (regDate && (obj_search.minDate || obj_search.maxDate)) {
-            if (
-              formatDate(regDate, 'yyyy-MM-dd', 'en_IN') >=
-                formatDate(obj_search.minDate, 'yyyy-MM-dd', 'en_IN') &&
-              formatDate(obj_search.maxDate, 'yyyy-MM-dd', 'en_IN') >=
-                formatDate(regDate, 'yyyy-MM-dd', 'en_IN')
-            ) {
-              return true;
-            }
-          }
-          return false;
-        }
-      );
-    }
+
+    // let obj_search = JSON.parse(localStorage.getItem('search-value') as any);
+    // if (obj_search && obj_search.minDate != '' && obj_search.maxDate != '') {
+    //   this.searchValue = obj_search.searchValue;
+    //   $.fn['dataTable'].ext.search.push(
+    //     (settings: any, data: any, dataIndex: any) => {
+    //       const regDate = data[3];
+    //       if (regDate && (obj_search.minDate || obj_search.maxDate)) {
+    //         if (
+    //           formatDate(regDate, 'yyyy-MM-dd', 'en_IN') >=
+    //             formatDate(obj_search.minDate, 'yyyy-MM-dd', 'en_IN') &&
+    //           formatDate(obj_search.maxDate, 'yyyy-MM-dd', 'en_IN') >=
+    //             formatDate(regDate, 'yyyy-MM-dd', 'en_IN')
+    //         ) {
+    //           return true;
+    //         }
+    //       }
+    //       return false;
+    //     }
+    //   );
+    // }
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -93,48 +100,16 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  selectlive(event: any) {
-    let minDate = '' as any;
-    let maxDate = '' as any;
-    let last_date = new Date();
-    if (event.target.value === 'today') {
-      minDate = maxDate = new Date();
-    } else if (event.target.value === 'this_week') {
-      maxDate = new Date();
-      last_date.setDate(last_date.getDate() - 7);
-      minDate = last_date;
-    } else if (event.target.value === 'two_week') {
-      maxDate = new Date();
-      last_date.setDate(last_date.getDate() - 14);
-      minDate = last_date;
-    } else if (event.target.value === 'three_week') {
-      maxDate = new Date();
-      last_date.setDate(last_date.getDate() - 21);
-      minDate = last_date;
-    } else if (event.target.value === 'this_month') {
-      maxDate = new Date();
-      last_date.setDate(last_date.getDate() - 30);
-      minDate = last_date;
-    }
-    const obj_search1 = {
-      minDate: minDate,
-      maxDate: maxDate,
-      searchValue: event.target.value,
-    };
-    localStorage.setItem('search-value', JSON.stringify(obj_search1));
-    window.location.reload();
-  }
-
   /* START: Non-API Function Calls */
   loadData() {
-    this.getExistingFarmers();
     this.clearLocalStorageOnEditAndView();
+    this.getExistingFarmers(this.filterType);
   }
 
   filterFarms(type: string) {
     this.selectedViewType = type;
     if (type == 'EXISTING_FARMS_LIST_VIEW') {
-      if (!this.allExistingFarmers) this.getExistingFarmers();
+      if (!this.allExistingFarmers) this.getExistingFarmers('');
     } else if (type == 'EXISTING_FARMS_MAP_VIEW') {
       this.overlayMap('EXISTING_FARMS_MAP_VIEW');
     } else if (type == 'FARMS_PIPELINE_LIST_VIEW') {
@@ -187,6 +162,38 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/add/concept-cards']);
   }
 
+  // selectlive(event: any) {
+  //   let minDate = '' as any;
+  //   let maxDate = '' as any;
+  //   let last_date = new Date();
+  //   if (event.target.value === 'today') {
+  //     minDate = maxDate = new Date();
+  //   } else if (event.target.value === 'this_week') {
+  //     maxDate = new Date();
+  //     last_date.setDate(last_date.getDate() - 7);
+  //     minDate = last_date;
+  //   } else if (event.target.value === 'two_week') {
+  //     maxDate = new Date();
+  //     last_date.setDate(last_date.getDate() - 14);
+  //     minDate = last_date;
+  //   } else if (event.target.value === 'three_week') {
+  //     maxDate = new Date();
+  //     last_date.setDate(last_date.getDate() - 21);
+  //     minDate = last_date;
+  //   } else if (event.target.value === 'this_month') {
+  //     maxDate = new Date();
+  //     last_date.setDate(last_date.getDate() - 30);
+  //     minDate = last_date;
+  //   }
+  //   const obj_search1 = {
+  //     minDate: minDate,
+  //     maxDate: maxDate,
+  //     searchValue: event.target.value,
+  //   };
+  //   localStorage.setItem('search-value', JSON.stringify(obj_search1));
+  //   window.location.reload();
+  // }
+
   overlayMap(type: string) {
     this.spinner.show();
     this.overlayData.length = 0; // clear data
@@ -195,12 +202,12 @@ export class DashboardComponent implements OnInit {
     if (type == 'EXISTING_FARMS_MAP_VIEW') {
       mapViewType = 'existing_farmers_mapbox';
       //useData = mapData['features'];
-      if (!this.allExistingFarmers) this.getExistingFarmers();
+      if (!this.allExistingFarmers) this.getExistingFarmers('');
       useData = this.allExistingFarmers;
     } else if (type == 'FARMS_PIPELINE_MAP_VIEW') {
       mapViewType = 'farms_pipeline_mapbox';
       //useData = mapData['features'];
-      if (!this.allExistingFarmers) this.getExistingFarmers();
+      if (!this.allExistingFarmers) this.getExistingFarmers('');
       useData = this.allExistingFarmers;
     }
     //  Start Overlay Code
@@ -281,7 +288,7 @@ export class DashboardComponent implements OnInit {
              <div class="col-md-6 text-left">
                <label class="fw-bold">Date of registration</label>
                <p class="text-capitalize">${formatDate(
-                 elem['registrationDate'],
+                 elem['createdDate'],
                  'EE, MMM d, y',
                  'en_IN'
                )}</p>
@@ -443,6 +450,12 @@ export class DashboardComponent implements OnInit {
               JSON.stringify(dfarm.field_info_form)
             );
           }
+          if (dfarm.field_info_coordinates) {
+            localStorage.setItem(
+              'field-info-coordinates',
+              JSON.stringify(dfarm.field_info_coordinates)
+            );
+          }
           if (dfarm.crop_market_planing) {
             localStorage.setItem(
               'crop-market-planing',
@@ -502,6 +515,10 @@ export class DashboardComponent implements OnInit {
   showLeftSide(param: boolean) {
     this.lsn_tv_show = param;
   }
+  onChangeFilter(event: any) {
+    localStorage.setItem('filter-value', event.target.value);
+    this.getExistingFarmers(event.target.value);
+  }
 
   clearLocalStorageOnEditAndView() {
     localStorage.removeItem('farmer-details'); // related to view and edit of farmer
@@ -528,9 +545,10 @@ export class DashboardComponent implements OnInit {
   /* END: Non-API Function Calls */
 
   /* START: API Function Calls */
-  getExistingFarmers() {
+  getExistingFarmers(filterType: string) {
+    this.allExistingFarmers.length = 0;
     this.spinner.show();
-    this.commonService.getExistingFarmers().subscribe(
+    this.commonService.getExistingFarmers(filterType).subscribe(
       (res: any) => {
         this.spinner.hide();
         if (res.message != 'Success' || !res.status) {
@@ -554,21 +572,15 @@ export class DashboardComponent implements OnInit {
 
   getFarmerDetailsById(farmerId: any, type: string) {
     this.clearLocalStorageOnEditAndView(); // clear unwanted localStorage data
-
     this.spinner.show();
     this.commonService.getFarmerDetailsById(farmerId).subscribe(
       (res: any) => {
-        this.spinner.hide();
         if (res.message != 'Success' || !res.status) {
+          this.spinner.hide();
           this.toastr.error(`${res.message}!`);
         } else {
-          this.getDocumentByFarmerId(farmerId); //read farmer related uploaded files
+          this.getDocumentByFarmerId(farmerId, type); // read farmer related uploaded files
           localStorage.setItem('farmer-details', JSON.stringify(res.data));
-          if (type === 'view') {
-            this.router.navigate([`/edit/demographic-info/${farmerId}`]);
-          } else if (type === 'edit') {
-            this.router.navigate([`/add/demographic-info/${farmerId}`]);
-          }
         }
       },
       (error: any) => {
@@ -580,10 +592,16 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  getDocumentByFarmerId(farmerId: any) {
+  getDocumentByFarmerId(farmerId: any, type: string) {
     const inputObject = { farmerId };
     this.commonService.getDocumentByFarmerId(inputObject).subscribe(
       (res: any) => {
+        this.spinner.hide();
+        if (type === 'view') {
+          this.router.navigate([`/edit/demographic-info/${farmerId}`]);
+        } else if (type === 'edit') {
+          this.router.navigate([`/add/demographic-info/${farmerId}`]);
+        }
         if (res.message != 'Success' || !res.status) {
           this.toastr.error(`${res.message}!`);
         } else {
@@ -591,6 +609,7 @@ export class DashboardComponent implements OnInit {
         }
       },
       (error: any) => {
+        this.spinner.hide();
         this.toastr.error(`Failed to fetch farmer files, please try again...`);
       }
     );

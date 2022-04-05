@@ -71,7 +71,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
   // indexed db variables
   displayCoApplicant1ProfileImage = '' as any;
   displayCoApplicant2ProfileImage = '' as any;
-  displayFarmerProfileImage = '' as any;
   indexedDBPageName = 'coapplicant';
   concatePage1 = 'coapplicant1';
   concatePage2 = 'coapplicant2';
@@ -1017,6 +1016,36 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // patch edit farmer details
   patchFarmerDetails() {
+    // patch coapplicant-1 Profile image
+    this.dbService
+      .getByIndex(
+        this.indexedDBName,
+        'fileFor',
+        `${this.indexedDBFileNameManage.coa1.farmerProfile.front}`
+      )
+      .subscribe((farmer: any) => {
+        this.displayCoApplicant1ProfileImage =
+          farmer?.file ||
+          this.commonService.fetchFarmerDocument(
+            this.indexedDBFileNameManage.coa1.farmerProfile.front
+          );
+      });
+    // patch coapplicant-2 Profile image
+    this.dbService
+      .getByIndex(
+        this.indexedDBName,
+        'fileFor',
+        `${this.indexedDBFileNameManage.coa2.farmerProfile.front}`
+      )
+      .subscribe((farmer: any) => {
+        this.displayCoApplicant2ProfileImage =
+          farmer?.file ||
+          this.commonService.fetchFarmerDocument(
+            this.indexedDBFileNameManage.coa2.farmerProfile.front
+          );
+      });
+
+    // other details
     const A: any = localStorage.getItem('farmer-details');
     const coData = JSON.parse(A).co_applicant_details;
     if (A && Array.isArray(coData) && coData.length === 2) {
