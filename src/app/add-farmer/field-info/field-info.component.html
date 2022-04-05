@@ -49,6 +49,10 @@
                                     </div>
                                     <div class="display-flex-1">
                                         <div class="col-md-2 lable-top">
+                                            <label>Field name</label>
+                                            <input type="text" class="form-control" formControlName="fieldName" placeholder="Enter Name">
+                                        </div>
+                                        <div class="col-md-2 lable-top">
                                             <label>Area (in hectares)</label>
                                             <input type="text" class="form-control" maxlength="5" (keypress)="validateDecimalNo($event)" formControlName="fieldArea" placeholder="Enter Area">
                                         </div>
@@ -135,7 +139,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-details">
+                    <!-- <div class="form-details">
                         <div class="form-details-inner">
                             <h3 class="form-title">2. Historical season details </h3>
 
@@ -156,7 +160,6 @@
                                         <h3 class="form-title">B. Historical crops</h3>
                                         <input type="text" class="form-control" formControlName="historicalCrops" id="planned_copy" placeholder="Enter comma separated crop names here…">
                                     </div>
-                                    <!-- </div> -->
                                     <h3 class="form-title mt-3">C. Field details</h3>
                                     <div class="display-flex align-normal mb-3">
                                         <div class="col-md-1 lable-top">
@@ -231,10 +234,10 @@
 
                                                 </div>
                                             </div>
-                                            <!-- <div class="col-auto">
+                                            <div class="col-auto">
                                             <a href="javascript:void(0)" class="delete-item"><i
                                                     class="fa fa-trash-o"></i></a>
-                                        </div> -->
+                                        </div>
                                             <div class="col-auto add-another">
                                                 <a *ngIf="getHistoFieldDetailsControls().length!=1  && i!=getHistoFieldDetailsControls().length-1" href="javascript:void(0)" class="delete-item "
                                                     (click)="removeHistoFieldDetail(i)"><i class="fa fa-trash-o text-danger"></i></a>
@@ -248,11 +251,11 @@
                         </div>
 
 
-                    </div>
+                    </div> -->
 
 
                     <div class="form-details">
-                        <h3 class="form-title">3. Field ownership (for planned season only)
+                        <h3 class="form-title">2. Field ownership (for planned season only)
 
                         </h3>
                         <div class="mb-3" formArrayName="fieldOwnership" *ngFor="let item of getFieldOwnershipDetailsControls(); let i = index;">
@@ -286,7 +289,7 @@
 
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">4. Enumerate (for planned season only)
+                        <h3 class="form-title">3. Enumerate (for planned season only)
 
                         </h3>
 
@@ -318,8 +321,7 @@
 
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">5. Have you been doing soil/water test on the field(s) before undertaking
-                            any cultivation? </h3>
+                        <h3 class="form-title">4. Have you been doing soil/water test on the field(s) before undertaking any cultivation? </h3>
                         <div class="mb-3" formArrayName="testType" *ngFor="let item of getTestTypeControls(); let i = index;">
                             <div class="row align-items-center form-details-inner" [formGroupName]="i">
                                 <div class="col-md-2 lable-top">
@@ -362,7 +364,7 @@
 
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">6. Would you be interested in planning crop cycle based on the soil test
+                        <h3 class="form-title">5. Would you be interested in planning crop cycle based on the soil test
                             and water test reports?</h3>
                         <div class="row align-items-center">
                             <div class="select-advice interested-child">

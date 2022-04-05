@@ -31,6 +31,7 @@ export class FinancialPlanningComponent
 
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
+  seasonCrop!: FormArray;
   insuranceDetails!: FormArray;
   nextRoute: any;
 
@@ -148,6 +149,7 @@ export class FinancialPlanningComponent
       ownTractor: new FormControl(''),
       farmMachinery: new FormControl([]),
       bankDetails: new FormArray([]),
+      seasonCrop: new FormArray([]),
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
@@ -258,6 +260,9 @@ export class FinancialPlanningComponent
     if(!(this.financialForm.get('bankDetails') as FormArray).controls.length){
       this.addBankDetails();
     }
+    if(!(this.financialForm.get('seasonCrop') as FormArray).controls.length){
+      this.addSeasonCrop();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -343,6 +348,31 @@ export class FinancialPlanningComponent
     this.bankDetails.removeAt(index);
   }
 
+  /* START: Add Dynamic season crop: FormArray */
+  createSeasonCrop(): FormGroup {
+    return this.formBuilder.group({
+      season: new FormControl(''),
+      crop: new FormControl(''),
+      soldAt: new FormControl(''),
+      quantitySold: new FormControl(''),
+      sellingPrice: new FormControl(''),
+      sellingDate: new FormControl(''),
+    });
+  }
+
+  getSeasonCropControls() {
+    return (this.financialForm.get('seasonCrop') as FormArray).controls;
+  }
+
+  addSeasonCrop(): void {
+    this.seasonCrop = this.financialForm.get('seasonCrop') as FormArray;
+    this.seasonCrop.push(this.createSeasonCrop());
+  }
+
+  removeSeasonCrop(index: any) {
+    this.seasonCrop.removeAt(index);
+  }
+
   editDynamicBindFormArray(dataArray: any) {
     this.bankDetails = this.financialForm.get('bankDetails') as FormArray;
 
@@ -423,6 +453,7 @@ export class FinancialPlanningComponent
         JSON.stringify(this.financialForm.value)
       );
     }
+    console.log(this.financialForm.value);
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
   }
