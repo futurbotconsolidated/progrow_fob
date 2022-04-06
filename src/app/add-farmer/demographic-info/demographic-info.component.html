@@ -11,11 +11,11 @@
               <h3 class="form-title">1. Identity proof</h3>
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
-                  <label for="PANnumber">PAN Card Number </label>
-                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="ABWRT0987T" />
+                  <label for="PANnumber">PAN card number </label>
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN card number" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
-                      Please enter valid PAN Number</small>
+                      Please enter valid PAN card number</small>
                   </div>
                 </div>
                 <div class="farmer-details-inner lable-top">

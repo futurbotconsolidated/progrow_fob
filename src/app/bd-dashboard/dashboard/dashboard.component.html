@@ -226,6 +226,8 @@
                           <th>Address</th>
                           <th>Status</th>
                           <th>Added By</th>
+                          <th>Updated By</th>
+                          <th>Updated Date</th>
                           <th>Branch</th>
                           <th></th>
                         </tr>
@@ -249,8 +251,14 @@
                           </td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')"
-                            title="Created BD ID: {{x.bd_id}}&#010;Created By: {{x.createdBy}}&#010;Created On: {{ x.createdDate | date:'EE, MMM d, y' }}&#010;Updated By: {{x.updatedBy}}&#010;Updated On: {{ x.updatedDate | date:'EE, MMM d, y' }}">
+                            title="Created BD ID: {{x.bd_id}}">
                             {{x.bd_name}}</td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                            {{x.updatedBy}}
+                          </td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                            {{ x.updatedDate | date:'EE, MMM d, y' }}
+                          </td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.branch_name }}
                           </td>
