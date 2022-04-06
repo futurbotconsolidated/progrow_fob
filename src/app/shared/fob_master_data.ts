@@ -261,6 +261,7 @@ export const data = {
     cropCycleOnReports: ['Yes', 'No', 'May be'],
     soilQuality: ['Poor', 'Fair', 'Good'],
     yesNo: ['Yes', 'No'],
+    typeOfTest: ['Soil', 'Water'],
   },
   coApplicant: [],
 };

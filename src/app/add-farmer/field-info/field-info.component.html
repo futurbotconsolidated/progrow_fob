@@ -324,11 +324,21 @@
                         <h3 class="form-title">4. Have you been doing soil/water test on the field(s) before undertaking any cultivation? </h3>
                         <div class="mb-3" formArrayName="testType" *ngFor="let item of getTestTypeControls(); let i = index;">
                             <div class="row align-items-center form-details-inner" [formGroupName]="i">
-                                <div class="col-md-2 lable-top">
-                                    <label>Type of test</label>
-                                    <input type="text" class="form-control" formControlName="typeOfTest" placeholder="Enter Value">
+                                <div class="col-md-1 lable-top">
+                                    <label>Field ID</label>
+                                    <select class="form-select" formControlName="fieldId">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of this.fieldIndexMapIds;let fimi = index; " value="{{indVal.field_index+1}}">{{indVal.field_index+1}}</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-2 lable-top">
+                                    <label>Type of test</label>
+                                    <select class="form-select" formControlName="typeOfTest">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of fieldInforMaster['typeOfTest']" value="{{indVal}}">{{indVal}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1 lable-top">
                                     <label>Yes/No</label>
                                     <select class="form-select" formControlName="yesNo">
                                         <option value="">...</option>
