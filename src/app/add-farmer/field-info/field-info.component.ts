@@ -282,6 +282,7 @@ export class FieldInfoComponent implements OnInit {
 
     fieldValues.testType.map((item: any) => {
       const testTypeDetails = <any>{};
+      testTypeDetails['fieldId'] = new FormControl(item.fieldId);
       testTypeDetails['typeOfTest'] = new FormControl(item.typeOfTest);
       testTypeDetails['yesNo'] = new FormControl(item.yesNo);
       testTypeDetails['lastDone'] = new FormControl(item.lastDone);
@@ -727,6 +728,7 @@ export class FieldInfoComponent implements OnInit {
 
   createTestType(): FormGroup {
     return this.formBuilder.group({
+      fieldId: new FormControl('', [Validators.required]),
       typeOfTest: new FormControl('', [Validators.required]),
       yesNo: new FormControl('', [Validators.required]),
       lastDone: new FormControl('', [Validators.required]),

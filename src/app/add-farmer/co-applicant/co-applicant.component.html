@@ -14,15 +14,15 @@
               <h3 class="form-title">1. Identity proof</h3>
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
-                  <label for="PANnumber">PAN Card number </label>
-                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="ABWRT0987T" />
+                  <label for="PANnumber">PAN card number </label>
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN card number" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
                       Please enter valid PAN Number</small>
                   </div>
                 </div>
                 <div class="farmer-details-inner lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PAN')"> Upload PAN Card Image
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PAN')"> Upload PAN card Image
                   </button>
                 </div>
               </div>
@@ -157,7 +157,7 @@
                   </div>
                   <div class="farmer-details-inner lable-top">
                     <label>Date Of Birth</label>
-                    <input type="text" class="form-control" formControlName="dob" placeholder="" value="" onfocus="(this.type='date')" onblur="(this.type='text')" />
+                    <input type="date" class="form-control" formControlName="dob">
                   </div>
                 </div>
               </div>
@@ -504,15 +504,15 @@
               <h3 class="form-title">1. Identity proof</h3>
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
-                  <label for="PANnumbercoa2">PAN Card number </label>
-                  <input type="text" class="form-control" id="PANnumbercoa2" formControlName="PANnumbercoa2" placeholder="ABWRT0987T" />
+                  <label for="PANnumbercoa2">PAN card number </label>
+                  <input type="text" class="form-control" id="PANnumbercoa2" formControlName="PANnumbercoa2" placeholder="Enter PAN card number" />
                   <div *ngIf="f['PANnumbercoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumbercoa2'].errors['invalidPanNumber']">
-                      Please enter valid PAN Number</small>
+                      Please enter valid PAN number</small>
                   </div>
                 </div>
                 <div class="farmer-details-inner lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PANcoa2')"> Upload PAN Card Image
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PANcoa2')"> Upload PAN card Image
                   </button>
                 </div>
               </div>
@@ -647,7 +647,7 @@
                   </div>
                   <div class="farmer-details-inner lable-top">
                     <label>Date Of Birth</label>
-                    <input type="text" class="form-control" formControlName="dobcoa2" placeholder="" value="" onfocus="(this.type='date')" onblur="(this.type='text')" />
+                    <input type="date" class="form-control" formControlName="dobcoa2">
                   </div>
                 </div>
               </div>
@@ -993,7 +993,7 @@
     <div class="modal-content">
       <div class="modal-header p-2 common_button_color">
         <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
       </div>
       <div class="modal-body">
         <!-- START : Image - 1  -->

@@ -1270,18 +1270,19 @@ input::-webkit-file-upload-button {
   ul.navigation li {
     flex: none;
     padding-right: 15px;
+    margin-bottom: 15px;
   }
   .left-menu ul.navigation li a:after {
     display: none;
   }
   .navigation li:after {
-    left: 50%;
+    left: 0;
     bottom: 0px;
     transform: translateX(-50%);
     top: inherit;
   }
   ul.navigation li:before {
-    left: 50%;
+    left: 0;
     bottom: 4px;
     width: 100%;
     top: inherit;

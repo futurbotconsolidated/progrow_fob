@@ -90,8 +90,8 @@ export class InfoDeclarationComponent implements OnInit {
     const INPUT_OBJ = {
       farmer_id: this.farmerId,
       bd_id: this.userInfo['custom:access_type'],
-      created_by: `${this.userInfo['name']}<${this.userInfo?.email}>`,
-      updated_by: `${this.userInfo['name']}<${this.userInfo?.email}>`,
+      created_by: `${this.userInfo['name']}`,
+      updated_by: `${this.userInfo['name']}`,
       mobile: JSON.parse(demoInfo).address.mobileNumber,
       pan_number: JSON.parse(demoInfo).identityProof.panNumber,
       demographic_info: JSON.parse(demoInfo),
@@ -110,8 +110,9 @@ export class InfoDeclarationComponent implements OnInit {
     if (this.farmerId) {
       this.addFarmerService.updateFarmer(INPUT_OBJ).subscribe(
         (res: any) => {
-          this.spinner.hide();
+          //this.spinner.hide();
           if (res.message != 'Success' || !res.status) {
+            this.spinner.hide();
             this.toastr.error(`${res.message}!`);
             return;
           } else {
@@ -125,25 +126,12 @@ export class InfoDeclarationComponent implements OnInit {
                       farmerId: res.farmerId,
                       fileData: {} as any,
                     };
-                    // const form = new FormData();
-                    // form.append('farmerId', res.farmerId);
                     files.forEach((x: any) => {
                       requestData.fileData[x.fileFor] = x.file;
                     });
-                    // call file upload api
-                    // $.ajax({
-                    //   url: 'https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding/document_upload',
-                    //   method: 'POST',
-                    //   timeout: 0,
-                    //   processData: false,
-                    //   mimeType: 'multipart/form-data',
-                    //   contentType: false,
-                    //   data: form,
-                    // }).done(function (response: any) {
-                    //   console.log(response);
-                    // });
                     this.addFarmerService.documentUpload(requestData).subscribe(
                       (res: any) => {
+                        this.spinner.hide();
                         if (res.message != 'Success' || !res.status) {
                           this.toastr.error(`${res.message}!`);
                           return;
@@ -160,6 +148,7 @@ export class InfoDeclarationComponent implements OnInit {
                     );
                   });
               } else {
+                this.spinner.hide();
                 this.clearRoute();
               }
             });
@@ -175,8 +164,8 @@ export class InfoDeclarationComponent implements OnInit {
     } else {
       this.addFarmerService.registerFarmer(INPUT_OBJ).subscribe(
         (res: any) => {
-          this.spinner.hide();
           if (res.message != 'Success' || !res.status) {
+            this.spinner.hide();
             this.toastr.error(`${res.message}!`);
             return;
           } else {
@@ -190,32 +179,12 @@ export class InfoDeclarationComponent implements OnInit {
                       farmerId: res.farmerId,
                       fileData: {} as any,
                     };
-                    // const form = new FormData();
-                    // form.append('farmerId', res.farmerId);
                     files.forEach((x: any) => {
                       requestData.fileData[x.fileFor] = x.file;
                     });
-                    // call file upload api
-                    // $.ajax({
-                    //   url: 'https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding/document_upload',
-                    //   method: 'POST',
-                    //   timeout: 0,
-                    //   processData: false,
-                    //   mimeType: 'multipart/form-data',
-                    //   contentType: false,
-                    //   data: form,
-                    // }).done(function (response: any) {
-                    //   console.log(response);
-                    //   if (response.message != 'Success' || !response.status) {
-                    //     alert(response.message);
-                    //     //this.toastr.error(`${response.message}!`);
-                    //     return;
-                    //   } else {
-                    //     //this.clearRoute();
-                    //   }
-                    // });
                     this.addFarmerService.documentUpload(requestData).subscribe(
                       (res: any) => {
+                        this.spinner.hide();
                         if (res.message != 'Success' || !res.status) {
                           this.toastr.error(`${res.message}!`);
                           return;
@@ -232,6 +201,7 @@ export class InfoDeclarationComponent implements OnInit {
                     );
                   });
               } else {
+                this.spinner.hide();
                 this.clearRoute();
               }
             });
