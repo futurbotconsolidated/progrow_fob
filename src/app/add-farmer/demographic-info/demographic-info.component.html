@@ -12,15 +12,23 @@
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
                   <label for="PANnumber">PAN Card Number </label>
-                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="ABWRT0987T" />
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN Number" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
                       Please enter valid PAN Number</small>
                   </div>
                 </div>
-                <div class="farmer-details-inner lable-top">
+                <div class="lable-top">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!demoGraphicKycData.pan.showVerify" (click)="getKycData($event,kycProofNames.pan)">
+                    {{kycFieldButtonLabels.verify}}</button>
+                  <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!demoGraphicKycData.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                    {{kycFieldButtonLabels.verified}}</button>
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!demoGraphicKycData.pan.showTryAgain"> <i class="fa fa-undo" aria-hidden="true"></i>
+                    {{kycFieldButtonLabels.try_again}}</button>
+                </div>
+                <div class="lable-top">
                   <!-- Button trigger modal -->
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PAN')"> Upload PAN Card Image
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PAN')"> Upload Image
                   </button>
                 </div>
               </div>

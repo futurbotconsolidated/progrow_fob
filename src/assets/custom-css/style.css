@@ -1390,3 +1390,6 @@ input::-webkit-file-upload-button {
   background: #2eadc4;
   color: #fff;
 }
+.text_lightgreen {
+  color: #07ff30;
+}

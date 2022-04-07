@@ -16,10 +16,11 @@ export class CommonService {
 
   token: any;
   headers = new HttpHeaders();
-  /* START API Base and Endpoints */
+
+  /* ============================================START: API Base and Endpoints ============================================ */
   private baseUrl = environment.baseUrl;
   private endPoints = environment.endPoints;
-  /* END:: API Base and Endpoints */
+  /* ============================================END: API Base and Endpoints ============================================ */
 
   constructor(private http: HttpClient, public oauthService: OAuthService) {
     this.token = this.oauthService.getIdToken();
@@ -27,7 +28,7 @@ export class CommonService {
     this.masterData = data;
   }
 
-  /* START: API Calls */
+  /* ============================================START: API Calls ============================================ */
   getExistingFarmers(filterValue: string) {
     headers = headers.delete('Farmer-Id');
     headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
@@ -82,13 +83,11 @@ export class CommonService {
       }
     );
   }
-  /* END: API Calls */
+  /* ============================================END: API Calls ============================================ */
 
-  /* START: Non-API Calls */
+  /* ============================================START: Non-API Calls ====================================== */
   fetchFarmerDocument(fileFor: string) {
     const A = localStorage.getItem('farmer-files');
-    console.log(A);
-
     if (A) {
       const B = JSON.parse(A);
       if (B.hasOwnProperty(fileFor)) {
@@ -98,5 +97,5 @@ export class CommonService {
       }
     }
   }
-  /* END: Non-API Calls */
+  /* ============================================END: Non-API Calls ====================================== */
 }

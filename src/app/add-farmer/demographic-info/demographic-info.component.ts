@@ -35,7 +35,7 @@ function sleep(ms: number): Promise<any> {
 export class DemographicInfoComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  /* START: Varaibles ---------------------------------------------*/
+  /* START: Varaibles ------------------------------------------------- */
   private observableSubscription: any;
 
   demoGraphicMaster = <any>{};
@@ -64,7 +64,7 @@ export class DemographicInfoComponent
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
 
-  // indexed db variables
+  /* START: indexed db variables */
   displayFarmerProfileImage = '' as any;
   indexedDBPageName = 'demographic_info';
   concatePage = 'demographic';
@@ -92,9 +92,74 @@ export class DemographicInfoComponent
     },
     farmerProfile: { front: `${this.concatePage}_farmerProfileImage` },
   };
+  /* END: indexed db variables */
 
   farmerId = ''; // edit feature
-  /* END: Varaibles ---------------------------------------------*/
+
+  /* START: KYC Data Structure & Related Variables */
+  kycFieldButtonLabels = {
+    verify: 'Verify',
+    verified: 'Verified',
+    try_again: 'Try again',
+    confirm: 'Confirm',
+  };
+
+  kycProofNames = {
+    pan: 'pan',
+    passport: 'passport',
+    nrega: 'nrega',
+    voter_id: 'voter_id',
+    driving_licence: 'driving_licence',
+    aadhaar: 'aadhaar',
+  };
+  demoGraphicKycData = {
+    pan: {
+      id: '',
+      data: {},
+      isVerified: true,
+      showVerify: false,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+    passport: {
+      id: '',
+      data: {},
+      isVerified: false,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+    nrega: {
+      id: '',
+      data: {},
+      isVerified: false,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+    voter_id: {
+      id: '',
+      data: {},
+      isVerified: false,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+    driving_licence: {
+      id: '',
+      data: {},
+      isVerified: false,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+    aadhaar: {
+      id: '',
+      data: {},
+      isVerified: false,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+  } as any;
+  /* END: KYC Data Structure & Related Variables */
+
+  /* END: Varaibles ------------------------------------------------- */
 
   constructor(
     public router: Router,
@@ -185,7 +250,6 @@ export class DemographicInfoComponent
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
-    // this.getKycData();
     this.demoGraphicMaster = data.demoGraphic; // read master data
 
     // populate
@@ -933,6 +997,14 @@ export class DemographicInfoComponent
     }
   }
 
+  // KYC Data Functions
+  // kycButonHideShow(proofType: string, buttonType: string) {
+  //   if (proofType === 'PAN') {
+  //     if (buttonType === 'verify') {
+  //       return this.demographicInfoForm.value.panNumber != '' ? true : false;
+  //     }
+  //   }
+  // }
   /* END: NON-API Function Calls------------------------------------------------------------------------ */
 
   /* START: API Function Calls-------------------------------------------------------------------------- */
@@ -986,28 +1058,56 @@ export class DemographicInfoComponent
     }
   }
 
-  getKycData() {
-    // event: any, type: string, value: string
-    const INPUT_OBJ = {
-      id_type: 'PAN',
-      id_no: 'HRLPK3534C',
-    };
-    // console.log(event, type, value);
+  getKycData(event: any, proofType: string) {
+    let INPUT_OBJ = {};
+    // PAN Card
+    if (proofType === this.kycProofNames.pan) {
+      const A = this.demographicInfoForm.value.PANnumber;
+      if (!A) {
+        this.toastr.info('please enter PAN number', 'Info!');
+        return;
+      } else if (
+        this.f['PANnumber'].errors &&
+        this.f['PANnumber'].errors['invalidPanNumber']
+      ) {
+        this.toastr.info(' Please enter valid PAN Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        id_type: 'PAN',
+        id_no: this.demographicInfoForm.value.PANnumber,
+      };
+    }
+
     this.spinner.show();
     this.commonService.getKycData(INPUT_OBJ).subscribe(
       (res: any) => {
         this.spinner.hide();
         if (res && !res.status) {
           alert(`${res[0].Message}`);
+          this.setKycDataVariables(proofType, 'api_failed');
         } else {
           console.log(res);
+          this.setKycDataVariables(proofType, 'api_success');
         }
       },
       (error: any) => {
         this.spinner.hide();
         alert('Failed to fetch KYC Details, please try againn...');
+        this.setKycDataVariables(proofType, 'api_failed');
       }
     );
+  }
+
+  setKycDataVariables(proofType: string, type: string) {
+    // if KYC API failed to get data
+    if (type === 'api_failed') {
+      this.demoGraphicKycData[proofType].showTryAgain = true;
+    } else if (type === 'api_success') {
+      this.demoGraphicKycData[proofType].showConfirm = true;
+    } else if (type === 'confirm') {
+      this.demoGraphicKycData[proofType].isVerified = true;
+    }
   }
 
   /* END: API Function Calls---------------------------------------------------------------------------- */
