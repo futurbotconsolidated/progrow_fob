@@ -127,7 +127,7 @@ export class FinancialPlanningComponent
       PMFBYAmountPaid: new FormControl(''),
       PMFBYPaymentDate: new FormControl(''),
 
-      insuranceDetails: new FormArray([this.createInsuranceDetails()]),
+      insuranceDetails: new FormArray([]),
 
       preferredCreditSourceRankOrder: new FormControl([]),
       commissionAgentROICharge: new FormControl(''),
@@ -193,15 +193,13 @@ export class FinancialPlanningComponent
       var financial_planning = {} as any;
       let editForm: any = localStorage.getItem('edit-financial-planing');
       if (editForm) {
-        financial_planning = JSON.parse(editForm);
-        this.financialForm.patchValue(financial_planning);
-        this.editDynamicBindFormArray(financial_planning.bankDetails);
+        financial_planning = JSON.parse(editForm);        
+        this.editDynamicBindFormArray(financial_planning);
       } else {
         const farmer_details: any = localStorage.getItem('farmer-details');
         if (farmer_details) {
-          financial_planning = JSON.parse(farmer_details).financial_planning;
-          this.financialForm.patchValue(financial_planning);
-          this.editDynamicBindFormArray(financial_planning.bankDetails);
+          financial_planning = JSON.parse(farmer_details).financial_planning;          
+          this.editDynamicBindFormArray(financial_planning);
         }
       }      
       let fieldInfo: any = localStorage.getItem('edit-field-info');
@@ -262,6 +260,9 @@ export class FinancialPlanningComponent
     }
     if(!(this.financialForm.get('seasonCrop') as FormArray).controls.length){
       this.addSeasonCrop();
+    }
+    if(!(this.financialForm.get('insuranceDetails') as FormArray).controls.length){
+      this.addInsuranceDetails();
     }
   }
 
@@ -373,21 +374,44 @@ export class FinancialPlanningComponent
     this.seasonCrop.removeAt(index);
   }
 
-  editDynamicBindFormArray(dataArray: any) {
+  editDynamicBindFormArray(fieldValues: any) {
+    this.financialForm.patchValue(fieldValues);
     this.bankDetails = this.financialForm.get('bankDetails') as FormArray;
-
-    if (Array.isArray(dataArray) && dataArray.length) {
-      dataArray.forEach((x: any) => {
-        this.bankDetails.push(
-          this.formBuilder.group({
-            bankName: new FormControl(x.bankName),
-            accountNum: new FormControl(x.accountNum),
-            IFSCode: new FormControl(x.IFSCode),
-            customerID: new FormControl(x.customerID),
-          })
-        );
-      });
-    }
+    fieldValues.bankDetails.map((item: any) => {
+      this.bankDetails.push(
+        this.formBuilder.group({
+          bankName: new FormControl(item.bankName),
+          accountNum: new FormControl(item.accountNum),
+          IFSCode: new FormControl(item.IFSCode),
+          customerID: new FormControl(item.customerID),
+        })
+      );
+    });
+    this.insuranceDetails = this.financialForm.get('insuranceDetails') as FormArray;
+    fieldValues.insuranceDetails.map((item: any) => {
+      this.insuranceDetails.push(
+        this.formBuilder.group({
+          insuranceType: new FormControl(item.insuranceType),
+          monthYearTaken: new FormControl(item.monthYearTaken),
+          premiumPaid: new FormControl(item.premiumPaid),
+          isSettlementAmountCredited: new FormControl(item.isSettlementAmountCredited),
+          isDisbursementSatisfied: new FormControl(item.isDisbursementSatisfied),
+        })
+      );
+    });
+    this.seasonCrop = this.financialForm.get('seasonCrop') as FormArray;
+    fieldValues.seasonCrop.map((item: any) => {
+      this.seasonCrop.push(
+        this.formBuilder.group({
+          season: new FormControl(item.season),
+          crop: new FormControl(item.crop),
+          soldAt: new FormControl(item.soldAt),
+          quantitySold: new FormControl(item.quantitySold),
+          sellingPrice: new FormControl(item.sellingPrice),
+          sellingDate: new FormControl(item.sellingDate),
+        })
+      );
+    });
   }
   /* END: Add Dynamic Bank Details: FormArray */
 
