@@ -35,13 +35,27 @@ export class AddFarmerService {
   }
 
   // save(formValue: any) {
-  //   console.log(formValue);
   //   return formValue;
   // }
 
   registerFarmer(data: any) {
     headers = headers.set('Authorization', this.token);
     return this.http.post(this.baseUrl + this.endPoints.registerFarmer, data, {
+      headers,
+    });
+  }
+
+  documentUpload(data: any) {
+    headers = headers.set('Authorization', this.token);
+    headers = headers.set('Content-Type', 'application/json');
+    return this.http.post(this.baseUrl + this.endPoints.documentUpload, data, {
+      headers,
+    });
+  }
+
+  updateFarmer(data: any) {
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(this.baseUrl + this.endPoints.updateFarmer, data, {
       headers,
     });
   }

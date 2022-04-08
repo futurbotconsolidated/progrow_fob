@@ -10,6 +10,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxIndexedDBModule } from 'ngx-indexed-db';
+import { dbConfig } from './shared/indexedDBConfig';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -30,6 +31,7 @@ import { AddFarmerService } from './add-farmer/add-farmer.service';
     ToastrModule,
     OAuthModule.forRoot(),
     ToastrModule.forRoot(),
+    NgxIndexedDBModule.forRoot(dbConfig),
   ],
   bootstrap: [AppComponent],
   providers: [OAuthService, AddFarmerService],

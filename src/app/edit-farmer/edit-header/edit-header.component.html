@@ -7,8 +7,8 @@
                     <a href="/bd/dashboard" class="btn btn-back">Back </a>
                 </div>
                 <div class="farmer-pro">
-                    <img *ngIf="demographicDisp?.profileImg" [src]="demographicDisp?.profileImg">
-                    <img *ngIf="!demographicDisp?.profileImg" src="../../../assets/images/profile-pic-dummy.jpg">
+                    <img *ngIf="displayFarmerProfileImage" [src]="displayFarmerProfileImage">
+                    <img *ngIf="!displayFarmerProfileImage" src="../../../assets/images/profile-pic-dummy.jpg">
                 </div>
                 <div class="p">
                     <!-- <span class="profile-rating">4.1 <i class="fa fa-star"></i></span> -->

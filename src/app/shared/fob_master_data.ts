@@ -88,7 +88,7 @@ export const data = {
     warehouseProduce: ['Yes', 'No'],
   },
   demoGraphic: {
-    addressProofType: ['Aadhaar ID', 'Driving Licence ', 'Voter ID'],
+    addressProofType: ['Aadhaar ID', 'Driving Licence '],
 
     gender: ['Male', 'Female', 'Other'],
     religion: [
@@ -188,7 +188,6 @@ export const data = {
     pledgedCollateral: [
       'Output is sold to the credit supplier',
       'Agricultural Land',
-      'Gold',
     ],
     reasonAgent: [
       'Working Capital cycle requirement',
@@ -262,6 +261,7 @@ export const data = {
     cropCycleOnReports: ['Yes', 'No', 'May be'],
     soilQuality: ['Poor', 'Fair', 'Good'],
     yesNo: ['Yes', 'No'],
+    typeOfTest: ['Soil', 'Water'],
   },
   coApplicant: [],
 };

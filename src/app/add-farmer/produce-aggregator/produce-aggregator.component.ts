@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -21,8 +21,12 @@ enum SaveStatus {
   templateUrl: './produce-aggregator.component.html',
   styleUrls: ['./produce-aggregator.component.css'],
 })
-export class ProduceAggregatorComponent implements OnInit {
-  /* START: Variables */
+export class ProduceAggregatorComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  /* START: Variables ---------------------------------------------*/
+  private observableSubscription: any;
+
   produceAggregatorForm = new FormGroup({});
   produceAggregatorMaster = <any>{};
   nextRoute: any;
@@ -30,7 +34,7 @@ export class ProduceAggregatorComponent implements OnInit {
     SaveStatus.Idle;
 
   farmerId = ''; // edit feature
-  /* END: Variables */
+  /* END: Variables ---------------------------------------------*/
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,14 +50,9 @@ export class ProduceAggregatorComponent implements OnInit {
       consolidateLoans: new FormControl('', [Validators.required]),
     });
 
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      this.saveData();
-      console.log(this.nextRoute);
-    });
-
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
+  /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
     this.produceAggregatorMaster = data.produceAggregator; // read master data
     // -----------------------start auto save --------------------
@@ -105,7 +104,26 @@ export class ProduceAggregatorComponent implements OnInit {
       }
     }
   }
+  ngAfterViewInit(): void {
+    /** subscribe to Observables, which are triggered from header selections*/
+    this.observableSubscription = this.addFarmerService
+      .getMessage()
+      .subscribe((data) => {
+        this.nextRoute = data.routeName;
+        if (this.router.url?.includes('/add/produce-aggregator')) {
+          this.saveData();
+          console.log(data.routeName);
+        }
+      });
+  }
 
+  ngOnDestroy(): void {
+    /** unsubscribe from Observables*/
+    this.observableSubscription.unsubscribe();
+  }
+  /* END: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
+
+  /* START: NON-API Function Calls-------------------------------------------------------------- */
   selectCultivationAdvice(event: any, formCtlName: any, formVal: any) {
     formVal = String(formVal);
     let aryValCurr = this.produceAggregatorForm.controls[formCtlName].value;
@@ -144,4 +162,5 @@ export class ProduceAggregatorComponent implements OnInit {
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
   }
+  /* END: NON-API Function Calls-------------------------------------------------------------- */
 }

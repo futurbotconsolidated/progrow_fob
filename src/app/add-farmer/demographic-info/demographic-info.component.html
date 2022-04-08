@@ -11,11 +11,11 @@
               <h3 class="form-title">1. Identity proof</h3>
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
-                  <label for="PANnumber">PAN Card Number </label>
-                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="ABWRT0987T" />
+                  <label for="PANnumber">PAN card number </label>
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN card number" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
-                      Please enter valid PAN Number</small>
+                      Please enter valid PAN card number</small>
                   </div>
                 </div>
                 <div class="farmer-details-inner lable-top">
@@ -29,7 +29,7 @@
               <h4>Profile Picture</h4>
               <div class="update-profile">
                 <div class="pro-img">
-                  <img class="profile-pic" [hidden]="!demographicInfoForm.value.profileImg" src="{{demographicInfoForm.value.profileImg}}" />
+                  <img class="profile-pic" [hidden]="!displayFarmerProfileImage" src="{{displayFarmerProfileImage}}" />
                 </div>
                 <div class="pro-update">
                   <a class="avatar" (click)="openFileModalPopup('FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -88,6 +88,19 @@
           </div>
           <div class="form-details">
             <h3 class="form-title">3. Others details</h3>
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label>Voter Id</label>
+                <input type="text" class="form-control" formControlName="voterIdNumber" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('VOTERID')">
+                  Upload Voter Id Image
+                </button>
+              </div>
+            </div>
+
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Passport Number</label>
@@ -251,7 +264,9 @@
                   <label class="required">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="taluk">
                     <option value="">...</option>
+
                     <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation }}">
+
                       {{ indVal.postalLocation }}
                     </option>
                   </select>
@@ -406,7 +421,9 @@
                   <label class="required">Tahsil/Taluka/Mandal</label>
                   <select class="form-select" formControlName="permTaluk">
                     <option value="">...</option>
+
                     <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation }}">
+
                       {{ indVal.postalLocation }}
                     </option>
                   </select>

@@ -4,29 +4,16 @@
             <a routerLink="/bd/dashboard"><img src="../../../assets/images/logo.png" alt=""></a>
         </div>
         <ul class="navigation">
-            <li [class]="lsn_current_url == '/add/concept-cards'? 'active' : ''"><a disabled>Concept Cards</a></li>
-            <li [class]="lsn_current_url == '/add/demographic-info'? 'active' : ''"><a disabled>Demographic Info</a></li>
-            <li [class]="lsn_current_url == '/add/field-info'? 'active' : ''"><a disabled>Field Info</a></li>
-            <li [class]="lsn_current_url == '/add/financial-planning'? 'active' : ''"><a disabled>Financial Planning</a></li>
-            <li [class]="lsn_current_url == '/add/crop-market-plan'? 'active' : ''"><a disabled>Crop Market Plan</a></li>
-            <li [class]="lsn_current_url == '/add/produce-aggregator'? 'active' : ''"><a disabled>FRCM as Produce Aggregator</a></li>
-            <li [class]="lsn_current_url == '/add/technology-adoption'? 'active' : ''"><a disabled>Technology Adoption</a></li>
-            <li [class]="lsn_current_url == '/add/co-applicant'? 'active' : ''"><a disabled>Co-Applicant Details</a></li>
-            <li [class]="lsn_current_url == '/add/info-declaration'? 'active' : ''"><a disabled>Information & Declaration</a></li>
+            <li [class.active]="lsn_current_url.includes('/add/concept-cards')"><a disabled>Concept Cards</a></li>
+            <li [class.active]="lsn_current_url.includes('/add/demographic-info')"><a disabled>Demographic Info</a></li>
+            <li [class.active]="lsn_current_url.includes('/add/field-info')"><a disabled>Field Info</a></li>
+            <li [class.active]="lsn_current_url.includes('/add/financial-planning')"><a disabled>Financial Planning</a></li>
+            <li [class.active]="lsn_current_url.includes('/add/crop-market-plan')"><a disabled>Crop Market Plan</a></li>
+            <li [class.active]="lsn_current_url.includes('/add/produce-aggregator')"><a disabled>FRCM as Produce Aggregator</a></li>
+            <li [class.active]="lsn_current_url.includes('/add/technology-adoption')"><a disabled>Technology Adoption</a></li>
+            <li [class.active]="lsn_current_url.includes('/add/co-applicant')"><a disabled>Co-Applicant Details</a></li>
+            <li [class.active]="lsn_current_url.includes('/add/info-declaration')"><a disabled>Information & Declaration</a></li>
         </ul>
-
-        <!-- <ul class="navigation">
-            <li routerLinkActive="active"><a routerLink="/add/concept-cards">Concept Cards</a></li>
-            <li routerLinkActive="active"><a routerLink="/add/demographic-info">Demographic Info</a></li>
-            <li routerLinkActive="active"><a routerLink="/add/field-info">Field Info</a></li>
-            <li routerLinkActive="active"><a routerLink="/add/financial-planning">Financial Planning</a></li>
-            <li routerLinkActive="active"><a routerLink="/add/crop-market-plan">Crop Market Plan</a></li>
-            <li routerLinkActive="active"><a routerLink="/add/produce-aggregator">FRCM as Produce Aggregator</a></li>
-            <li routerLinkActive="active"><a routerLink="/add/technology-adoption">Technology Adoption</a></li>
-            <li routerLinkActive="active"><a routerLink="/add/co-applicant">Co-Applicant Details</a></li>
-            <li routerLinkActive="active"><a routerLink="/add/info-declaration">Information & Declaration</a></li>
-        </ul> -->
-
     </div>
 </aside>
 <div class="lsn-tv-div" [class]="lsn_tv_show? 'lsn-tv-extend' : 'lsn-tv-collapse'">

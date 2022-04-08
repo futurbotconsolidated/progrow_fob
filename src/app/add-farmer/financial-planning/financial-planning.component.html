@@ -11,7 +11,7 @@
                             <div class="row align-items-center form-details-inner" [formGroupName]="i">
                                 <div class="col-md-1 lable-top">
                                     <label>Field ID</label>
-                                    <input type="text" class="form-control" formControlName="fieldId" value="{{i+1}}" placeholder="{{i+1}}">
+                                    <input type="text" class="form-control text-center" formControlName="fieldId" value="{{i+1}}" placeholder="{{i+1}}">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Crop-Loan Product</label>
@@ -25,7 +25,7 @@
                                     <input type="text" class="form-control" maxlength="3" (keypress)="validateNo($event)" formControlName="plannedCultivationArea">
                                 </div>
                                 <div class="col-md-3 lable-top">
-                                    <label>Amount</label>
+                                    <label>Amount(₹)</label>
                                     <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="hectares">
                                 </div>
                                 <div class="col-md-2 lable-top">
@@ -146,7 +146,52 @@
                         </div>
                         <div class="crop-wise-selling form-details-inner">
                             <h3 class="form-title">B. Season crop wise selling information</h3>
-                            <div class="row form-details-inner">
+                            <div formArrayName="seasonCrop" *ngFor="let item of getSeasonCropControls(); let i = index;">
+                                <div class="display-flex" [formGroupName]="i">
+                                    <div class="flex-1 lable-top">
+                                        <label for="">Season</label>
+                                        <select class="form-select" formControlName="season">
+                                            <option value="">...</option>
+                                            <option *ngFor="let indVal of commonMaster['season']" value="{{indVal}}">{{indVal}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex-1 lable-top">
+                                        <label>Crop</label>
+                                        <select class="form-select" formControlName="crop">
+                                            <option value="">...</option>
+                                            <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">{{indVal}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex-1 lable-top">
+                                        <label>Sold at</label>
+                                        <select class="form-select" formControlName="soldAt">
+                                            <option value="">...</option>
+                                            <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal}}">
+                                                {{indVal}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex-1 lable-top">
+                                        <label for="">Quantity Sold (in KG)</label>
+                                        <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="" formControlName="quantitySold">
+                                    </div>
+                                    <div class="flex-1 lable-top">
+                                        <label for="">Selling Price(₹)</label>
+                                        <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="" formControlName="sellingPrice">
+                                    </div>
+                                    <div class="flex-1 lable-top">
+                                        <label for="">Selling Date</label>
+                                        <input type="date" class="form-control" formControlName="sellingDate">
+                                    </div>
+                                </div>
+                                <div class="flex-1 add-another">
+                                    <a *ngIf="getSeasonCropControls().length!=1  && i!=getSeasonCropControls().length-1" href="javascript:void(0)" class="delete-item " (click)="removeSeasonCrop(i)"><i
+                                            class="fa fa-trash-o text-danger"></i></a>
+                                    <a *ngIf="i==getSeasonCropControls().length-1" href="javascript:void(0)" (click)="addSeasonCrop()">+ Add Another</a>
+                                </div>
+                            </div>
+
+
+                            <!-- <div class="row form-details-inner">
                                 <div class="col-md-3 season-crop">
                                     <div class="">
                                         <p>Kharif 2022</p>
@@ -285,7 +330,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -390,7 +435,7 @@
                             </h3>
                             <div class="row align-items-center">
                                 <div class="col-md-4 lable-top">
-                                    <label>Land Size</label>
+                                    <label>Land Size (in Hectares)</label>
                                     <input type="text" class="form-control" formControlName="loanLandSize">
                                 </div>
                             </div>
@@ -508,7 +553,7 @@
 
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">7. Preferred source of credit outside KCC?<br> <span style="color: #6a6a6a;font-size: 14px;">Specify ROI charged by month (2% per month, 3%
+                        <h3 class="form-title">7. Preferred source of credit outside KCC?<br> <span style="color: #6a6a6a;font-size: 14px;">Specify interest rate (2% per month, 3%
                                 per month, etc.)</span> </h3>
                         <div class="row align-items-center">
                             <div class="advice-cultivation">

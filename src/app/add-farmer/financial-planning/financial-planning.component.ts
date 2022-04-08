@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
@@ -23,10 +23,15 @@ enum SaveStatus {
   templateUrl: './financial-planning.component.html',
   styleUrls: ['./financial-planning.component.css'],
 })
-export class FinancialPlanningComponent implements OnInit {
-  /* START: Variables */
+export class FinancialPlanningComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  /* START: Variables ---------------------------------------------*/
+  private observableSubscription: any;
+
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
+  seasonCrop!: FormArray;
   insuranceDetails!: FormArray;
   nextRoute: any;
 
@@ -61,7 +66,7 @@ export class FinancialPlanningComponent implements OnInit {
   ];
 
   farmerId = ''; // edit feature
-  /* END: Variables */
+  /* END: Variables ---------------------------------------------*/
 
   constructor(
     private formBuilder: FormBuilder,
@@ -122,7 +127,7 @@ export class FinancialPlanningComponent implements OnInit {
       PMFBYAmountPaid: new FormControl(''),
       PMFBYPaymentDate: new FormControl(''),
 
-      insuranceDetails: new FormArray([this.createInsuranceDetails()]),
+      insuranceDetails: new FormArray([]),
 
       preferredCreditSourceRankOrder: new FormControl([]),
       commissionAgentROICharge: new FormControl(''),
@@ -143,18 +148,14 @@ export class FinancialPlanningComponent implements OnInit {
       availedFarmLoanWaiverOther: new FormControl(''),
       ownTractor: new FormControl(''),
       farmMachinery: new FormControl([]),
-      bankDetails: new FormArray([this.createBankDetails()]),
-    });
-
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      this.saveData();
-      console.log(this.nextRoute);
+      bankDetails: new FormArray([]),
+      seasonCrop: new FormArray([]),
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
+  /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
     this.financialMaster = data.financialPlan; // read master data
     this.commonMaster = data.commonData; // read master data
@@ -189,34 +190,101 @@ export class FinancialPlanningComponent implements OnInit {
     // -----------------------End auto save --------------------
     // if case is for EDIT and else case is for NEW/DRAFT
     if (this.farmerId) {
+      var financial_planning = {} as any;
       let editForm: any = localStorage.getItem('edit-financial-planing');
       if (editForm) {
-        editForm = JSON.parse(editForm);
-        this.financialForm.patchValue(editForm);
+        financial_planning = JSON.parse(editForm);        
+        this.editDynamicBindFormArray(financial_planning);
       } else {
-        const A: any = localStorage.getItem('farmer-details');
-        if (A) {
-          const B = JSON.parse(A).financial_planning;
-          this.financialForm.patchValue(B);
+        const farmer_details: any = localStorage.getItem('farmer-details');
+        if (farmer_details) {
+          financial_planning = JSON.parse(farmer_details).financial_planning;          
+          this.editDynamicBindFormArray(financial_planning);
         }
-      }
+      }      
+      let fieldInfo: any = localStorage.getItem('edit-field-info');
+      if (fieldInfo) {
+        fieldInfo = JSON.parse(fieldInfo);
+        fieldInfo.forEach((field_el: any, findex: number) => {
+          var field_data = {} as any;
+          field_data.fieldId = field_el.field_ui_id;
+          field_data.cropLoanProduct = '';
+          field_data.plannedCultivationArea = '';
+          field_data.hectares = ''; 
+          field_data.crop = '';
+          if(financial_planning.loanReqPlaned.length){
+            financial_planning.loanReqPlaned.forEach((fp_load_el: any, fpl_index: number) => {
+              if(field_el.field_ui_id == fp_load_el.fieldId ){
+                field_data.cropLoanProduct = fp_load_el.cropLoanProduct;
+                field_data.plannedCultivationArea = fp_load_el.plannedCultivationArea;
+                field_data.hectares = fp_load_el.hectares;
+                field_data.crop = fp_load_el.crop;
+              }
+            });
+            if(field_data.cropLoanProduct == '' &&
+            field_data.plannedCultivationArea == '' &&
+            field_data.hectares == '' &&
+            field_data.crop == '' && financial_planning.loanReqPlaned[findex]){
+              field_data.cropLoanProduct = financial_planning.loanReqPlaned[findex].cropLoanProduct;
+              field_data.plannedCultivationArea = financial_planning.loanReqPlaned[findex].plannedCultivationArea;
+              field_data.hectares = financial_planning.loanReqPlaned[findex].hectares;
+              field_data.crop = financial_planning.loanReqPlaned[findex].crop;
+            }
+          }
+          this.addLoanReqPlaned(field_data);
+        });
+      }      
     } else {
       let finPlan: any = localStorage.getItem('financial-planing');
       if (finPlan) {
         finPlan = JSON.parse(finPlan);
         this.financialForm.patchValue(finPlan);
-        console.log(finPlan);
       }
 
       let fieldInfo: any = localStorage.getItem('field-info');
       if (fieldInfo) {
         fieldInfo = JSON.parse(fieldInfo);
-        fieldInfo.forEach((element: any) => {
-          this.addLoanReqPlaned();
+        fieldInfo.forEach((field_el: any) => {
+          var field_data = {} as any;
+          field_data.fieldId = field_el.field_ui_id;  
+          field_data.cropLoanProduct = '';     
+          field_data.plannedCultivationArea = '';     
+          field_data.hectares = '';     
+          field_data.crop = '';   
+          this.addLoanReqPlaned(field_data);
         });
       }
     }
+    if(!(this.financialForm.get('bankDetails') as FormArray).controls.length){
+      this.addBankDetails();
+    }
+    if(!(this.financialForm.get('seasonCrop') as FormArray).controls.length){
+      this.addSeasonCrop();
+    }
+    if(!(this.financialForm.get('insuranceDetails') as FormArray).controls.length){
+      this.addInsuranceDetails();
+    }
   }
+
+  ngAfterViewInit(): void {
+    /** subscribe to Observables, which are triggered from header selections*/
+    this.observableSubscription = this.addFarmerService
+      .getMessage()
+      .subscribe((data) => {
+        this.nextRoute = data.routeName;
+        if (this.router.url?.includes('/add/financial-planning')) {
+          this.saveData();
+          console.log(data.routeName);
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    /** unsubscribe from Observables*/
+    this.observableSubscription.unsubscribe();
+  }
+  /* END: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
+  /* START: NON-API Function Calls-------------------------------------------------------------- */
 
   numbersOnlyValidator(event: any) {
     const pattern = /^[0-9\-]*$/;
@@ -233,16 +301,14 @@ export class FinancialPlanningComponent implements OnInit {
     return true;
   }
 
-  ngAfterContentInit() {}
-
   /* START: Add Dynamic crop loan requirement  :FormArray */
-  createLoanReqPlaned(): FormGroup {
+  createLoanReqPlaned(field_data: any): FormGroup {
     return this.formBuilder.group({
-      fieldId: new FormControl('', [Validators.required]),
-      cropLoanProduct: new FormControl('', [Validators.required]),
-      plannedCultivationArea: new FormControl('', [Validators.required]),
-      hectares: new FormControl('', [Validators.required]),
-      crop: new FormControl('', [Validators.required]),
+      fieldId: new FormControl(field_data.fieldId, [Validators.required]),
+      cropLoanProduct: new FormControl(field_data.cropLoanProduct, [Validators.required]),
+      plannedCultivationArea: new FormControl(field_data.plannedCultivationArea, [Validators.required]),
+      hectares: new FormControl(field_data.hectares, [Validators.required]),
+      crop: new FormControl(field_data.crop, [Validators.required]),
     });
   }
 
@@ -250,9 +316,9 @@ export class FinancialPlanningComponent implements OnInit {
     return (this.financialForm.get('loanReqPlaned') as FormArray).controls;
   }
 
-  addLoanReqPlaned(): void {
+  addLoanReqPlaned(field_data: any): void {
     this.loanReqPlaned = this.financialForm.get('loanReqPlaned') as FormArray;
-    this.loanReqPlaned.push(this.createLoanReqPlaned());
+    this.loanReqPlaned.push(this.createLoanReqPlaned(field_data));
   }
 
   removeLoanReqPlaned(index: any) {
@@ -281,6 +347,71 @@ export class FinancialPlanningComponent implements OnInit {
 
   removeBankDetails(index: any) {
     this.bankDetails.removeAt(index);
+  }
+
+  /* START: Add Dynamic season crop: FormArray */
+  createSeasonCrop(): FormGroup {
+    return this.formBuilder.group({
+      season: new FormControl(''),
+      crop: new FormControl(''),
+      soldAt: new FormControl(''),
+      quantitySold: new FormControl(''),
+      sellingPrice: new FormControl(''),
+      sellingDate: new FormControl(''),
+    });
+  }
+
+  getSeasonCropControls() {
+    return (this.financialForm.get('seasonCrop') as FormArray).controls;
+  }
+
+  addSeasonCrop(): void {
+    this.seasonCrop = this.financialForm.get('seasonCrop') as FormArray;
+    this.seasonCrop.push(this.createSeasonCrop());
+  }
+
+  removeSeasonCrop(index: any) {
+    this.seasonCrop.removeAt(index);
+  }
+
+  editDynamicBindFormArray(fieldValues: any) {
+    this.financialForm.patchValue(fieldValues);
+    this.bankDetails = this.financialForm.get('bankDetails') as FormArray;
+    fieldValues.bankDetails.map((item: any) => {
+      this.bankDetails.push(
+        this.formBuilder.group({
+          bankName: new FormControl(item.bankName),
+          accountNum: new FormControl(item.accountNum),
+          IFSCode: new FormControl(item.IFSCode),
+          customerID: new FormControl(item.customerID),
+        })
+      );
+    });
+    this.insuranceDetails = this.financialForm.get('insuranceDetails') as FormArray;
+    fieldValues.insuranceDetails.map((item: any) => {
+      this.insuranceDetails.push(
+        this.formBuilder.group({
+          insuranceType: new FormControl(item.insuranceType),
+          monthYearTaken: new FormControl(item.monthYearTaken),
+          premiumPaid: new FormControl(item.premiumPaid),
+          isSettlementAmountCredited: new FormControl(item.isSettlementAmountCredited),
+          isDisbursementSatisfied: new FormControl(item.isDisbursementSatisfied),
+        })
+      );
+    });
+    this.seasonCrop = this.financialForm.get('seasonCrop') as FormArray;
+    fieldValues.seasonCrop.map((item: any) => {
+      this.seasonCrop.push(
+        this.formBuilder.group({
+          season: new FormControl(item.season),
+          crop: new FormControl(item.crop),
+          soldAt: new FormControl(item.soldAt),
+          quantitySold: new FormControl(item.quantitySold),
+          sellingPrice: new FormControl(item.sellingPrice),
+          sellingDate: new FormControl(item.sellingDate),
+        })
+      );
+    });
   }
   /* END: Add Dynamic Bank Details: FormArray */
 
@@ -346,7 +477,9 @@ export class FinancialPlanningComponent implements OnInit {
         JSON.stringify(this.financialForm.value)
       );
     }
+    console.log(this.financialForm.value);
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
   }
+  /* END: NON-API Function Calls-------------------------------------------------------------- */
 }

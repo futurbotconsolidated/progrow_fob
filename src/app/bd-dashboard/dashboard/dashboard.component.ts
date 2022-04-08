@@ -6,6 +6,7 @@ import * as mapboxgl from 'mapbox-gl';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 import { mapData } from '../../../assets/overlay_data';
 
@@ -25,6 +26,8 @@ export class DashboardComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   searchValue = '';
   lsn_tv_show = false;
+
+  filterType = 'this_month';
   /* END: Variables */
 
   constructor(
@@ -32,10 +35,15 @@ export class DashboardComponent implements OnInit {
     public router: Router,
     public commonService: CommonService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dbService: NgxIndexedDBService
   ) {
     localStorage.removeItem('farmer-details');
     this.userInfo = this.oauthService.getIdentityClaims();
+    const A = localStorage.getItem('filter-value');
+    if (!A) {
+      this.filterType = 'this_month';
+    }
   }
 
   ngOnInit(): void {
@@ -62,26 +70,27 @@ export class DashboardComponent implements OnInit {
       localStorage.setItem('draft_farmers', JSON.stringify(draft_farmers));
       localStorage.removeItem('draft_farmer_new');
     }
-    let obj_search = JSON.parse(localStorage.getItem('search-value') as any);
-    if (obj_search && obj_search.minDate != '' && obj_search.maxDate != '') {
-      this.searchValue = obj_search.searchValue;
-      $.fn['dataTable'].ext.search.push(
-        (settings: any, data: any, dataIndex: any) => {
-          const regDate = data[3];
-          if (regDate && (obj_search.minDate || obj_search.maxDate)) {
-            if (
-              formatDate(regDate, 'yyyy-MM-dd', 'en_IN') >=
-                formatDate(obj_search.minDate, 'yyyy-MM-dd', 'en_IN') &&
-              formatDate(obj_search.maxDate, 'yyyy-MM-dd', 'en_IN') >=
-                formatDate(regDate, 'yyyy-MM-dd', 'en_IN')
-            ) {
-              return true;
-            }
-          }
-          return false;
-        }
-      );
-    }
+
+    // let obj_search = JSON.parse(localStorage.getItem('search-value') as any);
+    // if (obj_search && obj_search.minDate != '' && obj_search.maxDate != '') {
+    //   this.searchValue = obj_search.searchValue;
+    //   $.fn['dataTable'].ext.search.push(
+    //     (settings: any, data: any, dataIndex: any) => {
+    //       const regDate = data[3];
+    //       if (regDate && (obj_search.minDate || obj_search.maxDate)) {
+    //         if (
+    //           formatDate(regDate, 'yyyy-MM-dd', 'en_IN') >=
+    //             formatDate(obj_search.minDate, 'yyyy-MM-dd', 'en_IN') &&
+    //           formatDate(obj_search.maxDate, 'yyyy-MM-dd', 'en_IN') >=
+    //             formatDate(regDate, 'yyyy-MM-dd', 'en_IN')
+    //         ) {
+    //           return true;
+    //         }
+    //       }
+    //       return false;
+    //     }
+    //   );
+    // }
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -91,48 +100,16 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  selectlive(event: any) {
-    let minDate = '' as any;
-    let maxDate = '' as any;
-    let last_date = new Date();
-    if (event.target.value === 'today') {
-      minDate = maxDate = new Date();
-    } else if (event.target.value === 'this_week') {
-      maxDate = new Date();
-      last_date.setDate(last_date.getDate() - 7);
-      minDate = last_date;
-    } else if (event.target.value === 'two_week') {
-      maxDate = new Date();
-      last_date.setDate(last_date.getDate() - 14);
-      minDate = last_date;
-    } else if (event.target.value === 'three_week') {
-      maxDate = new Date();
-      last_date.setDate(last_date.getDate() - 21);
-      minDate = last_date;
-    } else if (event.target.value === 'this_month') {
-      maxDate = new Date();
-      last_date.setDate(last_date.getDate() - 30);
-      minDate = last_date;
-    }
-    const obj_search1 = {
-      minDate: minDate,
-      maxDate: maxDate,
-      searchValue: event.target.value,
-    };
-    localStorage.setItem('search-value', JSON.stringify(obj_search1));
-    window.location.reload();
-  }
-
   /* START: Non-API Function Calls */
   loadData() {
-    this.getExistingFarmers();
     this.clearLocalStorageOnEditAndView();
+    this.getExistingFarmers(this.filterType);
   }
 
   filterFarms(type: string) {
     this.selectedViewType = type;
     if (type == 'EXISTING_FARMS_LIST_VIEW') {
-      if (!this.allExistingFarmers) this.getExistingFarmers();
+      if (!this.allExistingFarmers) this.getExistingFarmers('');
     } else if (type == 'EXISTING_FARMS_MAP_VIEW') {
       this.overlayMap('EXISTING_FARMS_MAP_VIEW');
     } else if (type == 'FARMS_PIPELINE_LIST_VIEW') {
@@ -149,6 +126,7 @@ export class DashboardComponent implements OnInit {
   }
 
   routePage() {
+    // add
     localStorage.removeItem('demographic-info');
     localStorage.removeItem('demographic-info-form');
     localStorage.removeItem('field-info');
@@ -159,8 +137,62 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('technology-adoption');
     localStorage.removeItem('co-applicant');
     localStorage.removeItem('co-applicant-form');
+
+    //  edit
+    localStorage.removeItem('farmer-details'); // related to view and edit of farmer
+    localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
+
+    // clear indexed db data
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
+      console.log('success? ', successDeleted);
+    });
+
+    // clear edit related localStorage variables before starting
+    localStorage.removeItem('edit-demographic-info');
+    localStorage.removeItem('edit-demographic-info-form');
+    localStorage.removeItem('edit-field-info');
+    localStorage.removeItem('edit-field-info-form');
+    localStorage.removeItem('edit-financial-planing');
+    localStorage.removeItem('edit-crop-market-planing');
+    localStorage.removeItem('edit-technology-adoption');
+    localStorage.removeItem('edit-produce-aggregator');
+    localStorage.removeItem('edit-co-applicant');
+    localStorage.removeItem('edit-co-applicant-form');
+
     this.router.navigate(['/add/concept-cards']);
   }
+
+  // selectlive(event: any) {
+  //   let minDate = '' as any;
+  //   let maxDate = '' as any;
+  //   let last_date = new Date();
+  //   if (event.target.value === 'today') {
+  //     minDate = maxDate = new Date();
+  //   } else if (event.target.value === 'this_week') {
+  //     maxDate = new Date();
+  //     last_date.setDate(last_date.getDate() - 7);
+  //     minDate = last_date;
+  //   } else if (event.target.value === 'two_week') {
+  //     maxDate = new Date();
+  //     last_date.setDate(last_date.getDate() - 14);
+  //     minDate = last_date;
+  //   } else if (event.target.value === 'three_week') {
+  //     maxDate = new Date();
+  //     last_date.setDate(last_date.getDate() - 21);
+  //     minDate = last_date;
+  //   } else if (event.target.value === 'this_month') {
+  //     maxDate = new Date();
+  //     last_date.setDate(last_date.getDate() - 30);
+  //     minDate = last_date;
+  //   }
+  //   const obj_search1 = {
+  //     minDate: minDate,
+  //     maxDate: maxDate,
+  //     searchValue: event.target.value,
+  //   };
+  //   localStorage.setItem('search-value', JSON.stringify(obj_search1));
+  //   window.location.reload();
+  // }
 
   overlayMap(type: string) {
     this.spinner.show();
@@ -170,12 +202,12 @@ export class DashboardComponent implements OnInit {
     if (type == 'EXISTING_FARMS_MAP_VIEW') {
       mapViewType = 'existing_farmers_mapbox';
       //useData = mapData['features'];
-      if (!this.allExistingFarmers) this.getExistingFarmers();
+      if (!this.allExistingFarmers) this.getExistingFarmers('');
       useData = this.allExistingFarmers;
     } else if (type == 'FARMS_PIPELINE_MAP_VIEW') {
       mapViewType = 'farms_pipeline_mapbox';
       //useData = mapData['features'];
-      if (!this.allExistingFarmers) this.getExistingFarmers();
+      if (!this.allExistingFarmers) this.getExistingFarmers('');
       useData = this.allExistingFarmers;
     }
     //  Start Overlay Code
@@ -184,7 +216,8 @@ export class DashboardComponent implements OnInit {
       accessToken:
         'pk.eyJ1IjoicHVybmFyYW0iLCJhIjoiY2tpenBvZWpsMDNlaTMzcWpiZ2liZjEydiJ9.Mdj1w5dXDfCGCpIH5MlI2g',
       container: mapViewType, // container ID
-      style: 'mapbox://styles/mapbox/satellite-v9?optimize=true', // style URL
+      style: 'mapbox://styles/mapbox/satellite-streets-v11?optimize=true', // style URL
+      // style: 'mapbox://styles/mapbox/satellite-v9?optimize=true', // style URL
       zoom: 3, // starting zoom
       center: [78, 20],
     });
@@ -255,7 +288,7 @@ export class DashboardComponent implements OnInit {
              <div class="col-md-6 text-left">
                <label class="fw-bold">Date of registration</label>
                <p class="text-capitalize">${formatDate(
-                 elem['registrationDate'],
+                 elem['createdDate'],
                  'EE, MMM d, y',
                  'en_IN'
                )}</p>
@@ -398,119 +431,6 @@ export class DashboardComponent implements OnInit {
     }, 500);
   }
 
-  clearLocalStorageOnEditAndView() {
-    localStorage.removeItem('farmer-details'); // related to view and edit
-
-    // clear edit related localStorage variables before starting
-    localStorage.removeItem('edit-demographic-info');
-    localStorage.removeItem('edit-demographic-info-form');
-    localStorage.removeItem('edit-financial-planing');
-    localStorage.removeItem('edit-crop-market-planing');
-    localStorage.removeItem('edit-produce-aggregator');
-  }
-  /* END: Non-API Function Calls */
-
-  /* START: API Function Calls */
-  getExistingFarmers() {
-    this.spinner.show();
-    this.commonService.getExistingFarmers().subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.message != 'Success' || !res.status) {
-          alert(`${res.message}`);
-        } else {
-          this.allExistingFarmers = res.data;
-        }
-      },
-      (error: any) => {
-        this.spinner.hide();
-        alert('Failed to fetch existing farmers data, please try again...');
-      }
-    );
-  }
-
-  getFarmersPipeline() {
-    // Other Variables
-    const farmersPipeline = [
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '2 - 4 Ha',
-      //   crop_type: 'Mustard',
-      //   frcm_score: '80-100',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '4 - 6 Ha',
-      //   crop_type: 'Cumin',
-      //   frcm_score: '60-80',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '6 - 8 Ha',
-      //   crop_type: 'Mustard',
-      //   frcm_score: '80-100',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '2 - 4 Ha',
-      //   crop_type: 'Cumin',
-      //   frcm_score: '60-80',
-      // },
-      // {
-      //   area_of_interest: 'Chandan',
-      //   farm_size: '4 - 6 Ha',
-      //   crop_type: 'Mustard',
-      //   frcm_score: '60-100',
-      // },
-    ] as any;
-
-    this.allPipelineFarmers = farmersPipeline;
-    return;
-    this.spinner.show();
-    this.commonService.getFarmersPipeline().subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.message != 'Success' || !res.status) {
-          alert('Failed to fetch farmers pipeline data, please try again...');
-        } else {
-          this.allPipelineFarmers = res.data;
-        }
-      },
-      (error: any) => {
-        this.spinner.hide();
-        alert('Failed to fetch farmers pipeline data, please try again...');
-      }
-    );
-  }
-  /* END: API Function Calls */
-
-  getFarmerDetailsById(farmerId: any, type: string) {
-    this.clearLocalStorageOnEditAndView(); // clear unwanted localStorage data
-
-    this.spinner.show();
-    this.commonService.getFarmerDetailsById(farmerId).subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.message != 'Success' || !res.status) {
-          this.toastr.error(`${res.message}!`);
-        } else {
-          localStorage.setItem('farmer-details', JSON.stringify(res.data));
-          if (type === 'view') {
-            this.router.navigate([`/edit/demographic-info/${farmerId}`]);
-          } else if (type === 'edit') {
-            this.router.navigate([`/add/demographic-info/${farmerId}`]);
-          }
-        }
-      },
-      (error: any) => {
-        this.spinner.hide();
-        this.toastr.error(
-          `Failed to fetch farmer details, please try again...`
-        );
-      }
-    );
-  }
-
   editDraftFarmer(farmerId: any) {
     if (localStorage.getItem('draft_farmers')) {
       let draft_farmers = [] as any;
@@ -528,6 +448,12 @@ export class DashboardComponent implements OnInit {
             localStorage.setItem(
               'field-info-form',
               JSON.stringify(dfarm.field_info_form)
+            );
+          }
+          if (dfarm.field_info_coordinates) {
+            localStorage.setItem(
+              'field-info-coordinates',
+              JSON.stringify(dfarm.field_info_coordinates)
             );
           }
           if (dfarm.crop_market_planing) {
@@ -589,4 +515,104 @@ export class DashboardComponent implements OnInit {
   showLeftSide(param: boolean) {
     this.lsn_tv_show = param;
   }
+  onChangeFilter(event: any) {
+    localStorage.setItem('filter-value', event.target.value);
+    this.getExistingFarmers(event.target.value);
+  }
+
+  clearLocalStorageOnEditAndView() {
+    localStorage.removeItem('farmer-details'); // related to view and edit of farmer
+    localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
+
+    // clear edit related localStorage variables before starting
+    localStorage.removeItem('edit-demographic-info');
+    localStorage.removeItem('edit-demographic-info-form');
+    localStorage.removeItem('edit-field-info');
+    localStorage.removeItem('edit-field-info-form');
+    localStorage.removeItem('edit-financial-planing');
+    localStorage.removeItem('edit-crop-market-planing');
+    localStorage.removeItem('edit-technology-adoption');
+    localStorage.removeItem('edit-produce-aggregator');
+    localStorage.removeItem('edit-co-applicant');
+    localStorage.removeItem('edit-co-applicant-form');
+
+    // clear indexed db data
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
+      console.log('success? ', successDeleted);
+    });
+  }
+
+  /* END: Non-API Function Calls */
+
+  /* START: API Function Calls */
+  getExistingFarmers(filterType: string) {
+    this.allExistingFarmers.length = 0;
+    this.spinner.show();
+    this.commonService.getExistingFarmers(filterType).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (res.message != 'Success' || !res.status) {
+          alert(`${res.message}`);
+        } else {
+          this.allExistingFarmers = res.data;
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch existing farmers data, please try again...');
+      }
+    );
+  }
+
+  getFarmersPipeline() {
+    // Other Variables
+    this.allPipelineFarmers = [];
+    return;
+  }
+
+  getFarmerDetailsById(farmerId: any, type: string) {
+    this.clearLocalStorageOnEditAndView(); // clear unwanted localStorage data
+    this.spinner.show();
+    this.commonService.getFarmerDetailsById(farmerId).subscribe(
+      (res: any) => {
+        if (res.message != 'Success' || !res.status) {
+          this.spinner.hide();
+          this.toastr.error(`${res.message}!`);
+        } else {
+          this.getDocumentByFarmerId(farmerId, type); // read farmer related uploaded files
+          localStorage.setItem('farmer-details', JSON.stringify(res.data));
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        this.toastr.error(
+          `Failed to fetch farmer details, please try again...`
+        );
+      }
+    );
+  }
+
+  getDocumentByFarmerId(farmerId: any, type: string) {
+    const inputObject = { farmerId };
+    this.commonService.getDocumentByFarmerId(inputObject).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (type === 'view') {
+          this.router.navigate([`/edit/demographic-info/${farmerId}`]);
+        } else if (type === 'edit') {
+          this.router.navigate([`/add/demographic-info/${farmerId}`]);
+        }
+        if (res.message != 'Success' || !res.status) {
+          this.toastr.error(`${res.message}!`);
+        } else {
+          localStorage.setItem('farmer-files', JSON.stringify(res.data));
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        this.toastr.error(`Failed to fetch farmer files, please try again...`);
+      }
+    );
+  }
+  /* END: API Function Calls */
 }

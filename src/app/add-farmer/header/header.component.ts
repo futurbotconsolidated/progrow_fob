@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
     private location: Location,
     private addFarmerService: AddFarmerService
   ) {
-    if (this.router.url === '/add/info-declaration') {
+    if (this.router.url?.includes('/add/info-declaration')) {
       this.nextButtonHide = false;
     } else {
       this.nextButtonHide = true;

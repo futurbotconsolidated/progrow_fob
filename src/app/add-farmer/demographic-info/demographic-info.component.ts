@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { tap } from 'rxjs/operators';
 import { CommonService } from '../../shared/common.service';
-import { ActivatedRoute } from '@angular/router';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 import {
   FormGroup,
   FormControl,
@@ -32,8 +32,12 @@ function sleep(ms: number): Promise<any> {
   templateUrl: './demographic-info.component.html',
   styleUrls: ['./demographic-info.component.css'],
 })
-export class DemographicInfoComponent implements OnInit {
-  /* START: Varaibles */
+export class DemographicInfoComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  /* START: Varaibles ---------------------------------------------*/
+  private observableSubscription: any;
+
   demoGraphicMaster = <any>{};
   isSubmitted = false;
   fileUpload = {
@@ -60,8 +64,37 @@ export class DemographicInfoComponent implements OnInit {
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
 
+  // indexed db variables
+  displayFarmerProfileImage = '' as any;
+  indexedDBPageName = 'demographic_info';
+  concatePage = 'demographic';
+  indexedDBName = 'registerFarmer';
+  indexedDBFileNameManage = {
+    panCard: {
+      front: `${this.concatePage}_PANCardFront`,
+      back: '',
+    },
+    addressProof: {
+      front: `${this.concatePage}_addressProofFront`,
+      back: `${this.concatePage}_addressProofBack`,
+    },
+    passport: {
+      front: `${this.concatePage}_passportFront`,
+      back: `${this.concatePage}_passportBack`,
+    },
+    NREGA: {
+      front: `${this.concatePage}_NREGAFront`,
+      back: `${this.concatePage}_NREGABack`,
+    },
+    voterId: {
+      front: `${this.concatePage}_voterIdFront`,
+      back: `${this.concatePage}_voterIdBack`,
+    },
+    farmerProfile: { front: `${this.concatePage}_farmerProfileImage` },
+  };
+
   farmerId = ''; // edit feature
-  /* END: Varaibles */
+  /* END: Varaibles ---------------------------------------------*/
 
   constructor(
     public router: Router,
@@ -70,24 +103,13 @@ export class DemographicInfoComponent implements OnInit {
     private toastr: ToastrService,
     public commonService: CommonService,
     private spinner: NgxSpinnerService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private dbService: NgxIndexedDBService
   ) {
     // create form group
     this.demographicInfoForm = this.formBuilder.group({
-      profileImg: new FormControl(''),
-      addressProof: new FormControl('', [Validators.required]),
-      addressProofFrontImage: new FormControl(''),
-      addressProofBackImage: new FormControl(''),
       salutation: new FormControl(''),
       firstName: new FormControl('', [Validators.required]),
-      PANnumber: new FormControl('', [validatePANNumber]),
-      PANFrontImage: new FormControl(''),
-      passportNumber: new FormControl(''),
-      passportFrontImage: new FormControl(''),
-      passportBackImage: new FormControl(''),
-      NREGANumber: new FormControl(''),
-      NREGAFrontImage: new FormControl(''),
-      NREGABackImage: new FormControl(''),
       middleName: new FormControl(''),
       lastName: new FormControl(''),
       dob: new FormControl(''),
@@ -149,14 +171,27 @@ export class DemographicInfoComponent implements OnInit {
       sourceOfIncomeOther: new FormControl(''),
       agriculturalInterest: new FormControl(''),
       innovativeWaysFarming: [Array()],
+
+      addressProof: new FormControl('', [Validators.required]),
+      PANnumber: new FormControl('', [validatePANNumber]),
+      passportNumber: new FormControl(''),
+      voterIdNumber: new FormControl(''),
+      NREGANumber: new FormControl(''),
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
+    console.log(this.farmerId);
   }
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
+    // this.getKycData();
     this.demoGraphicMaster = data.demoGraphic; // read master data
+
+    // populate
+    this.commonService.fetchFarmerDocument(
+      this.indexedDBFileNameManage.farmerProfile.front
+    );
 
     // ----------------------- Start auto save --------------------
     // draft feature is not required in edit operation
@@ -193,6 +228,35 @@ export class DemographicInfoComponent implements OnInit {
       if (editForm) {
         editForm = JSON.parse(editForm);
         this.demographicInfoForm.patchValue(editForm);
+
+        //  call pincode apis again when we come back to the page again
+        if (this.val.pinCode) {
+          this.getPinCodeData(
+            { target: { value: this.val.pinCode } },
+            'ADDRESS'
+          );
+        }
+        if (this.val.permPincode) {
+          this.getPinCodeData(
+            { target: { value: this.val.permPincode } },
+            'PERMANENT_ADDRESS'
+          );
+        }
+
+        // patch farmer Profile image
+        this.dbService
+          .getByIndex(
+            this.indexedDBName,
+            'fileFor',
+            `${this.indexedDBFileNameManage.farmerProfile.front}`
+          )
+          .subscribe((farmer: any) => {
+            this.displayFarmerProfileImage =
+              farmer?.file ||
+              this.commonService.fetchFarmerDocument(
+                this.indexedDBFileNameManage.farmerProfile.front
+              );
+          });
       } else {
         this.patchFarmerDetails(); // bind/patch fresh api data
       }
@@ -202,24 +266,59 @@ export class DemographicInfoComponent implements OnInit {
         demoInfo = JSON.parse(demoInfo);
         this.demographicInfoForm.patchValue(demoInfo);
 
+        //  call pincode apis again when we come back to the page again
+        if (this.val.pinCode) {
+          this.getPinCodeData(
+            { target: { value: this.val.pinCode } },
+            'ADDRESS'
+          );
+        }
+        if (this.val.permPincode) {
+          this.getPinCodeData(
+            { target: { value: this.val.permPincode } },
+            'PERMANENT_ADDRESS'
+          );
+        }
+
         // this.familyMembers = this.demographicInfoForm.get(
         //   'familyMembers'
         // ) as FormArray;
         // demoInfo.familyMembers.forEach((x: any) => {
-        //   this.familyMembers.push(this.formBuilder.group(x));
+        //   this.demographicInfoForm.controls.familyMembers.push({
+        //     name: new FormControl(x.name),
+        //     relation: new FormControl(''),
+        //     education: new FormControl(''),
+        //     occupation: new FormControl(''),
+        //     dependency: new FormControl(''),
+        //   }
         // });
       }
     }
   }
   ngAfterViewInit(): void {
-    this.addFarmerService.getMessage().subscribe((data) => {
-      this.nextRoute = data.routeName;
-      this.validateAndNext();
-    });
+    /** subscribe to Observables, which are triggered from header selections*/
+    this.observableSubscription = this.addFarmerService
+      .getMessage()
+      .subscribe((data) => {
+        this.nextRoute = data.routeName;
+        if (this.router.url?.includes('/add/demographic-info')) {
+          this.validateAndNext();
+          console.log(data.routeName);
+        }
+      });
   }
+
+  ngOnDestroy(): void {
+    /** unsubscribe from Observables*/
+    this.observableSubscription.unsubscribe();
+  }
+
   // convenience getter for easy access to form fields
   get f() {
     return this.demographicInfoForm.controls;
+  }
+  get val() {
+    return this.demographicInfoForm.value;
   }
   /* END: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
 
@@ -307,6 +406,7 @@ export class DemographicInfoComponent implements OnInit {
     }
   }
 
+  /* START: functions used indexed-db ============================================ */
   openFileModalPopup(type: string) {
     this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
@@ -323,8 +423,19 @@ export class DemographicInfoComponent implements OnInit {
       }
       this.fileUpload.popupTitle = 'Upload PAN Card Image';
       this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.demographicInfoForm.value.PANFrontImage || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.panCard.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.panCard.front
+            );
+        });
     } else if (type === 'ADDRESS_PROOF') {
       if (!this.demographicInfoForm.value.addressProof) {
         this.toastr.error('please select Address Proof Type.', 'Error!');
@@ -334,10 +445,34 @@ export class DemographicInfoComponent implements OnInit {
       this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.demographicInfoForm.value.addressProofFrontImage || '';
-      this.fileUpload.new.imageSrc2 =
-        this.demographicInfoForm.value.addressProofBackImage || '';
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.addressProof.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.addressProof.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.addressProof.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.addressProof.back
+            );
+        });
     } else if (type === 'PASSPORT') {
       if (!this.demographicInfoForm.value.passportNumber) {
         this.toastr.error('please enter Passport Number.', 'Error!');
@@ -346,10 +481,34 @@ export class DemographicInfoComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload Passport Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.demographicInfoForm.value.passportFrontImage || '';
-      this.fileUpload.new.imageSrc2 =
-        this.demographicInfoForm.value.passportBackImage || '';
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.passport.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.passport.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.passport.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.passport.back
+            );
+        });
     } else if (type === 'NREGA') {
       if (!this.demographicInfoForm.value.NREGANumber) {
         this.toastr.error('please enter NREGA Number.', 'Error!');
@@ -358,16 +517,87 @@ export class DemographicInfoComponent implements OnInit {
       this.fileUpload.popupTitle = 'Upload NREGA Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.demographicInfoForm.value.NREGAFrontImage || '';
-      this.fileUpload.new.imageSrc2 =
-        this.demographicInfoForm.value.NREGABackImage || '';
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.NREGA.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.NREGA.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.NREGA.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.NREGA.back
+            );
+        });
+    } else if (type === 'VOTERID') {
+      if (!this.demographicInfoForm.value.voterIdNumber) {
+        this.toastr.error('please enter Voter Id Number.', 'Error!');
+        return;
+      }
+      this.fileUpload.popupTitle = 'Upload Voter Id Image';
+      this.fileUpload.new.isImage1Required = true;
+      this.fileUpload.new.isImage2Required = true;
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.voterId.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.voterId.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.voterId.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.voterId.back
+            );
+        });
     } else if (type === 'FARMER_PROFILE') {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.imageSrc1 =
-        this.demographicInfoForm.value.profileImg || '';
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.farmerProfile.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.farmerProfile.front
+            );
+          this.displayFarmerProfileImage = farmer?.file;
+        });
     }
     $('#fileUploadModalPopup').modal('show');
   }
@@ -386,136 +616,161 @@ export class DemographicInfoComponent implements OnInit {
         return;
       }
 
+      /* START: reading file and Patching the Selected File */
+      let selectedImageFor = '';
       reader.readAsDataURL(file);
       reader.onload = () => {
         const imageSrc = reader.result;
 
         if (this.fileUpload.fileFor === 'PAN' && type == 'FRONT_IMAGE') {
           this.fileUpload.new.imageSrc1 = imageSrc;
-          this.demographicInfoForm.patchValue({
-            PANFrontImage: imageSrc,
-          });
+          selectedImageFor = this.indexedDBFileNameManage.panCard.front;
         } else if (this.fileUpload.fileFor === 'ADDRESS_PROOF') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.demographicInfoForm.patchValue({
-              addressProofFrontImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.addressProof.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            this.demographicInfoForm.patchValue({
-              addressProofBackImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.addressProof.back;
           }
         } else if (this.fileUpload.fileFor === 'PASSPORT') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.demographicInfoForm.patchValue({
-              passportFrontImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.passport.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            this.demographicInfoForm.patchValue({
-              passportBackImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.passport.back;
           }
         } else if (this.fileUpload.fileFor === 'NREGA') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.demographicInfoForm.patchValue({
-              NREGAFrontImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.NREGA.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
-            this.demographicInfoForm.patchValue({
-              NREGABackImage: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.NREGA.back;
+          }
+        } else if (this.fileUpload.fileFor === 'VOTERID') {
+          if (type === 'FRONT_IMAGE') {
+            this.fileUpload.new.imageSrc1 = imageSrc;
+            selectedImageFor = this.indexedDBFileNameManage.voterId.front;
+          } else if (type === 'BACK_IMAGE') {
+            this.fileUpload.new.imageSrc2 = imageSrc;
+            selectedImageFor = this.indexedDBFileNameManage.voterId.back;
           }
         } else if (this.fileUpload.fileFor === 'FARMER_PROFILE') {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            this.demographicInfoForm.patchValue({
-              profileImg: imageSrc,
-            });
+            selectedImageFor = this.indexedDBFileNameManage.farmerProfile.front;
+            this.displayFarmerProfileImage = imageSrc;
           }
         }
+
+        /* START: ngx-indexed-db feature to store files(images/docs) */
+        // if file already exist then delete then add
+        this.dbService
+          .getByIndex(this.indexedDBName, 'fileFor', selectedImageFor)
+          .subscribe((file: any) => {
+            if (file && file !== undefined && Object.keys(file).length) {
+              // delete if exists
+              this.dbService
+                .deleteByKey(this.indexedDBName, file.id)
+                .subscribe((status) => {});
+              // then add new
+              this.dbService
+                .add(this.indexedDBName, {
+                  pageName: this.indexedDBPageName,
+                  fileFor: selectedImageFor,
+                  file: imageSrc,
+                })
+                .subscribe((key) => {});
+            } else {
+              // add new
+              this.dbService
+                .add(this.indexedDBName, {
+                  pageName: this.indexedDBPageName,
+                  fileFor: selectedImageFor,
+                  file: imageSrc,
+                })
+                .subscribe((key) => {});
+            }
+          });
+        /* END: ngx-indexed-db feature to store files(images/docs) */
       };
+      /* END: reading file and Patching the Selected File */
     }
   }
+
   removeImage(event: any, type: string) {
     if (type == 'FARMER_PROFILE') {
-      this.demographicInfoForm.patchValue({
-        profileImg: '',
-      });
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          this.indexedDBFileNameManage.farmerProfile.front
+        )
+        .subscribe((file: any) => {
+          if (file && file !== undefined && Object.keys(file).length) {
+            // delete if exists
+            this.dbService
+              .deleteByKey(this.indexedDBName, file.id)
+              .subscribe((status) => {
+                if (status) this.displayFarmerProfileImage = '';
+              });
+          }
+        });
     }
   }
 
-  // setDynamicValidators(event: any, formCtlName: string) {
-  //   if (this.f[formCtlName].value === 'different_address') {
-  //     this.demographicInfoForm.controls['permAddressLine1'].setValidators([
-  //       Validators.required,
-  //     ]);
-  //     this.demographicInfoForm.controls['permTaluk'].setValidators([
-  //       Validators.required,
-  //     ]);
-  //     this.demographicInfoForm.controls['permCity'].setValidators([
-  //       Validators.required,
-  //     ]);
-  //     this.demographicInfoForm.controls['permPincode'].setValidators([
-  //       Validators.required,
-  //       Validators.minLength(6),
-  //       Validators.maxLength(6),
-  //     ]);
-  //     this.demographicInfoForm.controls['permState'].setValidators([
-  //       Validators.required,
-  //     ]);
-  //   } else {
-  //     this.demographicInfoForm.controls['permAddressLine1'].clearValidators();
-  //     this.demographicInfoForm.controls['permTaluk'].clearValidators();
-  //     this.demographicInfoForm.controls['permCity'].clearValidators();
-  //     this.demographicInfoForm.controls['permPincode'].clearValidators();
-  //     this.demographicInfoForm.controls['permState'].clearValidators();
-  //   }
-
-  //   // call below function for update the form controls it will be effect immediately on the form controls.
-  //   this.demographicInfoForm.controls[
-  //     'permAddressLine1'
-  //   ].updateValueAndValidity();
-  //   this.demographicInfoForm.controls['permTaluk'].updateValueAndValidity();
-  //   this.demographicInfoForm.controls['permCity'].updateValueAndValidity();
-  //   this.demographicInfoForm.controls['permPincode'].updateValueAndValidity();
-  //   this.demographicInfoForm.controls['permState'].updateValueAndValidity();
-  //   console.log(
-  //     event.target.value,
-  //     this.demographicInfoForm.controls[formCtlName].value
-  //   );
-  //   console.log(this.demographicInfoForm);
-  // }
+  getIndexedDBImage(type: string) {
+    if (type == 'FARMER_PROFILE') {
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          this.indexedDBFileNameManage.farmerProfile.front
+        )
+        .subscribe((file: any) => {
+          if (file && file !== undefined && Object.keys(file).length) {
+            this.displayFarmerProfileImage = file.file;
+          }
+        });
+    }
+  }
+  /* END: functions used indexed-db ============================================ */
 
   // patch edit farmer details
   patchFarmerDetails() {
-    const A: any = localStorage.getItem('farmer-details');
+    // patch farmer Profile image
+    this.dbService
+      .getByIndex(
+        this.indexedDBName,
+        'fileFor',
+        `${this.indexedDBFileNameManage.farmerProfile.front}`
+      )
+      .subscribe((farmer: any) => {
+        console.log(farmer);
 
+        this.displayFarmerProfileImage =
+          farmer?.file ||
+          this.commonService.fetchFarmerDocument(
+            this.indexedDBFileNameManage.farmerProfile.front
+          );
+      });
+
+    // other details
+    const A: any = localStorage.getItem('farmer-details');
     if (A) {
       const B = JSON.parse(A).demographic_info;
       // create form group
       this.demographicInfoForm.patchValue({
-        profileImg: B.profileImg,
-        addressProof: B.addressProof['selectedIdProof'],
-        addressProofFrontImage: B.addressProof['selectedIdProofFrontImg'],
-        addressProofBackImage: B.addressProof['selectedIdProofBackImg'],
         salutation: B.farmerDetails['salutation'],
         firstName: B.farmerDetails['firstName'],
+
+        addressProof: B.addressProof['selectedIdProof'],
         PANnumber: B.identityProof['panNumber'],
-        PANFrontImage: B.identityProof['panImg'],
-
         passportNumber: B.identityProof['passportNumber'],
-        passportFrontImage: B.identityProof['passportFrontImage'],
-        passportBackImage: B.identityProof['passportBackImage'],
-
+        voterIdNumber: B.identityProof['voterIdNumber'],
         NREGANumber: B.identityProof['NREGANumber'],
-        NREGAFrontImage: B.identityProof['NREGAFrontImage'],
-        NREGABackImage: B.identityProof['NREGABackImage'],
 
         middleName: B.farmerDetails['middleName'],
         lastName: B.farmerDetails['lastName'],
@@ -553,8 +808,8 @@ export class DemographicInfoComponent implements OnInit {
         propertyStatus: B.propertyStatus,
         monthlyRent: B.monthlyRent,
         commOrPerAddress: B.permAddress?.commOrPerAddress,
-        // familyMembers: '',
-        // propertyOwnership: '',
+        familyMembers: B.familyMembers,
+        propertyOwnership: B.propertyOwnership,
         phoneType: B.phoneType,
         phoneOperating: B.phoneUsedBy,
         cultivationAdvice: B.cultivationAdvice,
@@ -566,10 +821,25 @@ export class DemographicInfoComponent implements OnInit {
         agriculturalInterest: B.agricultureChildrenInterested,
         innovativeWaysFarming: B.innovativeFarmingWays,
       });
+
+      if (B.address['pincode']) {
+        this.getPinCodeData(
+          { target: { value: B.address['pincode'] } },
+          'ADDRESS'
+        );
+      }
+      if (B.permAddress?.pincode) {
+        this.getPinCodeData(
+          { target: { value: B.permAddress?.pincode } },
+          'PERMANENT_ADDRESS'
+        );
+      }
     }
   }
 
   validateAndNext() {
+    console.log(this.demographicInfoForm);
+
     this.isSubmitted = true;
     if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
@@ -577,31 +847,14 @@ export class DemographicInfoComponent implements OnInit {
     } else {
       const formValue = this.demographicInfoForm.value;
       const obj = {
-        // profileImg: '',
-        profileImg: formValue.profileImg,
         identityProof: {
           panNumber: formValue.PANnumber,
-          panImg: '',
-          // panImg: formValue.PANFrontImage,
-
           passportNumber: formValue.passportNumber,
-          passportFrontImage: '',
-          passportBackImage: '',
-          // passportFrontImage: formValue.passportFrontImage,
-          // passportBackImage: formValue.passportBackImage,
-
           NREGANumber: formValue.NREGANumber,
-          NREGAFrontImage: '',
-          NREGABackImage: '',
-          // NREGAFrontImage: formValue.NREGAFrontImage,
-          // NREGABackImage: formValue.NREGABackImage,
+          voterIdNumber: formValue.voterIdNumber,
         },
         addressProof: {
           selectedIdProof: formValue.addressProof,
-          selectedIdProofFrontImg: '',
-          selectedIdProofBackImg: '',
-          // selectedIdProofFrontImg: formValue.addressProofFrontImage,
-          // selectedIdProofBackImg: formValue.addressProofBackImage,
         },
         farmerDetails: {
           salutation: formValue.salutation,
@@ -679,18 +932,21 @@ export class DemographicInfoComponent implements OnInit {
       this.router.navigate([url]);
     }
   }
+
   /* END: NON-API Function Calls------------------------------------------------------------------------ */
 
   /* START: API Function Calls-------------------------------------------------------------------------- */
   getPinCodeData(event: any, type: string) {
+    console.log(event, type);
+
     // clear values
-    if (type === 'ADDRESS') {
+    if (type === 'ADDRESS' && !this.farmerId) {
       this.demographicInfoForm.patchValue({
         city: '',
         state: '',
       });
       this.pinCodeAPIData.length = 0;
-    } else if (type === 'PERMANENT_ADDRESS') {
+    } else if (type === 'PERMANENT_ADDRESS' && !this.farmerId) {
       this.demographicInfoForm.patchValue({
         permCity: '',
         permState: '',
@@ -705,7 +961,7 @@ export class DemographicInfoComponent implements OnInit {
         (res: any) => {
           this.spinner.hide();
           if (res && !res.status) {
-            alert(`${res.message}`);
+            alert(`${res[0].Message}`);
           } else {
             if (type === 'ADDRESS') {
               this.pinCodeAPIData = res.result;
@@ -729,5 +985,30 @@ export class DemographicInfoComponent implements OnInit {
       );
     }
   }
+
+  getKycData() {
+    // event: any, type: string, value: string
+    const INPUT_OBJ = {
+      id_type: 'PAN',
+      id_no: 'HRLPK3534C',
+    };
+    // console.log(event, type, value);
+    this.spinner.show();
+    this.commonService.getKycData(INPUT_OBJ).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (res && !res.status) {
+          alert(`${res[0].Message}`);
+        } else {
+          console.log(res);
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch KYC Details, please try againn...');
+      }
+    );
+  }
+
   /* END: API Function Calls---------------------------------------------------------------------------- */
 }
