@@ -82,6 +82,22 @@ export class CommonService {
       }
     );
   }
+
+  getDownloadCsv(filterValue: string) {
+    const input_obj = {
+      Bd_Id: String(this.userInfo['custom:access_type']),
+      Filter_Type: filterValue,
+    };
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(this.baseUrl + this.endPoints.downloadCsv,
+      input_obj, {
+      headers,
+    });
+  }
+
   /* END: API Calls */
 
   /* START: Non-API Calls */

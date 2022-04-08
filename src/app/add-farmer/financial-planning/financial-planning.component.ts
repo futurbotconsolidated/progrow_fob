@@ -235,6 +235,11 @@ export class FinancialPlanningComponent
         });
       }      
     } else {
+      let draftFarmerNew: any = localStorage.getItem('draft_farmer_new');
+      var draftFarmerNewObj: any = JSON.parse(draftFarmerNew) || {};
+      if(draftFarmerNewObj.financial_planing){
+        this.editDynamicBindFormArray(draftFarmerNewObj.financial_planing);
+      } else {
       let finPlan: any = localStorage.getItem('financial-planing');
       if (finPlan) {
         finPlan = JSON.parse(finPlan);
@@ -254,6 +259,7 @@ export class FinancialPlanningComponent
           this.addLoanReqPlaned(field_data);
         });
       }
+    }
     }
     if(!(this.financialForm.get('bankDetails') as FormArray).controls.length){
       this.addBankDetails();

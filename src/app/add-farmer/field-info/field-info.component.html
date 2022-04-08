@@ -326,7 +326,7 @@
                             <div class="row align-items-center form-details-inner" [formGroupName]="i">
                                 <div class="col-md-1 lable-top">
                                     <label>Field ID</label>
-                                    <select class="form-select" formControlName="fieldId">
+                                    <select class="form-select text-center" formControlName="fieldId">
                                         <option value="">...</option>
                                         <option *ngFor="let indVal of this.fieldIndexMapIds;let fimi = index; " value="{{indVal.field_index+1}}">{{indVal.field_index+1}}</option>
                                     </select>
