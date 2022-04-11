@@ -14,16 +14,12 @@
               <h3 class="form-title">1. Identity proof</h3>
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
-                  <<<<<<< HEAD <label for="PANnumber">PAN Card number </label>
-                    <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN Number" />
-                    =======
-                    <label for="PANnumber">PAN card number </label>
-                    <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN card number" />
-                    >>>>>>> 4dd791d59cb882720876b9a389a0bdb980a4f2ad
-                    <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
-                      <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
-                        Please enter valid PAN Number</small>
-                    </div>
+                  <label for="PANnumber">PAN card number </label>
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN card number" />
+                  <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
+                    <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
+                      Please enter valid PAN Number</small>
+                  </div>
                 </div>
                 <div class="farmer-details-inner lable-top">
                   <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PAN')"> Upload PAN card Image
