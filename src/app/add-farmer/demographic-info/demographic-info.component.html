@@ -6,33 +6,59 @@
       <div class="text-center">{{ saveStatus }}</div>
       <div class="demographic-info-form">
         <form [formGroup]="demographicInfoForm">
+          <!-- Question [1, PAN & Profile] -->
           <div class="demographic-info-left">
+            <!-- START: PAN EKYC & Image Upload -------------------------------------------------------------------->
             <div class="left-info">
               <h3 class="form-title">1. Identity proof</h3>
-              <div class="farmer-details">
+              <div class="farmer-details mb-2 ">
+                <!-- PAN Card Field -->
                 <div class="farmer-details-inner lable-top">
                   <label for="PANnumber">PAN Card Number </label>
-                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN Number" />
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN Number" [readonly]="kycData.pan.isVerified" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
                       Please enter valid PAN Number</small>
                   </div>
                 </div>
+                <!-- KYC Buttons -->
                 <div class="lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!demoGraphicKycData.pan.showVerify" (click)="getKycData($event,kycProofNames.pan)">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.pan.showVerify" (click)="getKycData($event,kycProofNames.pan)">
                     {{kycFieldButtonLabels.verify}}</button>
-                  <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!demoGraphicKycData.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
                     {{kycFieldButtonLabels.verified}}</button>
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!demoGraphicKycData.pan.showTryAgain"> <i class="fa fa-undo" aria-hidden="true"></i>
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.pan.showTryAgain" (click)="getKycData($event,kycProofNames.pan)"> <i
+                      class="fa fa-undo" aria-hidden="true"></i>
                     {{kycFieldButtonLabels.try_again}}</button>
                 </div>
+                <!-- Image Upload Button modal-->
                 <div class="lable-top">
-                  <!-- Button trigger modal -->
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PAN')"> Upload Image
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.panCard)"> Upload Image
                   </button>
                 </div>
               </div>
+
+              <!-- START: show PAN kyc api data with confirm button -->
+              <small class="text-decoration-underline" [hidden]="!objectKeyCount(kycData.pan.data)" data-bs-toggle="collapse" data-bs-target="#demoGraphicPanKYCArea" aria-expanded="false"
+                aria-controls="demoGraphicPanKYCArea">
+                Show/Hide details
+              </small>
+              <div class="collapse" id="demoGraphicPanKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Full Name:</b> {{kycData.pan.data['full_name']}}</p>
+                    <p><b>Category:</b> {{kycData.pan.data['category']}}</p>
+                    <p><b>Status:</b> {{kycData.pan.data['status']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.pan.showConfirm" (click)="setKycDataVariables(kycProofNames.pan,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+              <!-- END: show PAN kyc api data with confirm button -->
             </div>
+            <!-- END: PAN EKYC & Image Upload -------------------------------------------------------------------->
+
+            <!-- Profile Picture Upload -->
             <div class="profile-picture">
               <h4>Profile Picture</h4>
               <div class="update-profile">
@@ -40,7 +66,7 @@
                   <img class="profile-pic" [hidden]="!displayFarmerProfileImage" src="{{displayFarmerProfileImage}}" />
                 </div>
                 <div class="pro-update">
-                  <a class="avatar" (click)="openFileModalPopup('FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <a class="avatar" (click)="openFileModalPopup(fileUploadFileFor.farmerProfile)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -53,7 +79,7 @@
                         d="M9.827,21.763,14.31,14l3.532,6.117a10.023,10.023,0,0,1-8.015,1.646ZM7.89,21.12A10.028,10.028,0,0,1,2.458,15h8.965L7.89,21.119ZM2.05,13A9.964,9.964,0,0,1,4.633,5.239L9.112,13ZM6.159,3.883a10.021,10.021,0,0,1,8.014-1.646L9.69,10,6.159,3.883Zm9.951-1A10.028,10.028,0,0,1,21.542,9H12.577L16.11,2.881ZM21.95,11a9.964,9.964,0,0,1-2.583,7.761L14.888,11h7.064Z" />
                     </svg><span>Retake</span></a>
 
-                  <a (click)="removeImage($event,'FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <a (click)="removeImage($event,this.fileUploadFileFor.farmerProfile)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -69,46 +95,129 @@
               </div>
             </div>
           </div>
+
+          <!-- Question [2] -->
           <div class="form-details">
             <h3 class="form-title">2. Address proof</h3>
+
+            <!-- START: Aadhaar EKYC & Image Upload -------------------------------------------------------------------->
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
-                <label class="required">Select ID</label>
-                <select class="flex-1 form-select" formControlName="addressProof">
-                  <option value="">...</option>
-                  <option *ngFor="let indVal of demoGraphicMaster['addressProofType']" value="{{ indVal }}">
-                    {{ indVal }}
-                  </option>
-                </select>
-                <div *ngIf="isSubmitted && f['addressProof'].errors" class="form-text text-danger">
-                  <small *ngIf="f['addressProof'].errors['required']">
-                    Address Proof is required</small>
+                <label for="PANnumber">Aadhaar Number </label>
+                <input type="text" class="form-control" id="aadhaarNumber" formControlName="aadhaarNumber" placeholder="Enter Aadhaar Number" />
+              </div>
+
+              <div class="lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.aadhaarCard)"> Upload Image
+                </button>
+              </div>
+            </div>
+            <!-- END: Aadhaar EKYC & Image Upload ---------------------------------------------------------------------->
+
+            <!-- START:  DRIVING LICENSE EKYC & Image Upload ----------------------------------------------------------->
+            <div class="farmer-details mb-2">
+              <div class="farmer-details-inner lable-top">
+                <label for="drivingLicenceNumber">Driving Licence Number </label>
+                <input type="text" class="form-control" id="drivingLicenceNumber" formControlName="drivingLicenceNumber" placeholder="Enter Driving Licence Number"
+                  [readonly]="kycData.driving_licence.isVerified" />
+              </div>
+
+              <!-- KYC Buttons -->
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.driving_licence.showVerify" (click)="getKycData($event,kycProofNames.driving_licence)">
+                  {{kycFieldButtonLabels.verify}}</button>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.driving_licence.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.verified}}</button>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.driving_licence.showTryAgain"
+                  (click)="getKycData($event,kycProofNames.driving_licence)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.try_again}}</button>
+              </div>
+              <div class="lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.drivingLicence)"> Upload Image
+                </button>
+              </div>
+            </div>
+
+            <!-- START: show DRIVING LICENSE kyc api data with confirm button -->
+            <div class="">
+              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.driving_licence.data)" data-bs-toggle="collapse" data-bs-target="#demoGraphicDrivingLicenceKYCArea"
+                aria-expanded="false" aria-controls="demoGraphicDrivingLicenceKYCArea">
+                Show/Hide details
+              </small>
+
+              <div class="collapse" id="demoGraphicDrivingLicenceKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Holder's Name:</b> {{kycData.driving_licence.data['Holder\'s Name']}}</p>
+                    <p><b>Initial Issue Date:</b> {{kycData.driving_licence.data['Initial Issue Date']}}</p>
+                    <p><b>Initial Issuing Office:</b> {{kycData.driving_licence.data['Initial Issuing Office']}}</p>
+                    <p><b>Current Status:</b> {{kycData.driving_licence.data['Current Status']}}</p>
+                    <p><b>Old / New DL No.:</b> {{kycData.driving_licence.data['Old / New DL No.']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.driving_licence.showConfirm"
+                      (click)="setKycDataVariables(kycProofNames.driving_licence,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
                 </div>
               </div>
-              <div class="farmer-details-inner lable-top">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('ADDRESS_PROOF')">
-                  Upload Address Proof Image
-
-                </button>
-              </div>
             </div>
+            <!-- END: show DRIVING LICENSE kyc api data with confirm button -->
           </div>
+          <!-- END:  DRIVING LICENSE EKYC & Image Upload ----------------------------------------------------------->
+
+
+          <!-- Question [3] -->
           <div class="form-details">
             <h3 class="form-title">3. Others details</h3>
-            <div class="farmer-details">
+            <!-- START: Voter Id EKYC & Image Upload ----------------------------------------------------------->
+            <div class="farmer-details mb-2">
               <div class="farmer-details-inner lable-top">
                 <label>Voter Id</label>
-                <input type="text" class="form-control" formControlName="voterIdNumber" />
+                <input type="text" class="form-control" formControlName="voterIdNumber" [readonly]="kycData.voter_id.isVerified" />
+              </div>
+              <!-- KYC Buttons -->
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.voter_id.showVerify" (click)="getKycData($event,kycProofNames.voter_id)">
+                  {{kycFieldButtonLabels.verify}}</button>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.voter_id.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.verified}}</button>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.voter_id.showTryAgain" (click)="getKycData($event,kycProofNames.voter_id)"> <i
+                    class="fa fa-undo" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.try_again}}</button>
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('VOTERID')">
-                  Upload Voter Id Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.voterId)">
+                  Upload Image
                 </button>
               </div>
             </div>
+            <!-- START: show Voter Id kyc api data with confirm button -->
+            <div class="mb-4">
+              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.voter_id.data)" data-bs-toggle="collapse" data-bs-target="#demoGraphicVoterIdKYCArea"
+                aria-expanded="false" aria-controls="demoGraphicVoterIdKYCArea">
+                Show/Hide details
+              </small>
+              <div class="collapse" id="demoGraphicVoterIdKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Name:</b> {{kycData.voter_id.data['name']}}</p>
+                    <p><b>Age:</b> {{kycData.voter_id.data['age']}}</p>
+                    <p><b>Taluk:</b> {{kycData.voter_id.data['ac_name']}}</p>
+                    <p><b>District:</b> {{kycData.voter_id.data['dist_name']}}</p>
+                    <p><b>State:</b> {{kycData.voter_id.data['st_name']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.voter_id.showConfirm"
+                      (click)="setKycDataVariables(kycProofNames.voter_id,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: show Voter Id kyc api data with confirm button -->
+            <!-- END: Voter Id EKYC & Image Upload ----------------------------------------------------------->
 
+            <!-- START:  Passport Image Upload ----------------------------------------------------------->
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Passport Number</label>
@@ -116,11 +225,14 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PASSPORT')">
-                  Upload Passport Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.passport)">
+                  Upload Image
                 </button>
               </div>
             </div>
+            <!-- END:  Passport Image Upload ----------------------------------------------------------->
+
+            <!-- START:  NREGA Image Upload ----------------------------------------------------------->
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>NREGA Number</label>
@@ -128,15 +240,19 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('NREGA')">
-                  Upload NREGA Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.NREGA)">
+                  Upload Image
                 </button>
               </div>
             </div>
+            <!-- END:  NREGA Image Upload ----------------------------------------------------------->
+
           </div>
+
+          <!-- Question [4A, 4B, 4C, 4D, 4E] -->
           <div class="form-details">
             <div class="form-details-inner">
-              <h3 class="form-title">4.A Farmer details</h3>
+              <h3 class="form-title">4A. Farmer details</h3>
               <div class="farmer-details">
                 <div class="small-input">
                   <select class="form-select" formControlName="salutation">
@@ -173,7 +289,7 @@
               </div>
             </div>
             <div class="form-details-inner">
-              <h3 class="form-title">4.B Gender</h3>
+              <h3 class="form-title">4B. Gender</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen }}gender">
                   <input class="form-check-input" type="radio" formControlName="gender" value="{{ indGen }}" id="{{ indGen }}gender" /><span>{{ indGen
@@ -182,7 +298,7 @@
               </div>
             </div>
             <div class="form-details-inner">
-              <h3 class="form-title">4.C Religion</h3>
+              <h3 class="form-title">4C. Religion</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion }}religion">
                   <input class="form-check-input" type="radio" formControlName="religion" value="{{ indReligion }}" id="{{ indReligion }}religion" /><span>{{
@@ -191,7 +307,7 @@
               </div>
             </div>
             <div class="form-details-inner">
-              <h3 class="form-title">4.D Caste/Tribe</h3>
+              <h3 class="form-title">4D. Caste/Tribe</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste }}caste">
                   <input class="form-check-input" type="radio" formControlName="caste" value="{{ indCaste }}" id="{{ indCaste }}caste" /><span>{{
@@ -201,7 +317,7 @@
               </div>
             </div>
             <div class="form-details-inner">
-              <h3 class="form-title">4.E Others details</h3>
+              <h3 class="form-title">4E. Others details</h3>
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
                   <label>Educational Qualification</label>
@@ -233,10 +349,12 @@
               </div>
             </div>
           </div>
+
+          <!-- Question [5A, 5B, 5C] -->
           <div class="form-details">
             <div class="form-details-inner">
               <h3 class="form-title">
-                5.A Address as per officially valid document
+                5A. Address as per officially valid document
               </h3>
               <div class="display-flex">
                 <div class="flex-1 lable-top">
@@ -367,7 +485,7 @@
               </div>
             </div>
             <div class="form-details-inner">
-              <h3 class="form-title">5.B Property status</h3>
+              <h3 class="form-title">5B. Property status</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat }}propertyStatus">
                   <input class="form-check-input" type="radio" formControlName="propertyStatus" value="{{ indStat }}" id="{{ indStat }}propertyStatus" /><span>{{
@@ -383,7 +501,7 @@
               </div>
             </div>
             <div class="form-details-inner">
-              <h3 class="form-title required">5.C Communication/Permanent address</h3>
+              <h3 class="form-title required">5C. Communication/Permanent address</h3>
               <div class="farmer-details">
                 <label class="form-check-label form-check bordered-radio " *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat }}commOrPerAddress">
                   <input class="form-check-input" type="radio" formControlName="commOrPerAddress" value="{{ indStat }}" id="{{ indStat }}commOrPerAddress" /><span>{{
@@ -460,6 +578,7 @@
             </div>
           </div>
 
+          <!-- Question [6] -->
           <div class="form-details">
             <div class="row align-items-center">
               <h3 class="form-title">
@@ -522,6 +641,8 @@
               </div>
             </div>
           </div>
+
+          <!-- Question [7] -->
           <div class="form-details">
             <h3 class="form-title">7. Property ownership</h3>
             <div class="mb-2" formArrayName="propertyOwnership" *ngFor="let item of getPropertyOwnershipControls(); let i = index">
@@ -578,6 +699,8 @@
               </div>
             </div>
           </div>
+
+          <!-- Question [8A, 8B, 8C, 8D] -->
           <div class="form-details">
             <div class="form-details-inner">
               <h3 class="form-title">8A. What type of phone do you own?</h3>
@@ -650,6 +773,8 @@
               </div>
             </div>
           </div>
+
+          <!-- Question [9] -->
           <div class="form-details">
             <h3 class="form-title">
               9. Does your household have any source of income other than
@@ -675,6 +800,8 @@
               </div>
             </div>
           </div>
+
+          <!-- Question [10A, 10B] -->
           <div class="form-details">
             <div class="form-details-inner">
               <h3 class="form-title">
