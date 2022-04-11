@@ -93,7 +93,7 @@
                                                     <a *ngFor="let soilQualityStar of fieldInforMaster['soilQuality'];  let sqsi = index;" href="javascript:void(0)"
                                                         (click)="SoilQualityRating(soilQualityStar, i)" [ngClass]="{'active': (soilQualityStar == selectedSoilQualityStar[i])}"><i class="fa fa-star"
                                                             id="sqs_{{i+1}}_{{sqsi}}"></i><span>{{soilQualityStar}}</span></a>
-                                                    <input type="text" formControlName="soilQuality" hidden>
+                                                    <input type="text" formControlName="soilQuality" [(ngModel)]="selectedSoilQualityStar[i]" hidden>
 
                                                 </div>
 
@@ -106,7 +106,7 @@
                                                     <a *ngFor="let waterQualityStar of fieldInforMaster['soilQuality']; let wqsi = index;" href="javascript:void(0)" (click)="WaterQualityRating(waterQualityStar, i)"
                                                         [ngClass]="{'active': (waterQualityStar == selectedWaterQualityStar[i])}"><i class="fa fa-star"
                                                             id="wqs_{{i+1}}_{{wqsi}}"></i><span>{{waterQualityStar}}</span></a>
-                                                    <input type="text" formControlName="waterQuality" hidden>
+                                                    <input type="text" formControlName="waterQuality" [(ngModel)]="selectedWaterQualityStar[i]" hidden>
 
 
                                                 </div>
@@ -120,7 +120,7 @@
                                                     <a *ngFor="let yieldQualityStar of fieldInforMaster['soilQuality']; let yqsi = index;" href="javascript:void(0)" (click)="YieldQualityRating(yieldQualityStar, i)"
                                                         [ngClass]="{'active': (yieldQualityStar == selectedYieldQualityStar[i])}"><i class="fa fa-star"
                                                             id="wqs_{{i+1}}_{{yqsi}}"></i><span>{{yieldQualityStar}}</span></a>
-                                                    <input type="text" formControlName="yieldQuality" hidden>
+                                                    <input type="text" formControlName="yieldQuality" [(ngModel)]="selectedYieldQualityStar[i]" hidden>
 
                                                 </div>
 

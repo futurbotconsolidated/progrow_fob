@@ -215,7 +215,7 @@ export class FieldInfoComponent implements OnInit {
   bindItemsInEdit(fieldValues: any) {
     console.log(fieldValues);
     this.fieldInfoForm.patchValue(fieldValues);
-    fieldValues.plannedFieldDetails.map((item: any) => {
+    fieldValues.plannedFieldDetails.map((item: any, index: number) => {
       const plannedDetails = <any>{};
       plannedDetails['fieldId'] = new FormControl(item.fieldId);
       plannedDetails['fieldName'] = new FormControl(item.fieldName);
@@ -229,6 +229,10 @@ export class FieldInfoComponent implements OnInit {
       plannedDetails['waterQuality'] = new FormControl(item.waterQuality);
       plannedDetails['yieldQuality'] = new FormControl(item.yieldQuality);
       plannedDetails['expectedProduce'] = new FormControl(item.expectedProduce);
+
+      this.selectedSoilQualityStar[index] = item.soilQuality;
+      this.selectedWaterQualityStar[index] = item.waterQuality;
+      this.selectedYieldQualityStar[index] = item.yieldQuality;
 
       this.plannedFieldDetails = this.fieldInfoForm.get(
         'plannedFieldDetails'
