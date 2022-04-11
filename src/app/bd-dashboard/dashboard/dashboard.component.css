@@ -20,7 +20,10 @@ ul.nav-pills li.nav-item:focus-visible {
 table.dataTable tbody tr {
 	cursor: default;
 }
-@media only screen and (min-device-width: 992px) and (max-device-width: 1200px) {
+.db-filter-type{
+  height: 40px;
+}
+@media only screen and (min-device-width: 992px) and (max-device-width: 1500px) {
   .lsn-tv-div {
     position: fixed;
     top: 46px;
@@ -47,5 +50,11 @@ table.dataTable tbody tr {
   }
   .lsn-tv-active{
     display: block;
+  }
+}
+@media only screen and (max-device-width: 991px) {
+  .left-menu{
+      height: auto;
+      min-height: 1px;
   }
 }

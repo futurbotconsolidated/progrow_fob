@@ -36,3 +36,9 @@
     display: block;
 }
 }
+@media only screen and (max-device-width: 991px) {
+    .left-menu{
+        height: auto;
+        min-height: 1px;
+    }
+}

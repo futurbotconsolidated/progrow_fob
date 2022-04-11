@@ -183,7 +183,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
       propertyStatus: new FormControl(''),
       monthlyRent: new FormControl(''),
-      familyMembers: new FormArray([this.createFamilyMembers()]),
+      familyMembers: new FormArray([]),
 
       addressProof: new FormControl(''),
       PANnumber: new FormControl('', [validatePANNumber]),
@@ -230,7 +230,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
       propertyStatuscoa2: new FormControl(''),
       monthlyRentcoa2: new FormControl(''),
-      familyMemberscoa2: new FormArray([this.createFamilyMembers()]),
+      familyMemberscoa2: new FormArray([]),
 
       addressProofcoa2: new FormControl(''),
       PANnumbercoa2: new FormControl(''),
@@ -279,7 +279,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       let editForm: any = localStorage.getItem('edit-coapplicant-form');
       if (editForm) {
         editForm = JSON.parse(editForm);
-        this.coApplicantForm.patchValue(editForm);
+        this.editDynamicBindFormArray(editForm);
 
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
@@ -313,7 +313,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       let coApplicant: any = localStorage.getItem('co-applicant-form');
       if (coApplicant) {
         coApplicant = JSON.parse(coApplicant);
-        this.coApplicantForm.patchValue(coApplicant);
+        this.editDynamicBindFormArray(coApplicant);
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
           this.getPinCodeData(
@@ -340,6 +340,12 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
           );
         }
       }
+    }
+    if(!(this.coApplicantForm.get('familyMembers') as FormArray).controls.length){
+      this.addFamilyMembers('');
+    }
+    if(!(this.coApplicantForm.get('familyMemberscoa2') as FormArray).controls.length){
+      this.addFamilyMembers('coa2');
     }
   }
 
@@ -1048,9 +1054,9 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     // other details
     const A: any = localStorage.getItem('farmer-details');
     const coData = JSON.parse(A).co_applicant_details;
-    if (A && Array.isArray(coData) && coData.length === 2) {
-      const C1 = JSON.parse(A).co_applicant_details[0];
-      const C2 = JSON.parse(A).co_applicant_details[1];
+    //if (A && Array.isArray(coData) && coData.length === 2) {
+      const C1 = coData[0] || {};
+      const C2 = coData[1] || {};
 
       // Prefill: edit data
       this.coApplicantForm.patchValue({
@@ -1169,7 +1175,31 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
           'PERMANENT_ADDRESScoa2'
         );
       }
-    }
+      this.familyMembers = this.coApplicantForm.get('familyMembers') as FormArray;
+      C1.familyMembers.map((item: any) => {
+        this.familyMembers.push(
+          this.formBuilder.group({
+            name: new FormControl(item.name),
+            relation: new FormControl(item.relation),
+            education: new FormControl(item.education),
+            occupation: new FormControl(item.occupation),
+            dependency: new FormControl(item.dependency),
+          })
+        );
+      });
+      this.familyMemberscoa2 = this.coApplicantForm.get('familyMemberscoa2') as FormArray;
+      C2.familyMembers.map((item: any) => {
+        this.familyMemberscoa2.push(
+          this.formBuilder.group({
+            name: new FormControl(item.name),
+            relation: new FormControl(item.relation),
+            education: new FormControl(item.education),
+            occupation: new FormControl(item.occupation),
+            dependency: new FormControl(item.dependency),
+          })
+        );
+      });
+    // }
   }
 
   validateAndNext() {
@@ -1383,5 +1413,32 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  editDynamicBindFormArray(fieldValues: any) {
+    this.coApplicantForm.patchValue(fieldValues);
+    this.familyMembers = this.coApplicantForm.get('familyMembers') as FormArray;
+    fieldValues.familyMembers.map((item: any) => {
+      this.familyMembers.push(
+        this.formBuilder.group({
+          name: new FormControl(item.name),
+          relation: new FormControl(item.relation),
+          education: new FormControl(item.education),
+          occupation: new FormControl(item.occupation),
+          dependency: new FormControl(item.dependency),
+        })
+      );
+    });
+    this.familyMemberscoa2 = this.coApplicantForm.get('familyMemberscoa2') as FormArray;
+    fieldValues.familyMemberscoa2.map((item: any) => {
+      this.familyMemberscoa2.push(
+        this.formBuilder.group({
+          name: new FormControl(item.name),
+          relation: new FormControl(item.relation),
+          education: new FormControl(item.education),
+          occupation: new FormControl(item.occupation),
+          dependency: new FormControl(item.dependency),
+        })
+      );
+    });
+  }  
   /* END: API Function Calls------------------------------------------------------------------------ */
 }

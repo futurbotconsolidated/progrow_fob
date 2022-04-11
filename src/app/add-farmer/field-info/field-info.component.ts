@@ -215,7 +215,7 @@ export class FieldInfoComponent implements OnInit {
   bindItemsInEdit(fieldValues: any) {
     console.log(fieldValues);
     this.fieldInfoForm.patchValue(fieldValues);
-    fieldValues.plannedFieldDetails.map((item: any) => {
+    fieldValues.plannedFieldDetails.map((item: any, index: number) => {
       const plannedDetails = <any>{};
       plannedDetails['fieldId'] = new FormControl(item.fieldId);
       plannedDetails['fieldName'] = new FormControl(item.fieldName);
@@ -229,6 +229,10 @@ export class FieldInfoComponent implements OnInit {
       plannedDetails['waterQuality'] = new FormControl(item.waterQuality);
       plannedDetails['yieldQuality'] = new FormControl(item.yieldQuality);
       plannedDetails['expectedProduce'] = new FormControl(item.expectedProduce);
+
+      this.selectedSoilQualityStar[index] = item.soilQuality;
+      this.selectedWaterQualityStar[index] = item.waterQuality;
+      this.selectedYieldQualityStar[index] = item.yieldQuality;
 
       this.plannedFieldDetails = this.fieldInfoForm.get(
         'plannedFieldDetails'
@@ -282,6 +286,7 @@ export class FieldInfoComponent implements OnInit {
 
     fieldValues.testType.map((item: any) => {
       const testTypeDetails = <any>{};
+      testTypeDetails['fieldId'] = new FormControl(item.fieldId);
       testTypeDetails['typeOfTest'] = new FormControl(item.typeOfTest);
       testTypeDetails['yesNo'] = new FormControl(item.yesNo);
       testTypeDetails['lastDone'] = new FormControl(item.lastDone);
@@ -727,6 +732,7 @@ export class FieldInfoComponent implements OnInit {
 
   createTestType(): FormGroup {
     return this.formBuilder.group({
+      fieldId: new FormControl('', [Validators.required]),
       typeOfTest: new FormControl('', [Validators.required]),
       yesNo: new FormControl('', [Validators.required]),
       lastDone: new FormControl('', [Validators.required]),

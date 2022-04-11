@@ -201,10 +201,10 @@
                     active: selectedViewType == 'EXISTING_FARMS_LIST_VIEW'
                   }" id="existing_farms_list_view" role="tabpanel">
                   <div class="row">
-                    <div class="col-sm-3 mb-3">
+                    <div class="col-sm-2 mb-3">
                       <div class="form-group">
                         <label for="live">Select Filter:</label>
-                        <select id="live" class="flex-1 form-select" name="filterType" (change)="onChangeFilter($event)">
+                        <select id="live" class="flex-1 form-select db-filter-type" name="filterType" (change)="onChangeFilter($event)">
                           <option value="all" [selected]="filterType == 'all'">All</option>
                           <option value="today" [selected]="filterType == 'today'">Today</option>
                           <option value="this_week" [selected]="filterType == 'this_week'">This Week</option>
@@ -212,6 +212,12 @@
                           <option value="three_week" [selected]="filterType == 'three_week'">Last Three Week</option>
                           <option value="this_month" [selected]="filterType == 'this_month'">This Month</option>
                         </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-2 mb-3">
+                      <div class="form-group">
+                        <label class="w-100">&nbsp;</label>
+                        <a href="javascript:void(0)" (click)="downloadCsv()" class="btn btn-farmer">Download CSV</a>
                       </div>
                     </div>
                   </div>
@@ -226,6 +232,8 @@
                           <th>Address</th>
                           <th>Status</th>
                           <th>Added By</th>
+                          <th>Updated By</th>
+                          <th>Updated Date</th>
                           <th>Branch</th>
                           <th></th>
                         </tr>
@@ -249,8 +257,14 @@
                           </td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')"
-                            title="Created BD ID: {{x.bd_id}}&#010;Created By: {{x.createdBy}}&#010;Created On: {{ x.createdDate | date:'EE, MMM d, y' }}&#010;Updated By: {{x.updatedBy}}&#010;Updated On: {{ x.updatedDate | date:'EE, MMM d, y' }}">
+                            title="Created BD ID: {{x.bd_id}}">
                             {{x.bd_name}}</td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                            {{x.updatedBy}}
+                          </td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                            {{ x.updatedDate | date:'EE, MMM d, y' }}
+                          </td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.branch_name }}
                           </td>
