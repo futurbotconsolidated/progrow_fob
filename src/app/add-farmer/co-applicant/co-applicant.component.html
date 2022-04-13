@@ -9,24 +9,60 @@
           <div class="form-details co-app-detail">
             <h2 class="form-title">Co-Applicant 1</h2>
           </div>
+          <!-- Question [1, PAN & Profile] -->
           <div class="co-applicant-left">
+            <!-- START: PAN EKYC & Image Upload -------------------------------------------------------------------->
             <div class="left-info">
               <h3 class="form-title">1. Identity proof</h3>
               <div class="farmer-details">
+                <!-- PAN Card Field -->
                 <div class="farmer-details-inner lable-top">
                   <label for="PANnumber">PAN card number </label>
-                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN card number" />
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN card number" [readonly]="kycData.coa1.pan.isVerified" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
                       Please enter valid PAN Number</small>
                   </div>
                 </div>
-                <div class="farmer-details-inner lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PAN')"> Upload PAN card Image
+                <!-- KYC Buttons -->
+                <div class="lable-top">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.pan.showVerify" (click)="getKycData($event,'coa1',kycProofNames.coa1.pan)">
+                    {{kycFieldButtonLabels.verify}}</button>
+                  <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa1.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                    {{kycFieldButtonLabels.verified}}</button>
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.pan.showTryAgain" (click)="getKycData($event,'coa1',kycProofNames.coa1.pan)"> <i
+                      class="fa fa-undo" aria-hidden="true"></i>
+                    {{kycFieldButtonLabels.try_again}}</button>
+                </div>
+                <!-- Image Upload Button modal-->
+                <div class="lable-top">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.panCard)"> Upload Image
                   </button>
                 </div>
               </div>
+
+              <!-- START: show PAN kyc api data with confirm button -->
+              <small class="text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa1.pan.data)" data-bs-toggle="collapse" data-bs-target="#coa1PanKYCArea" aria-expanded="false"
+                aria-controls="coa1PanKYCArea">
+                Show/Hide details
+              </small>
+              <div class="collapse" id="coa1PanKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Full Name:</b> {{kycData.coa1.pan.data['full_name']}}</p>
+                    <p><b>Category:</b> {{kycData.coa1.pan.data['category']}}</p>
+                    <p><b>Status:</b> {{kycData.coa1.pan.data['status']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.pan.showConfirm"
+                      (click)="setKycDataVariables('coa1',kycProofNames.coa1.pan,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+              <!-- END: show PAN kyc api data with confirm button -->
             </div>
+            <!-- END: PAN EKYC & Image Upload -------------------------------------------------------------------->
+
+            <!-- Profile Picture Upload -->
             <div class="profile-picture">
               <h4>Profile Picture</h4>
               <div class="update-profile">
@@ -34,7 +70,7 @@
                   <img class="profile-pic" [hidden]="!displayCoApplicant1ProfileImage" src="{{displayCoApplicant1ProfileImage}}" />
                 </div>
                 <div class="pro-update">
-                  <a class="avatar" (click)="openFileModalPopup('FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <a class="avatar" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.farmerProfile)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -62,51 +98,144 @@
               </div>
             </div>
           </div>
+
+          <!-- Question [2] -->
           <div class="form-details">
             <h3 class="form-title">2. Address proof</h3>
+
+            <!-- START: Aadhaar EKYC & Image Upload -------------------------------------------------------------------->
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
-                <label class="">Select ID</label>
-                <select class="flex-1 form-select" formControlName="addressProof">
-                  <option value="">...</option>
-                  <option *ngFor="let indVal of  demoGraphicMaster['addressProofType']" value="{{ indVal }}">
-                    {{ indVal }}
-                  </option>
-                </select>
-                <div *ngIf="isSubmitted && f['addressProof'].errors" class="form-text text-danger">
-                  <small *ngIf="f['addressProof'].errors['required']">
-                    Address Proof is required</small>
-                </div>
+                <label for="PANnumber">Aadhaar Number </label>
+                <input type="text" class="form-control" id="aadhaarNumber" formControlName="aadhaarNumber" placeholder="Enter Aadhaar Number" />
               </div>
-              <div class="farmer-details-inner lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('ADDRESS_PROOF')">
-                  Upload Address Proof Image
+
+              <div class="lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.aadhaarCard)"> Upload
+                  Image
                 </button>
               </div>
             </div>
+            <!-- END: Aadhaar EKYC & Image Upload ---------------------------------------------------------------------->
+
+
+
+            <!-- START:  DRIVING LICENSE EKYC & Image Upload ----------------------------------------------------------->
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label for="drivingLicenceNumber">Driving Licence Number </label>
+                <input type="text" class="form-control" id="drivingLicenceNumber" formControlName="drivingLicenceNumber" placeholder="Enter Driving Licence Number"
+                  [readonly]="kycData.coa1.driving_licence.isVerified" />
+              </div>
+
+              <!-- KYC Buttons -->
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.driving_licence.showVerify"
+                  (click)="getKycData($event,'coa1',kycProofNames.coa1.driving_licence)">
+                  {{kycFieldButtonLabels.verify}}</button>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa1.driving_licence.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.verified}}</button>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.driving_licence.showTryAgain"
+                  (click)="getKycData($event,'coa1',kycProofNames.coa1.driving_licence)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.try_again}}</button>
+              </div>
+              <div class="lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.drivingLicence)"> Upload
+                  Image
+                </button>
+              </div>
+            </div>
+
+            <!-- START: show DRIVING LICENSE kyc api data with confirm button -->
+            <div class="">
+              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa1.driving_licence.data)" data-bs-toggle="collapse" data-bs-target="#coa1DrivingLicenceKYCArea"
+                aria-expanded="false" aria-controls="coa1DrivingLicenceKYCArea">
+                Show/Hide details
+              </small>
+
+              <div class="collapse" id="coa1DrivingLicenceKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Holder's Name:</b> {{kycData.coa1.driving_licence.data['Holder\'s Name']}}</p>
+                    <p><b>Initial Issue Date:</b> {{kycData.coa1.driving_licence.data['Initial Issue Date']}}</p>
+                    <p><b>Initial Issuing Office:</b> {{kycData.coa1.driving_licence.data['Initial Issuing Office']}}</p>
+                    <p><b>Current Status:</b> {{kycData.coa1.driving_licence.data['Current Status']}}</p>
+                    <p><b>Old / New DL No.:</b> {{kycData.coa1.driving_licence.data['Old / New DL No.']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.driving_licence.showConfirm"
+                      (click)="setKycDataVariables('coa1',kycProofNames.coa1.driving_licence,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: show DRIVING LICENSE kyc api data with confirm button -->
+            <!-- END:  DRIVING LICENSE EKYC & Image Upload ----------------------------------------------------------->
           </div>
+
+
+          <!-- Question [3] -->
           <div class="form-details">
             <h3 class="form-title">3. Others details</h3>
+            <!-- START: Voter Id EKYC & Image Upload ----------------------------------------------------------->
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Voter Id</label>
-                <input type="text" class="form-control" formControlName="voterIdNumber" />
+                <input type="text" class="form-control" formControlName="voterIdNumber" [readonly]="kycData.coa1.voter_id.isVerified" />
+              </div>
+              <!-- KYC Buttons -->
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.voter_id.showVerify"
+                  (click)="getKycData($event,'coa1',kycProofNames.coa1.voter_id)">
+                  {{kycFieldButtonLabels.verify}}</button>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa1.voter_id.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.verified}}</button>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.voter_id.showTryAgain"
+                  (click)="getKycData($event,'coa1',kycProofNames.coa1.voter_id)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.try_again}}</button>
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('VOTERID')">
-                  Upload Voter Id Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.voterId)">
+                  Upload Image
                 </button>
               </div>
             </div>
+            <!-- START: show Voter Id kyc api data with confirm button -->
+            <div class="mb-4">
+              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa1.voter_id.data)" data-bs-toggle="collapse" data-bs-target="#coa1VoterIdKYCArea" aria-expanded="false"
+                aria-controls="coa1VoterIdKYCArea">
+                Show/Hide details
+              </small>
+              <div class="collapse" id="coa1VoterIdKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Name:</b> {{kycData.coa1.voter_id.data['name']}}</p>
+                    <p><b>Age:</b> {{kycData.coa1.voter_id.data['age']}}</p>
+                    <p><b>Taluk:</b> {{kycData.coa1.voter_id.data['ac_name']}}</p>
+                    <p><b>District:</b> {{kycData.coa1.voter_id.data['dist_name']}}</p>
+                    <p><b>State:</b> {{kycData.coa1.voter_id.data['st_name']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.voter_id.showConfirm"
+                      (click)="setKycDataVariables('coa1',kycProofNames.coa1.voter_id,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: show Voter Id kyc api data with confirm button -->
+            <!-- END: Voter Id EKYC & Image Upload ----------------------------------------------------------->
+
+
+
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Passport Number</label>
                 <input type="text" class="form-control" formControlName="passportNumber" />
               </div>
               <div class="farmer-details-inner lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PASSPORT')">
-                  Upload Passport Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.passport)">
+                  Upload Image
                 </button>
               </div>
             </div>
@@ -116,8 +245,8 @@
                 <input type="text" class="form-control" formControlName="NREGANumber" />
               </div>
               <div class="farmer-details-inner lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('NREGA')">Upload
-                  NREGA Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.NREGA)">Upload
+                  Image
                 </button>
               </div>
             </div>
@@ -493,30 +622,68 @@
               </div>
             </div>
           </div>
-
           <!-- Co-Applicant 1 end -->
+
           <!-- Co-Applicant 2 start -->
           <div class="form-details co-app-detail">
             <h2 class="form-title">Co-Applicant 2</h2>
           </div>
+
+
+          <!-- Question [1, PAN & Profile] -->
           <div class="co-applicant-left">
+            <!-- START: PAN EKYC & Image Upload -------------------------------------------------------------------->
             <div class="left-info">
               <h3 class="form-title">1. Identity proof</h3>
               <div class="farmer-details">
+                <!-- PAN Card Field -->
                 <div class="farmer-details-inner lable-top">
                   <label for="PANnumbercoa2">PAN card number </label>
-                  <input type="text" class="form-control" id="PANnumbercoa2" formControlName="PANnumbercoa2" placeholder="Enter PAN card number" />
+                  <input type="text" class="form-control" id="PANnumbercoa2" formControlName="PANnumbercoa2" placeholder="Enter PAN card number" [readonly]="kycData.coa2.pan.isVerified" />
                   <div *ngIf="f['PANnumbercoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumbercoa2'].errors['invalidPanNumber']">
                       Please enter valid PAN number</small>
                   </div>
                 </div>
-                <div class="farmer-details-inner lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PANcoa2')"> Upload PAN card Image
+                <!-- KYC Buttons -->
+                <div class="lable-top">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.pan.showVerify" (click)="getKycData($event,'coa2',kycProofNames.coa2.pan)">
+                    {{kycFieldButtonLabels.verify}}</button>
+                  <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa2.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                    {{kycFieldButtonLabels.verified}}</button>
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.pan.showTryAgain" (click)="getKycData($event,'coa2',kycProofNames.coa2.pan)"> <i
+                      class="fa fa-undo" aria-hidden="true"></i>
+                    {{kycFieldButtonLabels.try_again}}</button>
+                </div>
+                <!-- Image Upload Button modal-->
+                <div class="lable-top">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.panCard)"> Upload Image
                   </button>
                 </div>
               </div>
+
+              <!-- START: show PAN kyc api data with confirm button -->
+              <small class="text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa2.pan.data)" data-bs-toggle="collapse" data-bs-target="#coa2PanKYCArea" aria-expanded="false"
+                aria-controls="coa2PanKYCArea">
+                Show/Hide details
+              </small>
+              <div class="collapse" id="coa2PanKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Full Name:</b> {{kycData.coa2.pan.data['full_name']}}</p>
+                    <p><b>Category:</b> {{kycData.coa2.pan.data['category']}}</p>
+                    <p><b>Status:</b> {{kycData.coa2.pan.data['status']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.pan.showConfirm"
+                      (click)="setKycDataVariables('coa2',kycProofNames.coa2.pan,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+              <!-- END: show PAN kyc api data with confirm button -->
             </div>
+            <!-- END: PAN EKYC & Image Upload -------------------------------------------------------------------->
+
+            <!-- Profile Picture Upload -->
             <div class="profile-picture">
               <h4>Profile Picture</h4>
               <div class="update-profile">
@@ -524,7 +691,7 @@
                   <img class="profile-pic" [hidden]="!displayCoApplicant2ProfileImage" src="{{displayCoApplicant2ProfileImage}}" />
                 </div>
                 <div class="pro-update">
-                  <a class="avatar" (click)="openFileModalPopup('FARMER_PROFILEcoa2')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <a class="avatar" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.farmerProfile)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -552,51 +719,140 @@
               </div>
             </div>
           </div>
+
+          <!-- Question [2] -->
           <div class="form-details">
             <h3 class="form-title">2. Address proof</h3>
+
+            <!-- START: Aadhaar EKYC & Image Upload -------------------------------------------------------------------->
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
-                <label class="">Select ID</label>
-                <select class="flex-1 form-select" formControlName="addressProofcoa2">
-                  <option value="">...</option>
-                  <option *ngFor="let indVal of demoGraphicMaster['addressProofType']" value="{{ indVal }}">
-                    {{ indVal }}
-                  </option>
-                </select>
-                <div *ngIf="isSubmitted && f['addressProofcoa2'].errors" class="form-text text-danger">
-                  <small *ngIf="f['addressProofcoa2'].errors['required']">
-                    Address Proof is required</small>
-                </div>
+                <label for="aadhaarNumbercoa2">Aadhaar Number </label>
+                <input type="text" class="form-control" id="aadhaarNumbercoa2" formControlName="aadhaarNumbercoa2" placeholder="Enter Aadhaar Number" />
               </div>
-              <div class="farmer-details-inner lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('ADDRESS_PROOFcoa2')">
-                  Upload Address Proof Image
+
+              <div class="lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.aadhaarCard)"> Upload
+                  Image
                 </button>
               </div>
             </div>
+            <!-- END: Aadhaar EKYC & Image Upload ---------------------------------------------------------------------->
+
+            <!-- START:  DRIVING LICENSE EKYC & Image Upload ----------------------------------------------------------->
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label for="drivingLicenceNumbercoa2">Driving Licence Number </label>
+                <input type="text" class="form-control" id="drivingLicenceNumbercoa2" formControlName="drivingLicenceNumbercoa2" placeholder="Enter Driving Licence Number"
+                  [readonly]="kycData.coa2.driving_licence.isVerified" />
+              </div>
+
+              <!-- KYC Buttons -->
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.driving_licence.showVerify"
+                  (click)="getKycData($event,'coa2',kycProofNames.coa2.driving_licence)">
+                  {{kycFieldButtonLabels.verify}}</button>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa2.driving_licence.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.verified}}</button>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.driving_licence.showTryAgain"
+                  (click)="getKycData($event,'coa2',kycProofNames.coa2.driving_licence)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.try_again}}</button>
+              </div>
+              <div class="lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.drivingLicence)"> Upload
+                  Image
+                </button>
+              </div>
+            </div>
+
+            <!-- START: show DRIVING LICENSE kyc api data with confirm button -->
+            <div class="">
+              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa2.driving_licence.data)" data-bs-toggle="collapse" data-bs-target="#coa2DrivingLicenceKYCArea"
+                aria-expanded="false" aria-controls="coa2DrivingLicenceKYCArea">
+                Show/Hide details
+              </small>
+
+              <div class="collapse" id="coa2DrivingLicenceKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Holder's Name:</b> {{kycData.coa2.driving_licence.data['Holder\'s Name']}}</p>
+                    <p><b>Initial Issue Date:</b> {{kycData.coa2.driving_licence.data['Initial Issue Date']}}</p>
+                    <p><b>Initial Issuing Office:</b> {{kycData.coa2.driving_licence.data['Initial Issuing Office']}}</p>
+                    <p><b>Current Status:</b> {{kycData.coa2.driving_licence.data['Current Status']}}</p>
+                    <p><b>Old / New DL No.:</b> {{kycData.coa2.driving_licence.data['Old / New DL No.']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.driving_licence.showConfirm"
+                      (click)="setKycDataVariables('coa2',kycProofNames.coa2.driving_licence,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: show DRIVING LICENSE kyc api data with confirm button -->
+            <!-- END:  DRIVING LICENSE EKYC & Image Upload ----------------------------------------------------------->
           </div>
+
+          <!-- Question [3] -->
           <div class="form-details">
             <h3 class="form-title">3. Others details</h3>
+            <!-- START: Voter Id EKYC & Image Upload ----------------------------------------------------------->
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Voter Id</label>
-                <input type="text" class="form-control" formControlName="voterIdNumbercoa2" />
+                <input type="text" class="form-control" formControlName="voterIdNumbercoa2" [readonly]="kycData.coa2.voter_id.isVerified" />
+              </div>
+              <!-- KYC Buttons -->
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.voter_id.showVerify"
+                  (click)="getKycData($event,'coa2',kycProofNames.coa2.voter_id)">
+                  {{kycFieldButtonLabels.verify}}</button>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa2.voter_id.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.verified}}</button>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.voter_id.showTryAgain"
+                  (click)="getKycData($event,'coa2',kycProofNames.coa2.voter_id)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.try_again}}</button>
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('VOTERIDcoa2')">
-                  Upload Voter Id Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.voterId)">
+                  Upload Image
                 </button>
               </div>
             </div>
+            <!-- START: show Voter Id kyc api data with confirm button -->
+            <div class="mb-4">
+              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa2.voter_id.data)" data-bs-toggle="collapse" data-bs-target="#coa2VoterIdKYCArea" aria-expanded="false"
+                aria-controls="coa2VoterIdKYCArea">
+                Show/Hide details
+              </small>
+              <div class="collapse" id="coa2VoterIdKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Name:</b> {{kycData.coa2.voter_id.data['name']}}</p>
+                    <p><b>Age:</b> {{kycData.coa2.voter_id.data['age']}}</p>
+                    <p><b>Taluk:</b> {{kycData.coa2.voter_id.data['ac_name']}}</p>
+                    <p><b>District:</b> {{kycData.coa2.voter_id.data['dist_name']}}</p>
+                    <p><b>State:</b> {{kycData.coa2.voter_id.data['st_name']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.voter_id.showConfirm"
+                      (click)="setKycDataVariables('coa2',kycProofNames.coa2.voter_id,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: show Voter Id kyc api data with confirm button -->
+            <!-- END: Voter Id EKYC & Image Upload ----------------------------------------------------------->
+
+
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Passport Number</label>
                 <input type="text" class="form-control" formControlName="passportNumbercoa2" />
               </div>
               <div class="farmer-details-inner lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('PASSPORTcoa2')">
-                  Upload Passport Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.passport)">
+                  Upload Image
                 </button>
               </div>
             </div>
@@ -606,8 +862,8 @@
                 <input type="text" class="form-control" formControlName="NREGANumbercoa2" />
               </div>
               <div class="farmer-details-inner lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('NREGAcoa2')">Upload
-                  NREGA Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.NREGA)">Upload
+                  Image
                 </button>
               </div>
             </div>
