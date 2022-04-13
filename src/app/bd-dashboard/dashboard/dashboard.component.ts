@@ -71,27 +71,6 @@ export class DashboardComponent implements OnInit {
       localStorage.removeItem('draft_farmer_new');
     }
 
-    // let obj_search = JSON.parse(localStorage.getItem('search-value') as any);
-    // if (obj_search && obj_search.minDate != '' && obj_search.maxDate != '') {
-    //   this.searchValue = obj_search.searchValue;
-    //   $.fn['dataTable'].ext.search.push(
-    //     (settings: any, data: any, dataIndex: any) => {
-    //       const regDate = data[3];
-    //       if (regDate && (obj_search.minDate || obj_search.maxDate)) {
-    //         if (
-    //           formatDate(regDate, 'yyyy-MM-dd', 'en_IN') >=
-    //             formatDate(obj_search.minDate, 'yyyy-MM-dd', 'en_IN') &&
-    //           formatDate(obj_search.maxDate, 'yyyy-MM-dd', 'en_IN') >=
-    //             formatDate(regDate, 'yyyy-MM-dd', 'en_IN')
-    //         ) {
-    //           return true;
-    //         }
-    //       }
-    //       return false;
-    //     }
-    //   );
-    // }
-
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -161,38 +140,6 @@ export class DashboardComponent implements OnInit {
 
     this.router.navigate(['/add/concept-cards']);
   }
-
-  // selectlive(event: any) {
-  //   let minDate = '' as any;
-  //   let maxDate = '' as any;
-  //   let last_date = new Date();
-  //   if (event.target.value === 'today') {
-  //     minDate = maxDate = new Date();
-  //   } else if (event.target.value === 'this_week') {
-  //     maxDate = new Date();
-  //     last_date.setDate(last_date.getDate() - 7);
-  //     minDate = last_date;
-  //   } else if (event.target.value === 'two_week') {
-  //     maxDate = new Date();
-  //     last_date.setDate(last_date.getDate() - 14);
-  //     minDate = last_date;
-  //   } else if (event.target.value === 'three_week') {
-  //     maxDate = new Date();
-  //     last_date.setDate(last_date.getDate() - 21);
-  //     minDate = last_date;
-  //   } else if (event.target.value === 'this_month') {
-  //     maxDate = new Date();
-  //     last_date.setDate(last_date.getDate() - 30);
-  //     minDate = last_date;
-  //   }
-  //   const obj_search1 = {
-  //     minDate: minDate,
-  //     maxDate: maxDate,
-  //     searchValue: event.target.value,
-  //   };
-  //   localStorage.setItem('search-value', JSON.stringify(obj_search1));
-  //   window.location.reload();
-  // }
 
   overlayMap(type: string) {
     this.spinner.show();
@@ -415,6 +362,7 @@ export class DashboardComponent implements OnInit {
               this.spinner.hide();
             }
           });
+          console.log('draw fields');
         } else {
           this.spinner.hide();
         }
@@ -517,6 +465,7 @@ export class DashboardComponent implements OnInit {
   }
   onChangeFilter(event: any) {
     localStorage.setItem('filter-value', event.target.value);
+    this.filterType = event.target.value;
     this.getExistingFarmers(event.target.value);
   }
 
@@ -555,6 +504,9 @@ export class DashboardComponent implements OnInit {
           alert(`${res.message}`);
         } else {
           this.allExistingFarmers = res.data;
+          if(this.selectedViewType == 'EXISTING_FARMS_MAP_VIEW'){
+            this.filterFarms(this.selectedViewType);
+          }
         }
       },
       (error: any) => {
