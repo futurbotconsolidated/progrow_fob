@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import {
   FormGroup,
@@ -29,6 +30,7 @@ export class FinancialPlanningComponent
   /* START: Variables ---------------------------------------------*/
   private observableSubscription: any;
 
+  KCCLoanRepaymentDateError = false;
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
   seasonCrop!: FormArray;
@@ -72,6 +74,7 @@ export class FinancialPlanningComponent
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
     public router: Router,
+    private toastr: ToastrService,
     private activatedRoute: ActivatedRoute
   ) {
     this.financialForm = this.formBuilder.group({
@@ -471,7 +474,18 @@ export class FinancialPlanningComponent
     }
   }
 
+  checkRepaymentDate() {
+    if(this.financialForm.value.KCCLoanRepaymentDate && ( this.financialForm.value.KCCLoanDisbursementDate > this.financialForm.value.KCCLoanRepaymentDate || this.financialForm.value.KCCLoanDisbursementDate == this.financialForm.value.KCCLoanRepaymentDate) ){
+      this.KCCLoanRepaymentDateError = true;
+    } else {
+      this.KCCLoanRepaymentDateError = false;
+    }
+  }
   saveData() {
+    if(this.KCCLoanRepaymentDateError){
+      this.toastr.error('please enter values for required fields', 'Error!');
+      return;
+    } else {
     if (this.farmerId) {
       localStorage.setItem(
         'edit-financial-planing',
@@ -486,6 +500,7 @@ export class FinancialPlanningComponent
     console.log(this.financialForm.value);
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
+  }
   }
   /* END: NON-API Function Calls-------------------------------------------------------------- */
 }

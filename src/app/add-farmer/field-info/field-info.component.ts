@@ -297,14 +297,13 @@ export class FieldInfoComponent implements OnInit {
   }
   ngAfterViewInit(): void {
     if (navigator.geolocation) {
-      console.log(this);
-
       navigator.geolocation.getCurrentPosition(this.setGeoLocation.bind(this));
     }
     this.addFarmerService.getMessage().subscribe((data) => {
       this.nextRoute = data.routeName;
-      if (data.routeName == 'financial-planning') {
+      if (this.router.url?.includes('/add/field-info')) {
         this.saveData();
+        console.log(data.routeName);
       }
     });
   }
@@ -800,6 +799,10 @@ export class FieldInfoComponent implements OnInit {
     });
     console.log(fieldArr);
 
+    if(!fieldArr.length){
+      this.toastr.error('Please Plot at least One Field', 'Error!');
+      return;
+    } else {
     if (this.farmerId) {
       localStorage.setItem('edit-field-info', JSON.stringify(fieldArr));
       localStorage.setItem(
@@ -815,8 +818,7 @@ export class FieldInfoComponent implements OnInit {
     }
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
-    // this.toastr.error('Please Plot at least One Field', 'Error!');
-    // return;
+  }
   }
 
   SoilQualityRating(soilQualityStar: any, i: number) {
