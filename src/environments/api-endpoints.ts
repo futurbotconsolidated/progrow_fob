@@ -10,12 +10,6 @@ export const endPoints = {
   getDocument: '/farmer_presigned_s3_url',
   getKycData: '/kyc_check',
   downloadCsv: '/download_csv',
+  aadhaarEkyc: '/aadhaar_ekyc',
+  aadhaarEkycConfirm: '/aadhaar_ekyc2',
 };
-
-// OLD
-// export const baseUrl = 'https://api.fob2.dev.adaptiwise.com';
-// export const endPoints = {
-//   getAllFarmers: '/getAllFarmers',
-//   registerFarmer: '/registerFarmer',
-//   getFarmer: '/getFarmer',
-// };
