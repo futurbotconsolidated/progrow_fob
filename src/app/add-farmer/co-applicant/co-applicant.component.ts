@@ -562,11 +562,9 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       .getMessage()
       .subscribe((data) => {
         this.nextRoute = data.routeName;
-        console.log(this.router.url);
 
         if (this.router.url?.includes('/add/co-applicant')) {
           this.validateAndNext();
-          console.log(data.routeName);
         }
       });
   }
@@ -1527,8 +1525,12 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     const C2 = coData[1] || {};
 
     // assign kyc data to populate
-    this.kycData.coa1 = C1?.kycData;
-    this.kycData.coa2 = C2?.kycData;
+    this.kycData.coa1 = C1.hasOwnProperty('kycData')
+      ? C1.kycData
+      : this.kycData.coa1;
+    this.kycData.coa2 = C2.hasOwnProperty('kycData')
+      ? C2.kycData
+      : this.kycData.coa2;
 
     // Prefill: edit data
     this.coApplicantForm.patchValue({
@@ -1681,7 +1683,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
   validateAndNext() {
     this.isSubmitted = true;
-    console.log(this.coApplicantForm);
 
     // if (this.coApplicantForm.invalid) {
     //   this.toastr.error('please enter values for required fields', 'Error!');
@@ -1805,7 +1806,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
       kycData: this.kycData.coa2,
     };
-    console.log(this.coApplicantForm);
 
     coapparr.push(obj);
     coapparr.push(objcoa2);

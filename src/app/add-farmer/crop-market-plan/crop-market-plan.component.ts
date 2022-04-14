@@ -162,7 +162,6 @@ export class CropMarketPlanComponent
         this.nextRoute = data.routeName;
         if (this.router.url?.includes('/add/crop-market-plan')) {
           this.saveData();
-          console.log(data.routeName);
         }
       });
   }
