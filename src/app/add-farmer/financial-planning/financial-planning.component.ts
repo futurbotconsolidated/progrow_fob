@@ -31,6 +31,7 @@ export class FinancialPlanningComponent
   private observableSubscription: any;
 
   KCCLoanRepaymentDateError = false;
+  otherLoanRepaymentDateError = false;
   loanReqPlaned!: FormArray;
   bankDetails!: FormArray;
   seasonCrop!: FormArray;
@@ -481,8 +482,15 @@ export class FinancialPlanningComponent
       this.KCCLoanRepaymentDateError = false;
     }
   }
+  checkOtherRepaymentDate() {
+    if(this.financialForm.value.otherLoanRepaymentDate && ( this.financialForm.value.otherLoanDisbursementDate > this.financialForm.value.otherLoanRepaymentDate || this.financialForm.value.otherLoanDisbursementDate == this.financialForm.value.otherLoanRepaymentDate) ){
+      this.otherLoanRepaymentDateError = true;
+    } else {
+      this.otherLoanRepaymentDateError = false;
+    }
+  }  
   saveData() {
-    if(this.KCCLoanRepaymentDateError){
+    if(this.KCCLoanRepaymentDateError || this.otherLoanRepaymentDateError){
       this.toastr.error('please enter values for required fields', 'Error!');
       return;
     } else {

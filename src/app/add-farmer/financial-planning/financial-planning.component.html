@@ -456,7 +456,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="other-loan form-details-inner">
+                        <div class="other-loan form-details-inner ol-transaction">
                             <h3 class="form-title">5E. Please provide details.</h3>
                             <div class="row align-items-center">
                                 <div class="col-md-2 lable-top">
@@ -469,7 +469,7 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="date" class="form-control" formControlName="otherLoanDisbursementDate">
+                                    <input type="date" class="form-control" formControlName="otherLoanDisbursementDate" (change)="checkOtherRepaymentDate()">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Amount</label>
@@ -477,7 +477,10 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="date" class="form-control" formControlName="otherLoanRepaymentDate">
+                                    <input type="date" class="form-control" formControlName="otherLoanRepaymentDate" (change)="checkOtherRepaymentDate()">
+                                    <div *ngIf="otherLoanRepaymentDateError" class="form-text text-danger">
+                                        <small *ngIf="otherLoanRepaymentDateError">Repayment date is greater than date of disbursement</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
