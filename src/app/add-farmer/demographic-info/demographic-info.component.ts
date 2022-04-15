@@ -103,6 +103,7 @@ export class DemographicInfoComponent
     },
 
     farmerProfile: { front: `${this.concatePage}_farmerProfileImage` },
+    ownershipPicture: { front: `${this.concatePage}_ownershipPictureImage` },
   };
   fileUploadFileFor = {
     panCard: 'PAN',
@@ -112,6 +113,7 @@ export class DemographicInfoComponent
     passport: 'PASSPORT',
     NREGA: 'NREGA',
     farmerProfile: 'FARMER_PROFILE',
+    ownershipPicture: 'OWENERSHIP_PICTURE',
   };
   /* END: indexed db variables */
 
@@ -777,6 +779,24 @@ export class DemographicInfoComponent
             );
           this.displayFarmerProfileImage = farmer?.file;
         });
+    } else if (type === this.fileUploadFileFor.ownershipPicture) {
+      this.fileUpload.popupTitle = 'Upload Ownership Picture Image';
+      this.fileUpload.imageHeading1 = 'Ownership Picture Image';
+      this.fileUpload.new.isImage1Required = true;
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.ownershipPicture.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.ownershipPicture.front
+            );
+          //this.displayOwnershipPictureImage = farmer?.file;
+        });
     }
     $('#fileUploadModalPopup').modal('show');
   }
@@ -874,7 +894,18 @@ export class DemographicInfoComponent
             selectedImageFor = this.indexedDBFileNameManage.farmerProfile.front;
             this.displayFarmerProfileImage = imageSrc;
           }
+        } else if (
+          this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
+        ) {
+          if (type === 'FRONT_IMAGE') {
+            this.fileUpload.new.imageSrc1 = imageSrc;
+            selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front;
+            //this.displayOwnershipPictureImage = imageSrc;
+          }
         }
+
+        console.log('this.fileUpload.fileFor : ', this.fileUpload.fileFor);
+        console.log('this.fileUploadFileFor.ownershipPicture : ', this.fileUploadFileFor.ownershipPicture);       
 
         /* START: ngx-indexed-db feature to store files(images/docs) */
         // if file already exist then delete then add

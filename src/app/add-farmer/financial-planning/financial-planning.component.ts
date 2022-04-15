@@ -206,38 +206,6 @@ export class FinancialPlanningComponent
           this.editDynamicBindFormArray(financial_planning);
         }
       }      
-      let fieldInfo: any = localStorage.getItem('edit-field-info');
-      if (fieldInfo) {
-        fieldInfo = JSON.parse(fieldInfo);
-        fieldInfo.forEach((field_el: any, findex: number) => {
-          var field_data = {} as any;
-          field_data.fieldId = field_el.field_ui_id;
-          field_data.cropLoanProduct = '';
-          field_data.plannedCultivationArea = '';
-          field_data.hectares = ''; 
-          field_data.crop = '';
-          if(financial_planning.loanReqPlaned.length){
-            financial_planning.loanReqPlaned.forEach((fp_load_el: any, fpl_index: number) => {
-              if(field_el.field_ui_id == fp_load_el.fieldId ){
-                field_data.cropLoanProduct = fp_load_el.cropLoanProduct;
-                field_data.plannedCultivationArea = fp_load_el.plannedCultivationArea;
-                field_data.hectares = fp_load_el.hectares;
-                field_data.crop = fp_load_el.crop;
-              }
-            });
-            if(field_data.cropLoanProduct == '' &&
-            field_data.plannedCultivationArea == '' &&
-            field_data.hectares == '' &&
-            field_data.crop == '' && financial_planning.loanReqPlaned[findex]){
-              field_data.cropLoanProduct = financial_planning.loanReqPlaned[findex].cropLoanProduct;
-              field_data.plannedCultivationArea = financial_planning.loanReqPlaned[findex].plannedCultivationArea;
-              field_data.hectares = financial_planning.loanReqPlaned[findex].hectares;
-              field_data.crop = financial_planning.loanReqPlaned[findex].crop;
-            }
-          }
-          this.addLoanReqPlaned(field_data);
-        });
-      }      
     } else {
       let draftFarmerNew: any = localStorage.getItem('draft_farmer_new');
       var draftFarmerNewObj: any = JSON.parse(draftFarmerNew) || {};
@@ -247,23 +215,9 @@ export class FinancialPlanningComponent
       let finPlan: any = localStorage.getItem('financial-planing');
       if (finPlan) {
         finPlan = JSON.parse(finPlan);
-        this.financialForm.patchValue(finPlan);
+        this.editDynamicBindFormArray(finPlan);
       }
-
-      let fieldInfo: any = localStorage.getItem('field-info');
-      if (fieldInfo) {
-        fieldInfo = JSON.parse(fieldInfo);
-        fieldInfo.forEach((field_el: any) => {
-          var field_data = {} as any;
-          field_data.fieldId = field_el.field_ui_id;  
-          field_data.cropLoanProduct = '';     
-          field_data.plannedCultivationArea = '';     
-          field_data.hectares = '';     
-          field_data.crop = '';   
-          this.addLoanReqPlaned(field_data);
-        });
-      }
-    }
+    }   
     }
     if(!(this.financialForm.get('bankDetails') as FormArray).controls.length){
       this.addBankDetails();
@@ -422,6 +376,44 @@ export class FinancialPlanningComponent
         })
       );
     });
+
+    let fieldInfo: any = '';
+    if (this.farmerId) {
+      fieldInfo = localStorage.getItem('edit-field-info');
+    } else {
+     fieldInfo = localStorage.getItem('field-info');
+    }
+    if (fieldInfo) {
+      fieldInfo = JSON.parse(fieldInfo);
+      fieldInfo.forEach((field_el: any, findex: number) => {
+        var field_data = {} as any;
+        field_data.fieldId = field_el.field_ui_id;
+        field_data.cropLoanProduct = '';
+        field_data.plannedCultivationArea = '';
+        field_data.hectares = ''; 
+        field_data.crop = '';
+        if(fieldValues.loanReqPlaned.length){
+          fieldValues.loanReqPlaned.forEach((fp_load_el: any, fpl_index: number) => {
+            if(field_el.field_ui_id == fp_load_el.fieldId ){
+              field_data.cropLoanProduct = fp_load_el.cropLoanProduct;
+              field_data.plannedCultivationArea = fp_load_el.plannedCultivationArea;
+              field_data.hectares = fp_load_el.hectares;
+              field_data.crop = fp_load_el.crop;
+            }
+          });
+          if(field_data.cropLoanProduct == '' &&
+          field_data.plannedCultivationArea == '' &&
+          field_data.hectares == '' &&
+          field_data.crop == '' && fieldValues.loanReqPlaned[findex]){
+            field_data.cropLoanProduct = fieldValues.loanReqPlaned[findex].cropLoanProduct;
+            field_data.plannedCultivationArea = fieldValues.loanReqPlaned[findex].plannedCultivationArea;
+            field_data.hectares = fieldValues.loanReqPlaned[findex].hectares;
+            field_data.crop = fieldValues.loanReqPlaned[findex].crop;
+          }
+        }
+        this.addLoanReqPlaned(field_data);
+      });
+    }
   }
   /* END: Add Dynamic Bank Details: FormArray */
 
