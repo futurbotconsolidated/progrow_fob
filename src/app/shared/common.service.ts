@@ -70,13 +70,29 @@ export class CommonService {
     // return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }
 
+  // ekyc api
   getKycData(inputObject: any) {
     headers = headers.delete('Bd-id');
     headers = headers.delete('Filter-Type');
     headers = headers.delete('Farmer-Id');
     headers = headers.set('Authorization', this.token);
     return this.http.post(
-      this.baseUrl + this.endPoints.getKycData,
+      this.baseUrl + this.endPoints.ekyc.getKycData,
+      inputObject,
+      {
+        headers,
+      }
+    );
+  }
+
+  // aadhaar ekyc api - 1
+  getAadhaarEkyc(inputObject: any) {
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.ekyc.getAadhaarEkyc,
       inputObject,
       {
         headers,
@@ -101,8 +117,7 @@ export class CommonService {
       }
     );
   }
-
-  /* END: API Calls */
+  /* ============================================END: API Calls ============================================ */
 
   /* ============================================START: Non-API Calls ====================================== */
   fetchFarmerDocument(fileFor: string) {

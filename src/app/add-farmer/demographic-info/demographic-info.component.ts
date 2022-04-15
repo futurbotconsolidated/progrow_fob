@@ -1369,5 +1369,43 @@ export class DemographicInfoComponent
       this.kycData[proofType].isVerified = true;
     }
   }
+
+  getAadhaarEkyc(event: any, proofType: string) {
+    let INPUT_OBJ = {};
+
+    // Aadhaar Card
+    if (proofType === this.kycProofNames.aadhaar) {
+      const A = this.demographicInfoForm.value.aadhaarNumber;
+      if (!A) {
+        this.toastr.info('please enter Aadhaar Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        aadhaar_no: this.demographicInfoForm.value.aadhaarNumber,
+      };
+    }
+    this.spinner.show();
+    this.commonService.getAadhaarEkyc(INPUT_OBJ).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        // Aadhaar Card
+        if (proofType === this.kycProofNames.aadhaar) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.message}`, 'Info!');
+          } else if (
+            !res.data.hasOwnProperty('kId') ||
+            !res.data.hasOwnProperty('redirect_url')
+          ) {
+            this.toastr.info(`Invalid Aadhaar Card Number`, 'Info!');
+          } else {
+          }
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch KYC Details, please try againn...');
+      }
+    );
+  }
   /* END: API Function Calls---------------------------------------------------------------------------- */
 }
