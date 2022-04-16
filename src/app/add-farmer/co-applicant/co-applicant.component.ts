@@ -206,6 +206,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       aadhaar: {
         id: '',
+        verificationLinkData: {},
         data: {},
         isVerified: false,
         showVerify: true,
@@ -256,6 +257,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       aadhaar: {
         id: '',
+        verificationLinkData: {},
         data: {},
         isVerified: false,
         showVerify: true,
@@ -337,7 +339,8 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       landmark: new FormControl(''),
 
       phoneNumber: new FormControl('', [
-        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
         Validators.pattern('^[0-9]*$'),
       ]),
 
@@ -359,7 +362,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // addressProof: new FormControl(''),
       PANnumber: new FormControl('', [validatePANNumber]),
-      aadhaarNumber: new FormControl(''),
+      aadhaarNumber: new FormControl('', [
+        Validators.minLength(12),
+        Validators.maxLength(12),
+      ]),
       drivingLicenceNumber: new FormControl(''),
       voterIdNumber: new FormControl(''),
       passportNumber: new FormControl(''),
@@ -388,7 +394,11 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       citycoa2: new FormControl(''),
       statecoa2: new FormControl(''),
       landmarkcoa2: new FormControl(''),
-      phoneNumbercoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
+      phoneNumbercoa2: new FormControl('', [
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern('^[0-9]*$'),
+      ]),
 
       emailcoa2: new FormControl('', [Validators.email]),
       yrsInAddresscoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
@@ -408,7 +418,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // addressProofcoa2: new FormControl(''),
       PANnumbercoa2: new FormControl(''),
-      aadhaarNumbercoa2: new FormControl(''),
+      aadhaarNumbercoa2: new FormControl('', [
+        Validators.minLength(12),
+        Validators.maxLength(12),
+      ]),
       drivingLicenceNumbercoa2: new FormControl(''),
       voterIdNumbercoa2: new FormControl(''),
       passportNumbercoa2: new FormControl(''),
@@ -1521,8 +1534,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     // other details
     const A: any = localStorage.getItem('farmer-details');
     const coData = JSON.parse(A).co_applicant_details;
-    const C1 = coData[0] || {};
-    const C2 = coData[1] || {};
+    const C1 = coData ? coData[0] : {};
+    const C2 = coData ? coData[1] : {};
+
+    console.log(coData);
 
     // assign kyc data to populate
     this.kycData.coa1 = C1.hasOwnProperty('kycData')
@@ -1532,10 +1547,12 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       ? C2.kycData
       : this.kycData.coa2;
 
+    console.log(this.kycData);
+
     // Prefill: edit data
     this.coApplicantForm.patchValue({
       // Co-Applicant 1
-      salutation: C1.farmerDetails['salutation'],
+      salutation: C1.farmerDetails['salutation'] || '',
       firstName: C1.farmerDetails['firstName'],
       middleName: C1.farmerDetails['middleName'],
       lastName: C1.farmerDetails['lastName'],
@@ -1581,7 +1598,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       NREGANumber: C1.identityProof['NREGANumber'],
 
       // Co-Applicant 1
-      salutationcoa2: C2.farmerDetails['salutation'],
+      salutationcoa2: C2.farmerDetails['salutation'] || '',
       firstNamecoa2: C2.farmerDetails['firstName'],
       middleNamecoa2: C2.farmerDetails['middleName'],
       lastNamecoa2: C2.farmerDetails['lastName'],
@@ -1822,6 +1839,8 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     // }
   }
   objectKeyCount(object: any) {
+    console.log(object, Object.keys(object).length);
+
     return Object.keys(object).length;
   }
   /* END: NON-API Function Calls------------------------------------------------------------------------ */
@@ -1930,6 +1949,8 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       );
     });
   }
+
+  /* PAN,Voter ID,Driving Licence EKYC related : start */
   getKycData(event: any, coaNo: string, proofType: string) {
     let INPUT_OBJ = {};
     // PAN Card
@@ -2190,7 +2211,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       (error: any) => {
         this.spinner.hide();
         alert('Failed to fetch KYC Details, please try againn...');
-        this.setKycDataVariables(proofType, 'api_failed', '');
+        this.setKycDataVariables(coaNo, proofType, 'api_failed', '');
       }
     );
   }
@@ -2227,5 +2248,276 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       this.kycData[coaNo][proofType].isVerified = true;
     }
   }
+  /* PAN,Voter ID,Driving Licence EKYC related : end */
+
+  /* Aadhaar EKYC related : start */
+  getAadhaarEkycVerification(event: any, coaNo: string, proofType: string) {
+    let INPUT_OBJ = {};
+
+    // Aadhaar Card
+    if (proofType === this.kycProofNames.coa1.aadhaar && coaNo === 'coa1') {
+      const aadhaarInput = this.coApplicantForm.value.aadhaarNumber;
+      const phoneNumberInput = this.coApplicantForm.value.phoneNumber;
+      if (!aadhaarInput) {
+        this.toastr.info('please enter Aadhaar Number', 'Info!');
+        return;
+      } else if (aadhaarInput && aadhaarInput.length !== 12) {
+        this.toastr.info('please enter 12 digit valid Aadhaar Number', 'Info!');
+        return;
+      } else if (
+        !phoneNumberInput ||
+        (phoneNumberInput && phoneNumberInput.trim().length !== 10)
+      ) {
+        this.toastr.info('please enter your 10 digit Mobile Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        mobile_no: phoneNumberInput,
+      };
+    } else if (
+      proofType === this.kycProofNames.coa2.aadhaar &&
+      coaNo === 'coa2'
+    ) {
+      const aadhaarInput = this.coApplicantForm.value.aadhaarNumbercoa2;
+      const phoneNumberInput = this.coApplicantForm.value.phoneNumbercoa2;
+      if (!aadhaarInput) {
+        this.toastr.info('please enter Aadhaar Number', 'Info!');
+        return;
+      } else if (aadhaarInput && aadhaarInput.length !== 12) {
+        this.toastr.info('please enter 12 digit valid Aadhaar Number', 'Info!');
+        return;
+      } else if (
+        !phoneNumberInput ||
+        (phoneNumberInput && phoneNumberInput.trim().length !== 10)
+      ) {
+        this.toastr.info('please enter your 10 digit Mobile Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        mobile_no: phoneNumberInput,
+      };
+    }
+    this.spinner.show();
+    this.commonService.getAadhaarEkycVerification(INPUT_OBJ).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (
+          ['coa1', 'coa2'].includes(coaNo) &&
+          (proofType === this.kycProofNames.coa1.aadhaar ||
+            proofType === this.kycProofNames.coa2.aadhaar)
+        ) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.message}`, 'Info!');
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_1',
+              proofType,
+              'api_failed',
+              ''
+            );
+          } else if (
+            !res.data.hasOwnProperty('kId') ||
+            !res.data.hasOwnProperty('redirect_url')
+          ) {
+            this.toastr.info(`Invalid Aadhaar Card Number`, 'Info!');
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_1',
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_1',
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch KYC Details, please try againn...');
+        this.setAadhaarEkycDataVariables(
+          coaNo,
+          'api_1',
+          proofType,
+          'api_failed',
+          ''
+        );
+      }
+    );
+  }
+  getAadhaarDetails(event: any, coaNo: string, proofType: string) {
+    let INPUT_OBJ = {};
+    if (proofType === this.kycProofNames.coa1.aadhaar && coaNo === 'coa1') {
+      const A = this.coApplicantForm.value.aadhaarNumber;
+      if (!A) {
+        this.toastr.info('please enter Aadhaar Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        kId: this.kycData.coa1.aadhaar.verificationLinkData['kId'],
+      };
+    } else if (
+      proofType === this.kycProofNames.coa2.aadhaar &&
+      coaNo === 'coa2'
+    ) {
+      const A = this.coApplicantForm.value.aadhaarNumbercoa2;
+      if (!A) {
+        this.toastr.info('please enter Aadhaar Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        kId: this.kycData.coa2.aadhaar.verificationLinkData['kId'],
+      };
+    }
+    this.spinner.show();
+    this.commonService.getAadhaarDetails(INPUT_OBJ).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (
+          ['coa1', 'coa2'].includes(coaNo) &&
+          (proofType === this.kycProofNames.coa1.aadhaar ||
+            proofType === this.kycProofNames.coa2.aadhaar)
+        ) {
+          if (
+            res &&
+            (!res.status || (res.status && res.data && res.data.code))
+          ) {
+            this.toastr.info(`${res.message}`, 'Info!');
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_2',
+              proofType,
+              'api_failed',
+              ''
+            );
+          } else if (
+            res.data &&
+            res.data.actions &&
+            Array.isArray(res.data.actions) &&
+            res.data.actions.length &&
+            !res.data.actions[0].processing_done
+          ) {
+            this.toastr.info(
+              `Please complete the verification process`,
+              'Info!'
+            );
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_2',
+              proofType,
+              'api_success_invalid_data',
+              ''
+            );
+          } else if (
+            res.data &&
+            res.data.actions &&
+            Array.isArray(res.data.actions) &&
+            res.data.actions.length &&
+            res.data.actions[0].processing_done &&
+            res.data.actions[0].details &&
+            res.data.actions[0].details.aadhaar
+          ) {
+            this.toastr.info(
+              `Please verify the Aadhaar details and confirm to complete the process`,
+              'Info!'
+            );
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_2',
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          } else {
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_2',
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch KYC Details, please try againn...');
+        this.setAadhaarEkycDataVariables(
+          coaNo,
+          'api_2',
+          proofType,
+          'api_failed',
+          ''
+        );
+      }
+    );
+  }
+
+  setAadhaarEkycDataVariables(
+    coaNo: string,
+    apiCalled: string,
+    proofType: string,
+    type: string,
+    apiData = {}
+  ) {
+    // if KYC API failed to get data
+    if (apiCalled === 'api_1') {
+      if (type === 'api_failed') {
+        this.kycData[coaNo][proofType].verificationLinkData = {};
+        this.kycData[coaNo][proofType].data = {};
+        this.kycData[coaNo][proofType].showVerify = false;
+        this.kycData[coaNo][proofType].showTryAgain = true;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = false;
+      } else if (type === 'api_success_invalid_data') {
+        this.kycData[coaNo][proofType].verificationLinkData = {};
+        this.kycData[coaNo][proofType].data = {};
+        this.kycData[coaNo][proofType].showVerify = false;
+        this.kycData[coaNo][proofType].showTryAgain = true;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = false;
+      } else if (type === 'api_success_valid_data') {
+        this.kycData[coaNo][proofType].verificationLinkData = apiData;
+        this.kycData[coaNo][proofType].data = {};
+        this.kycData[coaNo][proofType].showVerify = true;
+        this.kycData[coaNo][proofType].showTryAgain = false;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = false;
+      }
+    } else if (apiCalled === 'api_2') {
+      if (type === 'api_failed') {
+        this.kycData[coaNo][proofType].data = {};
+        this.kycData[coaNo][proofType].showVerify = false;
+        this.kycData[coaNo][proofType].showTryAgain = true;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = false;
+      } else if (type === 'api_success_invalid_data') {
+        this.kycData[coaNo][proofType].data = {};
+        this.kycData[coaNo][proofType].showVerify = false;
+        this.kycData[coaNo][proofType].showTryAgain = true;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = false;
+      } else if (type === 'api_success_valid_data') {
+        this.kycData[coaNo][proofType].data = apiData;
+        this.kycData[coaNo][proofType].showVerify = true;
+        this.kycData[coaNo][proofType].showTryAgain = false;
+        this.kycData[coaNo][proofType].showConfirm = true;
+        this.kycData[coaNo][proofType].isVerified = false;
+      } else if (type === 'confirm') {
+        this.kycData[coaNo][proofType].showVerify = false;
+        this.kycData[coaNo][proofType].showTryAgain = false;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = true;
+      }
+    }
+  }
+  /* Aadhaar EKYC related : end */
+
   /* END: API Function Calls------------------------------------------------------------------------ */
 }

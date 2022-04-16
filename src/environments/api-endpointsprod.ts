@@ -11,7 +11,7 @@ export const endPoints = {
 
   ekyc: {
     getKycData: '/kyc_check',
-    getAadhaarEkyc: '/aadhaar_ekyc',
-    confirmAadhaarEkyc: '/aadhaar_ekyc2',
+    getAadhaarEkycVerification: '/aadhaar_ekyc',
+    getAadhaarDetails: '/aadhaar_ekyc2',
   },
 };

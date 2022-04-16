@@ -197,35 +197,37 @@ export class FinancialPlanningComponent
       var financial_planning = {} as any;
       let editForm: any = localStorage.getItem('edit-financial-planing');
       if (editForm) {
-        financial_planning = JSON.parse(editForm);        
+        financial_planning = JSON.parse(editForm);
         this.editDynamicBindFormArray(financial_planning);
       } else {
         const farmer_details: any = localStorage.getItem('farmer-details');
         if (farmer_details) {
-          financial_planning = JSON.parse(farmer_details).financial_planning;          
+          financial_planning = JSON.parse(farmer_details).financial_planning;
           this.editDynamicBindFormArray(financial_planning);
         }
-      }      
+      }
     } else {
       let draftFarmerNew: any = localStorage.getItem('draft_farmer_new');
       var draftFarmerNewObj: any = JSON.parse(draftFarmerNew) || {};
-      if(draftFarmerNewObj.financial_planing){
+      if (draftFarmerNewObj.financial_planing) {
         this.editDynamicBindFormArray(draftFarmerNewObj.financial_planing);
       } else {
-      let finPlan: any = localStorage.getItem('financial-planing');
-      if (finPlan) {
-        finPlan = JSON.parse(finPlan);
-        this.editDynamicBindFormArray(finPlan);
+        let finPlan: any = localStorage.getItem('financial-planing');
+        if (finPlan) {
+          finPlan = JSON.parse(finPlan);
+          this.editDynamicBindFormArray(finPlan);
+        }
       }
-    }   
     }
-    if(!(this.financialForm.get('bankDetails') as FormArray).controls.length){
+    if (!(this.financialForm.get('bankDetails') as FormArray).controls.length) {
       this.addBankDetails();
     }
-    if(!(this.financialForm.get('seasonCrop') as FormArray).controls.length){
+    if (!(this.financialForm.get('seasonCrop') as FormArray).controls.length) {
       this.addSeasonCrop();
     }
-    if(!(this.financialForm.get('insuranceDetails') as FormArray).controls.length){
+    if (
+      !(this.financialForm.get('insuranceDetails') as FormArray).controls.length
+    ) {
       this.addInsuranceDetails();
     }
   }
@@ -269,8 +271,13 @@ export class FinancialPlanningComponent
   createLoanReqPlaned(field_data: any): FormGroup {
     return this.formBuilder.group({
       fieldId: new FormControl(field_data.fieldId, [Validators.required]),
-      cropLoanProduct: new FormControl(field_data.cropLoanProduct, [Validators.required]),
-      plannedCultivationArea: new FormControl(field_data.plannedCultivationArea, [Validators.required]),
+      cropLoanProduct: new FormControl(field_data.cropLoanProduct, [
+        Validators.required,
+      ]),
+      plannedCultivationArea: new FormControl(
+        field_data.plannedCultivationArea,
+        [Validators.required]
+      ),
       hectares: new FormControl(field_data.hectares, [Validators.required]),
       crop: new FormControl(field_data.crop, [Validators.required]),
     });
@@ -351,20 +358,26 @@ export class FinancialPlanningComponent
         })
       );
     });
-    this.insuranceDetails = this.financialForm.get('insuranceDetails') as FormArray;
+    this.insuranceDetails = this.financialForm.get(
+      'insuranceDetails'
+    ) as FormArray;
     fieldValues.insuranceDetails.map((item: any) => {
       this.insuranceDetails.push(
         this.formBuilder.group({
           insuranceType: new FormControl(item.insuranceType),
           monthYearTaken: new FormControl(item.monthYearTaken),
           premiumPaid: new FormControl(item.premiumPaid),
-          isSettlementAmountCredited: new FormControl(item.isSettlementAmountCredited),
-          isDisbursementSatisfied: new FormControl(item.isDisbursementSatisfied),
+          isSettlementAmountCredited: new FormControl(
+            item.isSettlementAmountCredited
+          ),
+          isDisbursementSatisfied: new FormControl(
+            item.isDisbursementSatisfied
+          ),
         })
       );
     });
     this.seasonCrop = this.financialForm.get('seasonCrop') as FormArray;
-    fieldValues.seasonCrop.map((item: any) => {
+    fieldValues.seasonCrop?.map((item: any) => {
       this.seasonCrop.push(
         this.formBuilder.group({
           season: new FormControl(item.season),
@@ -381,7 +394,7 @@ export class FinancialPlanningComponent
     if (this.farmerId) {
       fieldInfo = localStorage.getItem('edit-field-info');
     } else {
-     fieldInfo = localStorage.getItem('field-info');
+      fieldInfo = localStorage.getItem('field-info');
     }
     if (fieldInfo) {
       fieldInfo = JSON.parse(fieldInfo);
@@ -390,23 +403,31 @@ export class FinancialPlanningComponent
         field_data.fieldId = field_el.field_ui_id;
         field_data.cropLoanProduct = '';
         field_data.plannedCultivationArea = '';
-        field_data.hectares = ''; 
+        field_data.hectares = '';
         field_data.crop = '';
-        if(fieldValues.loanReqPlaned.length){
-          fieldValues.loanReqPlaned.forEach((fp_load_el: any, fpl_index: number) => {
-            if(field_el.field_ui_id == fp_load_el.fieldId ){
-              field_data.cropLoanProduct = fp_load_el.cropLoanProduct;
-              field_data.plannedCultivationArea = fp_load_el.plannedCultivationArea;
-              field_data.hectares = fp_load_el.hectares;
-              field_data.crop = fp_load_el.crop;
+        if (fieldValues.loanReqPlaned.length) {
+          fieldValues.loanReqPlaned.forEach(
+            (fp_load_el: any, fpl_index: number) => {
+              if (field_el.field_ui_id == fp_load_el.fieldId) {
+                field_data.cropLoanProduct = fp_load_el.cropLoanProduct;
+                field_data.plannedCultivationArea =
+                  fp_load_el.plannedCultivationArea;
+                field_data.hectares = fp_load_el.hectares;
+                field_data.crop = fp_load_el.crop;
+              }
             }
-          });
-          if(field_data.cropLoanProduct == '' &&
-          field_data.plannedCultivationArea == '' &&
-          field_data.hectares == '' &&
-          field_data.crop == '' && fieldValues.loanReqPlaned[findex]){
-            field_data.cropLoanProduct = fieldValues.loanReqPlaned[findex].cropLoanProduct;
-            field_data.plannedCultivationArea = fieldValues.loanReqPlaned[findex].plannedCultivationArea;
+          );
+          if (
+            field_data.cropLoanProduct == '' &&
+            field_data.plannedCultivationArea == '' &&
+            field_data.hectares == '' &&
+            field_data.crop == '' &&
+            fieldValues.loanReqPlaned[findex]
+          ) {
+            field_data.cropLoanProduct =
+              fieldValues.loanReqPlaned[findex].cropLoanProduct;
+            field_data.plannedCultivationArea =
+              fieldValues.loanReqPlaned[findex].plannedCultivationArea;
             field_data.hectares = fieldValues.loanReqPlaned[findex].hectares;
             field_data.crop = fieldValues.loanReqPlaned[findex].crop;
           }
@@ -468,39 +489,51 @@ export class FinancialPlanningComponent
   }
 
   checkRepaymentDate() {
-    if(this.financialForm.value.KCCLoanRepaymentDate && ( this.financialForm.value.KCCLoanDisbursementDate > this.financialForm.value.KCCLoanRepaymentDate || this.financialForm.value.KCCLoanDisbursementDate == this.financialForm.value.KCCLoanRepaymentDate) ){
+    if (
+      this.financialForm.value.KCCLoanRepaymentDate &&
+      (this.financialForm.value.KCCLoanDisbursementDate >
+        this.financialForm.value.KCCLoanRepaymentDate ||
+        this.financialForm.value.KCCLoanDisbursementDate ==
+          this.financialForm.value.KCCLoanRepaymentDate)
+    ) {
       this.KCCLoanRepaymentDateError = true;
     } else {
       this.KCCLoanRepaymentDateError = false;
     }
   }
   checkOtherRepaymentDate() {
-    if(this.financialForm.value.otherLoanRepaymentDate && ( this.financialForm.value.otherLoanDisbursementDate > this.financialForm.value.otherLoanRepaymentDate || this.financialForm.value.otherLoanDisbursementDate == this.financialForm.value.otherLoanRepaymentDate) ){
+    if (
+      this.financialForm.value.otherLoanRepaymentDate &&
+      (this.financialForm.value.otherLoanDisbursementDate >
+        this.financialForm.value.otherLoanRepaymentDate ||
+        this.financialForm.value.otherLoanDisbursementDate ==
+          this.financialForm.value.otherLoanRepaymentDate)
+    ) {
       this.otherLoanRepaymentDateError = true;
     } else {
       this.otherLoanRepaymentDateError = false;
     }
-  }  
+  }
   saveData() {
-    if(this.KCCLoanRepaymentDateError || this.otherLoanRepaymentDateError){
+    if (this.KCCLoanRepaymentDateError || this.otherLoanRepaymentDateError) {
       this.toastr.error('please enter values for required fields', 'Error!');
       return;
     } else {
-    if (this.farmerId) {
-      localStorage.setItem(
-        'edit-financial-planing',
-        JSON.stringify(this.financialForm.value)
-      );
-    } else {
-      localStorage.setItem(
-        'financial-planing',
-        JSON.stringify(this.financialForm.value)
-      );
+      if (this.farmerId) {
+        localStorage.setItem(
+          'edit-financial-planing',
+          JSON.stringify(this.financialForm.value)
+        );
+      } else {
+        localStorage.setItem(
+          'financial-planing',
+          JSON.stringify(this.financialForm.value)
+        );
+      }
+      console.log(this.financialForm.value);
+      const url = `/add/${this.nextRoute}/${this.farmerId}`;
+      this.router.navigate([url]);
     }
-    console.log(this.financialForm.value);
-    const url = `/add/${this.nextRoute}/${this.farmerId}`;
-    this.router.navigate([url]);
-  }
   }
   /* END: NON-API Function Calls-------------------------------------------------------------- */
 }

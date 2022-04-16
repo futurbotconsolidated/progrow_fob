@@ -899,13 +899,17 @@ export class DemographicInfoComponent
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front;
+            selectedImageFor =
+              this.indexedDBFileNameManage.ownershipPicture.front;
             //this.displayOwnershipPictureImage = imageSrc;
           }
         }
 
         console.log('this.fileUpload.fileFor : ', this.fileUpload.fileFor);
-        console.log('this.fileUploadFileFor.ownershipPicture : ', this.fileUploadFileFor.ownershipPicture);       
+        console.log(
+          'this.fileUploadFileFor.ownershipPicture : ',
+          this.fileUploadFileFor.ownershipPicture
+        );
 
         /* START: ngx-indexed-db feature to store files(images/docs) */
         // if file already exist then delete then add
@@ -1401,7 +1405,7 @@ export class DemographicInfoComponent
     }
   }
 
-  getAadhaarEkyc(event: any, proofType: string) {
+  getAadhaarEkycVerification(event: any, proofType: string) {
     let INPUT_OBJ = {};
 
     // Aadhaar Card
@@ -1416,7 +1420,7 @@ export class DemographicInfoComponent
       };
     }
     this.spinner.show();
-    this.commonService.getAadhaarEkyc(INPUT_OBJ).subscribe(
+    this.commonService.getAadhaarEkycVerification(INPUT_OBJ).subscribe(
       (res: any) => {
         this.spinner.hide();
         // Aadhaar Card

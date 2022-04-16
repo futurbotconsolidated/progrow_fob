@@ -86,13 +86,27 @@ export class CommonService {
   }
 
   // aadhaar ekyc api - 1
-  getAadhaarEkyc(inputObject: any) {
+  getAadhaarEkycVerification(inputObject: any) {
     headers = headers.delete('Bd-id');
     headers = headers.delete('Filter-Type');
     headers = headers.delete('Farmer-Id');
     headers = headers.set('Authorization', this.token);
     return this.http.post(
-      this.baseUrl + this.endPoints.ekyc.getAadhaarEkyc,
+      this.baseUrl + this.endPoints.ekyc.getAadhaarEkycVerification,
+      inputObject,
+      {
+        headers,
+      }
+    );
+  }
+  // aadhaar ekyc api - 2
+  getAadhaarDetails(inputObject: any) {
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.ekyc.getAadhaarDetails,
       inputObject,
       {
         headers,
