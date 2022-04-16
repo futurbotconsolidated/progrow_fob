@@ -460,12 +460,16 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       // assign kyc data to populate
       const coApplRaw: any = localStorage.getItem('edit-co-applicant');
       if (coApplRaw) {
+        console.log(coApplRaw);
+
         const A = JSON.parse(coApplRaw);
         if (Array.isArray(A) && A.length && A[0].kycData) {
-          this.kycData.cao1 = A[0].kycData;
+          this.kycData.coa1 = A[0].kycData;
+          console.log(this.kycData);
         }
         if (Array.isArray(A) && A.length > 1 && A[1].kycData) {
-          this.kycData.cao2 = A[1].kycData;
+          this.kycData.coa2 = A[1].kycData;
+          console.log(this.kycData);
         }
       }
 
@@ -508,10 +512,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       if (coApplRaw) {
         const A = JSON.parse(coApplRaw);
         if (Array.isArray(A) && A.length && A[0].kycData) {
-          this.kycData.cao1 = A[0].kycData;
+          this.kycData.coa1 = A[0].kycData;
         }
         if (Array.isArray(A) && A.length > 1 && A[1].kycData) {
-          this.kycData.cao2 = A[1].kycData;
+          this.kycData.coa2 = A[1].kycData;
         }
       }
 
