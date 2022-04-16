@@ -101,33 +101,78 @@
             <h3 class="form-title">2. Address proof</h3>
 
             <!-- START: Aadhaar EKYC & Image Upload -------------------------------------------------------------------->
-            <div class="farmer-details">
+            <div class="farmer-details mb-2">
               <div class="farmer-details-inner lable-top">
                 <label for="PANnumber">Aadhaar Number </label>
-                <input type="text" class="form-control" id="aadhaarNumber" formControlName="aadhaarNumber" placeholder="Enter Aadhaar Number" />
-                <!-- <input type="text" class="form-control" id="aadhaarNumber" formControlName="aadhaarNumber" placeholder="Enter Aadhaar Number" [readonly]="kycData.pan.isVerified" /> -->
+                <input type="text" class="form-control" id="aadhaarNumber" formControlName="aadhaarNumber" placeholder="Enter Aadhaar Number" maxlength="12" [readonly]="kycData.aadhaar.isVerified"
+                  (keypress)="validateNo($event)" />
+                <div *ngIf="f['aadhaarNumber'].errors" class="form-text text-danger">
+                  <small *ngIf="f['aadhaarNumber'].errors['minlength']">
+                    Should be 12 digits</small>
+                  <small *ngIf="f['aadhaarNumber'].errors['maxlength']">
+                    Should be 12 digits</small>
+                </div>
               </div>
 
               <!-- KYC Buttons -->
-              <!-- <div class="lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.pan.showVerify" (click)="getAadhaarEkyc($event,kycProofNames.aadhaar)">
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.aadhaar.showVerify" (click)="getAadhaarEkycVerification($event,kycProofNames.aadhaar)">
                   {{kycFieldButtonLabels.verify}}</button>
-                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.aadhaar.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
                   {{kycFieldButtonLabels.verified}}</button>
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.pan.showTryAgain" (click)="getAadhaarEkyc($event,kycProofNames.aadhaar)"> <i
-                    class="fa fa-undo" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.aadhaar.showTryAgain"
+                  (click)="getAadhaarEkycVerification($event,kycProofNames.aadhaar)"> <i class="fa fa-undo" aria-hidden="true"></i>
                   {{kycFieldButtonLabels.try_again}}</button>
-              </div> -->
+              </div>
+
+
               <!-- Image Upload Button modal-->
               <div class="lable-top">
                 <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.aadhaarCard)"> Upload Image
                 </button>
               </div>
             </div>
+
+            <!-- START: show Aadhaar Id kyc api data with confirm button -->
+            <div class="mb-4" *ngIf="objectKeyCount(kycData.aadhaar.verificationLinkData) || objectKeyCount(kycData.aadhaar.data)">
+              <small class="mt-2 text-decoration-underline" data-bs-toggle="collapse" data-bs-target="#aadhaarIdKYCArea" aria-expanded="false" aria-controls="aadhaarIdKYCArea">
+                Show/Hide details
+              </small>
+              <div class="collapse" id="aadhaarIdKYCArea">
+                <div class="card card-body">
+                  <!-- first api data: verification link display -->
+                  <div [hidden]="!objectKeyCount(kycData.aadhaar.verificationLinkData) || objectKeyCount(kycData.aadhaar.data)">
+                    <small>Please click on below link and complete the verification process and then click on below <u>Get Aadhaar Details</u> button to get the details and confirm to complete the
+                      Aadhaar KYC
+                      Process.</small><br />
+                    <p><b>Verification Link: </b> <a href="{{kycData.aadhaar.verificationLinkData['redirect_url']}}" target="_blank">Click Here</a></p>
+
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100 mt-2" [hidden]="objectKeyCount(kycData.aadhaar.data)"
+                      (click)="getAadhaarDetails($event,kycProofNames.aadhaar)">
+                      Get Aadhaar Details</button><br />
+                    <small>Please wait for at least 10 seconds after completing the verification process using above Verifiction Link and then click on Above <u>Get Aadhaar Details</u> button.
+                    </small>
+                  </div>
+
+                  <!-- second api data: Aadhaar details display -->
+                  <div *ngIf="objectKeyCount(kycData.aadhaar.data)">
+                    <p><b>Name:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.name || ''}}</p>
+                    <p><b>Gender:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.gender || ''}}</p>
+                    <p><b>DOB:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.dob || ''}}</p>
+                    <p><b>Current Address:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.current_address || ''}}</p>
+                    <p><b>Permanent Address:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.permanent_address || ''}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm h-100 mt-2" [hidden]="!kycData.aadhaar.showConfirm"
+                      (click)="setAadhaarEkycDataVariables('api_2',kycProofNames.aadhaar,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: show Aadhaar Id kyc api data with confirm button -->
             <!-- END: Aadhaar EKYC & Image Upload ---------------------------------------------------------------------->
 
             <!-- START:  DRIVING LICENSE EKYC & Image Upload ----------------------------------------------------------->
-            <div class="farmer-details mb-2">
+            <div class="farmer-details mt-2 mb-2">
               <div class="farmer-details-inner lable-top">
                 <label for="drivingLicenceNumber">Driving Licence Number </label>
                 <input type="text" class="form-control" id="drivingLicenceNumber" formControlName="drivingLicenceNumber" placeholder="Enter Driving Licence Number"
@@ -444,7 +489,9 @@
                     <small *ngIf="f['phoneNumber'].errors['pattern']">
                       Only Numbers are allowed</small>
                     <small *ngIf="f['phoneNumber'].errors['minlength']">
-                      Please enter 10 Digits</small>
+                      Should be 10 digits</small>
+                    <small *ngIf="f['phoneNumber'].errors['maxlength']">
+                      Should be 10 digits</small>
                   </div>
                 </div>
                 <div class="flex-1 lable-top">

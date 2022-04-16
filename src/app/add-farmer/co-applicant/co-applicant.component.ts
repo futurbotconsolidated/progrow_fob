@@ -90,10 +90,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         front: `${this.concatePage1}_DrivingLicenceFront`,
         back: `${this.concatePage1}_DrivingLicenceBack`,
       },
-      // addressProof: {
-      //   front: `${this.concatePage1}_addressProofFront`,
-      //   back: `${this.concatePage1}_addressProofBack`,
-      // },
+
       voterId: {
         front: `${this.concatePage1}_voterIdFront`,
         back: `${this.concatePage1}_voterIdBack`,
@@ -122,10 +119,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         front: `${this.concatePage2}_DrivingLicenceFront`,
         back: `${this.concatePage2}_DrivingLicenceBack`,
       },
-      // addressProof: {
-      //   front: `${this.concatePage2}_addressProofFront`,
-      //   back: `${this.concatePage2}_addressProofBack`,
-      // },
+
       voterId: {
         front: `${this.concatePage2}_voterIdFront`,
         back: `${this.concatePage2}_voterIdBack`,
@@ -360,7 +354,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       monthlyRent: new FormControl(''),
       familyMembers: new FormArray([]),
 
-      // addressProof: new FormControl(''),
       PANnumber: new FormControl('', [validatePANNumber]),
       aadhaarNumber: new FormControl('', [
         Validators.minLength(12),
@@ -416,7 +409,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       monthlyRentcoa2: new FormControl(''),
       familyMemberscoa2: new FormArray([]),
 
-      // addressProofcoa2: new FormControl(''),
       PANnumbercoa2: new FormControl(''),
       aadhaarNumbercoa2: new FormControl('', [
         Validators.minLength(12),
@@ -698,84 +690,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               this.indexedDBFileNameManage.coa2.panCard.front
             );
         });
-    }
-
-    //  CURRENTLY NOT USING - DO NOT DELETE
-    /* else if (type === 'ADDRESS_PROOF') {
-      if (!this.coApplicantForm.value.addressProof) {
-        this.toastr.error('please select Address Proof Type.', 'Error!');
-        return;
-      }
-      const A = this.coApplicantForm.value.addressProof;
-      this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
-      this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.isImage2Required = true;
-      this.dbService
-        .getByIndex(
-          this.indexedDBName,
-          'fileFor',
-          `${this.indexedDBFileNameManage.coa1.addressProof.front}`
-        )
-        .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 =
-            farmer?.file ||
-            this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.coa1.addressProof.front
-            );
-        });
-
-      this.dbService
-        .getByIndex(
-          this.indexedDBName,
-          'fileFor',
-          `${this.indexedDBFileNameManage.coa1.addressProof.back}`
-        )
-        .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 =
-            farmer?.file ||
-            this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.coa1.addressProof.back
-            );
-        });
-    }
-     else if (type === 'ADDRESS_PROOFcoa2') {
-      if (!this.coApplicantForm.value.addressProofcoa2) {
-        this.toastr.error('please select Address Proof Type.', 'Error!');
-        return;
-      }
-      const A = this.coApplicantForm.value.addressProofcoa2;
-      this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
-      this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.isImage2Required = true;
-      this.dbService
-        .getByIndex(
-          this.indexedDBName,
-          'fileFor',
-          `${this.indexedDBFileNameManage.coa2.addressProof.front}`
-        )
-        .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 =
-            farmer?.file ||
-            this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.coa2.addressProof.front
-            );
-        });
-
-      this.dbService
-        .getByIndex(
-          this.indexedDBName,
-          'fileFor',
-          `${this.indexedDBFileNameManage.coa2.addressProof.back}`
-        )
-        .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 =
-            farmer?.file ||
-            this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.coa2.addressProof.back
-            );
-        });
-    }*/
-    else if (
+    } else if (
       type === this.fileUploadFileFor.coa1.aadhaarCard &&
       coaNo === 'coa1'
     ) {
@@ -1236,29 +1151,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           this.fileUpload.new.imageSrc1 = imageSrc;
           selectedImageFor = this.indexedDBFileNameManage.coa2.panCard.front;
-        }
-        //  else if (this.fileUpload.fileFor === 'ADDRESS_PROOF') {
-        //   if (type === 'FRONT_IMAGE') {
-        //     this.fileUpload.new.imageSrc1 = imageSrc;
-        //     selectedImageFor =
-        //       this.indexedDBFileNameManage.coa1.addressProof.front;
-        //   } else if (type === 'BACK_IMAGE') {
-        //     this.fileUpload.new.imageSrc2 = imageSrc;
-        //     selectedImageFor =
-        //       this.indexedDBFileNameManage.coa1.addressProof.back;
-        //   }
-        // } else if (this.fileUpload.fileFor === 'ADDRESS_PROOFcoa2') {
-        //   if (type === 'FRONT_IMAGE') {
-        //     this.fileUpload.new.imageSrc1 = imageSrc;
-        //     selectedImageFor =
-        //       this.indexedDBFileNameManage.coa2.addressProof.front;
-        //   } else if (type === 'BACK_IMAGE') {
-        //     this.fileUpload.new.imageSrc2 = imageSrc;
-        //     selectedImageFor =
-        //       this.indexedDBFileNameManage.coa2.addressProof.back;
-        //   }
-        // }
-        else if (
+        } else if (
           this.fileUpload.coaNo === 'coa1' &&
           this.fileUpload.fileFor === this.fileUploadFileFor.coa1.aadhaarCard
         ) {
@@ -1589,7 +1482,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       monthlyRent: C1.monthlyRent,
       familyMembers: C1.familyMembers,
 
-      // addressProof: C1.addressProof['selectedIdProof'],
       PANnumber: C1.identityProof['panNumber'],
       aadhaarNumber: C1.identityProof['aadhaarNumber'],
       drivingLicenceNumber: C1.identityProof['drivingLicenceNumber'],
@@ -1635,7 +1527,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       monthlyRentcoa2: C2.monthlyRent,
       familyMemberscoa2: C2.familyMembers,
 
-      // addressProofcoa2: C2.addressProof['selectedIdProof'],
       PANnumbercoa2: C2.identityProof['panNumber'],
       aadhaarNumbercoa2: C2.identityProof['aadhaarNumber'],
       drivingLicenceNumbercoa2: C2.identityProof['drivingLicenceNumber'],
@@ -1701,10 +1592,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
   validateAndNext() {
     this.isSubmitted = true;
 
-    // if (this.coApplicantForm.invalid) {
-    //   this.toastr.error('please enter values for required fields', 'Error!');
-    //   return;
-    // } else {
     const formValue = this.coApplicantForm.value;
     const coapparr = [] as any;
     const obj = {
@@ -1716,9 +1603,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         passportNumber: formValue.passportNumber,
         NREGANumber: formValue.NREGANumber,
       },
-      // addressProof: {
-      //   selectedIdProof: formValue.addressProof,
-      // },
+
       farmerDetails: {
         salutation: formValue.salutation,
         firstName: formValue.firstName,
@@ -1774,9 +1659,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         NREGANumber: formValue.NREGANumbercoa2,
         voterIdNumber: formValue.voterIdNumbercoa2,
       },
-      // addressProof: {
-      //   selectedIdProof: formValue.addressProofcoa2,
-      // },
+
       farmerDetails: {
         salutation: formValue.salutationcoa2,
         firstName: formValue.firstNamecoa2,
@@ -1836,12 +1719,9 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
-    // }
   }
   objectKeyCount(object: any) {
-    console.log(object, Object.keys(object).length);
-
-    return Object.keys(object).length;
+    return object ? Object.keys(object).length : 0;
   }
   /* END: NON-API Function Calls------------------------------------------------------------------------ */
 
@@ -2222,7 +2102,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     type: string,
     apiData = {}
   ) {
-    // if KYC API failed to get data
     if (type === 'api_failed') {
       this.kycData[coaNo][proofType].data = {};
       this.kycData[coaNo][proofType].showVerify = false;
@@ -2354,11 +2233,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
   getAadhaarDetails(event: any, coaNo: string, proofType: string) {
     let INPUT_OBJ = {};
     if (proofType === this.kycProofNames.coa1.aadhaar && coaNo === 'coa1') {
-      const A = this.coApplicantForm.value.aadhaarNumber;
-      if (!A) {
-        this.toastr.info('please enter Aadhaar Number', 'Info!');
-        return;
-      }
       INPUT_OBJ = {
         kId: this.kycData.coa1.aadhaar.verificationLinkData['kId'],
       };
@@ -2366,11 +2240,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       proofType === this.kycProofNames.coa2.aadhaar &&
       coaNo === 'coa2'
     ) {
-      const A = this.coApplicantForm.value.aadhaarNumbercoa2;
-      if (!A) {
-        this.toastr.info('please enter Aadhaar Number', 'Info!');
-        return;
-      }
       INPUT_OBJ = {
         kId: this.kycData.coa2.aadhaar.verificationLinkData['kId'],
       };
@@ -2466,7 +2335,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     type: string,
     apiData = {}
   ) {
-    // if KYC API failed to get data
     if (apiCalled === 'api_1') {
       if (type === 'api_failed') {
         this.kycData[coaNo][proofType].verificationLinkData = {};
