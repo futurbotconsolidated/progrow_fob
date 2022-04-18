@@ -821,7 +821,7 @@
                     <small>Please click on below link and complete the verification process and then click on below <u>Get Aadhaar Details</u> button to get the details and confirm to complete the
                       Aadhaar KYC
                       Process.</small><br />
-                    <p><b>Verification Link: </b> <a href="{{kycData.coa2.aadhaar.verificationLinkData['redirect_url']}}" target="_blank">Click Here</a></p>
+                    <p><b>Verification Link: </b> <a href="{{(kycData.coa2.aadhaar.verificationLinkData && kycData.coa2.aadhaar.verificationLinkData['redirect_url'])?kycData.coa2.aadhaar.verificationLinkData['redirect_url']:''}}" target="_blank">Click Here</a></p>
 
                     <button type="button" class="btn common_button_color text-white btn-sm h-100 mt-2" [hidden]="objectKeyCount(kycData.coa2.aadhaar.data)"
                       (click)="getAadhaarDetails($event,'coa2',kycProofNames.coa2.aadhaar)">

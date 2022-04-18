@@ -46,8 +46,11 @@ export class DemographicInfoComponent
     new: {
       imageSrc1: '',
       imageSrc2: '',
+      imageMultiple: [] as any,
       isImage1Required: true,
       isImage2Required: false,
+      isMultiple: false,
+      fileIndex: 0,
     },
     imageHeading1: 'Front Image',
     imageHeading2: 'Back Image',
@@ -103,7 +106,9 @@ export class DemographicInfoComponent
     },
 
     farmerProfile: { front: `${this.concatePage}_farmerProfileImage` },
-    ownershipPicture: { front: `${this.concatePage}_ownershipPictureImage` },
+    ownershipPicture: { front: `${this.concatePage}_ownershipPictureImage`,
+    count: `${this.concatePage}_ownershipPictureImageCount`
+   },
   };
   fileUploadFileFor = {
     panCard: 'PAN',
@@ -256,7 +261,7 @@ export class DemographicInfoComponent
       monthlyRent: new FormControl(''),
       commOrPerAddress: new FormControl('', [Validators.required]),
       familyMembers: new FormArray([this.createFamilyMembers()]),
-      propertyOwnership: new FormArray([this.createPropertyOwnership()]),
+      propertyOwnership: new FormArray([]),
       phoneType: new FormControl(''),
       phoneOperating: new FormControl(''),
       cultivationAdvice: [Array()],
@@ -407,6 +412,9 @@ export class DemographicInfoComponent
         // });
       }
     }
+    if(!(this.demographicInfoForm.get('propertyOwnership') as FormArray).controls.length){
+      this.addPropertyOwnership();
+    }
   }
   ngAfterViewInit(): void {
     /** subscribe to Observables, which are triggered from header selections*/
@@ -519,12 +527,15 @@ export class DemographicInfoComponent
   }
 
   /* START: functions used indexed-db ============================================ */
-  openFileModalPopup(type: string) {
+  openFileModalPopup(type: string, fileIndex: number) {
     this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
     this.fileUpload.new.imageSrc2 = '';
+    this.fileUpload.new.imageMultiple = [];
     this.fileUpload.new.isImage1Required = false;
     this.fileUpload.new.isImage2Required = false;
+    this.fileUpload.new.isMultiple = false;
+    this.fileUpload.new.fileIndex = fileIndex;
     this.fileUpload.imageHeading1 = 'Front Image';
     this.fileUpload.imageHeading2 = 'Back Image';
 
@@ -787,29 +798,78 @@ export class DemographicInfoComponent
     } else if (type === this.fileUploadFileFor.ownershipPicture) {
       this.fileUpload.popupTitle = 'Upload Ownership Picture Image';
       this.fileUpload.imageHeading1 = 'Ownership Picture Image';
-      this.fileUpload.new.isImage1Required = true;
-      this.dbService
-        .getByIndex(
-          this.indexedDBName,
-          'fileFor',
-          `${this.indexedDBFileNameManage.ownershipPicture.front}`
-        )
-        .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 =
-            farmer?.file ||
-            this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.ownershipPicture.front
-            );
-          //this.displayOwnershipPictureImage = farmer?.file;
-        });
+      this.fileUpload.new.isMultiple = true; 
+      var fCount = 0;  
+      let demoInfoFiles:any = localStorage.getItem('demo-info-files');
+      if(demoInfoFiles){
+        demoInfoFiles = JSON.parse(demoInfoFiles);
+        let difkey = this.indexedDBFileNameManage.ownershipPicture.count+'_'+this.fileUpload.new.fileIndex;
+        if(demoInfoFiles[difkey]){
+          fCount = demoInfoFiles[difkey];
+        }
+      }
+      if(!fCount){
+        let farmerFiles:any = localStorage.getItem('farmer-files');
+        farmerFiles = JSON.parse(farmerFiles);
+        for (let ffi = 0; ffi < Object.keys(farmerFiles).length; ffi++) {
+          if (farmerFiles.hasOwnProperty(this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+ffi)){ 
+            fCount++;  
+          }
+        }
+      }
+      for (let fIndex = 0; fIndex < fCount; fIndex++) {
+        this.dbService
+          .getByIndex(
+            this.indexedDBName,
+            'fileFor',
+            `${this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+fIndex}`
+          )
+          .subscribe((farmer: any) => {
+            let ownershipPicture =
+              farmer?.file ||
+              this.commonService.fetchFarmerDocument(
+                this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+fIndex
+              );
+              if(ownershipPicture){
+                this.fileUpload.new.imageMultiple.push(ownershipPicture);
+              }
+          });
+      }
     }
     $('#fileUploadModalPopup').modal('show');
   }
 
-  onFileChange(event: any, type = '') {
-    const reader = new FileReader();
+  onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
-      const [file] = event.target.files;
+      if (
+        this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
+      ) {
+        this.fileUpload.new.fileIndex = fileIndex;
+      this.fileUpload.new.imageMultiple = []; 
+      var fCount = 0;  
+      let demoInfoFiles:any = localStorage.getItem('demo-info-files');
+      if(demoInfoFiles){
+        demoInfoFiles = JSON.parse(demoInfoFiles);
+        let difkey = this.indexedDBFileNameManage.ownershipPicture.count+'_'+this.fileUpload.new.fileIndex;
+        if(demoInfoFiles[difkey]){
+          fCount = demoInfoFiles[difkey];
+        }
+      }
+      for (let fIndex = 0; fIndex < fCount; fIndex++) {  
+      this.dbService
+          .getByIndex(this.indexedDBName, 'fileFor', this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+fIndex)
+          .subscribe((file: any) => {
+            if (file && file !== undefined && Object.keys(file).length) {
+              // delete if exists
+              this.dbService
+                .deleteByKey(this.indexedDBName, file.id)
+                .subscribe((status) => {});
+            }
+          });
+        }
+      }
+      for (let findex = 0; findex < event.target.files.length; findex++) {       
+      const file = event.target.files[findex];   
 
       // if (file.size > 300000) {
       //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
@@ -821,6 +881,7 @@ export class DemographicInfoComponent
       }
 
       /* START: reading file and Patching the Selected File */
+      const reader = new FileReader();
       let selectedImageFor = '';
       reader.readAsDataURL(file);
       reader.onload = () => {
@@ -832,19 +893,7 @@ export class DemographicInfoComponent
         ) {
           this.fileUpload.new.imageSrc1 = imageSrc;
           selectedImageFor = this.indexedDBFileNameManage.panCard.front;
-        }
-
-        // CURRENTLY NOT USING - DO NOT DELETE
-        /* else if (this.fileUpload.fileFor === 'ADDRESS_PROOF') {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.addressProof.front;
-          } else if (type === 'BACK_IMAGE') {
-            this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.addressProof.back;
-          }
-        } */
-        else if (
+        } else if (
           this.fileUpload.fileFor === this.fileUploadFileFor.aadhaarCard
         ) {
           if (type === 'FRONT_IMAGE') {
@@ -903,19 +952,10 @@ export class DemographicInfoComponent
           this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
         ) {
           if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor =
-              this.indexedDBFileNameManage.ownershipPicture.front;
-            //this.displayOwnershipPictureImage = imageSrc;
+            this.fileUpload.new.imageMultiple.push(imageSrc);
+            selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+findex;         
           }
         }
-
-        console.log('this.fileUpload.fileFor : ', this.fileUpload.fileFor);
-        console.log(
-          'this.fileUploadFileFor.ownershipPicture : ',
-          this.fileUploadFileFor.ownershipPicture
-        );
-
         /* START: ngx-indexed-db feature to store files(images/docs) */
         // if file already exist then delete then add
         this.dbService
@@ -948,7 +988,26 @@ export class DemographicInfoComponent
         /* END: ngx-indexed-db feature to store files(images/docs) */
       };
       /* END: reading file and Patching the Selected File */
+      if (
+        this.fileUpload.fileFor !== this.fileUploadFileFor.ownershipPicture
+      ) {
+        return;
+      }
     }
+    if (
+      this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
+    ) { 
+      let demoInfoFiles:any = localStorage.getItem('demo-info-files');
+      if(demoInfoFiles){
+        demoInfoFiles = JSON.parse(demoInfoFiles);
+      } else {
+        demoInfoFiles = {};
+      }
+      let difkey = this.indexedDBFileNameManage.ownershipPicture.count+'_'+this.fileUpload.new.fileIndex;
+      demoInfoFiles[difkey] = event.target.files.length;
+      localStorage.setItem('demo-info-files', JSON.stringify(demoInfoFiles));
+    }
+  }
   }
 
   removeImage(event: any, type: string) {
@@ -1092,6 +1151,19 @@ export class DemographicInfoComponent
           'PERMANENT_ADDRESS'
         );
       }
+
+      this.propertyOwnership = this.demographicInfoForm.get('propertyOwnership') as FormArray;
+      B.propertyOwnership.map((item: any) => {
+        this.propertyOwnership.push(
+          this.formBuilder.group({
+            propertyType: new FormControl(item.propertyType),
+            propertyPic: new FormControl(item.propertyPic),
+            ownershipType: new FormControl(item.ownershipType),
+            particular: new FormControl(item.particular),
+            cumulativeValue: new FormControl(item.cumulativeValue, [Validators.pattern('^[0-9]*$')]),
+          })
+        );
+      });
     }
   }
 

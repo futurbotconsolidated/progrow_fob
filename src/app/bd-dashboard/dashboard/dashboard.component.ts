@@ -126,6 +126,9 @@ export class DashboardComponent implements OnInit {
       console.log('success? ', successDeleted);
     });
 
+    // clear file storage
+    localStorage.removeItem('demo-info-files');
+
     // clear edit related localStorage variables before starting
     localStorage.removeItem('edit-demographic-info');
     localStorage.removeItem('edit-demographic-info-form');
@@ -473,6 +476,8 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('farmer-details'); // related to view and edit of farmer
     localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
 
+    localStorage.removeItem('demo-info-files');
+    
     // clear edit related localStorage variables before starting
     localStorage.removeItem('edit-demographic-info');
     localStorage.removeItem('edit-demographic-info-form');
