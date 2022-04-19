@@ -1417,19 +1417,22 @@ export class DemographicInfoComponent
     let INPUT_OBJ = {};
 
     if (proofType === this.kycProofNames.aadhaar) {
+      /* 
+      // checking for Aadhaar Mandatory is not required
       const aadhaarInput = this.demographicInfoForm.value.aadhaarNumber;
-      const phoneNumberInput = this.demographicInfoForm.value.phoneNumber;
       if (!aadhaarInput) {
         this.toastr.info('please enter Aadhaar Number', 'Info!');
         return;
       } else if (aadhaarInput && aadhaarInput.length !== 12) {
         this.toastr.info('please enter 12 digit valid Aadhaar Number', 'Info!');
         return;
-      } else if (
+       } else */
+      const phoneNumberInput = this.demographicInfoForm.value.phoneNumber;
+      if (
         !phoneNumberInput ||
         (phoneNumberInput && phoneNumberInput.trim().length !== 10)
       ) {
-        this.toastr.info('please enter your 10 digit Mobile Number', 'Info!');
+        this.toastr.info('please enter your 10 digit Phone Number', 'Info!');
         return;
       }
       INPUT_OBJ = {

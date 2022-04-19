@@ -2139,15 +2139,19 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Aadhaar Card
     if (proofType === this.kycProofNames.coa1.aadhaar && coaNo === 'coa1') {
+      /*  
+      // checking for Aadhaar Mandatory is not required
       const aadhaarInput = this.coApplicantForm.value.aadhaarNumber;
-      const phoneNumberInput = this.coApplicantForm.value.phoneNumber;
       if (!aadhaarInput) {
         this.toastr.info('please enter Aadhaar Number', 'Info!');
         return;
       } else if (aadhaarInput && aadhaarInput.length !== 12) {
         this.toastr.info('please enter 12 digit valid Aadhaar Number', 'Info!');
         return;
-      } else if (
+      } else */
+
+      const phoneNumberInput = this.coApplicantForm.value.phoneNumber;
+      if (
         !phoneNumberInput ||
         (phoneNumberInput && phoneNumberInput.trim().length !== 10)
       ) {
@@ -2161,15 +2165,19 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       proofType === this.kycProofNames.coa2.aadhaar &&
       coaNo === 'coa2'
     ) {
+      /*
+      // checking for Aadhaar Mandatory is not required
       const aadhaarInput = this.coApplicantForm.value.aadhaarNumbercoa2;
-      const phoneNumberInput = this.coApplicantForm.value.phoneNumbercoa2;
       if (!aadhaarInput) {
         this.toastr.info('please enter Aadhaar Number', 'Info!');
         return;
       } else if (aadhaarInput && aadhaarInput.length !== 12) {
         this.toastr.info('please enter 12 digit valid Aadhaar Number', 'Info!');
         return;
-      } else if (
+      } else */
+
+      const phoneNumberInput = this.coApplicantForm.value.phoneNumbercoa2;
+      if (
         !phoneNumberInput ||
         (phoneNumberInput && phoneNumberInput.trim().length !== 10)
       ) {
