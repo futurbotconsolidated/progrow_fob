@@ -1242,7 +1242,7 @@ export class DemographicInfoComponent
         },
         (error: any) => {
           this.spinner.hide();
-          alert('Failed to fetch PinCode Details, please try againn...');
+          alert('Failed to fetch PinCode Details, please try again...');
         }
       );
     }
@@ -1377,7 +1377,7 @@ export class DemographicInfoComponent
       },
       (error: any) => {
         this.spinner.hide();
-        alert('Failed to fetch KYC Details, please try againn...');
+        alert('Failed to fetch KYC Details, please try again...');
         this.setKycDataVariables(proofType, 'api_failed', '');
       }
     );
@@ -1472,7 +1472,7 @@ export class DemographicInfoComponent
       },
       (error: any) => {
         this.spinner.hide();
-        alert('Failed to fetch KYC Details, please try againn...');
+        alert('Failed to fetch KYC Details, please try again...');
         this.setAadhaarEkycDataVariables('api_1', proofType, 'api_failed', '');
       }
     );
@@ -1549,7 +1549,7 @@ export class DemographicInfoComponent
       },
       (error: any) => {
         this.spinner.hide();
-        alert('Failed to fetch KYC Details, please try againn...');
+        alert('Failed to fetch KYC Details, please try again...');
         this.setAadhaarEkycDataVariables('api_2', proofType, 'api_failed', '');
       }
     );

@@ -1798,7 +1798,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         (error: any) => {
           this.spinner.hide();
-          alert('Failed to fetch PinCode Details, please try againn...');
+          alert('Failed to fetch PinCode Details, please try again...');
         }
       );
     }
@@ -2094,7 +2094,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       (error: any) => {
         this.spinner.hide();
-        alert('Failed to fetch KYC Details, please try againn...');
+        alert('Failed to fetch KYC Details, please try again...');
         this.setKycDataVariables(coaNo, proofType, 'api_failed', '');
       }
     );
@@ -2223,7 +2223,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       (error: any) => {
         this.spinner.hide();
-        alert('Failed to fetch KYC Details, please try againn...');
+        alert('Failed to fetch KYC Details, please try again...');
         this.setAadhaarEkycDataVariables(
           coaNo,
           'api_1',
@@ -2320,7 +2320,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       (error: any) => {
         this.spinner.hide();
-        alert('Failed to fetch KYC Details, please try againn...');
+        alert('Failed to fetch KYC Details, please try again...');
         this.setAadhaarEkycDataVariables(
           coaNo,
           'api_2',
