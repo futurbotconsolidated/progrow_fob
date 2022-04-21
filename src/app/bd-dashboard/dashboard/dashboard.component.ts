@@ -128,6 +128,7 @@ export class DashboardComponent implements OnInit {
 
     // clear file storage
     localStorage.removeItem('demo-info-files');
+    localStorage.removeItem('field-info-files');
 
     // clear edit related localStorage variables before starting
     localStorage.removeItem('edit-demographic-info');
@@ -477,6 +478,7 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
 
     localStorage.removeItem('demo-info-files');
+    localStorage.removeItem('field-info-files');
     
     // clear edit related localStorage variables before starting
     localStorage.removeItem('edit-demographic-info');

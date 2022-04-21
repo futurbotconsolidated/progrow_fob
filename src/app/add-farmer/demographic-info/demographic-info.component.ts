@@ -810,10 +810,12 @@ export class DemographicInfoComponent
       }
       if(!fCount){
         let farmerFiles:any = localStorage.getItem('farmer-files');
-        farmerFiles = JSON.parse(farmerFiles);
-        for (let ffi = 0; ffi < Object.keys(farmerFiles).length; ffi++) {
-          if (farmerFiles.hasOwnProperty(this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+ffi)){ 
-            fCount++;  
+        if(farmerFiles){
+          farmerFiles = JSON.parse(farmerFiles);
+          for (let ffi = 0; ffi < Object.keys(farmerFiles).length; ffi++) {
+            if (farmerFiles.hasOwnProperty(this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+ffi)){ 
+              fCount++;  
+            }
           }
         }
       }
