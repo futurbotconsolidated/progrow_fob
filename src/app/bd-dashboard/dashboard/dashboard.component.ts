@@ -122,9 +122,7 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
 
     // clear indexed db data
-    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
-      console.log('success? ', successDeleted);
-    });
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {});
 
     // clear edit related localStorage variables before starting
     localStorage.removeItem('edit-demographic-info');
@@ -362,7 +360,6 @@ export class DashboardComponent implements OnInit {
               this.spinner.hide();
             }
           });
-          console.log('draw fields');
         } else {
           this.spinner.hide();
         }
@@ -486,9 +483,7 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('edit-co-applicant-form');
 
     // clear indexed db data
-    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
-      console.log('success? ', successDeleted);
-    });
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {});
   }
 
   /* END: Non-API Function Calls */
@@ -504,7 +499,7 @@ export class DashboardComponent implements OnInit {
           alert(`${res.message}`);
         } else {
           this.allExistingFarmers = res.data;
-          if(this.selectedViewType == 'EXISTING_FARMS_MAP_VIEW'){
+          if (this.selectedViewType == 'EXISTING_FARMS_MAP_VIEW') {
             this.filterFarms(this.selectedViewType);
           }
         }
@@ -534,33 +529,35 @@ export class DashboardComponent implements OnInit {
   }
 
   downloadFile(data: any) {
-    var filename = 'farmer_csv_data_'+Date.now();
+    var filename = 'farmer_csv_data_' + Date.now();
     let array = typeof data != 'object' ? JSON.parse(data) : data;
     let csvData = '';
     for (let i = 0; i < array.length; i++) {
-        let line = '';
-        for (let j = 0; j < array[i].length; j++) {
-            line += array[i][j].replace(/,/g, '')+',';
-        }
-        csvData += line + '\r\n';
+      let line = '';
+      for (let j = 0; j < array[i].length; j++) {
+        line += array[i][j].replace(/,/g, '') + ',';
+      }
+      csvData += line + '\r\n';
     }
     let blob = new Blob(['\ufeff' + csvData], {
-        type: 'text/csv;charset=utf-8;'
+      type: 'text/csv;charset=utf-8;',
     });
-    let dwldLink = document.createElement("a");
+    let dwldLink = document.createElement('a');
     let url = URL.createObjectURL(blob);
-    let isSafariBrowser = navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1;
+    let isSafariBrowser =
+      navigator.userAgent.indexOf('Safari') != -1 &&
+      navigator.userAgent.indexOf('Chrome') == -1;
     //if Safari open in new window to save file with random filename.
-    if (isSafariBrowser) { 
-        dwldLink.setAttribute("target", "_blank");
+    if (isSafariBrowser) {
+      dwldLink.setAttribute('target', '_blank');
     }
-    dwldLink.setAttribute("href", url);
-    dwldLink.setAttribute("download", filename + ".csv");
-    dwldLink.style.visibility = "hidden";
+    dwldLink.setAttribute('href', url);
+    dwldLink.setAttribute('download', filename + '.csv');
+    dwldLink.style.visibility = 'hidden';
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
-}
+  }
 
   getFarmersPipeline() {
     // Other Variables

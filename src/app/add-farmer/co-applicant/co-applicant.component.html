@@ -444,14 +444,28 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">Tahsil/Taluka/Mandal</label>
-                  <select class="form-select" formControlName="taluk">
+
+                  <!-- START: datalist -->
+                  <ng-container>
+                    <input formControlName="taluk" (blur)="setSelectedValue($event, 'taluk', '', 'manual')" id="talukDropdown" class="form-control" autocomplete="off" data-bs-toggle="dropdown"
+                      aria-expanded="false" />
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="talukDropdown">
+                      <div class="dropdown_scroll_bar">
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation }}"
+                          (click)="setSelectedValue($event, 'taluk', indVal.postalLocation, 'list')">
+                          {{ indVal.postalLocation }}
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <!-- END: datalist -->
+
+                  <!-- <select class="form-select" formControlName="taluk">
                     <option value="">...</option>
-
                     <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation }}">
-
                       {{ indVal.postalLocation }}
                     </option>
-                  </select>
+                  </select> -->
                   <div *ngIf="isSubmitted && f['taluk'].errors" class="form-text text-danger">
                     <small *ngIf="f['taluk'].errors['required']">
                       Taluk is required</small>
@@ -459,7 +473,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">District/City</label>
-                  <input type="text" class="form-control" formControlName="city" placeholder="" readonly />
+                  <input type="text" class="form-control" formControlName="city" placeholder="" />
                   <div *ngIf="isSubmitted && f['city'].errors" class="form-text text-danger">
                     <small *ngIf="f['city'].errors['required']">
                       City is required</small>
@@ -467,7 +481,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">State</label>
-                  <input type="text" class="form-control" formControlName="state" placeholder="" readonly />
+                  <input type="text" class="form-control" formControlName="state" placeholder="" />
                   <div *ngIf="isSubmitted && f['state'].errors" class="form-text text-danger">
                     <small *ngIf="f['state'].errors['required']">
                       State is required</small>
@@ -575,14 +589,30 @@
 
                 <div class="flex-1 lable-top">
                   <label class="">Tahsil/Taluka/Mandal</label>
-                  <select class="form-select" formControlName="permTaluk">
+
+                  <!-- START: datalist -->
+                  <ng-container>
+                    <input formControlName="permTaluk" (blur)="setSelectedValue($event, 'permTaluk', '', 'manual')" id="permTalukDropdown" class="form-control" autocomplete="off"
+                      data-bs-toggle="dropdown" aria-expanded="false" />
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="permTalukDropdown">
+                      <div class="dropdown_scroll_bar">
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation }}"
+                          (click)="setSelectedValue($event, 'permTaluk', indVal.postalLocation, 'list')">
+                          {{ indVal.postalLocation }}
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <!-- END: datalist -->
+
+
+
+                  <!-- <select class="form-select" formControlName="permTaluk">
                     <option value="">...</option>
-
                     <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation }}">
-
                       {{ indVal.postalLocation }}
                     </option>
-                  </select>
+                  </select> -->
                   <div *ngIf="isSubmitted && f['permTaluk'].errors" class="form-text text-danger">
                     <small *ngIf="f['permTaluk'].errors['required']">
                       Taluk is required</small>
@@ -590,7 +620,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">District/City</label>
-                  <input type="text" class="form-control" formControlName="permCity" placeholder="" readonly />
+                  <input type="text" class="form-control" formControlName="permCity" placeholder="" />
                   <div *ngIf="isSubmitted && f['permCity'].errors" class="form-text text-danger">
                     <small *ngIf="f['permCity'].errors['required']">
                       City is required</small>
@@ -598,7 +628,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">State</label>
-                  <input type="text" class="form-control" formControlName="permState" placeholder="" readonly />
+                  <input type="text" class="form-control" formControlName="permState" placeholder="" />
                   <div *ngIf="isSubmitted && f['permState'].errors" class="form-text text-danger">
                     <small *ngIf="f['permState'].errors['required']">
                       State is required</small>
@@ -1108,14 +1138,29 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">Tahsil/Taluka/Mandal</label>
-                  <select class="form-select" formControlName="talukcoa2">
+
+                  <!-- START: datalist -->
+                  <ng-container>
+                    <input formControlName="talukcoa2" (blur)="setSelectedValue($event, 'talukcoa2', '', 'manual')" id="talukcoa2Dropdown" class="form-control" autocomplete="off"
+                      data-bs-toggle="dropdown" aria-expanded="false" />
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="talukcoa2Dropdown">
+                      <div class="dropdown_scroll_bar">
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIDatacoa2" value="{{ indVal.postalLocation }}"
+                          (click)="setSelectedValue($event, 'talukcoa2', indVal.postalLocation, 'list')">
+                          {{ indVal.postalLocation }}
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <!-- END: datalist -->
+
+                  <!-- <select class="form-select" formControlName="talukcoa2">
                     <option value="">...</option>
-
                     <option *ngFor="let indVal of pinCodeAPIDatacoa2" value="{{ indVal.postalLocation }}">
-
                       {{ indVal.postalLocation }}
                     </option>
-                  </select>
+                  </select> -->
+
                   <div *ngIf="isSubmitted && f['talukcoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['talukcoa2'].errors['required']">
                       Taluk is required</small>
@@ -1123,7 +1168,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">District/City</label>
-                  <input type="text" class="form-control" formControlName="citycoa2" placeholder="" readonly />
+                  <input type="text" class="form-control" formControlName="citycoa2" placeholder="" />
                   <div *ngIf="isSubmitted && f['citycoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['citycoa2'].errors['required']">
                       City is required</small>
@@ -1131,7 +1176,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">State</label>
-                  <input type="text" class="form-control" formControlName="statecoa2" placeholder="" readonly />
+                  <input type="text" class="form-control" formControlName="statecoa2" placeholder="" />
                   <div *ngIf="isSubmitted && f['statecoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['statecoa2'].errors['required']">
                       State is required</small>
@@ -1239,14 +1284,28 @@
 
                 <div class="flex-1 lable-top">
                   <label class="">Tahsil/Taluka/Mandal</label>
-                  <select class="form-select" formControlName="permTalukcoa2">
+
+                  <!-- START: datalist -->
+                  <ng-container>
+                    <input formControlName="permTalukcoa2" (blur)="setSelectedValue($event, 'permTalukcoa2', '', 'manual')" id="permTalukcoa2Dropdown" class="form-control" autocomplete="off"
+                      data-bs-toggle="dropdown" aria-expanded="false" />
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="permTalukcoa2Dropdown">
+                      <div class="dropdown_scroll_bar">
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIDatacoa2" value="{{ indVal.postalLocation }}"
+                          (click)="setSelectedValue($event, 'permTalukcoa2', indVal.postalLocation, 'list')">
+                          {{ indVal.postalLocation }}
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <!-- END: datalist -->
+
+                  <!-- <select class="form-select" formControlName="permTalukcoa2">
                     <option value="">...</option>
-
                     <option *ngFor="let indVal of permPinCodeAPIDatacoa2" value="{{ indVal.postalLocation }}">
-
                       {{ indVal.postalLocation }}
                     </option>
-                  </select>
+                  </select> -->
                   <div *ngIf="isSubmitted && f['permTalukcoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['permTalukcoa2'].errors['required']">
                       Taluk is required</small>
@@ -1254,7 +1313,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">District/City</label>
-                  <input type="text" class="form-control" formControlName="permCitycoa2" placeholder="" readonly />
+                  <input type="text" class="form-control" formControlName="permCitycoa2" placeholder="" />
                   <div *ngIf="isSubmitted && f['permCitycoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['permCitycoa2'].errors['required']">
                       City is required</small>
@@ -1262,7 +1321,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">State</label>
-                  <input type="text" class="form-control" formControlName="permStatecoa2" placeholder="" readonly />
+                  <input type="text" class="form-control" formControlName="permStatecoa2" placeholder="" />
                   <div *ngIf="isSubmitted && f['permStatecoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['permStatecoa2'].errors['required']">
                       State is required</small>

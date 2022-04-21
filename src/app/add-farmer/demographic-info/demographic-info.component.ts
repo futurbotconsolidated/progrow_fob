@@ -1197,6 +1197,20 @@ export class DemographicInfoComponent
   objectKeyCount(object: any) {
     return object ? Object.keys(object).length : 0;
   }
+
+  setSelectedValue(
+    event: any,
+    formCtlName: any,
+    opt_val: any,
+    valueType: string
+  ) {
+    if (valueType === 'manual') {
+      this.demographicInfoForm.get(formCtlName)?.setValue(event.target.value);
+    } else if (valueType === 'list') {
+      this.demographicInfoForm.get(formCtlName)?.setValue(opt_val);
+    }
+  }
+
   /* END: NON-API Function Calls------------------------------------------------------------------------ */
 
   /* START: API Function Calls-------------------------------------------------------------------------- */

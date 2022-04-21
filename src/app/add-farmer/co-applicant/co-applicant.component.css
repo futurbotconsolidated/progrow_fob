@@ -40,3 +40,10 @@ input.form-control,
 .modal {
   z-index: 9999;
 }
+
+.dropdown_scroll_bar {
+  height: 99%;
+  max-height: 200px;
+  overflow: auto;
+  margin: auto;
+}

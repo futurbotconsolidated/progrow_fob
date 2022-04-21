@@ -213,7 +213,6 @@ export class FieldInfoComponent implements OnInit {
   }
 
   bindItemsInEdit(fieldValues: any) {
-    console.log(fieldValues);
     this.fieldInfoForm.patchValue(fieldValues);
     fieldValues.plannedFieldDetails.map((item: any, index: number) => {
       const plannedDetails = <any>{};
@@ -797,58 +796,51 @@ export class FieldInfoComponent implements OnInit {
       };
       fieldArr.push(obj);
     });
-    console.log(fieldArr);
 
-    if(!fieldArr.length){
+    if (!fieldArr.length) {
       this.toastr.error('Please Plot at least One Field', 'Error!');
       return;
     } else {
-    if (this.farmerId) {
-      localStorage.setItem('edit-field-info', JSON.stringify(fieldArr));
-      localStorage.setItem(
-        'edit-field-info-form',
-        JSON.stringify(this.fieldInfoForm.value)
-      );
-    } else {
-      localStorage.setItem('field-info', JSON.stringify(fieldArr));
-      localStorage.setItem(
-        'field-info-form',
-        JSON.stringify(this.fieldInfoForm.value)
-      );
+      if (this.farmerId) {
+        localStorage.setItem('edit-field-info', JSON.stringify(fieldArr));
+        localStorage.setItem(
+          'edit-field-info-form',
+          JSON.stringify(this.fieldInfoForm.value)
+        );
+      } else {
+        localStorage.setItem('field-info', JSON.stringify(fieldArr));
+        localStorage.setItem(
+          'field-info-form',
+          JSON.stringify(this.fieldInfoForm.value)
+        );
+      }
+      const url = `/add/${this.nextRoute}/${this.farmerId}`;
+      this.router.navigate([url]);
     }
-    const url = `/add/${this.nextRoute}/${this.farmerId}`;
-    this.router.navigate([url]);
-  }
   }
 
   SoilQualityRating(soilQualityStar: any, i: number) {
     this.selectedSoilQualityStar[i] = soilQualityStar;
-    console.log('Value of SoilQualityStar', soilQualityStar);
   }
 
   WaterQualityRating(waterQualityStar: any, i: number) {
     this.selectedWaterQualityStar[i] = waterQualityStar;
-    console.log('Value of waterQualityStar', waterQualityStar);
   }
 
   YieldQualityRating(yieldQualityStar: any, i: number) {
     this.selectedYieldQualityStar[i] = yieldQualityStar;
-    console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 
   HistoSoilQualityRating(soilQualityStar: any) {
     this.selectedHistoSoilQualityStar = soilQualityStar;
-    console.log('Value of SoilQualityStar', soilQualityStar);
   }
 
   HistoWaterQualityRating(waterQualityStar: any) {
     this.selectedHistoWaterQualityStar = waterQualityStar;
-    console.log('Value of waterQualityStar', waterQualityStar);
   }
 
   HistoYieldQualityRating(yieldQualityStar: any) {
     this.selectedHistoYieldQualityStar = yieldQualityStar;
-    console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 
   validateNo(e: any): boolean {

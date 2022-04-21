@@ -240,7 +240,6 @@ export class FinancialPlanningComponent
         this.nextRoute = data.routeName;
         if (this.router.url?.includes('/add/financial-planning')) {
           this.saveData();
-          console.log(data.routeName);
         }
       });
   }
@@ -530,7 +529,6 @@ export class FinancialPlanningComponent
           JSON.stringify(this.financialForm.value)
         );
       }
-      console.log(this.financialForm.value);
       const url = `/add/${this.nextRoute}/${this.farmerId}`;
       this.router.navigate([url]);
     }
