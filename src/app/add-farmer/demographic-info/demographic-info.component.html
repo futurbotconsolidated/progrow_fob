@@ -33,7 +33,7 @@
                 </div>
                 <!-- Image Upload Button modal-->
                 <div class="lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.panCard)"> Upload Image
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.panCard, 0)"> Upload Image
                   </button>
                 </div>
               </div>
@@ -66,7 +66,7 @@
                   <img class="profile-pic" [hidden]="!displayFarmerProfileImage" src="{{displayFarmerProfileImage}}" />
                 </div>
                 <div class="pro-update">
-                  <a class="avatar" (click)="openFileModalPopup(fileUploadFileFor.farmerProfile)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <a class="avatar" (click)="openFileModalPopup(fileUploadFileFor.farmerProfile, 0)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -128,7 +128,7 @@
 
               <!-- Image Upload Button modal-->
               <div class="lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.aadhaarCard)"> Upload Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.aadhaarCard, 0)"> Upload Image
                 </button>
               </div>
             </div>
@@ -191,7 +191,7 @@
               </div>
               <div class="lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.drivingLicence)"> Upload Image
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.drivingLicence, 0)"> Upload Image
                 </button>
               </div>
             </div>
@@ -244,7 +244,7 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.voterId)">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.voterId, 0)">
                   Upload Image
                 </button>
               </div>
@@ -281,7 +281,7 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.passport)">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.passport, 0)">
                   Upload Image
                 </button>
               </div>
@@ -296,7 +296,7 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.NREGA)">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.NREGA, 0)">
                   Upload Image
                 </button>
               </div>
@@ -746,7 +746,8 @@
                 <div class="flex-1 lable-top">
                   <label>Upload pictures</label>
                   <div class="fileUpload">
-                    <span></span><img src="../../../assets/images/photo-camera.png" /><input type="file" class="form-control uploadlogo" />
+                    <span></span><img src="../../../assets/images/photo-camera.png" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)"/>
+                    <input type="text" name="" class="form-control" />
                   </div>
                 </div>
                 <div class="flex-1 lable-top">
@@ -943,7 +944,7 @@
         <div class="row" [hidden]="!fileUpload.new.isImage1Required">
           <div class="col-md-6 mb-1">
             <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
-            <input class="form-control form-control-sm" id="formFileSm" type="file" (change)="onFileChange($event,'FRONT_IMAGE')" accept="image/*">
+            <input class="form-control form-control-sm" id="formFileSm" type="file" (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="image/*">
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
@@ -957,8 +958,8 @@
         <div class="row" [hidden]="!fileUpload.new.isImage2Required">
           <hr class="mt-1" />
           <div class="col-md-6 mb-1">
-            <label for="formFileSm" class="form-label">{{fileUpload.imageHeading2}}</label>
-            <input class="form-control form-control-sm" id="formFileSm" type="file" (change)="onFileChange($event,'BACK_IMAGE')" accept="image/*">
+            <label for="formFileSm2" class="form-label">{{fileUpload.imageHeading2}}</label>
+            <input class="form-control form-control-sm" id="formFileSm2" type="file" (change)="onFileChange($event,'BACK_IMAGE', fileUpload.new.fileIndex)" accept="image/*">
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
@@ -967,7 +968,21 @@
 
         </div>
         <!-- END : Image - 2 -->
+        <!-- START : Image - Multiple  -->
+        <div class="row" [hidden]="!fileUpload.new.isMultiple">
+          <div class="col-md-6 mb-1">
+            <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
+            <input class="form-control form-control-sm" id="formFileSm" type="file" (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="image/*" *ngIf="fileUpload.new.isMultiple" multiple="">
+          </div>
+          </div>
+          <div class="row" [hidden]="!fileUpload.new.imageMultiple">
+          <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let imageSrc of fileUpload.new.imageMultiple">
+            <p class="fs-6">Preview Image</p>
+            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" />
+          </div>
 
+        </div>
+        <!-- END : Image - Multiple -->
       </div>
       <div class="modal-footer p-2">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>

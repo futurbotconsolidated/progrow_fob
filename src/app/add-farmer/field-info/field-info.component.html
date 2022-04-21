@@ -280,7 +280,7 @@
                                     <!-- <input class="form-control" formControlName="fieldOwnCoPh" placeholder="9876543210"> -->
                                 </div>
                                 <div class="col-auto add-another">
-                                    <a href="javascript:void(0)"><i class="fa fa-upload" aria-hidden="true"></i> Upload documents</a>
+                                    <a href="javascript:void(0)" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)"><i class="fa fa-upload" aria-hidden="true"></i> Upload documents</a>
                                 </div>
                             </div>
                         </div>
@@ -361,7 +361,7 @@
                                     </select>
                                 </div>
                                 <div class="col-auto add-another">
-                                    <a href="javascript:void(0)"><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
+                                    <a href="javascript:void(0)" (click)="openFileModalPopup(fileUploadFileFor.testPicture, i)" ><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
                                 </div>
                             </div>
                             <div class="col-auto add-another">
@@ -393,3 +393,38 @@
         </div>
     </article>
 </div>
+
+<!-- START: Common Modal Popup for File Upload and Preview -->
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header p-2 common_button_color">
+          <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+        </div>
+        <div class="modal-body">
+          <!-- START : Image - Multiple  -->
+          <div class="row" [hidden]="!fileUpload.new.isMultiple">
+            <div class="col-md-6 mb-1">
+              <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
+              <input class="form-control form-control-sm" id="formFileSm" type="file" (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="*" *ngIf="fileUpload.new.isMultiple" multiple="">
+            </div>
+            </div>
+            <div class="row" [hidden]="!fileUpload.new.imageMultiple">
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let fileData of fileUpload.new.imageMultiple">
+              <p class="fs-6" *ngIf="fileData.type=='image'">Preview Image</p>
+              <p class="fs-6" *ngIf="fileData.type !='image'">File</p>
+              <img [src]="fileData.file" *ngIf="fileData.type=='image'" style="height: 150px; width: 150px" />
+              <div class="col-auto add-another" *ngIf="fileData.type !='image'">
+                <a href="javascript:void(0)" (click)="downloadFile(fileData.file)">View File</a>
+            </div>
+            </div>  
+          </div>
+          <!-- END : Image - Multiple -->
+        </div>
+        <div class="modal-footer p-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Common Modal Popup for File Upload and Preview -->
