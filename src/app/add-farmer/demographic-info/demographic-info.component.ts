@@ -106,9 +106,10 @@ export class DemographicInfoComponent
     },
 
     farmerProfile: { front: `${this.concatePage}_farmerProfileImage` },
-    ownershipPicture: { front: `${this.concatePage}_ownershipPictureImage`,
-    count: `${this.concatePage}_ownershipPictureImageCount`
-   },
+    ownershipPicture: {
+      front: `${this.concatePage}_ownershipPictureImage`,
+      count: `${this.concatePage}_ownershipPictureImageCount`,
+    },
   };
   fileUploadFileFor = {
     panCard: 'PAN',
@@ -412,7 +413,10 @@ export class DemographicInfoComponent
         // });
       }
     }
-    if(!(this.demographicInfoForm.get('propertyOwnership') as FormArray).controls.length){
+    if (
+      !(this.demographicInfoForm.get('propertyOwnership') as FormArray).controls
+        .length
+    ) {
       this.addPropertyOwnership();
     }
   }
@@ -798,23 +802,34 @@ export class DemographicInfoComponent
     } else if (type === this.fileUploadFileFor.ownershipPicture) {
       this.fileUpload.popupTitle = 'Upload Ownership Picture Image';
       this.fileUpload.imageHeading1 = 'Ownership Picture Image';
-      this.fileUpload.new.isMultiple = true; 
-      var fCount = 0;  
-      let demoInfoFiles:any = localStorage.getItem('demo-info-files');
-      if(demoInfoFiles){
+      this.fileUpload.new.isMultiple = true;
+      var fCount = 0;
+      let demoInfoFiles: any = localStorage.getItem('demo-info-files');
+      if (demoInfoFiles) {
         demoInfoFiles = JSON.parse(demoInfoFiles);
-        let difkey = this.indexedDBFileNameManage.ownershipPicture.count+'_'+this.fileUpload.new.fileIndex;
-        if(demoInfoFiles[difkey]){
+        let difkey =
+          this.indexedDBFileNameManage.ownershipPicture.count +
+          '_' +
+          this.fileUpload.new.fileIndex;
+        if (demoInfoFiles[difkey]) {
           fCount = demoInfoFiles[difkey];
         }
       }
-      if(!fCount){
-        let farmerFiles:any = localStorage.getItem('farmer-files');
-        if(farmerFiles){
+      if (!fCount) {
+        let farmerFiles: any = localStorage.getItem('farmer-files');
+        if (farmerFiles) {
           farmerFiles = JSON.parse(farmerFiles);
           for (let ffi = 0; ffi < Object.keys(farmerFiles).length; ffi++) {
-            if (farmerFiles.hasOwnProperty(this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+ffi)){ 
-              fCount++;  
+            if (
+              farmerFiles.hasOwnProperty(
+                this.indexedDBFileNameManage.ownershipPicture.front +
+                  '_' +
+                  this.fileUpload.new.fileIndex +
+                  '_' +
+                  ffi
+              )
+            ) {
+              fCount++;
             }
           }
         }
@@ -824,17 +839,27 @@ export class DemographicInfoComponent
           .getByIndex(
             this.indexedDBName,
             'fileFor',
-            `${this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+fIndex}`
+            `${
+              this.indexedDBFileNameManage.ownershipPicture.front +
+              '_' +
+              this.fileUpload.new.fileIndex +
+              '_' +
+              fIndex
+            }`
           )
           .subscribe((farmer: any) => {
             let ownershipPicture =
               farmer?.file ||
               this.commonService.fetchFarmerDocument(
-                this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+fIndex
+                this.indexedDBFileNameManage.ownershipPicture.front +
+                  '_' +
+                  this.fileUpload.new.fileIndex +
+                  '_' +
+                  fIndex
               );
-              if(ownershipPicture){
-                this.fileUpload.new.imageMultiple.push(ownershipPicture);
-              }
+            if (ownershipPicture) {
+              this.fileUpload.new.imageMultiple.push(ownershipPicture);
+            }
           });
       }
     }
@@ -843,173 +868,192 @@ export class DemographicInfoComponent
 
   onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
-      if (
-        this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
-      ) {
+      if (this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture) {
         this.fileUpload.new.fileIndex = fileIndex;
-      this.fileUpload.new.imageMultiple = []; 
-      var fCount = 0;  
-      let demoInfoFiles:any = localStorage.getItem('demo-info-files');
-      if(demoInfoFiles){
-        demoInfoFiles = JSON.parse(demoInfoFiles);
-        let difkey = this.indexedDBFileNameManage.ownershipPicture.count+'_'+this.fileUpload.new.fileIndex;
-        if(demoInfoFiles[difkey]){
-          fCount = demoInfoFiles[difkey];
+        this.fileUpload.new.imageMultiple = [];
+        var fCount = 0;
+        let demoInfoFiles: any = localStorage.getItem('demo-info-files');
+        if (demoInfoFiles) {
+          demoInfoFiles = JSON.parse(demoInfoFiles);
+          let difkey =
+            this.indexedDBFileNameManage.ownershipPicture.count +
+            '_' +
+            this.fileUpload.new.fileIndex;
+          if (demoInfoFiles[difkey]) {
+            fCount = demoInfoFiles[difkey];
+          }
+        }
+        for (let fIndex = 0; fIndex < fCount; fIndex++) {
+          this.dbService
+            .getByIndex(
+              this.indexedDBName,
+              'fileFor',
+              this.indexedDBFileNameManage.ownershipPicture.front +
+                '_' +
+                this.fileUpload.new.fileIndex +
+                '_' +
+                fIndex
+            )
+            .subscribe((file: any) => {
+              if (file && file !== undefined && Object.keys(file).length) {
+                // delete if exists
+                this.dbService
+                  .deleteByKey(this.indexedDBName, file.id)
+                  .subscribe((status) => {});
+              }
+            });
         }
       }
-      for (let fIndex = 0; fIndex < fCount; fIndex++) {  
-      this.dbService
-          .getByIndex(this.indexedDBName, 'fileFor', this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+fIndex)
-          .subscribe((file: any) => {
-            if (file && file !== undefined && Object.keys(file).length) {
-              // delete if exists
-              this.dbService
-                .deleteByKey(this.indexedDBName, file.id)
-                .subscribe((status) => {});
+      for (let findex = 0; findex < event.target.files.length; findex++) {
+        const file = event.target.files[findex];
+
+        // if (file.size > 300000) {
+        //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
+        //   return;
+        // }
+        if (file.type.split('/')[0] != 'image') {
+          this.toastr.error('Only Image files are allowed.', 'Error!');
+          return;
+        }
+
+        /* START: reading file and Patching the Selected File */
+        const reader = new FileReader();
+        let selectedImageFor = '';
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const imageSrc = reader.result;
+
+          if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.panCard &&
+            type == 'FRONT_IMAGE'
+          ) {
+            this.fileUpload.new.imageSrc1 = imageSrc;
+            selectedImageFor = this.indexedDBFileNameManage.panCard.front;
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.aadhaarCard
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.aadhaarCard.front;
+            } else if (type === 'BACK_IMAGE') {
+              this.fileUpload.new.imageSrc2 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.aadhaarCard.back;
             }
-          });
-        }
-      }
-      for (let findex = 0; findex < event.target.files.length; findex++) {       
-      const file = event.target.files[findex];   
-
-      // if (file.size > 300000) {
-      //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
-      //   return;
-      // }
-      if (file.type.split('/')[0] != 'image') {
-        this.toastr.error('Only Image files are allowed.', 'Error!');
-        return;
-      }
-
-      /* START: reading file and Patching the Selected File */
-      const reader = new FileReader();
-      let selectedImageFor = '';
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const imageSrc = reader.result;
-
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.drivingLicence
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor =
+                this.indexedDBFileNameManage.drivingLicence.front;
+            } else if (type === 'BACK_IMAGE') {
+              this.fileUpload.new.imageSrc2 = imageSrc;
+              selectedImageFor =
+                this.indexedDBFileNameManage.drivingLicence.back;
+            }
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.voterId
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.voterId.front;
+            } else if (type === 'BACK_IMAGE') {
+              this.fileUpload.new.imageSrc2 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.voterId.back;
+            }
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.passport
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.passport.front;
+            } else if (type === 'BACK_IMAGE') {
+              this.fileUpload.new.imageSrc2 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.passport.back;
+            }
+          } else if (this.fileUpload.fileFor === this.fileUploadFileFor.NREGA) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.NREGA.front;
+            } else if (type === 'BACK_IMAGE') {
+              this.fileUpload.new.imageSrc2 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.NREGA.back;
+            }
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.farmerProfile
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor =
+                this.indexedDBFileNameManage.farmerProfile.front;
+              this.displayFarmerProfileImage = imageSrc;
+            }
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageMultiple.push(imageSrc);
+              selectedImageFor =
+                this.indexedDBFileNameManage.ownershipPicture.front +
+                '_' +
+                this.fileUpload.new.fileIndex +
+                '_' +
+                findex;
+            }
+          }
+          /* START: ngx-indexed-db feature to store files(images/docs) */
+          // if file already exist then delete then add
+          this.dbService
+            .getByIndex(this.indexedDBName, 'fileFor', selectedImageFor)
+            .subscribe((file: any) => {
+              if (file && file !== undefined && Object.keys(file).length) {
+                // delete if exists
+                this.dbService
+                  .deleteByKey(this.indexedDBName, file.id)
+                  .subscribe((status) => {});
+                // then add new
+                this.dbService
+                  .add(this.indexedDBName, {
+                    pageName: this.indexedDBPageName,
+                    fileFor: selectedImageFor,
+                    file: imageSrc,
+                  })
+                  .subscribe((key) => {});
+              } else {
+                // add new
+                this.dbService
+                  .add(this.indexedDBName, {
+                    pageName: this.indexedDBPageName,
+                    fileFor: selectedImageFor,
+                    file: imageSrc,
+                  })
+                  .subscribe((key) => {});
+              }
+            });
+          /* END: ngx-indexed-db feature to store files(images/docs) */
+        };
+        /* END: reading file and Patching the Selected File */
         if (
-          this.fileUpload.fileFor === this.fileUploadFileFor.panCard &&
-          type == 'FRONT_IMAGE'
+          this.fileUpload.fileFor !== this.fileUploadFileFor.ownershipPicture
         ) {
-          this.fileUpload.new.imageSrc1 = imageSrc;
-          selectedImageFor = this.indexedDBFileNameManage.panCard.front;
-        } else if (
-          this.fileUpload.fileFor === this.fileUploadFileFor.aadhaarCard
-        ) {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.aadhaarCard.front;
-          } else if (type === 'BACK_IMAGE') {
-            this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.aadhaarCard.back;
-          }
-        } else if (
-          this.fileUpload.fileFor === this.fileUploadFileFor.drivingLicence
-        ) {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor =
-              this.indexedDBFileNameManage.drivingLicence.front;
-          } else if (type === 'BACK_IMAGE') {
-            this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.drivingLicence.back;
-          }
-        } else if (this.fileUpload.fileFor === this.fileUploadFileFor.voterId) {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.voterId.front;
-          } else if (type === 'BACK_IMAGE') {
-            this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.voterId.back;
-          }
-        } else if (
-          this.fileUpload.fileFor === this.fileUploadFileFor.passport
-        ) {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.passport.front;
-          } else if (type === 'BACK_IMAGE') {
-            this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.passport.back;
-          }
-        } else if (this.fileUpload.fileFor === this.fileUploadFileFor.NREGA) {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.NREGA.front;
-          } else if (type === 'BACK_IMAGE') {
-            this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.NREGA.back;
-          }
-        } else if (
-          this.fileUpload.fileFor === this.fileUploadFileFor.farmerProfile
-        ) {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.farmerProfile.front;
-            this.displayFarmerProfileImage = imageSrc;
-          }
-        } else if (
-          this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
-        ) {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageMultiple.push(imageSrc);
-            selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front+'_'+this.fileUpload.new.fileIndex+'_'+findex;         
-          }
+          return;
         }
-        /* START: ngx-indexed-db feature to store files(images/docs) */
-        // if file already exist then delete then add
-        this.dbService
-          .getByIndex(this.indexedDBName, 'fileFor', selectedImageFor)
-          .subscribe((file: any) => {
-            if (file && file !== undefined && Object.keys(file).length) {
-              // delete if exists
-              this.dbService
-                .deleteByKey(this.indexedDBName, file.id)
-                .subscribe((status) => {});
-              // then add new
-              this.dbService
-                .add(this.indexedDBName, {
-                  pageName: this.indexedDBPageName,
-                  fileFor: selectedImageFor,
-                  file: imageSrc,
-                })
-                .subscribe((key) => {});
-            } else {
-              // add new
-              this.dbService
-                .add(this.indexedDBName, {
-                  pageName: this.indexedDBPageName,
-                  fileFor: selectedImageFor,
-                  file: imageSrc,
-                })
-                .subscribe((key) => {});
-            }
-          });
-        /* END: ngx-indexed-db feature to store files(images/docs) */
-      };
-      /* END: reading file and Patching the Selected File */
-      if (
-        this.fileUpload.fileFor !== this.fileUploadFileFor.ownershipPicture
-      ) {
-        return;
+      }
+      if (this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture) {
+        let demoInfoFiles: any = localStorage.getItem('demo-info-files');
+        if (demoInfoFiles) {
+          demoInfoFiles = JSON.parse(demoInfoFiles);
+        } else {
+          demoInfoFiles = {};
+        }
+        let difkey =
+          this.indexedDBFileNameManage.ownershipPicture.count +
+          '_' +
+          this.fileUpload.new.fileIndex;
+        demoInfoFiles[difkey] = event.target.files.length;
+        localStorage.setItem('demo-info-files', JSON.stringify(demoInfoFiles));
       }
     }
-    if (
-      this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
-    ) { 
-      let demoInfoFiles:any = localStorage.getItem('demo-info-files');
-      if(demoInfoFiles){
-        demoInfoFiles = JSON.parse(demoInfoFiles);
-      } else {
-        demoInfoFiles = {};
-      }
-      let difkey = this.indexedDBFileNameManage.ownershipPicture.count+'_'+this.fileUpload.new.fileIndex;
-      demoInfoFiles[difkey] = event.target.files.length;
-      localStorage.setItem('demo-info-files', JSON.stringify(demoInfoFiles));
-    }
-  }
   }
 
   removeImage(event: any, type: string) {
@@ -1154,7 +1198,9 @@ export class DemographicInfoComponent
         );
       }
 
-      this.propertyOwnership = this.demographicInfoForm.get('propertyOwnership') as FormArray;
+      this.propertyOwnership = this.demographicInfoForm.get(
+        'propertyOwnership'
+      ) as FormArray;
       B.propertyOwnership.map((item: any) => {
         this.propertyOwnership.push(
           this.formBuilder.group({
@@ -1162,7 +1208,9 @@ export class DemographicInfoComponent
             propertyPic: new FormControl(item.propertyPic),
             ownershipType: new FormControl(item.ownershipType),
             particular: new FormControl(item.particular),
-            cumulativeValue: new FormControl(item.cumulativeValue, [Validators.pattern('^[0-9]*$')]),
+            cumulativeValue: new FormControl(item.cumulativeValue, [
+              Validators.pattern('^[0-9]*$'),
+            ]),
           })
         );
       });
@@ -1597,7 +1645,7 @@ export class DemographicInfoComponent
             res.data.actions &&
             Array.isArray(res.data.actions) &&
             res.data.actions.length &&
-            !res.data.actions[0].processing_done
+            !Object.keys(res.data.actions[0].details).length
           ) {
             this.toastr.info(
               `Please complete the verification process`,
@@ -1614,7 +1662,6 @@ export class DemographicInfoComponent
             res.data.actions &&
             Array.isArray(res.data.actions) &&
             res.data.actions.length &&
-            res.data.actions[0].processing_done &&
             res.data.actions[0].details &&
             res.data.actions[0].details.aadhaar
           ) {
@@ -1650,7 +1697,7 @@ export class DemographicInfoComponent
     apiCalled: string,
     proofType: string,
     type: string,
-    apiData = {}
+    apiData: any
   ) {
     if (apiCalled === 'api_1') {
       if (type === 'api_failed') {
@@ -1689,6 +1736,11 @@ export class DemographicInfoComponent
         this.kycData[proofType].showConfirm = false;
         this.kycData[proofType].isVerified = false;
       } else if (type === 'api_success_valid_data') {
+        if (proofType === 'aadhaar') {
+          this.demographicInfoForm
+            .get('firstName')
+            ?.setValue(apiData?.actions[0].details.aadhaar.name);
+        }
         this.kycData[proofType].data = apiData;
         this.kycData[proofType].showVerify = true;
         this.kycData[proofType].showTryAgain = false;

@@ -2295,7 +2295,8 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             res.data.actions &&
             Array.isArray(res.data.actions) &&
             res.data.actions.length &&
-            !res.data.actions[0].processing_done
+            res.data.actions[0].details &&
+            !Object.keys(res.data.actions[0].details).length
           ) {
             this.toastr.info(
               `Please complete the verification process`,
@@ -2313,7 +2314,6 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             res.data.actions &&
             Array.isArray(res.data.actions) &&
             res.data.actions.length &&
-            res.data.actions[0].processing_done &&
             res.data.actions[0].details &&
             res.data.actions[0].details.aadhaar
           ) {
@@ -2358,7 +2358,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     apiCalled: string,
     proofType: string,
     type: string,
-    apiData = {}
+    apiData: any
   ) {
     if (apiCalled === 'api_1') {
       if (type === 'api_failed') {
@@ -2397,6 +2397,17 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         this.kycData[coaNo][proofType].showConfirm = false;
         this.kycData[coaNo][proofType].isVerified = false;
       } else if (type === 'api_success_valid_data') {
+        // prefill the First Name from Aadhaar Data
+        if (coaNo === 'coa1') {
+          this.coApplicantForm
+            .get('firstName')
+            ?.setValue(apiData?.actions[0].details.aadhaar.name);
+        } else if (coaNo === 'coa2') {
+          this.coApplicantForm
+            .get('firstNamecoa2')
+            ?.setValue(apiData?.actions[0].details.aadhaar.name);
+        }
+
         this.kycData[coaNo][proofType].data = apiData;
         this.kycData[coaNo][proofType].showVerify = true;
         this.kycData[coaNo][proofType].showTryAgain = false;
