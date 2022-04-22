@@ -429,7 +429,7 @@
               </div>
               <div class="display-flex">
                 <div class="flex-1 lable-top">
-                  <label class="required">Pin Code</label>
+                  <label class="required">Pincode</label>
                   <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6" (keypress)="validateNo($event)" maxlength="6"
                     (keyup)="getPinCodeData($event,'ADDRESS')" />
                   <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
@@ -745,8 +745,8 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label>Upload pictures</label>
-                  <div class="fileUpload">
-                    <span></span><img src="../../../assets/images/photo-camera.png" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)"/>
+                  <div class="fileUpload" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">
+                    <span></span><img src="../../../assets/images/photo-camera.png" />
                     <input type="text" name="" class="form-control" />
                   </div>
                 </div>

@@ -260,7 +260,7 @@ export class DemographicInfoComponent
       propertyStatus: new FormControl(''),
       monthlyRent: new FormControl(''),
       commOrPerAddress: new FormControl('', [Validators.required]),
-      familyMembers: new FormArray([this.createFamilyMembers()]),
+      familyMembers: new FormArray([]),
       propertyOwnership: new FormArray([]),
       phoneType: new FormControl(''),
       phoneOperating: new FormControl(''),
@@ -337,9 +337,8 @@ export class DemographicInfoComponent
       // assign other data to populate
       let editForm: any = localStorage.getItem('edit-demographic-info-form');
       if (editForm) {
-        editForm = JSON.parse(editForm);
-        this.demographicInfoForm.patchValue(editForm);
-
+        editForm = JSON.parse(editForm);        
+        this.patchFarmerDetails(editForm);
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
           this.getPinCodeData(
@@ -369,7 +368,11 @@ export class DemographicInfoComponent
               );
           });
       } else {
-        this.patchFarmerDetails(); // bind/patch fresh api data
+        const farmerDetails: any = localStorage.getItem('farmer-details');
+        if (farmerDetails) {
+          let demoInfo = JSON.parse(farmerDetails).demographic_info;        
+          this.patchFarmerDetails(demoInfo); // bind/patch fresh api data
+        }
       }
     } else {
       // assign kyc data to populate
@@ -382,8 +385,7 @@ export class DemographicInfoComponent
       let demoInfo: any = localStorage.getItem('demographic-info-form');
       if (demoInfo) {
         demoInfo = JSON.parse(demoInfo);
-        this.demographicInfoForm.patchValue(demoInfo);
-
+        this.patchFarmerDetails(demoInfo);
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
           this.getPinCodeData(
@@ -414,6 +416,9 @@ export class DemographicInfoComponent
     }
     if(!(this.demographicInfoForm.get('propertyOwnership') as FormArray).controls.length){
       this.addPropertyOwnership();
+    }
+    if(!(this.demographicInfoForm.get('familyMembers') as FormArray).controls.length){
+      this.addFamilyMembers();
     }
   }
   ngAfterViewInit(): void {
@@ -1052,7 +1057,8 @@ export class DemographicInfoComponent
   /* END: functions used indexed-db ============================================ */
 
   // patch edit farmer details
-  patchFarmerDetails() {
+  patchFarmerDetails(B: any) {
+    this.demographicInfoForm.patchValue(B);
     // patch farmer Profile image
     this.dbService
       .getByIndex(
@@ -1069,9 +1075,6 @@ export class DemographicInfoComponent
       });
 
     // other details
-    const A: any = localStorage.getItem('farmer-details');
-    if (A) {
-      const B = JSON.parse(A).demographic_info;
 
       // assign kyc data to populate
       if (B.kycData) {
@@ -1166,7 +1169,20 @@ export class DemographicInfoComponent
           })
         );
       });
-    }
+
+      this.familyMembers = this.demographicInfoForm.get('familyMembers') as FormArray;
+      B.familyMembers.map((item: any) => {
+        this.familyMembers.push(
+          this.formBuilder.group({
+            name: new FormControl(item.name),
+            relation: new FormControl(item.relation),
+            education: new FormControl(item.education),
+            occupation: new FormControl(item.occupation),
+            dependency: new FormControl(item.dependency),
+          })
+        );
+      });
+      
   }
 
   validateAndNext() {
