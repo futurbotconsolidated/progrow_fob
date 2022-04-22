@@ -961,9 +961,11 @@ export class FieldInfoComponent implements OnInit {
               if (imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
                 type = 'image';
               }
+              let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];
               let imgObj = {
                 file: imageSrc,
                 type: type,
+                name: filename,
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
             }
@@ -995,9 +997,11 @@ export class FieldInfoComponent implements OnInit {
               if (imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
                 type = 'image';
               }
+              let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];
               let imgObj = {
                 file: imageSrc,
                 type: type,
+                name: filename,
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
             }
@@ -1009,25 +1013,7 @@ export class FieldInfoComponent implements OnInit {
 
   onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
-      if (
-        this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
-      ) {
-        this.fileUpload.new.fileIndex = fileIndex;
-        this.fileUpload.new.imageMultiple = [];
-        this.removeFileIndexedDB(
-          this.indexedDBFileNameManage.ownershipPicture.count + '_' + this.fileUpload.new.fileIndex,
-          this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex
-        );
-      } else if (
-        this.fileUpload.fileFor === this.fileUploadFileFor.testPicture
-      ) {
-        this.fileUpload.new.fileIndex = fileIndex;
-        this.fileUpload.new.imageMultiple = [];
-        this.removeFileIndexedDB(
-          this.indexedDBFileNameManage.testPicture.count + '_' + this.fileUpload.new.fileIndex,
-          this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex
-        );
-      }
+      this.fileUpload.new.fileIndex = fileIndex;      
       for (let findex = 0; findex < event.target.files.length; findex++) {
         const file = event.target.files[findex];        
         // if (file.size > 300000) {
@@ -1056,9 +1042,10 @@ export class FieldInfoComponent implements OnInit {
               let imgObj = {
                 file: imageSrc,
                 type: type,
+                name: file.name,
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
-              selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + findex;
+              selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+this.fileUpload.new.imageMultiple.length);
             }
           } else if (
             this.fileUpload.fileFor === this.fileUploadFileFor.testPicture
@@ -1071,9 +1058,10 @@ export class FieldInfoComponent implements OnInit {
               let imgObj = {
                 file: imageSrc,
                 type: type,
+                name: file.name,
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
-              selectedImageFor = this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + findex;
+              selectedImageFor = this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+this.fileUpload.new.imageMultiple.length);
             }
           }
           /* START: ngx-indexed-db feature to store files(images/docs) */
@@ -1081,7 +1069,7 @@ export class FieldInfoComponent implements OnInit {
           this.dbService
             .getByIndex(this.indexedDBName, 'fileFor', selectedImageFor)
             .subscribe((file: any) => {
-              if (file && file !== undefined && Object.keys(file).length) {
+              if (file && file !== undefined && Object.keys(file).length && (this.fileUpload.fileFor !== this.fileUploadFileFor.ownershipPicture && this.fileUpload.fileFor !== this.fileUploadFileFor.testPicture)) {
                 // delete if exists
                 this.dbService
                   .deleteByKey(this.indexedDBName, file.id)
@@ -1151,29 +1139,6 @@ export class FieldInfoComponent implements OnInit {
       }
     }
     return fCount;
-  }
-
-  removeFileIndexedDB(ckey = '', fkey = '') {
-    var fCount = 0;
-    let fieldInfoFiles: any = localStorage.getItem(this.localStoragePageName);
-    if (fieldInfoFiles) {
-      fieldInfoFiles = JSON.parse(fieldInfoFiles);
-      if (fieldInfoFiles[ckey]) {
-        fCount = fieldInfoFiles[ckey];
-      }
-    }
-    for (let fIndex = 0; fIndex < fCount; fIndex++) {
-      this.dbService
-        .getByIndex(this.indexedDBName, 'fileFor', fkey + '_' + fIndex)
-        .subscribe((file: any) => {
-          if (file && file !== undefined && Object.keys(file).length) {
-            // delete if exists
-            this.dbService
-              .deleteByKey(this.indexedDBName, file.id)
-              .subscribe((status) => { });
-          }
-        });
-    }
   }
 
   downloadFile(data: any) {

@@ -8,3 +8,7 @@
   overflow: auto;
   margin: auto;
 }
+
+.text-decoration-underline{
+  cursor: pointer;
+}

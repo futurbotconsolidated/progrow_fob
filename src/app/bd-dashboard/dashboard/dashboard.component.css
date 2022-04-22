@@ -23,6 +23,10 @@ table.dataTable tbody tr {
 .db-filter-type{
   height: 40px;
 }
+.logo a img {
+    width: 100%;
+    max-width: 235px;
+}
 @media only screen and (min-device-width: 992px) and (max-device-width: 1500px) {
   .lsn-tv-div {
     position: fixed;

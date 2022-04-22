@@ -415,7 +415,8 @@
               <p class="fs-6" *ngIf="fileData.type !='image'">File</p>
               <img [src]="fileData.file" *ngIf="fileData.type=='image'" style="height: 150px; width: 150px" />
               <div class="col-auto add-another" *ngIf="fileData.type !='image'">
-                <a href="javascript:void(0)" (click)="downloadFile(fileData.file)">View File</a>
+                <a href="javascript:void(0)" (click)="downloadFile(fileData.file)">View File</a><br/>
+                <p class="word-wrap-anywhere">{{fileData.name}}</p>
             </div>
             </div>  
           </div>
