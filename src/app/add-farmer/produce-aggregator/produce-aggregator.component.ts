@@ -112,7 +112,6 @@ export class ProduceAggregatorComponent
         this.nextRoute = data.routeName;
         if (this.router.url?.includes('/add/produce-aggregator')) {
           this.saveData();
-          console.log(data.routeName);
         }
       });
   }

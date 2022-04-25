@@ -35,7 +35,7 @@ function sleep(ms: number): Promise<any> {
 export class DemographicInfoComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  /* START: Varaibles ---------------------------------------------*/
+  /* START: Varaibles ------------------------------------------------- */
   private observableSubscription: any;
 
   demoGraphicMaster = <any>{};
@@ -46,8 +46,11 @@ export class DemographicInfoComponent
     new: {
       imageSrc1: '',
       imageSrc2: '',
+      imageMultiple: [] as any,
       isImage1Required: true,
       isImage2Required: false,
+      isMultiple: false,
+      fileIndex: 0,
     },
     imageHeading1: 'Front Image',
     imageHeading2: 'Back Image',
@@ -64,7 +67,7 @@ export class DemographicInfoComponent
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
 
-  // indexed db variables
+  /* START: indexed db variables */
   displayFarmerProfileImage = '' as any;
   indexedDBPageName = 'demographic_info';
   concatePage = 'demographic';
@@ -74,9 +77,24 @@ export class DemographicInfoComponent
       front: `${this.concatePage}_PANCardFront`,
       back: '',
     },
+    aadhaarCard: {
+      front: `${this.concatePage}_AadhaarCardFront`,
+      back: `${this.concatePage}_AadhaarCardBack`,
+    },
+    drivingLicence: {
+      front: `${this.concatePage}_DrivingLicenceFront`,
+      back: `${this.concatePage}_DrivingLicenceBack`,
+    },
+
+    /*
     addressProof: {
       front: `${this.concatePage}_addressProofFront`,
       back: `${this.concatePage}_addressProofBack`,
+    },
+    */
+    voterId: {
+      front: `${this.concatePage}_voterIdFront`,
+      back: `${this.concatePage}_voterIdBack`,
     },
     passport: {
       front: `${this.concatePage}_passportFront`,
@@ -86,15 +104,98 @@ export class DemographicInfoComponent
       front: `${this.concatePage}_NREGAFront`,
       back: `${this.concatePage}_NREGABack`,
     },
-    voterId: {
-      front: `${this.concatePage}_voterIdFront`,
-      back: `${this.concatePage}_voterIdBack`,
-    },
+
     farmerProfile: { front: `${this.concatePage}_farmerProfileImage` },
+    ownershipPicture: {
+      front: `${this.concatePage}_ownershipPictureImage`,
+      count: `${this.concatePage}_ownershipPictureImageCount`,
+    },
   };
+  fileUploadFileFor = {
+    panCard: 'PAN',
+    aadhaarCard: 'AADHAAR',
+    drivingLicence: 'DRIVING_LICENCE',
+    voterId: 'VOTERID',
+    passport: 'PASSPORT',
+    NREGA: 'NREGA',
+    farmerProfile: 'FARMER_PROFILE',
+    ownershipPicture: 'OWENERSHIP_PICTURE',
+  };
+  /* END: indexed db variables */
 
   farmerId = ''; // edit feature
-  /* END: Varaibles ---------------------------------------------*/
+
+  /* START: KYC Data Structure & Related Variables */
+  kycFieldButtonLabels = {
+    verify: 'Verify',
+    verified: 'Verified',
+    try_again: 'Try again',
+    confirm: 'Confirm',
+  };
+
+  kycProofNames = {
+    pan: 'pan',
+    aadhaar: 'aadhaar',
+    driving_licence: 'driving_licence',
+    voter_id: 'voter_id',
+    passport: 'passport',
+    nrega: 'nrega',
+  };
+
+  kycData = {
+    pan: {
+      id: '',
+      data: {},
+      isVerified: false,
+      showVerify: true,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+    aadhaar: {
+      id: '',
+      verificationLinkData: {},
+      data: {},
+      isVerified: false,
+      showVerify: true,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+    driving_licence: {
+      id: '',
+      data: {},
+      isVerified: false,
+      showVerify: true,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+    voter_id: {
+      id: '',
+      data: {},
+      isVerified: false,
+      showVerify: true,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+    passport: {
+      id: '',
+      data: {},
+      isVerified: false,
+      showVerify: true,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+    nrega: {
+      id: '',
+      data: {},
+      isVerified: false,
+      showVerify: true,
+      showTryAgain: false,
+      showConfirm: false,
+    },
+  } as any;
+  /* END: KYC Data Structure & Related Variables */
+
+  /* END: Varaibles ------------------------------------------------- */
 
   constructor(
     public router: Router,
@@ -137,8 +238,9 @@ export class DemographicInfoComponent
 
       phoneNumber: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[0-9]*$'),
         Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern('^[0-9]*$'),
       ]),
       mobile1: new FormControl('', [
         Validators.pattern('^[0-9]*$'),
@@ -162,8 +264,8 @@ export class DemographicInfoComponent
       propertyStatus: new FormControl(''),
       monthlyRent: new FormControl(''),
       commOrPerAddress: new FormControl('', [Validators.required]),
-      familyMembers: new FormArray([this.createFamilyMembers()]),
-      propertyOwnership: new FormArray([this.createPropertyOwnership()]),
+      familyMembers: new FormArray([]),
+      propertyOwnership: new FormArray([]),
       phoneType: new FormControl(''),
       phoneOperating: new FormControl(''),
       cultivationAdvice: [Array()],
@@ -175,20 +277,23 @@ export class DemographicInfoComponent
       agriculturalInterest: new FormControl(''),
       innovativeWaysFarming: [Array()],
 
-      addressProof: new FormControl('', [Validators.required]),
+      // addressProof: new FormControl('', [Validators.required]),
       PANnumber: new FormControl('', [validatePANNumber]),
-      passportNumber: new FormControl(''),
+      aadhaarNumber: new FormControl('', [
+        Validators.minLength(12),
+        Validators.maxLength(12),
+      ]),
+      drivingLicenceNumber: new FormControl(''),
       voterIdNumber: new FormControl(''),
+      passportNumber: new FormControl(''),
       NREGANumber: new FormControl(''),
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
-    console.log(this.farmerId);
   }
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
-    // this.getKycData();
     this.demoGraphicMaster = data.demoGraphic; // read master data
 
     // populate
@@ -227,11 +332,17 @@ export class DemographicInfoComponent
 
     //  first check data exist - edit form
     if (this.farmerId) {
+      // assign kyc data to populate
+      const demoInfoRaw: any = localStorage.getItem('edit-demographic-info');
+      if (demoInfoRaw && JSON.parse(demoInfoRaw).kycData) {
+        this.kycData = JSON.parse(demoInfoRaw).kycData;
+      }
+
+      // assign other data to populate
       let editForm: any = localStorage.getItem('edit-demographic-info-form');
       if (editForm) {
-        editForm = JSON.parse(editForm);
-        this.demographicInfoForm.patchValue(editForm);
-
+        editForm = JSON.parse(editForm);        
+        this.patchFarmerDetails(editForm);
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
           this.getPinCodeData(
@@ -261,14 +372,24 @@ export class DemographicInfoComponent
               );
           });
       } else {
-        this.patchFarmerDetails(); // bind/patch fresh api data
+        const farmerDetails: any = localStorage.getItem('farmer-details');
+        if (farmerDetails) {
+          let demoInfo = JSON.parse(farmerDetails).demographic_info;        
+          this.patchFarmerDetails(demoInfo); // bind/patch fresh api data
+        }
       }
     } else {
+      // assign kyc data to populate
+      const demoInfoRaw: any = localStorage.getItem('demographic-info');
+      if (demoInfoRaw && JSON.parse(demoInfoRaw).kycData) {
+        this.kycData = JSON.parse(demoInfoRaw).kycData;
+      }
+
+      // assign other data to populate
       let demoInfo: any = localStorage.getItem('demographic-info-form');
       if (demoInfo) {
         demoInfo = JSON.parse(demoInfo);
-        this.demographicInfoForm.patchValue(demoInfo);
-
+        this.patchFarmerDetails(demoInfo);
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
           this.getPinCodeData(
@@ -297,6 +418,15 @@ export class DemographicInfoComponent
         // });
       }
     }
+    if (
+      !(this.demographicInfoForm.get('propertyOwnership') as FormArray).controls
+        .length
+    ) {
+      this.addPropertyOwnership();
+    }
+    if(!(this.demographicInfoForm.get('familyMembers') as FormArray).controls.length){
+      this.addFamilyMembers();
+    }
   }
   ngAfterViewInit(): void {
     /** subscribe to Observables, which are triggered from header selections*/
@@ -306,7 +436,6 @@ export class DemographicInfoComponent
         this.nextRoute = data.routeName;
         if (this.router.url?.includes('/add/demographic-info')) {
           this.validateAndNext();
-          console.log(data.routeName);
         }
       });
   }
@@ -410,16 +539,19 @@ export class DemographicInfoComponent
   }
 
   /* START: functions used indexed-db ============================================ */
-  openFileModalPopup(type: string) {
+  openFileModalPopup(type: string, fileIndex: number) {
     this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
     this.fileUpload.new.imageSrc2 = '';
+    this.fileUpload.new.imageMultiple = [];
     this.fileUpload.new.isImage1Required = false;
     this.fileUpload.new.isImage2Required = false;
+    this.fileUpload.new.isMultiple = false;
+    this.fileUpload.new.fileIndex = fileIndex;
     this.fileUpload.imageHeading1 = 'Front Image';
     this.fileUpload.imageHeading2 = 'Back Image';
 
-    if (type === 'PAN') {
+    if (type === this.fileUploadFileFor.panCard) {
       if (!this.demographicInfoForm.value.PANnumber) {
         this.toastr.error('please enter PAN Number.', 'Error!');
         return;
@@ -439,7 +571,10 @@ export class DemographicInfoComponent
               this.indexedDBFileNameManage.panCard.front
             );
         });
-    } else if (type === 'ADDRESS_PROOF') {
+    }
+
+    //  CURRENTLY NOT USING - DO NOT DELETE
+    /* else if (type === 'ADDRESS_PROOF') {
       if (!this.demographicInfoForm.value.addressProof) {
         this.toastr.error('please select Address Proof Type.', 'Error!');
         return;
@@ -476,7 +611,113 @@ export class DemographicInfoComponent
               this.indexedDBFileNameManage.addressProof.back
             );
         });
-    } else if (type === 'PASSPORT') {
+    } */
+    else if (type === this.fileUploadFileFor.aadhaarCard) {
+      if (!this.demographicInfoForm.value.aadhaarNumber) {
+        this.toastr.error('please enter Aadhaar Number.', 'Error!');
+        return;
+      }
+      this.fileUpload.popupTitle = 'Upload Aadhaar Card Image';
+      this.fileUpload.new.isImage1Required = true;
+      this.fileUpload.new.isImage2Required = true;
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.aadhaarCard.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.aadhaarCard.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.aadhaarCard.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.aadhaarCard.back
+            );
+        });
+    } else if (type === this.fileUploadFileFor.drivingLicence) {
+      if (!this.demographicInfoForm.value.drivingLicenceNumber) {
+        this.toastr.error('please enter Driving Licence Number.', 'Error!');
+        return;
+      }
+      this.fileUpload.popupTitle = 'Upload Driving Licence Image';
+      this.fileUpload.new.isImage1Required = true;
+      this.fileUpload.new.isImage2Required = true;
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.drivingLicence.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.drivingLicence.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.drivingLicence.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.drivingLicence.back
+            );
+        });
+    } else if (type === this.fileUploadFileFor.voterId) {
+      if (!this.demographicInfoForm.value.voterIdNumber) {
+        this.toastr.error('please enter Voter Id Number.', 'Error!');
+        return;
+      }
+      this.fileUpload.popupTitle = 'Upload Voter Id Image';
+      this.fileUpload.new.isImage1Required = true;
+      this.fileUpload.new.isImage2Required = true;
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.voterId.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.voterId.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.voterId.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.voterId.back
+            );
+        });
+    } else if (type === this.fileUploadFileFor.passport) {
       if (!this.demographicInfoForm.value.passportNumber) {
         this.toastr.error('please enter Passport Number.', 'Error!');
         return;
@@ -512,7 +753,7 @@ export class DemographicInfoComponent
               this.indexedDBFileNameManage.passport.back
             );
         });
-    } else if (type === 'NREGA') {
+    } else if (type === this.fileUploadFileFor.NREGA) {
       if (!this.demographicInfoForm.value.NREGANumber) {
         this.toastr.error('please enter NREGA Number.', 'Error!');
         return;
@@ -548,42 +789,7 @@ export class DemographicInfoComponent
               this.indexedDBFileNameManage.NREGA.back
             );
         });
-    } else if (type === 'VOTERID') {
-      if (!this.demographicInfoForm.value.voterIdNumber) {
-        this.toastr.error('please enter Voter Id Number.', 'Error!');
-        return;
-      }
-      this.fileUpload.popupTitle = 'Upload Voter Id Image';
-      this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.isImage2Required = true;
-      this.dbService
-        .getByIndex(
-          this.indexedDBName,
-          'fileFor',
-          `${this.indexedDBFileNameManage.voterId.front}`
-        )
-        .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc1 =
-            farmer?.file ||
-            this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.voterId.front
-            );
-        });
-
-      this.dbService
-        .getByIndex(
-          this.indexedDBName,
-          'fileFor',
-          `${this.indexedDBFileNameManage.voterId.back}`
-        )
-        .subscribe((farmer: any) => {
-          this.fileUpload.new.imageSrc2 =
-            farmer?.file ||
-            this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.voterId.back
-            );
-        });
-    } else if (type === 'FARMER_PROFILE') {
+    } else if (type === this.fileUploadFileFor.farmerProfile) {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
@@ -601,110 +807,265 @@ export class DemographicInfoComponent
             );
           this.displayFarmerProfileImage = farmer?.file;
         });
+    } else if (type === this.fileUploadFileFor.ownershipPicture) {
+      this.fileUpload.popupTitle = 'Upload Ownership Picture Image';
+      this.fileUpload.imageHeading1 = 'Ownership Picture Image';
+      this.fileUpload.new.isMultiple = true;
+      var fCount = 0;
+      let demoInfoFiles: any = localStorage.getItem('demo-info-files');
+      if (demoInfoFiles) {
+        demoInfoFiles = JSON.parse(demoInfoFiles);
+        let difkey =
+          this.indexedDBFileNameManage.ownershipPicture.count +
+          '_' +
+          this.fileUpload.new.fileIndex;
+        if (demoInfoFiles[difkey]) {
+          fCount = demoInfoFiles[difkey];
+        }
+      }
+      if (!fCount) {
+        let farmerFiles: any = localStorage.getItem('farmer-files');
+        if (farmerFiles) {
+          farmerFiles = JSON.parse(farmerFiles);
+          for (let ffi = 0; ffi < Object.keys(farmerFiles).length; ffi++) {
+            if (
+              farmerFiles.hasOwnProperty(
+                this.indexedDBFileNameManage.ownershipPicture.front +
+                  '_' +
+                  this.fileUpload.new.fileIndex +
+                  '_' +
+                  ffi
+              )
+            ) {
+              fCount++;
+            }
+          }
+        }
+      }
+      for (let fIndex = 0; fIndex < fCount; fIndex++) {
+        this.dbService
+          .getByIndex(
+            this.indexedDBName,
+            'fileFor',
+            `${
+              this.indexedDBFileNameManage.ownershipPicture.front +
+              '_' +
+              this.fileUpload.new.fileIndex +
+              '_' +
+              fIndex
+            }`
+          )
+          .subscribe((farmer: any) => {
+            let ownershipPicture =
+              farmer?.file ||
+              this.commonService.fetchFarmerDocument(
+                this.indexedDBFileNameManage.ownershipPicture.front +
+                  '_' +
+                  this.fileUpload.new.fileIndex +
+                  '_' +
+                  fIndex
+              );
+            if (ownershipPicture) {
+              this.fileUpload.new.imageMultiple.push(ownershipPicture);
+            }
+          });
+      }
     }
     $('#fileUploadModalPopup').modal('show');
   }
 
-  onFileChange(event: any, type = '') {
-    const reader = new FileReader();
+  onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
-      const [file] = event.target.files;
-
-      // if (file.size > 300000) {
-      //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
-      //   return;
-      // }
-      if (file.type.split('/')[0] != 'image') {
-        this.toastr.error('Only Image files are allowed.', 'Error!');
-        return;
-      }
-
-      /* START: reading file and Patching the Selected File */
-      let selectedImageFor = '';
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const imageSrc = reader.result;
-
-        if (this.fileUpload.fileFor === 'PAN' && type == 'FRONT_IMAGE') {
-          this.fileUpload.new.imageSrc1 = imageSrc;
-          selectedImageFor = this.indexedDBFileNameManage.panCard.front;
-        } else if (this.fileUpload.fileFor === 'ADDRESS_PROOF') {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.addressProof.front;
-          } else if (type === 'BACK_IMAGE') {
-            this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.addressProof.back;
-          }
-        } else if (this.fileUpload.fileFor === 'PASSPORT') {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.passport.front;
-          } else if (type === 'BACK_IMAGE') {
-            this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.passport.back;
-          }
-        } else if (this.fileUpload.fileFor === 'NREGA') {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.NREGA.front;
-          } else if (type === 'BACK_IMAGE') {
-            this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.NREGA.back;
-          }
-        } else if (this.fileUpload.fileFor === 'VOTERID') {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.voterId.front;
-          } else if (type === 'BACK_IMAGE') {
-            this.fileUpload.new.imageSrc2 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.voterId.back;
-          }
-        } else if (this.fileUpload.fileFor === 'FARMER_PROFILE') {
-          if (type === 'FRONT_IMAGE') {
-            this.fileUpload.new.imageSrc1 = imageSrc;
-            selectedImageFor = this.indexedDBFileNameManage.farmerProfile.front;
-            this.displayFarmerProfileImage = imageSrc;
+      if (this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture) {
+        this.fileUpload.new.fileIndex = fileIndex;
+        this.fileUpload.new.imageMultiple = [];
+        var fCount = 0;
+        let demoInfoFiles: any = localStorage.getItem('demo-info-files');
+        if (demoInfoFiles) {
+          demoInfoFiles = JSON.parse(demoInfoFiles);
+          let difkey =
+            this.indexedDBFileNameManage.ownershipPicture.count +
+            '_' +
+            this.fileUpload.new.fileIndex;
+          if (demoInfoFiles[difkey]) {
+            fCount = demoInfoFiles[difkey];
           }
         }
+        for (let fIndex = 0; fIndex < fCount; fIndex++) {
+          this.dbService
+            .getByIndex(
+              this.indexedDBName,
+              'fileFor',
+              this.indexedDBFileNameManage.ownershipPicture.front +
+                '_' +
+                this.fileUpload.new.fileIndex +
+                '_' +
+                fIndex
+            )
+            .subscribe((file: any) => {
+              if (file && file !== undefined && Object.keys(file).length) {
+                // delete if exists
+                this.dbService
+                  .deleteByKey(this.indexedDBName, file.id)
+                  .subscribe((status) => {});
+              }
+            });
+        }
+      }
+      for (let findex = 0; findex < event.target.files.length; findex++) {
+        const file = event.target.files[findex];
 
-        /* START: ngx-indexed-db feature to store files(images/docs) */
-        // if file already exist then delete then add
-        this.dbService
-          .getByIndex(this.indexedDBName, 'fileFor', selectedImageFor)
-          .subscribe((file: any) => {
-            if (file && file !== undefined && Object.keys(file).length) {
-              // delete if exists
-              this.dbService
-                .deleteByKey(this.indexedDBName, file.id)
-                .subscribe((status) => {});
-              // then add new
-              this.dbService
-                .add(this.indexedDBName, {
-                  pageName: this.indexedDBPageName,
-                  fileFor: selectedImageFor,
-                  file: imageSrc,
-                })
-                .subscribe((key) => {});
-            } else {
-              // add new
-              this.dbService
-                .add(this.indexedDBName, {
-                  pageName: this.indexedDBPageName,
-                  fileFor: selectedImageFor,
-                  file: imageSrc,
-                })
-                .subscribe((key) => {});
+        // if (file.size > 300000) {
+        //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
+        //   return;
+        // }
+        if (file.type.split('/')[0] != 'image') {
+          this.toastr.error('Only Image files are allowed.', 'Error!');
+          return;
+        }
+
+        /* START: reading file and Patching the Selected File */
+        const reader = new FileReader();
+        let selectedImageFor = '';
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const imageSrc = reader.result;
+
+          if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.panCard &&
+            type == 'FRONT_IMAGE'
+          ) {
+            this.fileUpload.new.imageSrc1 = imageSrc;
+            selectedImageFor = this.indexedDBFileNameManage.panCard.front;
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.aadhaarCard
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.aadhaarCard.front;
+            } else if (type === 'BACK_IMAGE') {
+              this.fileUpload.new.imageSrc2 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.aadhaarCard.back;
             }
-          });
-        /* END: ngx-indexed-db feature to store files(images/docs) */
-      };
-      /* END: reading file and Patching the Selected File */
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.drivingLicence
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor =
+                this.indexedDBFileNameManage.drivingLicence.front;
+            } else if (type === 'BACK_IMAGE') {
+              this.fileUpload.new.imageSrc2 = imageSrc;
+              selectedImageFor =
+                this.indexedDBFileNameManage.drivingLicence.back;
+            }
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.voterId
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.voterId.front;
+            } else if (type === 'BACK_IMAGE') {
+              this.fileUpload.new.imageSrc2 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.voterId.back;
+            }
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.passport
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.passport.front;
+            } else if (type === 'BACK_IMAGE') {
+              this.fileUpload.new.imageSrc2 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.passport.back;
+            }
+          } else if (this.fileUpload.fileFor === this.fileUploadFileFor.NREGA) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.NREGA.front;
+            } else if (type === 'BACK_IMAGE') {
+              this.fileUpload.new.imageSrc2 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.NREGA.back;
+            }
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.farmerProfile
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor =
+                this.indexedDBFileNameManage.farmerProfile.front;
+              this.displayFarmerProfileImage = imageSrc;
+            }
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageMultiple.push(imageSrc);
+              selectedImageFor =
+                this.indexedDBFileNameManage.ownershipPicture.front +
+                '_' +
+                this.fileUpload.new.fileIndex +
+                '_' +
+                findex;
+            }
+          }
+          /* START: ngx-indexed-db feature to store files(images/docs) */
+          // if file already exist then delete then add
+          this.dbService
+            .getByIndex(this.indexedDBName, 'fileFor', selectedImageFor)
+            .subscribe((file: any) => {
+              if (file && file !== undefined && Object.keys(file).length) {
+                // delete if exists
+                this.dbService
+                  .deleteByKey(this.indexedDBName, file.id)
+                  .subscribe((status) => {});
+                // then add new
+                this.dbService
+                  .add(this.indexedDBName, {
+                    pageName: this.indexedDBPageName,
+                    fileFor: selectedImageFor,
+                    file: imageSrc,
+                  })
+                  .subscribe((key) => {});
+              } else {
+                // add new
+                this.dbService
+                  .add(this.indexedDBName, {
+                    pageName: this.indexedDBPageName,
+                    fileFor: selectedImageFor,
+                    file: imageSrc,
+                  })
+                  .subscribe((key) => {});
+              }
+            });
+          /* END: ngx-indexed-db feature to store files(images/docs) */
+        };
+        /* END: reading file and Patching the Selected File */
+        if (
+          this.fileUpload.fileFor !== this.fileUploadFileFor.ownershipPicture
+        ) {
+          return;
+        }
+      }
+      if (this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture) {
+        let demoInfoFiles: any = localStorage.getItem('demo-info-files');
+        if (demoInfoFiles) {
+          demoInfoFiles = JSON.parse(demoInfoFiles);
+        } else {
+          demoInfoFiles = {};
+        }
+        let difkey =
+          this.indexedDBFileNameManage.ownershipPicture.count +
+          '_' +
+          this.fileUpload.new.fileIndex;
+        demoInfoFiles[difkey] = event.target.files.length;
+        localStorage.setItem('demo-info-files', JSON.stringify(demoInfoFiles));
+      }
     }
   }
 
   removeImage(event: any, type: string) {
-    if (type == 'FARMER_PROFILE') {
+    if (type == this.fileUploadFileFor.farmerProfile) {
       this.dbService
         .getByIndex(
           this.indexedDBName,
@@ -724,8 +1085,8 @@ export class DemographicInfoComponent
     }
   }
 
-  getIndexedDBImage(type: string) {
-    if (type == 'FARMER_PROFILE') {
+  /* getIndexedDBImage(type: string) {
+    if (type == this.fileUploadFileFor.farmerProfile) {
       this.dbService
         .getByIndex(
           this.indexedDBName,
@@ -739,10 +1100,12 @@ export class DemographicInfoComponent
         });
     }
   }
+  */
   /* END: functions used indexed-db ============================================ */
 
   // patch edit farmer details
-  patchFarmerDetails() {
+  patchFarmerDetails(B: any) {
+    this.demographicInfoForm.patchValue(B);
     // patch farmer Profile image
     this.dbService
       .getByIndex(
@@ -751,8 +1114,6 @@ export class DemographicInfoComponent
         `${this.indexedDBFileNameManage.farmerProfile.front}`
       )
       .subscribe((farmer: any) => {
-        console.log(farmer);
-
         this.displayFarmerProfileImage =
           farmer?.file ||
           this.commonService.fetchFarmerDocument(
@@ -761,18 +1122,23 @@ export class DemographicInfoComponent
       });
 
     // other details
-    const A: any = localStorage.getItem('farmer-details');
-    if (A) {
-      const B = JSON.parse(A).demographic_info;
+
+      // assign kyc data to populate
+      if (B.kycData) {
+        this.kycData = B.kycData;
+      }
+
       // create form group
       this.demographicInfoForm.patchValue({
         salutation: B.farmerDetails['salutation'],
         firstName: B.farmerDetails['firstName'],
 
-        addressProof: B.addressProof['selectedIdProof'],
+        // addressProof: B.addressProof['selectedIdProof'],
         PANnumber: B.identityProof['panNumber'],
-        passportNumber: B.identityProof['passportNumber'],
+        aadhaarNumber: B.identityProof['aadhaarNumber'],
+        drivingLicenceNumber: B.identityProof['drivingLicenceNumber'],
         voterIdNumber: B.identityProof['voterIdNumber'],
+        passportNumber: B.identityProof['passportNumber'],
         NREGANumber: B.identityProof['NREGANumber'],
 
         middleName: B.farmerDetails['middleName'],
@@ -837,12 +1203,40 @@ export class DemographicInfoComponent
           'PERMANENT_ADDRESS'
         );
       }
-    }
+
+      this.propertyOwnership = this.demographicInfoForm.get(
+        'propertyOwnership'
+      ) as FormArray;
+      B.propertyOwnership.map((item: any) => {
+        this.propertyOwnership.push(
+          this.formBuilder.group({
+            propertyType: new FormControl(item.propertyType),
+            propertyPic: new FormControl(item.propertyPic),
+            ownershipType: new FormControl(item.ownershipType),
+            particular: new FormControl(item.particular),
+            cumulativeValue: new FormControl(item.cumulativeValue, [
+              Validators.pattern('^[0-9]*$'),
+            ]),
+          })
+        );
+      });
+
+      this.familyMembers = this.demographicInfoForm.get('familyMembers') as FormArray;
+      B.familyMembers.map((item: any) => {
+        this.familyMembers.push(
+          this.formBuilder.group({
+            name: new FormControl(item.name),
+            relation: new FormControl(item.relation),
+            education: new FormControl(item.education),
+            occupation: new FormControl(item.occupation),
+            dependency: new FormControl(item.dependency),
+          })
+        );
+      });
+      
   }
 
   validateAndNext() {
-    console.log(this.demographicInfoForm);
-
     this.isSubmitted = true;
     if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
@@ -852,13 +1246,17 @@ export class DemographicInfoComponent
       const obj = {
         identityProof: {
           panNumber: formValue.PANnumber,
+          aadhaarNumber: formValue.aadhaarNumber,
+          drivingLicenceNumber: formValue.drivingLicenceNumber,
+          voterIdNumber: formValue.voterIdNumber,
           passportNumber: formValue.passportNumber,
           NREGANumber: formValue.NREGANumber,
-          voterIdNumber: formValue.voterIdNumber,
         },
-        addressProof: {
-          selectedIdProof: formValue.addressProof,
-        },
+
+        // addressProof: {
+        //   selectedIdProof: formValue.addressProof,
+        // },
+
         farmerDetails: {
           salutation: formValue.salutation,
           firstName: formValue.firstName,
@@ -914,6 +1312,8 @@ export class DemographicInfoComponent
 
         propertyStatus: formValue.propertyStatus,
         monthlyRent: formValue.monthlyRent,
+
+        kycData: this.kycData,
       };
 
       if (this.farmerId) {
@@ -930,9 +1330,25 @@ export class DemographicInfoComponent
         );
       }
 
-      console.log(this.farmerId);
       const url = `/add/${this.nextRoute}/${this.farmerId}`;
       this.router.navigate([url]);
+    }
+  }
+
+  objectKeyCount(object: any) {
+    return object ? Object.keys(object).length : 0;
+  }
+
+  setSelectedValue(
+    event: any,
+    formCtlName: any,
+    opt_val: any,
+    valueType: string
+  ) {
+    if (valueType === 'manual') {
+      this.demographicInfoForm.get(formCtlName)?.setValue(event.target.value);
+    } else if (valueType === 'list') {
+      this.demographicInfoForm.get(formCtlName)?.setValue(opt_val);
     }
   }
 
@@ -940,8 +1356,6 @@ export class DemographicInfoComponent
 
   /* START: API Function Calls-------------------------------------------------------------------------- */
   getPinCodeData(event: any, type: string) {
-    console.log(event, type);
-
     // clear values
     if (type === 'ADDRESS' && !this.farmerId) {
       this.demographicInfoForm.patchValue({
@@ -983,35 +1397,382 @@ export class DemographicInfoComponent
         },
         (error: any) => {
           this.spinner.hide();
-          alert('Failed to fetch PinCode Details, please try againn...');
+          alert('Failed to fetch PinCode Details, please try again...');
         }
       );
     }
   }
 
-  getKycData() {
-    // event: any, type: string, value: string
-    const INPUT_OBJ = {
-      id_type: 'PAN',
-      id_no: 'HRLPK3534C',
-    };
-    // console.log(event, type, value);
+  /* PAN,Voter ID,Driving Licence EKYC related : start */
+  getKycData(event: any, proofType: string) {
+    let INPUT_OBJ = {};
+    // PAN Card
+    if (proofType === this.kycProofNames.pan) {
+      const A = this.demographicInfoForm.value.PANnumber;
+      if (!A) {
+        this.toastr.info('please enter PAN number', 'Info!');
+        return;
+      } else if (
+        this.f['PANnumber'].errors &&
+        this.f['PANnumber'].errors['invalidPanNumber']
+      ) {
+        this.toastr.info(' Please enter valid PAN Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        id_type: 'PAN',
+        id_no: this.demographicInfoForm.value.PANnumber,
+      };
+    }
+    // VOTER ID
+    else if (proofType === this.kycProofNames.voter_id) {
+      const A = this.demographicInfoForm.value.voterIdNumber;
+      if (!A) {
+        this.toastr.info('please enter Voter Id Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        id_type: 'VOTER_ID',
+        id_no: this.demographicInfoForm.value.voterIdNumber,
+      };
+    }
+    // DRIVING_LICENSE
+    else if (proofType === this.kycProofNames.driving_licence) {
+      const A = this.demographicInfoForm.value.drivingLicenceNumber;
+      if (!A) {
+        this.toastr.info('please enter Driving Licence Number', 'Info!');
+        return;
+      }
+
+      const B = this.demographicInfoForm.value.dob;
+      if (!B) {
+        this.toastr.info(
+          'please select Date Of Birth as per Driving Licence',
+          'Info!'
+        );
+        return;
+      }
+      // convert date farmat from 'YYYY-MM-DD' to 'dd/MM/yyyy'
+      const C = this.demographicInfoForm.value.dob.split('-');
+
+      INPUT_OBJ = {
+        id_type: 'DRIVING_LICENSE',
+        id_no: this.demographicInfoForm.value.drivingLicenceNumber,
+        dob: `${C[1]}/${C[2]}/${C[0]}`,
+      };
+    }
+
     this.spinner.show();
     this.commonService.getKycData(INPUT_OBJ).subscribe(
       (res: any) => {
         this.spinner.hide();
-        if (res && !res.status) {
-          alert(`${res[0].Message}`);
-        } else {
-          console.log(res);
+
+        // PAN Card
+        if (proofType === this.kycProofNames.pan) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.data.message}`, 'Info!');
+            this.setKycDataVariables(proofType, 'api_failed', '');
+          } else if (!res.data.hasOwnProperty('full_name')) {
+            this.toastr.info(`Invalid PAN Number`, 'Info!');
+            this.setKycDataVariables(
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setKycDataVariables(
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+
+        // VOTER ID
+        if (proofType === this.kycProofNames.voter_id) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.data.message}`, 'Info!');
+            this.setKycDataVariables(proofType, 'api_failed', '');
+          } else if (!res.data.hasOwnProperty('name')) {
+            this.toastr.info(`Invalid Voter Id Number`, 'Info!');
+            this.setKycDataVariables(
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setKycDataVariables(
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+
+        // DRIVING_LICENSE
+        if (proofType === this.kycProofNames.driving_licence) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.data.message}`, 'Info!');
+            this.setKycDataVariables(proofType, 'api_failed', '');
+          } else if (!res.data.hasOwnProperty("Holder's Name")) {
+            this.toastr.info(`Invalid Driving Licence Number`, 'Info!');
+            this.setKycDataVariables(
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setKycDataVariables(
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
         }
       },
       (error: any) => {
         this.spinner.hide();
-        alert('Failed to fetch KYC Details, please try againn...');
+        alert('Failed to fetch KYC Details, please try again...');
+        this.setKycDataVariables(proofType, 'api_failed', '');
       }
     );
   }
 
+  setKycDataVariables(proofType: string, type: string, apiData = {}) {
+    // if KYC API failed to get data
+    if (type === 'api_failed') {
+      this.kycData[proofType].data = {};
+      this.kycData[proofType].showVerify = false;
+      this.kycData[proofType].showTryAgain = true;
+      this.kycData[proofType].showConfirm = false;
+      this.kycData[proofType].isVerified = false;
+    } else if (type === 'api_success_invalid_data') {
+      this.kycData[proofType].data = {};
+      this.kycData[proofType].showVerify = false;
+      this.kycData[proofType].showTryAgain = true;
+      this.kycData[proofType].showConfirm = false;
+      this.kycData[proofType].isVerified = false;
+    } else if (type === 'api_success_valid_data') {
+      this.kycData[proofType].data = apiData;
+      this.kycData[proofType].showVerify = true;
+      this.kycData[proofType].showTryAgain = false;
+      this.kycData[proofType].showConfirm = true;
+      this.kycData[proofType].isVerified = false;
+    } else if (type === 'confirm') {
+      this.kycData[proofType].showVerify = false;
+      this.kycData[proofType].showTryAgain = false;
+      this.kycData[proofType].showConfirm = false;
+      this.kycData[proofType].isVerified = true;
+    }
+  }
+  /* PAN,Voter ID,Driving Licence EKYC related : end */
+
+  /* Aadhaar EKYC related : start */
+  getAadhaarEkycVerification(event: any, proofType: string) {
+    let INPUT_OBJ = {};
+
+    if (proofType === this.kycProofNames.aadhaar) {
+      /* 
+      // checking for Aadhaar Mandatory is not required
+      const aadhaarInput = this.demographicInfoForm.value.aadhaarNumber;
+      if (!aadhaarInput) {
+        this.toastr.info('please enter Aadhaar Number', 'Info!');
+        return;
+      } else if (aadhaarInput && aadhaarInput.length !== 12) {
+        this.toastr.info('please enter 12 digit valid Aadhaar Number', 'Info!');
+        return;
+       } else */
+      const phoneNumberInput = this.demographicInfoForm.value.phoneNumber;
+      if (
+        !phoneNumberInput ||
+        (phoneNumberInput && phoneNumberInput.trim().length !== 10)
+      ) {
+        this.toastr.info('please enter your 10 digit Phone Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        mobile_no: phoneNumberInput,
+      };
+    }
+    this.spinner.show();
+    this.commonService.getAadhaarEkycVerification(INPUT_OBJ).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (proofType === this.kycProofNames.aadhaar) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.message}`, 'Info!');
+            this.setAadhaarEkycDataVariables(
+              'api_1',
+              proofType,
+              'api_failed',
+              ''
+            );
+          } else if (
+            !res.data.hasOwnProperty('kId') ||
+            !res.data.hasOwnProperty('redirect_url')
+          ) {
+            this.toastr.info(`Invalid Aadhaar Card Number`, 'Info!');
+            this.setAadhaarEkycDataVariables(
+              'api_1',
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setAadhaarEkycDataVariables(
+              'api_1',
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch KYC Details, please try again...');
+        this.setAadhaarEkycDataVariables('api_1', proofType, 'api_failed', '');
+      }
+    );
+  }
+  getAadhaarDetails(event: any, proofType: string) {
+    let INPUT_OBJ = {};
+    if (proofType === this.kycProofNames.aadhaar) {
+      INPUT_OBJ = {
+        kId: this.kycData.aadhaar.verificationLinkData['kId'],
+      };
+    }
+
+    this.spinner.show();
+    this.commonService.getAadhaarDetails(INPUT_OBJ).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (proofType === this.kycProofNames.aadhaar) {
+          if (
+            res &&
+            (!res.status || (res.status && res.data && res.data.code))
+          ) {
+            this.toastr.info(`${res.message}`, 'Info!');
+            this.setAadhaarEkycDataVariables(
+              'api_2',
+              proofType,
+              'api_failed',
+              ''
+            );
+          } else if (
+            res.data &&
+            res.data.actions &&
+            Array.isArray(res.data.actions) &&
+            res.data.actions.length &&
+            !Object.keys(res.data.actions[0].details).length
+          ) {
+            this.toastr.info(
+              `Please complete the verification process`,
+              'Info!'
+            );
+            this.setAadhaarEkycDataVariables(
+              'api_2',
+              proofType,
+              'api_success_invalid_data',
+              ''
+            );
+          } else if (
+            res.data &&
+            res.data.actions &&
+            Array.isArray(res.data.actions) &&
+            res.data.actions.length &&
+            res.data.actions[0].details &&
+            res.data.actions[0].details.aadhaar
+          ) {
+            this.toastr.info(
+              `Please verify the Aadhaar details and confirm to complete the process`,
+              'Info!'
+            );
+            this.setAadhaarEkycDataVariables(
+              'api_2',
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          } else {
+            this.setAadhaarEkycDataVariables(
+              'api_2',
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch KYC Details, please try again...');
+        this.setAadhaarEkycDataVariables('api_2', proofType, 'api_failed', '');
+      }
+    );
+  }
+
+  setAadhaarEkycDataVariables(
+    apiCalled: string,
+    proofType: string,
+    type: string,
+    apiData: any
+  ) {
+    if (apiCalled === 'api_1') {
+      if (type === 'api_failed') {
+        this.kycData[proofType].verificationLinkData = {};
+        this.kycData[proofType].data = {};
+        this.kycData[proofType].showVerify = false;
+        this.kycData[proofType].showTryAgain = true;
+        this.kycData[proofType].showConfirm = false;
+        this.kycData[proofType].isVerified = false;
+      } else if (type === 'api_success_invalid_data') {
+        this.kycData[proofType].verificationLinkData = {};
+        this.kycData[proofType].data = {};
+        this.kycData[proofType].showVerify = false;
+        this.kycData[proofType].showTryAgain = true;
+        this.kycData[proofType].showConfirm = false;
+        this.kycData[proofType].isVerified = false;
+      } else if (type === 'api_success_valid_data') {
+        this.kycData[proofType].verificationLinkData = apiData;
+        this.kycData[proofType].data = {};
+        this.kycData[proofType].showVerify = true;
+        this.kycData[proofType].showTryAgain = false;
+        this.kycData[proofType].showConfirm = false;
+        this.kycData[proofType].isVerified = false;
+      }
+    } else if (apiCalled === 'api_2') {
+      if (type === 'api_failed') {
+        this.kycData[proofType].data = {};
+        this.kycData[proofType].showVerify = false;
+        this.kycData[proofType].showTryAgain = true;
+        this.kycData[proofType].showConfirm = false;
+        this.kycData[proofType].isVerified = false;
+      } else if (type === 'api_success_invalid_data') {
+        this.kycData[proofType].data = {};
+        this.kycData[proofType].showVerify = false;
+        this.kycData[proofType].showTryAgain = true;
+        this.kycData[proofType].showConfirm = false;
+        this.kycData[proofType].isVerified = false;
+      } else if (type === 'api_success_valid_data') {
+        if (proofType === 'aadhaar') {
+          this.demographicInfoForm
+            .get('firstName')
+            ?.setValue(apiData?.actions[0].details.aadhaar.name);
+        }
+        this.kycData[proofType].data = apiData;
+        this.kycData[proofType].showVerify = true;
+        this.kycData[proofType].showTryAgain = false;
+        this.kycData[proofType].showConfirm = true;
+        this.kycData[proofType].isVerified = false;
+      } else if (type === 'confirm') {
+        this.kycData[proofType].showVerify = false;
+        this.kycData[proofType].showTryAgain = false;
+        this.kycData[proofType].showConfirm = false;
+        this.kycData[proofType].isVerified = true;
+      }
+    }
+  }
+  /* Aadhaar EKYC related : end */
   /* END: API Function Calls---------------------------------------------------------------------------- */
 }

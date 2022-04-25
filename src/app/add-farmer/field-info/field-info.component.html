@@ -93,7 +93,7 @@
                                                     <a *ngFor="let soilQualityStar of fieldInforMaster['soilQuality'];  let sqsi = index;" href="javascript:void(0)"
                                                         (click)="SoilQualityRating(soilQualityStar, i)" [ngClass]="{'active': (soilQualityStar == selectedSoilQualityStar[i])}"><i class="fa fa-star"
                                                             id="sqs_{{i+1}}_{{sqsi}}"></i><span>{{soilQualityStar}}</span></a>
-                                                    <input type="text" formControlName="soilQuality" hidden>
+                                                    <input type="text" formControlName="soilQuality" [(ngModel)]="selectedSoilQualityStar[i]" hidden>
 
                                                 </div>
 
@@ -106,7 +106,7 @@
                                                     <a *ngFor="let waterQualityStar of fieldInforMaster['soilQuality']; let wqsi = index;" href="javascript:void(0)" (click)="WaterQualityRating(waterQualityStar, i)"
                                                         [ngClass]="{'active': (waterQualityStar == selectedWaterQualityStar[i])}"><i class="fa fa-star"
                                                             id="wqs_{{i+1}}_{{wqsi}}"></i><span>{{waterQualityStar}}</span></a>
-                                                    <input type="text" formControlName="waterQuality" hidden>
+                                                    <input type="text" formControlName="waterQuality" [(ngModel)]="selectedWaterQualityStar[i]" hidden>
 
 
                                                 </div>
@@ -120,7 +120,7 @@
                                                     <a *ngFor="let yieldQualityStar of fieldInforMaster['soilQuality']; let yqsi = index;" href="javascript:void(0)" (click)="YieldQualityRating(yieldQualityStar, i)"
                                                         [ngClass]="{'active': (yieldQualityStar == selectedYieldQualityStar[i])}"><i class="fa fa-star"
                                                             id="wqs_{{i+1}}_{{yqsi}}"></i><span>{{yieldQualityStar}}</span></a>
-                                                    <input type="text" formControlName="yieldQuality" hidden>
+                                                    <input type="text" formControlName="yieldQuality" [(ngModel)]="selectedYieldQualityStar[i]" hidden>
 
                                                 </div>
 
@@ -280,7 +280,7 @@
                                     <!-- <input class="form-control" formControlName="fieldOwnCoPh" placeholder="9876543210"> -->
                                 </div>
                                 <div class="col-auto add-another">
-                                    <a href="javascript:void(0)"><i class="fa fa-upload" aria-hidden="true"></i> Upload documents</a>
+                                    <a href="javascript:void(0)" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)"><i class="fa fa-upload" aria-hidden="true"></i> Upload documents</a>
                                 </div>
                             </div>
                         </div>
@@ -326,7 +326,7 @@
                             <div class="row align-items-center form-details-inner" [formGroupName]="i">
                                 <div class="col-md-1 lable-top">
                                     <label>Field ID</label>
-                                    <select class="form-select" formControlName="fieldId">
+                                    <select class="form-select text-center" formControlName="fieldId">
                                         <option value="">...</option>
                                         <option *ngFor="let indVal of this.fieldIndexMapIds;let fimi = index; " value="{{indVal.field_index+1}}">{{indVal.field_index+1}}</option>
                                     </select>
@@ -361,7 +361,7 @@
                                     </select>
                                 </div>
                                 <div class="col-auto add-another">
-                                    <a href="javascript:void(0)"><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
+                                    <a href="javascript:void(0)" (click)="openFileModalPopup(fileUploadFileFor.testPicture, i)" ><i class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
                                 </div>
                             </div>
                             <div class="col-auto add-another">
@@ -393,3 +393,39 @@
         </div>
     </article>
 </div>
+
+<!-- START: Common Modal Popup for File Upload and Preview -->
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header p-2 common_button_color">
+          <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+        </div>
+        <div class="modal-body">
+          <!-- START : Image - Multiple  -->
+          <div class="row" [hidden]="!fileUpload.new.isMultiple">
+            <div class="col-md-6 mb-1">
+              <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
+              <input class="form-control form-control-sm" id="formFileSm" type="file" (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="*" *ngIf="fileUpload.new.isMultiple" multiple="">
+            </div>
+            </div>
+            <div class="row" [hidden]="!fileUpload.new.imageMultiple">
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let fileData of fileUpload.new.imageMultiple">
+              <p class="fs-6" *ngIf="fileData.type=='image'">Preview Image</p>
+              <p class="fs-6" *ngIf="fileData.type !='image'">File</p>
+              <img [src]="fileData.file" *ngIf="fileData.type=='image'" style="height: 150px; width: 150px" />
+              <div class="col-auto add-another" *ngIf="fileData.type !='image'">
+                <a href="javascript:void(0)" (click)="downloadFile(fileData.file)">View File</a><br/>
+                <p class="word-wrap-anywhere">{{fileData.name}}</p>
+            </div>
+            </div>  
+          </div>
+          <!-- END : Image - Multiple -->
+        </div>
+        <div class="modal-footer p-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Common Modal Popup for File Upload and Preview -->

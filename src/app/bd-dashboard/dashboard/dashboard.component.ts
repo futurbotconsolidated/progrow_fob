@@ -71,27 +71,6 @@ export class DashboardComponent implements OnInit {
       localStorage.removeItem('draft_farmer_new');
     }
 
-    // let obj_search = JSON.parse(localStorage.getItem('search-value') as any);
-    // if (obj_search && obj_search.minDate != '' && obj_search.maxDate != '') {
-    //   this.searchValue = obj_search.searchValue;
-    //   $.fn['dataTable'].ext.search.push(
-    //     (settings: any, data: any, dataIndex: any) => {
-    //       const regDate = data[3];
-    //       if (regDate && (obj_search.minDate || obj_search.maxDate)) {
-    //         if (
-    //           formatDate(regDate, 'yyyy-MM-dd', 'en_IN') >=
-    //             formatDate(obj_search.minDate, 'yyyy-MM-dd', 'en_IN') &&
-    //           formatDate(obj_search.maxDate, 'yyyy-MM-dd', 'en_IN') >=
-    //             formatDate(regDate, 'yyyy-MM-dd', 'en_IN')
-    //         ) {
-    //           return true;
-    //         }
-    //       }
-    //       return false;
-    //     }
-    //   );
-    // }
-
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -143,9 +122,11 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
 
     // clear indexed db data
-    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
-      console.log('success? ', successDeleted);
-    });
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {});
+
+    // clear file storage
+    localStorage.removeItem('demo-info-files');
+    localStorage.removeItem('field-info-files');
 
     // clear edit related localStorage variables before starting
     localStorage.removeItem('edit-demographic-info');
@@ -161,38 +142,6 @@ export class DashboardComponent implements OnInit {
 
     this.router.navigate(['/add/concept-cards']);
   }
-
-  // selectlive(event: any) {
-  //   let minDate = '' as any;
-  //   let maxDate = '' as any;
-  //   let last_date = new Date();
-  //   if (event.target.value === 'today') {
-  //     minDate = maxDate = new Date();
-  //   } else if (event.target.value === 'this_week') {
-  //     maxDate = new Date();
-  //     last_date.setDate(last_date.getDate() - 7);
-  //     minDate = last_date;
-  //   } else if (event.target.value === 'two_week') {
-  //     maxDate = new Date();
-  //     last_date.setDate(last_date.getDate() - 14);
-  //     minDate = last_date;
-  //   } else if (event.target.value === 'three_week') {
-  //     maxDate = new Date();
-  //     last_date.setDate(last_date.getDate() - 21);
-  //     minDate = last_date;
-  //   } else if (event.target.value === 'this_month') {
-  //     maxDate = new Date();
-  //     last_date.setDate(last_date.getDate() - 30);
-  //     minDate = last_date;
-  //   }
-  //   const obj_search1 = {
-  //     minDate: minDate,
-  //     maxDate: maxDate,
-  //     searchValue: event.target.value,
-  //   };
-  //   localStorage.setItem('search-value', JSON.stringify(obj_search1));
-  //   window.location.reload();
-  // }
 
   overlayMap(type: string) {
     this.spinner.show();
@@ -517,6 +466,7 @@ export class DashboardComponent implements OnInit {
   }
   onChangeFilter(event: any) {
     localStorage.setItem('filter-value', event.target.value);
+    this.filterType = event.target.value;
     this.getExistingFarmers(event.target.value);
   }
 
@@ -524,6 +474,9 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('farmer-details'); // related to view and edit of farmer
     localStorage.removeItem('farmer-files'); // related to s3 farmer documents uploaded
 
+    localStorage.removeItem('demo-info-files');
+    localStorage.removeItem('field-info-files');
+    
     // clear edit related localStorage variables before starting
     localStorage.removeItem('edit-demographic-info');
     localStorage.removeItem('edit-demographic-info-form');
@@ -537,9 +490,7 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('edit-co-applicant-form');
 
     // clear indexed db data
-    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
-      console.log('success? ', successDeleted);
-    });
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {});
   }
 
   /* END: Non-API Function Calls */
@@ -555,6 +506,9 @@ export class DashboardComponent implements OnInit {
           alert(`${res.message}`);
         } else {
           this.allExistingFarmers = res.data;
+          if (this.selectedViewType == 'EXISTING_FARMS_MAP_VIEW') {
+            this.filterFarms(this.selectedViewType);
+          }
         }
       },
       (error: any) => {
@@ -562,6 +516,54 @@ export class DashboardComponent implements OnInit {
         alert('Failed to fetch existing farmers data, please try again...');
       }
     );
+  }
+
+  downloadCsv() {
+    this.spinner.show();
+    this.commonService.getDownloadCsv(this.filterType).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (res.message != 'Success' || !res.status) {
+          alert(`${res.message}`);
+        } else {
+          this.downloadFile(res.data);
+        }
+      },
+      (error: any) => {
+        alert('Failed to fetch farmers CSV data, please try again...');
+      }
+    );
+  }
+
+  downloadFile(data: any) {
+    var filename = 'farmer_csv_data_' + Date.now();
+    let array = typeof data != 'object' ? JSON.parse(data) : data;
+    let csvData = '';
+    for (let i = 0; i < array.length; i++) {
+      let line = '';
+      for (let j = 0; j < array[i].length; j++) {
+        line += (array[i][j]).toString().replace(/,/g, '') + ',';
+      }
+      csvData += line + '\r\n';
+    }
+    let blob = new Blob(['\ufeff' + csvData], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    let dwldLink = document.createElement('a');
+    let url = URL.createObjectURL(blob);
+    let isSafariBrowser =
+      navigator.userAgent.indexOf('Safari') != -1 &&
+      navigator.userAgent.indexOf('Chrome') == -1;
+    //if Safari open in new window to save file with random filename.
+    if (isSafariBrowser) {
+      dwldLink.setAttribute('target', '_blank');
+    }
+    dwldLink.setAttribute('href', url);
+    dwldLink.setAttribute('download', filename + '.csv');
+    dwldLink.style.visibility = 'hidden';
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
   }
 
   getFarmersPipeline() {

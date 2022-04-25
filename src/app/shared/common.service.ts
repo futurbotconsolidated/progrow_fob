@@ -16,10 +16,11 @@ export class CommonService {
 
   token: any;
   headers = new HttpHeaders();
-  /* START API Base and Endpoints */
+
+  /* ============================================START: API Base and Endpoints ============================================ */
   private baseUrl = environment.baseUrl;
   private endPoints = environment.endPoints;
-  /* END:: API Base and Endpoints */
+  /* ============================================END: API Base and Endpoints ============================================ */
 
   constructor(private http: HttpClient, public oauthService: OAuthService) {
     this.token = this.oauthService.getIdToken();
@@ -27,7 +28,7 @@ export class CommonService {
     this.masterData = data;
   }
 
-  /* START: API Calls */
+  /* ============================================START: API Calls ============================================ */
   getExistingFarmers(filterValue: string) {
     headers = headers.delete('Farmer-Id');
     headers = headers.set('Bd-id', String(this.userInfo['custom:access_type']));
@@ -69,26 +70,72 @@ export class CommonService {
     // return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }
 
+  // ekyc api
   getKycData(inputObject: any) {
     headers = headers.delete('Bd-id');
     headers = headers.delete('Filter-Type');
     headers = headers.delete('Farmer-Id');
     headers = headers.set('Authorization', this.token);
     return this.http.post(
-      this.baseUrl + this.endPoints.getKycData,
+      this.baseUrl + this.endPoints.ekyc.getKycData,
       inputObject,
       {
         headers,
       }
     );
   }
-  /* END: API Calls */
 
-  /* START: Non-API Calls */
+  // aadhaar ekyc api - 1
+  getAadhaarEkycVerification(inputObject: any) {
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.ekyc.getAadhaarEkycVerification,
+      inputObject,
+      {
+        headers,
+      }
+    );
+  }
+  // aadhaar ekyc api - 2
+  getAadhaarDetails(inputObject: any) {
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.ekyc.getAadhaarDetails,
+      inputObject,
+      {
+        headers,
+      }
+    );
+  }
+
+  getDownloadCsv(filterValue: string) {
+    const input_obj = {
+      Bd_Id: String(this.userInfo['custom:access_type']),
+      Filter_Type: filterValue,
+    };
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.downloadCsv,
+      input_obj,
+      {
+        headers,
+      }
+    );
+  }
+  /* ============================================END: API Calls ============================================ */
+
+  /* ============================================START: Non-API Calls ====================================== */
   fetchFarmerDocument(fileFor: string) {
     const A = localStorage.getItem('farmer-files');
-    console.log(A);
-
     if (A) {
       const B = JSON.parse(A);
       if (B.hasOwnProperty(fileFor)) {
@@ -98,5 +145,5 @@ export class CommonService {
       }
     }
   }
-  /* END: Non-API Calls */
+  /* ============================================END: Non-API Calls ====================================== */
 }

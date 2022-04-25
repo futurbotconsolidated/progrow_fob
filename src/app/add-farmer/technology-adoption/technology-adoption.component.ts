@@ -121,7 +121,6 @@ export class TechnologyAdoptionComponent implements OnInit {
         this.nextRoute = data.routeName;
         if (this.router.url?.includes('/add/technology-adoption')) {
           this.saveData();
-          console.log(data.routeName);
         }
       });
   }

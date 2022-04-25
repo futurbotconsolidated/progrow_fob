@@ -56,7 +56,6 @@ export class EditFieldInfoComponent implements OnInit {
 
         this.selectedCoordinates.push(co);
       });
-      console.log(this.selectedCoordinates);
       this.spinner.hide();
     }
   }

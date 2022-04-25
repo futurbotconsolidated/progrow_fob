@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { CommonService } from '../../shared/common.service';
+
 import {
   FormGroup,
   FormControl,
@@ -23,6 +26,8 @@ enum SaveStatus {
   Saved = 'Saved.',
   Idle = '',
 }
+
+declare var $: any;
 
 @Component({
   selector: 'app-field-info',
@@ -62,13 +67,46 @@ export class FieldInfoComponent implements OnInit {
   fieldIndexMapIds = <any>[];
 
   farmerId = ''; // edit feature
+
+  fileUpload = {
+    fileFor: '',
+    popupTitle: '',
+    new: {
+      imageMultiple: [] as any,
+      isMultiple: false,
+      fileIndex: 0,
+    },
+    imageHeading1: 'Front Image',
+   } as any;
   /* END: Variables */
+  /* START: indexed db variables */
+  localStoragePageName = 'field-info-files';
+  indexedDBPageName = 'field_info';
+  concatePage = 'field';
+  indexedDBName = 'registerFarmer';
+  indexedDBFileNameManage = {
+    ownershipPicture: {
+      front: `${this.concatePage}_ownershipPictureImage`,
+      count: `${this.concatePage}_ownershipPictureImageCount`
+    },
+    testPicture: {
+      front: `${this.concatePage}_testPictureImage`,
+      count: `${this.concatePage}_testPictureImageCount`
+    },
+  };
+  fileUploadFileFor = {
+    ownershipPicture: 'OWENERSHIP_PICTURE',
+    testPicture: 'TEST_PICTURE',
+  };
+  /* END: indexed db variables */
 
   constructor(
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
     public router: Router,
     private toastr: ToastrService,
+    private dbService: NgxIndexedDBService,
+    public commonService: CommonService,
     private activatedRoute: ActivatedRoute
   ) {
     this.fieldInfoForm = this.formBuilder.group({
@@ -213,9 +251,8 @@ export class FieldInfoComponent implements OnInit {
   }
 
   bindItemsInEdit(fieldValues: any) {
-    console.log(fieldValues);
     this.fieldInfoForm.patchValue(fieldValues);
-    fieldValues.plannedFieldDetails.map((item: any) => {
+    fieldValues.plannedFieldDetails.map((item: any, index: number) => {
       const plannedDetails = <any>{};
       plannedDetails['fieldId'] = new FormControl(item.fieldId);
       plannedDetails['fieldName'] = new FormControl(item.fieldName);
@@ -229,6 +266,10 @@ export class FieldInfoComponent implements OnInit {
       plannedDetails['waterQuality'] = new FormControl(item.waterQuality);
       plannedDetails['yieldQuality'] = new FormControl(item.yieldQuality);
       plannedDetails['expectedProduce'] = new FormControl(item.expectedProduce);
+
+      this.selectedSoilQualityStar[index] = item.soilQuality;
+      this.selectedWaterQualityStar[index] = item.waterQuality;
+      this.selectedYieldQualityStar[index] = item.yieldQuality;
 
       this.plannedFieldDetails = this.fieldInfoForm.get(
         'plannedFieldDetails'
@@ -280,27 +321,39 @@ export class FieldInfoComponent implements OnInit {
       this.fieldOwnership.push(new FormGroup(fieldOwnershipDetails));
     });
 
-    fieldValues.testType.map((item: any) => {
-      const testTypeDetails = <any>{};
-      testTypeDetails['fieldId'] = new FormControl(item.fieldId);
-      testTypeDetails['typeOfTest'] = new FormControl(item.typeOfTest);
-      testTypeDetails['yesNo'] = new FormControl(item.yesNo);
-      testTypeDetails['lastDone'] = new FormControl(item.lastDone);
-      testTypeDetails['testResult'] = new FormControl(item.testResult);
-      this.testType = this.fieldInfoForm.get('testType') as FormArray;
-      this.testType.push(new FormGroup(testTypeDetails));
+    this.testType = this.fieldInfoForm.get('testType') as FormArray;
+    fieldValues.testType.forEach((listitem: any) => {
+      if (listitem.hasOwnProperty('fieldId')) {
+        let item = listitem;
+        const testTypeDetails = <any>{};
+        testTypeDetails['fieldId'] = new FormControl(item.fieldId);
+        testTypeDetails['typeOfTest'] = new FormControl(item.typeOfTest);
+        testTypeDetails['yesNo'] = new FormControl(item.yesNo);
+        testTypeDetails['lastDone'] = new FormControl(item.lastDone);
+        testTypeDetails['testResult'] = new FormControl(item.testResult);
+        this.testType.push(new FormGroup(testTypeDetails));
+      } else {
+        listitem.map((item: any) => {
+          const testTypeDetails = <any>{};
+          testTypeDetails['fieldId'] = new FormControl(item.fieldId);
+          testTypeDetails['typeOfTest'] = new FormControl(item.typeOfTest);
+          testTypeDetails['yesNo'] = new FormControl(item.yesNo);
+          testTypeDetails['lastDone'] = new FormControl(item.lastDone);
+          testTypeDetails['testResult'] = new FormControl(item.testResult);
+          this.testType.push(new FormGroup(testTypeDetails));
+        });
+      }
     });
   }
   ngAfterViewInit(): void {
     if (navigator.geolocation) {
-      console.log(this);
-
       navigator.geolocation.getCurrentPosition(this.setGeoLocation.bind(this));
     }
     this.addFarmerService.getMessage().subscribe((data) => {
       this.nextRoute = data.routeName;
-      if (data.routeName == 'financial-planning') {
+      if (this.router.url?.includes('/add/field-info')) {
         this.saveData();
+        console.log(data.routeName);
       }
     });
   }
@@ -328,15 +381,15 @@ export class FieldInfoComponent implements OnInit {
 
   drawMap(latitude: any, longitude: any) {
     let map = new L.Map('map', {
-        center: new L.LatLng(latitude, longitude),
-        zoom: 18,
-        fullscreenControl: true,
-        fullscreenControlOptions: {
-          // optional
-          title: 'Show me the fullscreen !',
-          titleCancel: 'Exit fullscreen mode',
-        },
-      }),
+      center: new L.LatLng(latitude, longitude),
+      zoom: 18,
+      fullscreenControl: true,
+      fullscreenControlOptions: {
+        // optional
+        title: 'Show me the fullscreen !',
+        titleCancel: 'Exit fullscreen mode',
+      },
+    }),
       drawnItems = L.featureGroup().addTo(map);
     // L.tileLayer(
     //   'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
@@ -347,7 +400,7 @@ export class FieldInfoComponent implements OnInit {
       'pk.eyJ1IjoicHVybmFyYW0iLCJhIjoiY2tpenBvZWpsMDNlaTMzcWpiZ2liZjEydiJ9.Mdj1w5dXDfCGCpIH5MlI2g';
     L.tileLayer(
       'http://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' +
-        mapboxAccessToken,
+      mapboxAccessToken,
       {
         id: 'mapbox/satellite-v9',
         attribution: '',
@@ -493,8 +546,7 @@ export class FieldInfoComponent implements OnInit {
             area_hec = (area_sq_meter / 10000).toFixed(2);
             layer
               .bindPopup(
-                `Field ID : ${
-                  field_index + 1
+                `Field ID : ${field_index + 1
                 } <br/> Area : ${area_hec} (Hectare)`
               )
               .openPopup();
@@ -600,8 +652,7 @@ export class FieldInfoComponent implements OnInit {
       var polygon = L.polygon(x);
       polygon
         .bindPopup(
-          `Field ID : ${index + 1} <br/> Area : ${
-            this.editFieldArea[index]
+          `Field ID : ${index + 1} <br/> Area : ${this.editFieldArea[index]
           } (Hectare)`
         )
         .openPopup();
@@ -766,6 +817,13 @@ export class FieldInfoComponent implements OnInit {
           type: 'Polygon',
         },
       } as any;
+      var test_arr = [] as any;
+      this.fieldInfoForm.value.testType.forEach((tdata: any, ti: number) => {
+        if (tdata.fieldId == field_ui_id) {
+          test_arr.push(tdata);
+        }
+      });
+
       obj = {
         field_ui_id: field_ui_id,
         field_name: this.fieldInfoForm.value.plannedFieldDetails[i].fieldName,
@@ -786,7 +844,7 @@ export class FieldInfoComponent implements OnInit {
         },
         field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
         enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
-        test_on_fields: this.fieldInfoForm.value.testType[i] || '',
+        test_on_fields: test_arr || '', //this.fieldInfoForm.value.testType[i] || '',
         undertaking_cultivation: {
           uc: this.fieldInfoForm.value.cropCycleOnReports,
         },
@@ -794,55 +852,51 @@ export class FieldInfoComponent implements OnInit {
       };
       fieldArr.push(obj);
     });
-    console.log(fieldArr);
 
-    if (this.farmerId) {
-      localStorage.setItem('edit-field-info', JSON.stringify(fieldArr));
-      localStorage.setItem(
-        'edit-field-info-form',
-        JSON.stringify(this.fieldInfoForm.value)
-      );
+    if (!fieldArr.length) {
+      this.toastr.error('Please Plot at least One Field', 'Error!');
+      return;
     } else {
-      localStorage.setItem('field-info', JSON.stringify(fieldArr));
-      localStorage.setItem(
-        'field-info-form',
-        JSON.stringify(this.fieldInfoForm.value)
-      );
+      if (this.farmerId) {
+        localStorage.setItem('edit-field-info', JSON.stringify(fieldArr));
+        localStorage.setItem(
+          'edit-field-info-form',
+          JSON.stringify(this.fieldInfoForm.value)
+        );
+      } else {
+        localStorage.setItem('field-info', JSON.stringify(fieldArr));
+        localStorage.setItem(
+          'field-info-form',
+          JSON.stringify(this.fieldInfoForm.value)
+        );
+      }
+      const url = `/add/${this.nextRoute}/${this.farmerId}`;
+      this.router.navigate([url]);
     }
-    const url = `/add/${this.nextRoute}/${this.farmerId}`;
-    this.router.navigate([url]);
-    // this.toastr.error('Please Plot at least One Field', 'Error!');
-    // return;
   }
 
   SoilQualityRating(soilQualityStar: any, i: number) {
     this.selectedSoilQualityStar[i] = soilQualityStar;
-    console.log('Value of SoilQualityStar', soilQualityStar);
   }
 
   WaterQualityRating(waterQualityStar: any, i: number) {
     this.selectedWaterQualityStar[i] = waterQualityStar;
-    console.log('Value of waterQualityStar', waterQualityStar);
   }
 
   YieldQualityRating(yieldQualityStar: any, i: number) {
     this.selectedYieldQualityStar[i] = yieldQualityStar;
-    console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 
   HistoSoilQualityRating(soilQualityStar: any) {
     this.selectedHistoSoilQualityStar = soilQualityStar;
-    console.log('Value of SoilQualityStar', soilQualityStar);
   }
 
   HistoWaterQualityRating(waterQualityStar: any) {
     this.selectedHistoWaterQualityStar = waterQualityStar;
-    console.log('Value of waterQualityStar', waterQualityStar);
   }
 
   HistoYieldQualityRating(yieldQualityStar: any) {
     this.selectedHistoYieldQualityStar = yieldQualityStar;
-    console.log('Value of yieldQualityStar', yieldQualityStar);
   }
 
   validateNo(e: any): boolean {
@@ -870,5 +924,231 @@ export class FieldInfoComponent implements OnInit {
     }
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
+
+  /* START: functions used indexed-db ============================================ */
+  openFileModalPopup(type: string, fileIndex: number) {
+    this.fileUpload.fileFor = type;    
+    this.fileUpload.new.imageMultiple = [];
+    this.fileUpload.new.isMultiple = false;
+    this.fileUpload.new.fileIndex = fileIndex;
+    this.fileUpload.imageHeading1 = 'Front Image';
+
+    if (type === this.fileUploadFileFor.ownershipPicture) {
+      this.fileUpload.popupTitle = 'Upload Ownership Picture Image';
+      this.fileUpload.imageHeading1 = 'Ownership Picture Image';
+      this.fileUpload.new.isMultiple = true;
+      var fCount = this.getFileCount(
+        this.indexedDBFileNameManage.ownershipPicture.count + '_' + this.fileUpload.new.fileIndex,
+        this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex
+      );
+      for (let fIndex = 0; fIndex < fCount; fIndex++) {
+        this.dbService
+          .getByIndex(
+            this.indexedDBName,
+            'fileFor',
+            `${this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + fIndex}`
+          )
+          .subscribe((farmer: any) => {
+            let imageSrc =
+              farmer?.file ||
+              this.commonService.fetchFarmerDocument(
+                this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + fIndex
+              );
+            if (imageSrc) {
+              console.log('ownershipPicture : ', imageSrc);
+              let type = 'file';
+              if (imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
+                type = 'image';
+              }
+              let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];
+              let imgObj = {
+                file: imageSrc,
+                type: type,
+                name: filename,
+              };
+              this.fileUpload.new.imageMultiple.push(imgObj);
+            }
+          });
+      }
+    } else if (type === this.fileUploadFileFor.testPicture) {
+      this.fileUpload.popupTitle = 'Upload Ownership Picture Image';
+      this.fileUpload.imageHeading1 = 'Ownership Picture Image';
+      this.fileUpload.new.isMultiple = true;
+      var fCount = this.getFileCount(
+        this.indexedDBFileNameManage.testPicture.count + '_' + this.fileUpload.new.fileIndex,
+        this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex
+      );
+      for (let fIndex = 0; fIndex < fCount; fIndex++) {
+        this.dbService
+          .getByIndex(
+            this.indexedDBName,
+            'fileFor',
+            `${this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + fIndex}`
+          )
+          .subscribe((farmer: any) => {
+            let imageSrc =
+              farmer?.file ||
+              this.commonService.fetchFarmerDocument(
+                this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + fIndex
+              );
+            if (imageSrc) {
+              let type = 'file';
+              if (imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
+                type = 'image';
+              }
+              let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];
+              let imgObj = {
+                file: imageSrc,
+                type: type,
+                name: filename,
+              };
+              this.fileUpload.new.imageMultiple.push(imgObj);
+            }
+          });
+      }
+    }
+    $('#fileUploadModalPopup').modal('show');
+  }
+
+  onFileChange(event: any, type = '', fileIndex: number) {
+    if (event.target.files && event.target.files.length) {
+      this.fileUpload.new.fileIndex = fileIndex;      
+      for (let findex = 0; findex < event.target.files.length; findex++) {
+        const file = event.target.files[findex];        
+        // if (file.size > 300000) {
+        //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
+        //   return;
+        // }
+        // if (file.type.split('/')[0] != 'image') {
+        //   this.toastr.error('Only Image files are allowed.', 'Error!');
+        //   return;
+        // }
+
+        /* START: reading file and Patching the Selected File */
+        const reader = new FileReader();
+        let selectedImageFor = '';
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const imageSrc: any = reader.result;
+          if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              let type = 'file';
+              if (imageSrc.includes('data:image/')) {
+                type = 'image';                
+              }
+              let imgObj = {
+                file: imageSrc,
+                type: type,
+                name: file.name,
+              };
+              this.fileUpload.new.imageMultiple.push(imgObj);
+              selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+this.fileUpload.new.imageMultiple.length);
+            }
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.testPicture
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              let type = 'file';
+              if (imageSrc.includes('data:image/')) {
+                type = 'image';
+              }
+              let imgObj = {
+                file: imageSrc,
+                type: type,
+                name: file.name,
+              };
+              this.fileUpload.new.imageMultiple.push(imgObj);
+              selectedImageFor = this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+this.fileUpload.new.imageMultiple.length);
+            }
+          }
+          /* START: ngx-indexed-db feature to store files(images/docs) */
+          // if file already exist then delete then add
+          this.dbService
+            .getByIndex(this.indexedDBName, 'fileFor', selectedImageFor)
+            .subscribe((file: any) => {
+              if (file && file !== undefined && Object.keys(file).length && (this.fileUpload.fileFor !== this.fileUploadFileFor.ownershipPicture && this.fileUpload.fileFor !== this.fileUploadFileFor.testPicture)) {
+                // delete if exists
+                this.dbService
+                  .deleteByKey(this.indexedDBName, file.id)
+                  .subscribe((status) => { });
+                // then add new
+                this.dbService
+                  .add(this.indexedDBName, {
+                    pageName: this.indexedDBPageName,
+                    fileFor: selectedImageFor,
+                    file: imageSrc,
+                  })
+                  .subscribe((key) => { });
+              } else {
+                // add new
+                this.dbService
+                  .add(this.indexedDBName, {
+                    pageName: this.indexedDBPageName,
+                    fileFor: selectedImageFor,
+                    file: imageSrc,
+                  })
+                  .subscribe((key) => { });
+              }
+            });
+          /* END: ngx-indexed-db feature to store files(images/docs) */
+        };
+        /* END: reading file and Patching the Selected File */
+      }
+      let difkey = '';
+      if (
+        this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
+      ) {
+        difkey = this.indexedDBFileNameManage.ownershipPicture.count + '_' + this.fileUpload.new.fileIndex;
+      } else if (
+        this.fileUpload.fileFor === this.fileUploadFileFor.testPicture
+      ) {
+        difkey = this.indexedDBFileNameManage.testPicture.count + '_' + this.fileUpload.new.fileIndex;
+      }
+      let fieldInfoFiles: any = localStorage.getItem(this.localStoragePageName);
+      if (fieldInfoFiles) {
+        fieldInfoFiles = JSON.parse(fieldInfoFiles);
+      } else {
+        fieldInfoFiles = {};
+      }
+      fieldInfoFiles[difkey] = event.target.files.length;
+      localStorage.setItem(this.localStoragePageName, JSON.stringify(fieldInfoFiles));
+    }
+  }
+
+  getFileCount(ckey = '', fkey = '') {
+    var fCount = 0;
+    let fieldInfoFiles: any = localStorage.getItem(this.localStoragePageName);
+    if (fieldInfoFiles) {
+      fieldInfoFiles = JSON.parse(fieldInfoFiles);
+      if (fieldInfoFiles[ckey]) {
+        fCount = fieldInfoFiles[ckey];
+      }
+    }
+    if (!fCount) {
+      let farmerFiles: any = localStorage.getItem('farmer-files');
+      if (farmerFiles) {
+        farmerFiles = JSON.parse(farmerFiles);
+        for (let ffi = 0; ffi < Object.keys(farmerFiles).length; ffi++) {
+          if (farmerFiles.hasOwnProperty(fkey + '_' + ffi)) {
+            fCount++;
+          }
+        }
+      }
+    }
+    return fCount;
+  }
+
+  downloadFile(data: any) {
+     let dwldLink = document.createElement("a");
+    dwldLink.setAttribute("target", "_blank");
+    dwldLink.setAttribute("href", data);
+    dwldLink.style.visibility = "hidden";
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
 }
