@@ -338,8 +338,9 @@ export class DemographicInfoComponent
       // assign other data to populate
       let editForm: any = localStorage.getItem('edit-demographic-info-form');
       if (editForm) {
-        editForm = JSON.parse(editForm);        
-        this.patchFarmerDetails(editForm);
+        editForm = JSON.parse(editForm); 
+        this.demographicInfoForm.patchValue(editForm);       
+        this.patchFarmerFormDetails(editForm);
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
           this.getPinCodeData(
@@ -386,7 +387,8 @@ export class DemographicInfoComponent
       let demoInfo: any = localStorage.getItem('demographic-info-form');
       if (demoInfo) {
         demoInfo = JSON.parse(demoInfo);
-        this.patchFarmerDetails(demoInfo);
+        this.demographicInfoForm.patchValue(demoInfo);
+        this.patchFarmerFormDetails(demoInfo);
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
           this.getPinCodeData(
@@ -1103,23 +1105,6 @@ export class DemographicInfoComponent
   // patch edit farmer details
   patchFarmerDetails(B: any) {
     this.demographicInfoForm.patchValue(B);
-    // patch farmer Profile image
-    this.dbService
-      .getByIndex(
-        this.indexedDBName,
-        'fileFor',
-        `${this.indexedDBFileNameManage.farmerProfile.front}`
-      )
-      .subscribe((farmer: any) => {
-        this.displayFarmerProfileImage =
-          farmer?.file ||
-          this.commonService.fetchFarmerDocument(
-            this.indexedDBFileNameManage.farmerProfile.front
-          );
-      });
-
-    // other details
-
       // assign kyc data to populate
       if (B.kycData) {
         this.kycData = B.kycData;
@@ -1201,6 +1186,26 @@ export class DemographicInfoComponent
         );
       }
 
+      this.patchFarmerFormDetails(B);
+  }
+
+  patchFarmerFormDetails(B: any) {
+    // patch farmer Profile image
+    this.dbService
+      .getByIndex(
+        this.indexedDBName,
+        'fileFor',
+        `${this.indexedDBFileNameManage.farmerProfile.front}`
+      )
+      .subscribe((farmer: any) => {
+        this.displayFarmerProfileImage =
+          farmer?.file ||
+          this.commonService.fetchFarmerDocument(
+            this.indexedDBFileNameManage.farmerProfile.front
+          );
+      });
+
+      if(B.propertyOwnership){
       this.propertyOwnership = this.demographicInfoForm.get(
         'propertyOwnership'
       ) as FormArray;
@@ -1217,7 +1222,8 @@ export class DemographicInfoComponent
           })
         );
       });
-
+    }
+    if(B.familyMembers){
       this.familyMembers = this.demographicInfoForm.get('familyMembers') as FormArray;
       B.familyMembers.map((item: any) => {
         this.familyMembers.push(
@@ -1229,8 +1235,8 @@ export class DemographicInfoComponent
             dependency: new FormControl(item.dependency),
           })
         );
-      });
-      
+      }); 
+    }     
   }
 
   validateAndNext() {

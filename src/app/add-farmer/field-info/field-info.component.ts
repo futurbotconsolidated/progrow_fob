@@ -935,14 +935,14 @@ export class FieldInfoComponent implements OnInit {
     this.fileUpload.imageHeading1 = 'Front Image';
 
     if (type === this.fileUploadFileFor.ownershipPicture) {
-      this.fileUpload.popupTitle = 'Upload Ownership Picture Image';
-      this.fileUpload.imageHeading1 = 'Ownership Picture Image';
+      this.fileUpload.popupTitle = 'Upload Ownership Documents';
+      this.fileUpload.imageHeading1 = 'Ownership Documents';
       this.fileUpload.new.isMultiple = true;
       var fCount = this.getFileCount(
         this.indexedDBFileNameManage.ownershipPicture.count + '_' + this.fileUpload.new.fileIndex,
         this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex
       );
-      for (let fIndex = 0; fIndex < fCount; fIndex++) {
+      for (let fIndex = 0; fIndex <= fCount; fIndex++) {
         this.dbService
           .getByIndex(
             this.indexedDBName,
@@ -956,7 +956,6 @@ export class FieldInfoComponent implements OnInit {
                 this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + fIndex
               );
             if (imageSrc) {
-              console.log('ownershipPicture : ', imageSrc);
               let type = 'file';
               if (imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
                 type = 'image';
@@ -965,21 +964,21 @@ export class FieldInfoComponent implements OnInit {
               let imgObj = {
                 file: imageSrc,
                 type: type,
-                name: filename,
+                name: filename.toString().substring(0, 60),
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
             }
           });
       }
     } else if (type === this.fileUploadFileFor.testPicture) {
-      this.fileUpload.popupTitle = 'Upload Ownership Picture Image';
-      this.fileUpload.imageHeading1 = 'Ownership Picture Image';
+      this.fileUpload.popupTitle = 'Upload Test Reports';
+      this.fileUpload.imageHeading1 = 'Test Reports';
       this.fileUpload.new.isMultiple = true;
       var fCount = this.getFileCount(
         this.indexedDBFileNameManage.testPicture.count + '_' + this.fileUpload.new.fileIndex,
         this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex
       );
-      for (let fIndex = 0; fIndex < fCount; fIndex++) {
+      for (let fIndex = 0; fIndex <= fCount; fIndex++) {
         this.dbService
           .getByIndex(
             this.indexedDBName,
@@ -1001,7 +1000,7 @@ export class FieldInfoComponent implements OnInit {
               let imgObj = {
                 file: imageSrc,
                 type: type,
-                name: filename,
+                name: filename.toString().substring(0, 60),
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
             }
@@ -1113,7 +1112,7 @@ export class FieldInfoComponent implements OnInit {
       } else {
         fieldInfoFiles = {};
       }
-      fieldInfoFiles[difkey] = event.target.files.length;
+      fieldInfoFiles[difkey] = this.fileUpload.new.imageMultiple.length;
       localStorage.setItem(this.localStoragePageName, JSON.stringify(fieldInfoFiles));
     }
   }
@@ -1123,11 +1122,10 @@ export class FieldInfoComponent implements OnInit {
     let fieldInfoFiles: any = localStorage.getItem(this.localStoragePageName);
     if (fieldInfoFiles) {
       fieldInfoFiles = JSON.parse(fieldInfoFiles);
-      if (fieldInfoFiles[ckey]) {
+      if (fieldInfoFiles.hasOwnProperty(ckey)) {
         fCount = fieldInfoFiles[ckey];
       }
     }
-    if (!fCount) {
       let farmerFiles: any = localStorage.getItem('farmer-files');
       if (farmerFiles) {
         farmerFiles = JSON.parse(farmerFiles);
@@ -1137,7 +1135,6 @@ export class FieldInfoComponent implements OnInit {
           }
         }
       }
-    }
     return fCount;
   }
 
