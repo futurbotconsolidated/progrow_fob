@@ -64,9 +64,23 @@ export class CommonService {
   }
 
   getPinCodeData(data: any) {
-    return this.http.get(
-      `https://api.worldpostallocations.com/?postalcode=${data}&countrycode=IN`
+    const input_obj = {
+      pincode: data,
+    };
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.pinCodeData,
+      input_obj,
+      {
+        headers,
+      }
     );
+    // return this.http.get(
+    //   `https://api.worldpostallocations.com/?postalcode=${data}&countrycode=IN`
+    // );
     // return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }
 

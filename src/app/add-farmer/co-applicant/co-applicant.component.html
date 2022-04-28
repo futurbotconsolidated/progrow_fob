@@ -52,7 +52,7 @@
                     <p><b>Full Name:</b> {{kycData.coa1.pan.data['full_name']}}</p>
                     <p><b>Category:</b> {{kycData.coa1.pan.data['category']}}</p>
                     <p><b>Status:</b> {{kycData.coa1.pan.data['status']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.pan.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa1.pan.showConfirm"
                       (click)="setKycDataVariables('coa1',kycProofNames.coa1.pan,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -152,7 +152,7 @@
                       Process.</small><br />
                     <p><b>Verification Link: </b> <a href="{{kycData.coa1.aadhaar.verificationLinkData['redirect_url']}}" target="_blank">Click Here</a></p>
 
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100 mt-2" [hidden]="objectKeyCount(kycData.coa1.aadhaar.data)"
+                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10" [hidden]="objectKeyCount(kycData.coa1.aadhaar.data)"
                       (click)="getAadhaarDetails($event,'coa1',kycProofNames.coa1.aadhaar)">
                       Get Aadhaar Details</button><br />
                     <small>Please wait for at least 10 seconds after completing the verification process using above Verifiction Link and then click on Above <u>Get Aadhaar Details</u> button.
@@ -161,14 +161,21 @@
 
                   <!-- second api data: Aadhaar details display -->
                   <div *ngIf="objectKeyCount(kycData.coa1.aadhaar.data)">
+                    <div class="row">
+                      <div class="col-md-9">
                     <p><b>Name:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.name || ''}}</p>
                     <p><b>Gender:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.gender || ''}}</p>
                     <p><b>DOB:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.dob || ''}}</p>
                     <p><b>Current Address:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.current_address || ''}}</p>
                     <p><b>Permanent Address:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.permanent_address || ''}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100 mt-2" [hidden]="!kycData.coa1.aadhaar.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10" [hidden]="!kycData.coa1.aadhaar.showConfirm"
                       (click)="setAadhaarEkycDataVariables('coa1','api_2',kycProofNames.coa1.aadhaar,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
+                    </div>
+                    <div class="col-md-3">
+                      <img *ngIf="kycData.coa1.aadhaar.data.actions[0].details.aadhaar.image" src="data:image/jpeg;base64,{{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.image}}" alt="">
+                    </div>
+                    </div>                      
                   </div>
                 </div>
               </div>
@@ -220,7 +227,7 @@
                     <p><b>Initial Issuing Office:</b> {{kycData.coa1.driving_licence.data['Initial Issuing Office']}}</p>
                     <p><b>Current Status:</b> {{kycData.coa1.driving_licence.data['Current Status']}}</p>
                     <p><b>Old / New DL No.:</b> {{kycData.coa1.driving_licence.data['Old / New DL No.']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.driving_licence.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa1.driving_licence.showConfirm"
                       (click)="setKycDataVariables('coa1',kycProofNames.coa1.driving_licence,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -273,7 +280,7 @@
                     <p><b>Taluk:</b> {{kycData.coa1.voter_id.data['ac_name']}}</p>
                     <p><b>District:</b> {{kycData.coa1.voter_id.data['dist_name']}}</p>
                     <p><b>State:</b> {{kycData.coa1.voter_id.data['st_name']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.voter_id.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa1.voter_id.showConfirm"
                       (click)="setKycDataVariables('coa1',kycProofNames.coa1.voter_id,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -451,9 +458,9 @@
                       aria-expanded="false" />
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="talukDropdown">
                       <div class="dropdown_scroll_bar">
-                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation }}"
-                          (click)="setSelectedValue($event, 'taluk', indVal.postalLocation, 'list')">
-                          {{ indVal.postalLocation }}
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.office_name }}"
+                          (click)="setSelectedValue($event, 'taluk', indVal.office_name, 'list')">
+                          {{ indVal.office_name }}
                         </button>
                       </div>
                     </div>
@@ -462,8 +469,8 @@
 
                   <!-- <select class="form-select" formControlName="taluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation }}">
-                      {{ indVal.postalLocation }}
+                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.office_name }}">
+                      {{ indVal.office_name }}
                     </option>
                   </select> -->
                   <div *ngIf="isSubmitted && f['taluk'].errors" class="form-text text-danger">
@@ -596,9 +603,9 @@
                       data-bs-toggle="dropdown" aria-expanded="false" />
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="permTalukDropdown">
                       <div class="dropdown_scroll_bar">
-                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation }}"
-                          (click)="setSelectedValue($event, 'permTaluk', indVal.postalLocation, 'list')">
-                          {{ indVal.postalLocation }}
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.office_name }}"
+                          (click)="setSelectedValue($event, 'permTaluk', indVal.office_name, 'list')">
+                          {{ indVal.office_name }}
                         </button>
                       </div>
                     </div>
@@ -609,8 +616,8 @@
 
                   <!-- <select class="form-select" formControlName="permTaluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation }}">
-                      {{ indVal.postalLocation }}
+                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.office_name }}">
+                      {{ indVal.office_name }}
                     </option>
                   </select> -->
                   <div *ngIf="isSubmitted && f['permTaluk'].errors" class="form-text text-danger">
@@ -751,7 +758,7 @@
                     <p><b>Full Name:</b> {{kycData.coa2.pan.data['full_name']}}</p>
                     <p><b>Category:</b> {{kycData.coa2.pan.data['category']}}</p>
                     <p><b>Status:</b> {{kycData.coa2.pan.data['status']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.pan.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa2.pan.showConfirm"
                       (click)="setKycDataVariables('coa2',kycProofNames.coa2.pan,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -853,7 +860,7 @@
                       Process.</small><br />
                     <p><b>Verification Link: </b> <a href="{{(kycData.coa2.aadhaar.verificationLinkData && kycData.coa2.aadhaar.verificationLinkData['redirect_url'])?kycData.coa2.aadhaar.verificationLinkData['redirect_url']:''}}" target="_blank">Click Here</a></p>
 
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100 mt-2" [hidden]="objectKeyCount(kycData.coa2.aadhaar.data)"
+                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10" [hidden]="objectKeyCount(kycData.coa2.aadhaar.data)"
                       (click)="getAadhaarDetails($event,'coa2',kycProofNames.coa2.aadhaar)">
                       Get Aadhaar Details</button><br />
                     <small>Please wait for at least 10 seconds after completing the verification process using above Verifiction Link and then click on Above <u>Get Aadhaar Details</u> button.
@@ -862,14 +869,21 @@
 
                   <!-- second api data: Aadhaar details display -->
                   <div *ngIf="objectKeyCount(kycData.coa2.aadhaar.data)">
+                    <div class="row">
+                      <div class="col-md-9">
                     <p><b>Name:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.name || ''}}</p>
                     <p><b>Gender:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.gender || ''}}</p>
                     <p><b>DOB:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.dob || ''}}</p>
                     <p><b>Current Address:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.current_address || ''}}</p>
                     <p><b>Permanent Address:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.permanent_address || ''}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100 mt-2" [hidden]="!kycData.coa2.aadhaar.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10" [hidden]="!kycData.coa2.aadhaar.showConfirm"
                       (click)="setAadhaarEkycDataVariables('coa2','api_2',kycProofNames.coa2.aadhaar,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
+                    </div>
+                      <div class="col-md-3">
+                        <img *ngIf="kycData.coa2.aadhaar.data.actions[0].details.aadhaar.image" src="data:image/jpeg;base64,{{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.image}}" alt="">
+                      </div> 
+                      </div>                     
                   </div>
                 </div>
               </div>
@@ -920,7 +934,7 @@
                     <p><b>Initial Issuing Office:</b> {{kycData.coa2.driving_licence.data['Initial Issuing Office']}}</p>
                     <p><b>Current Status:</b> {{kycData.coa2.driving_licence.data['Current Status']}}</p>
                     <p><b>Old / New DL No.:</b> {{kycData.coa2.driving_licence.data['Old / New DL No.']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.driving_licence.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa2.driving_licence.showConfirm"
                       (click)="setKycDataVariables('coa2',kycProofNames.coa2.driving_licence,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -972,7 +986,7 @@
                     <p><b>Taluk:</b> {{kycData.coa2.voter_id.data['ac_name']}}</p>
                     <p><b>District:</b> {{kycData.coa2.voter_id.data['dist_name']}}</p>
                     <p><b>State:</b> {{kycData.coa2.voter_id.data['st_name']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.voter_id.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa2.voter_id.showConfirm"
                       (click)="setKycDataVariables('coa2',kycProofNames.coa2.voter_id,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -1145,9 +1159,9 @@
                       data-bs-toggle="dropdown" aria-expanded="false" />
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="talukcoa2Dropdown">
                       <div class="dropdown_scroll_bar">
-                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIDatacoa2" value="{{ indVal.postalLocation }}"
-                          (click)="setSelectedValue($event, 'talukcoa2', indVal.postalLocation, 'list')">
-                          {{ indVal.postalLocation }}
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIDatacoa2" value="{{ indVal.office_name }}"
+                          (click)="setSelectedValue($event, 'talukcoa2', indVal.office_name, 'list')">
+                          {{ indVal.office_name }}
                         </button>
                       </div>
                     </div>
@@ -1156,8 +1170,8 @@
 
                   <!-- <select class="form-select" formControlName="talukcoa2">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of pinCodeAPIDatacoa2" value="{{ indVal.postalLocation }}">
-                      {{ indVal.postalLocation }}
+                    <option *ngFor="let indVal of pinCodeAPIDatacoa2" value="{{ indVal.office_name }}">
+                      {{ indVal.office_name }}
                     </option>
                   </select> -->
 
@@ -1291,9 +1305,9 @@
                       data-bs-toggle="dropdown" aria-expanded="false" />
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="permTalukcoa2Dropdown">
                       <div class="dropdown_scroll_bar">
-                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIDatacoa2" value="{{ indVal.postalLocation }}"
-                          (click)="setSelectedValue($event, 'permTalukcoa2', indVal.postalLocation, 'list')">
-                          {{ indVal.postalLocation }}
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIDatacoa2" value="{{ indVal.office_name }}"
+                          (click)="setSelectedValue($event, 'permTalukcoa2', indVal.office_name, 'list')">
+                          {{ indVal.office_name }}
                         </button>
                       </div>
                     </div>
@@ -1302,8 +1316,8 @@
 
                   <!-- <select class="form-select" formControlName="permTalukcoa2">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of permPinCodeAPIDatacoa2" value="{{ indVal.postalLocation }}">
-                      {{ indVal.postalLocation }}
+                    <option *ngFor="let indVal of permPinCodeAPIDatacoa2" value="{{ indVal.office_name }}">
+                      {{ indVal.office_name }}
                     </option>
                   </select> -->
                   <div *ngIf="isSubmitted && f['permTalukcoa2'].errors" class="form-text text-danger">

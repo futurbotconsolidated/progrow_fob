@@ -1384,16 +1384,16 @@ export class DemographicInfoComponent
             alert(`${res[0].Message}`);
           } else {
             if (type === 'ADDRESS') {
-              this.pinCodeAPIData = res.result;
+              this.pinCodeAPIData = res.data;
               this.demographicInfoForm.patchValue({
-                city: this.pinCodeAPIData[0].district,
-                state: this.pinCodeAPIData[0].state,
+                city: this.pinCodeAPIData[0].district_name,
+                state: this.pinCodeAPIData[0].state_name,
               });
             } else if (type === 'PERMANENT_ADDRESS') {
-              this.permPinCodeAPIData = res.result;
+              this.permPinCodeAPIData = res.data;
               this.demographicInfoForm.patchValue({
-                permCity: this.permPinCodeAPIData[0].district,
-                permState: this.permPinCodeAPIData[0].state,
+                permCity: this.permPinCodeAPIData[0].district_name,
+                permState: this.permPinCodeAPIData[0].state_name,
               });
             }
           }
@@ -1758,16 +1758,28 @@ export class DemographicInfoComponent
         this.kycData[proofType].showConfirm = false;
         this.kycData[proofType].isVerified = false;
       } else if (type === 'api_success_valid_data') {
-        if (proofType === 'aadhaar') {
-          this.demographicInfoForm
-            .get('firstName')
-            ?.setValue(apiData?.actions[0].details.aadhaar.name);
-        }
         this.kycData[proofType].data = apiData;
         this.kycData[proofType].showVerify = true;
         this.kycData[proofType].showTryAgain = false;
         this.kycData[proofType].showConfirm = true;
         this.kycData[proofType].isVerified = false;
+        if (!this.farmerId && proofType === 'aadhaar' && apiData?.actions[0].details.aadhaar.name) {
+          let aadhaar_name = apiData?.actions[0].details.aadhaar.name;
+          let aadhaar_name_arr = aadhaar_name.toString().split(" ");
+          if(aadhaar_name_arr.length >=1){
+            this.demographicInfoForm.get('firstName')?.setValue(aadhaar_name_arr[0]);
+          }
+          if(aadhaar_name_arr.length >=2){
+            this.demographicInfoForm.get('middleName')?.setValue(aadhaar_name_arr[1]);
+          }
+          if(aadhaar_name_arr.length >=3){
+            let lastName = '';
+            for (let i = 2; i < aadhaar_name_arr.length; i++) {
+              lastName =+ aadhaar_name_arr[i]+' ';
+            }
+            this.demographicInfoForm.get('lastName')?.setValue(lastName);
+          } 
+        }
       } else if (type === 'confirm') {
         this.kycData[proofType].showVerify = false;
         this.kycData[proofType].showTryAgain = false;
