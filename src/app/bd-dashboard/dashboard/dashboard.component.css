@@ -27,10 +27,14 @@ table.dataTable tbody tr {
     width: 100%;
     max-width: 235px;
 }
+
 @media only screen and (min-device-width: 992px) and (max-device-width: 1500px) {
+  article.right-sec.lsn-rs-collapse header{
+    padding-left: 55px;
+   }
   .lsn-tv-div {
     position: fixed;
-    top: 46px;
+    top: 15px;
     z-index: 9999;    
     background-color: #DEF5D6;
     display: inline-block;

@@ -125,7 +125,7 @@ export class FieldInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.fieldInforMaster = data.fieldInfo; // read master data
-    this.commonMaster = data.commonData; // read master data
+    // this.commonMaster = data.commonData; // read master data 
 
     this.SoilQualityStar = this.fieldInforMaster['soilQuality'];
 
@@ -202,6 +202,9 @@ export class FieldInfoComponent implements OnInit {
             // editFieldInfo.historicalFieldDetails.push(
             //   fiv.historical_season_detail.historicalFieldDetails
             // );
+            if(typeof(fiv.planned_season_detail.plannedFieldDetails) == 'object'){
+              fiv.planned_season_detail.plannedFieldDetails.crop_id = fiv.crop_id;
+            }
             editFieldInfo.plannedFieldDetails.push(
               fiv.planned_season_detail.plannedFieldDetails
             );
@@ -210,8 +213,7 @@ export class FieldInfoComponent implements OnInit {
               editFieldInfo.testType.push(fiv.test_on_fields);
             }
             editFieldInfo.cropCycleOnReports = fiv.undertaking_cultivation.uc;
-            editFieldInfo.plannedSeason =
-              fiv.planned_season_detail.plannedSeason;
+            editFieldInfo.plannedSeason = fiv.crop_season_id+'##'+fiv.planned_season_detail.plannedSeason;
             editFieldInfo.plannedCrops = fiv.planned_season_detail.plannedCrops;
             this.editFieldArea.push(fiv.field_area_ha);
             this.selectedCoordinates.push(
@@ -248,9 +250,32 @@ export class FieldInfoComponent implements OnInit {
     if (!(this.fieldInfoForm.get('testType') as FormArray).controls.length) {
       this.addTestType();
     }
+
+    this.commonMaster.crops = [];
+    this.commonMaster.season = [];
+    this.commonService.getMasterData().subscribe(
+      (res: any) => {
+        //this.spinner.hide();
+        if (res && !res.status) {
+          console.log(`${res[0].Message}`);
+        } else {
+          if(res.data && res.data.crops){
+            this.commonMaster.crops = res.data.crops;
+          }
+          if(res.data && res.data.seasons){
+            this.commonMaster.season = res.data.seasons;
+          }
+        }
+      },
+      (error: any) => {
+        //this.spinner.hide();
+        console.log('Failed to fetch PinCode Details, please try again...');
+      }
+    );
   }
 
   bindItemsInEdit(fieldValues: any) {
+    console.log('fieldValues : ', fieldValues);
     this.fieldInfoForm.patchValue(fieldValues);
     fieldValues.plannedFieldDetails.map((item: any, index: number) => {
       const plannedDetails = <any>{};
@@ -261,7 +286,11 @@ export class FieldInfoComponent implements OnInit {
         item.irrigationSystem
       );
       plannedDetails['waterSource'] = new FormControl(item.waterSource);
+      if(item.crop_id){
+        plannedDetails['crop'] = new FormControl(item.crop_id+'##'+item.crop);
+      } else {
       plannedDetails['crop'] = new FormControl(item.crop);
+      }
       plannedDetails['soilQuality'] = new FormControl(item.soilQuality);
       plannedDetails['waterQuality'] = new FormControl(item.waterQuality);
       plannedDetails['yieldQuality'] = new FormControl(item.yieldQuality);
@@ -823,18 +852,25 @@ export class FieldInfoComponent implements OnInit {
           test_arr.push(tdata);
         }
       });
+      let season_arr = this.fieldInfoForm.value.plannedSeason.split('##');
+      let crop_arr = this.fieldInfoForm.value.plannedFieldDetails[i].crop?.split('##');
+      let plannedFieldDetails = this.fieldInfoForm.value.plannedFieldDetails[i];
+      plannedFieldDetails.crop = crop_arr[1];
 
       obj = {
         field_ui_id: field_ui_id,
+        crop_season_id: season_arr[0],
+        crop_id: crop_arr[0],
         field_name: this.fieldInfoForm.value.plannedFieldDetails[i].fieldName,
         field_boundary: drawnCoordinates_obj,
         field_area_ha:
           this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
         field_address: 'test',
         planned_season_detail: {
-          plannedSeason: this.fieldInfoForm.value.plannedSeason,
+          plannedSeason: season_arr[1],
           plannedCrops: this.fieldInfoForm.value.plannedCrops,
-          plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
+          plannedFieldDetails: plannedFieldDetails,
+          // plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
         },
         historical_season_detail: {
           // historicalSeason: this.fieldInfoForm.value.historicalSeason,
@@ -853,6 +889,7 @@ export class FieldInfoComponent implements OnInit {
       fieldArr.push(obj);
     });
 
+    console.log('fieldArr : ', fieldArr);
     if (!fieldArr.length) {
       this.toastr.error('Please Plot at least One Field', 'Error!');
       return;

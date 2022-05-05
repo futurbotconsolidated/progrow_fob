@@ -955,7 +955,8 @@
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
-            <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" />
+            <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" /><br>
+            <a [href]="fileUpload.new.imageSrc1" target="_blank">View File</a>
           </div>
 
         </div>
@@ -970,7 +971,8 @@
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
-            <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" />
+            <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" /><br>
+            <a [href]="fileUpload.new.imageSrc2" target="_blank">View File</a>
           </div>
 
         </div>
@@ -985,7 +987,8 @@
           <div class="row" [hidden]="!fileUpload.new.imageMultiple">
           <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let imageSrc of fileUpload.new.imageMultiple">
             <p class="fs-6">Preview Image</p>
-            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" />
+            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" /><br/>
+            <a [href]="imageSrc" target="_blank">View File</a>
           </div>
 
         </div>

@@ -10,7 +10,7 @@
     <a *ngIf="!lsn_tv_show" (click)="showLeftSide(true)"><i class="fa fa-angle-double-right"></i></a>
     <a *ngIf="lsn_tv_show" (click)="showLeftSide(false)"><i class="fa fa-angle-double-left"></i></a>
   </div>
-  <article class="right-sec">
+  <article class="right-sec" [class]="lsn_tv_show? 'lsn-rs-extend' : 'lsn-rs-collapse'">
     <header>
       <div class="bd-header col-sm-10 col-md-10 col-xl-11">
         <div class="pro-img"><span>SS</span></div>
@@ -230,9 +230,9 @@
                           <th>Mobile</th>
                           <th>Date of Registration</th>
                           <th>Address</th>
-                          <th>Status</th>
-                          <th>Added By</th>
-                          <th>Updated By</th>
+                          <!-- <th>Status</th> -->
+                          <!-- <th>Added By</th> -->
+                          <!-- <th>Updated By</th> -->
                           <th>Updated Date</th>
                           <th>Branch</th>
                           <th></th>
@@ -255,13 +255,13 @@
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ (x.address.addressLine1.length>8)? (x.address.addressLine1 | slice:0:8)+'...':(x.address.addressLine1) }}
                           </td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')"
+                          <!-- <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td> -->
+                          <!-- <td (click)="getFarmerDetailsById(x.farmerId,'view')"
                             title="Created BD ID: {{x.bd_id}}">
-                            {{x.bd_name}}</td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                            {{x.bd_name}}</td> -->
+                          <!-- <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{x.updatedBy}}
-                          </td>
+                          </td> -->
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.updatedDate | date:'EE, MMM d, y' }}
                           </td>

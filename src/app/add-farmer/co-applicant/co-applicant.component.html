@@ -1432,6 +1432,7 @@
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
             <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" />
+            <p *ngIf="fileUpload.new.imageSrc1"><a [href]="fileUpload.new.imageSrc1" target="_blank">View File</a></p>
           </div>
 
         </div>
@@ -1447,6 +1448,7 @@
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
             <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" />
+            <p *ngIf="fileUpload.new.imageSrc2"><a [href]="fileUpload.new.imageSrc2" target="_blank">View File</a></p>
           </div>
 
         </div>

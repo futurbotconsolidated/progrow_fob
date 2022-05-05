@@ -19,9 +19,9 @@
                                 <div class="col-md-3">
                                     <h3 class="form-title">A. Planned season</h3>
                                     <select class="form-select" formControlName="plannedSeason">
-                                        <option value="">...</option>
-                                        <option *ngFor="let indVal of commonMaster['season']" value="{{indVal}}">
-                                            {{indVal}}</option>
+                                        <option value="##">...</option>
+                                        <option *ngFor="let indVal of commonMaster['season']" value="{{indVal.crop_season_id+'##'+indVal.crop_season_name}}">
+                                            {{indVal.crop_season_name}}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-8">
@@ -75,11 +75,10 @@
                                         <div class="col-md-2 lable-top">
                                             <label>Crop</label>
                                             <select class="form-select" formControlName="crop">
-                                                <option value="">...</option>
-                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
-                                                    {{indVal}}</option>
+                                                <option value="##">...</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal.crop_id+'##'+indVal.crop_name}}">
+                                                    {{indVal.crop_name}}</option>
                                             </select>
-
 
                                         </div>
                                         <div class="col-md-3 lable-top">
@@ -152,8 +151,8 @@
                                         <h3 class="form-title">A. Historical season</h3>
                                         <select class="form-select" formControlName="historicalSeason">
                                             <option value="">...</option>
-                                            <option *ngFor="let indVal of commonMaster['season']" value="{{indVal}}">
-                                                {{indVal}}</option>
+                                            <option *ngFor="let indVal of commonMaster['season']" value="{{indVal.crop_season_name}}">
+                                                {{indVal.crop_season_name}}</option>
                                         </select>
                                     </div>
                                     <div class="col-md-7">
@@ -413,11 +412,10 @@
             <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let fileData of fileUpload.new.imageMultiple">
               <p class="fs-6" *ngIf="fileData.type=='image'">Preview Image</p>
               <p class="fs-6" *ngIf="fileData.type !='image'">File</p>
-              <img [src]="fileData.file" *ngIf="fileData.type=='image'" style="height: 150px; width: 150px" />
-              <div class="col-auto add-another" *ngIf="fileData.type !='image'">
-                <a href="javascript:void(0)" (click)="downloadFile(fileData.file)">View File</a><br/>
+              <img [src]="fileData.file" *ngIf="fileData.type=='image'" style="height: 150px; width: 150px" /><br/>
+              <p *ngIf="fileData.type=='image'"><a href="{{fileData.file}}" target="_blank">View File</a></p>
+              <p *ngIf="fileData.type!='image'"><a href="javascript:void(0)" (click)="downloadFile(fileData.file)">View File</a></p>            
                 <p class="word-wrap-anywhere">{{fileData.name}}</p>
-            </div>
             </div>  
           </div>
           <!-- END : Image - Multiple -->

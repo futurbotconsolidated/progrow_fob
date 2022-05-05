@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { tap } from 'rxjs/operators';
 import { CommonService } from '../../shared/common.service';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { formatDate } from '@angular/common';
 import {
   FormGroup,
   FormControl,
@@ -426,6 +427,7 @@ export class DemographicInfoComponent
     if(!(this.demographicInfoForm.get('familyMembers') as FormArray).controls.length){
       this.addFamilyMembers();
     }
+
   }
   ngAfterViewInit(): void {
     /** subscribe to Observables, which are triggered from header selections*/
@@ -1456,13 +1458,15 @@ export class DemographicInfoComponent
         return;
       }
       // convert date farmat from 'YYYY-MM-DD' to 'dd/MM/yyyy'
-      const C = this.demographicInfoForm.value.dob.split('-');
-
+      // const C = this.demographicInfoForm.value.dob.split('-');
+      let dob = formatDate(this.demographicInfoForm.value.dob,'dd/MM/yyyy','en_IN') as string;
       INPUT_OBJ = {
         id_type: 'DRIVING_LICENSE',
         id_no: this.demographicInfoForm.value.drivingLicenceNumber,
-        dob: `${C[1]}/${C[2]}/${C[0]}`,
-      };
+        dob: `${dob}`,
+        // dob: `${C[1]}/${C[2]}/${C[0]}`,
+      };      
+      console.log('INPUT_OBJ : ', INPUT_OBJ);
     }
 
     this.spinner.show();

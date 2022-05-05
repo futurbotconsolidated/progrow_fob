@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
 import { validatePANNumber } from '../../shared/custom-validators';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { formatDate } from '@angular/common';
 
 declare var $: any;
 import { data } from '../../shared/fob_master_data';
@@ -1932,13 +1933,15 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
       // convert date farmat from 'YYYY-MM-DD' to 'dd/MM/yyyy'
-      const C = this.coApplicantForm.value.dob.split('-');
-
+      // const C = this.coApplicantForm.value.dob.split('-');
+      let dob = formatDate(this.coApplicantForm.value.dob,'dd/MM/yyyy','en_IN') as string;
       INPUT_OBJ = {
         id_type: 'DRIVING_LICENSE',
         id_no: this.coApplicantForm.value.drivingLicenceNumber,
-        dob: `${C[1]}/${C[2]}/${C[0]}`,
+        dob: `${dob}`,
+        // dob: `${C[1]}/${C[2]}/${C[0]}`,
       };
+      console.log('INPUT_OBJ : ', INPUT_OBJ);
     } else if (
       proofType === this.kycProofNames.coa2.driving_licence &&
       coaNo === 'coa2'
@@ -1958,13 +1961,15 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
       // convert date farmat from 'YYYY-MM-DD' to 'dd/MM/yyyy'
-      const C = this.coApplicantForm.value.dobcoa2.split('-');
-
+      // const C = this.coApplicantForm.value.dobcoa2.split('-');
+      let dob = formatDate(this.coApplicantForm.value.dobcoa2,'dd/MM/yyyy','en_IN') as string;
       INPUT_OBJ = {
         id_type: 'DRIVING_LICENSE',
         id_no: this.coApplicantForm.value.drivingLicenceNumbercoa2,
-        dob: `${C[1]}/${C[2]}/${C[0]}`,
+        dob: `${dob}`,
+        // dob: `${C[1]}/${C[2]}/${C[0]}`,
       };
+      console.log('INPUT_OBJ : ', INPUT_OBJ);
     }
 
     this.spinner.show();
