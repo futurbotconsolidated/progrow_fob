@@ -230,9 +230,12 @@
                           <th>Mobile</th>
                           <th>Date of Registration</th>
                           <th>Address</th>
-                          <!-- <th>Status</th> -->
-                          <!-- <th>Added By</th> -->
-                          <!-- <th>Updated By</th> -->
+                          <th>FRCM Score</th>
+                          <th>Cibil Score</th>
+                          <th>Loan ID</th>
+                          <th>Status</th>
+                          <th>Added By</th>
+                          <th>Updated By</th>
                           <th>Updated Date</th>
                           <th>Branch</th>
                           <th></th>
@@ -255,13 +258,18 @@
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ (x.address.addressLine1.length>8)? (x.address.addressLine1 | slice:0:8)+'...':(x.address.addressLine1) }}
                           </td>
-                          <!-- <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td> -->
-                          <!-- <td (click)="getFarmerDetailsById(x.farmerId,'view')"
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
+                          <td>
+                            <a href="javascript:void(0)" (click)="getFarmerDetailsById(x.farmerId,'loan')" class="btn btn-send-for-loan cursor-pointer">Send For Loan</a>
+                          </td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')"
                             title="Created BD ID: {{x.bd_id}}">
-                            {{x.bd_name}}</td> -->
-                          <!-- <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                            {{x.bd_name}}</td>
+                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{x.updatedBy}}
-                          </td> -->
+                          </td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">
                             {{ x.updatedDate | date:'EE, MMM d, y' }}
                           </td>

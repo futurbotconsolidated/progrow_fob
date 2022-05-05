@@ -267,7 +267,7 @@
                   <div>
                     <p><b>Name:</b> {{kycData.voter_id.data['name']}}</p>
                     <p><b>Age:</b> {{kycData.voter_id.data['age']}}</p>
-                    <p><b>Taluk:</b> {{kycData.voter_id.data['ac_name']}}</p>
+                    <p><b>Taluka:</b> {{kycData.voter_id.data['ac_name']}}</p>
                     <p><b>District:</b> {{kycData.voter_id.data['dist_name']}}</p>
                     <p><b>State:</b> {{kycData.voter_id.data['st_name']}}</p>
                     <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.voter_id.showConfirm"
@@ -476,7 +476,7 @@
                   </select>-->
                   <div *ngIf="isSubmitted && f['taluk'].errors" class="form-text text-danger">
                     <small *ngIf="f['taluk'].errors['required']">
-                      Taluk is required</small>
+                      Taluka is required</small>
                   </div>
                 </div>
 
@@ -611,7 +611,7 @@
               </div>
               <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='Different address'">
                 <div class="flex-1 lable-top">
-                  <label class="required">Pin Code</label>
+                  <label class="required">Pincode</label>
                   <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6" (keypress)="validateNo($event)" maxlength="6"
                     (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
                   <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
@@ -649,7 +649,7 @@
                   </select> -->
                   <div *ngIf="isSubmitted && f['permTaluk'].errors" class="form-text text-danger">
                     <small *ngIf="f['permTaluk'].errors['required']">
-                      Taluk is required</small>
+                      Taluka is required</small>
                   </div>
                 </div>
                 <div class="flex-1 lable-top">

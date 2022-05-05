@@ -890,10 +890,10 @@ export class FieldInfoComponent implements OnInit {
     });
 
     console.log('fieldArr : ', fieldArr);
-    if (!fieldArr.length) {
-      this.toastr.error('Please Plot at least One Field', 'Error!');
-      return;
-    } else {
+    // if (!fieldArr.length) {
+    //   this.toastr.error('Please Plot at least One Field', 'Error!');
+    //   return;
+    // } else {
       if (this.farmerId) {
         localStorage.setItem('edit-field-info', JSON.stringify(fieldArr));
         localStorage.setItem(
@@ -909,7 +909,7 @@ export class FieldInfoComponent implements OnInit {
       }
       const url = `/add/${this.nextRoute}/${this.farmerId}`;
       this.router.navigate([url]);
-    }
+    // }
   }
 
   SoilQualityRating(soilQualityStar: any, i: number) {
@@ -994,7 +994,7 @@ export class FieldInfoComponent implements OnInit {
               );
             if (imageSrc) {
               let type = 'file';
-              if (imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
+              if (imageSrc.includes('data:image/') || imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
                 type = 'image';
               }
               let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];
@@ -1030,7 +1030,7 @@ export class FieldInfoComponent implements OnInit {
               );
             if (imageSrc) {
               let type = 'file';
-              if (imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
+              if ( imageSrc.includes('data:image/') || imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
                 type = 'image';
               }
               let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];

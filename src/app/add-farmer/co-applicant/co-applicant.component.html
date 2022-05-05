@@ -582,7 +582,7 @@
               </div>
               <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddress!='Different address'">
                 <div class="flex-1 lable-top">
-                  <label class="">Pin Code</label>
+                  <label class="">Pincode</label>
                   <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
                   <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
                     <small *ngIf="f['permPincode'].errors['required']">
@@ -1138,7 +1138,7 @@
               </div>
               <div class="display-flex">
                 <div class="flex-1 lable-top">
-                  <label class="">Pin Code</label>
+                  <label class="">Pincode</label>
                   <input type="text" class="form-control" formControlName="pinCodecoa2" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'ADDRESScoa2')"
                     (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['pinCodecoa2'].errors" class="form-text text-danger">
@@ -1284,7 +1284,7 @@
               </div>
               <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddresscoa2!='Different address'">
                 <div class="flex-1 lable-top">
-                  <label class="">Pin Code</label>
+                  <label class="">Pincode</label>
                   <input type="text" class="form-control" formControlName="permPincodecoa2" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESScoa2')" />
                   <div *ngIf="isSubmitted && f['permPincodecoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['permPincodecoa2'].errors['required']">

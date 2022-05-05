@@ -573,6 +573,13 @@ export class DashboardComponent implements OnInit {
   }
 
   getFarmerDetailsById(farmerId: any, type: string) {
+    if(type == 'loan'){
+      if(confirm("Are you sure ? you want to send for loan")) {
+        console.log("confirm if");
+      } else {
+        console.log('confirm else');
+      }
+    } else {
     this.clearLocalStorageOnEditAndView(); // clear unwanted localStorage data
     this.spinner.show();
     this.commonService.getFarmerDetailsById(farmerId).subscribe(
@@ -592,6 +599,7 @@ export class DashboardComponent implements OnInit {
         );
       }
     );
+    }
   }
 
   getDocumentByFarmerId(farmerId: any, type: string) {
