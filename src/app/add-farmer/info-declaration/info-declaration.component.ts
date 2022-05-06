@@ -90,6 +90,7 @@ export class InfoDeclarationComponent implements OnInit {
     const INPUT_OBJ = {
       farmer_id: this.farmerId,
       bd_id: this.userInfo['custom:access_type'],
+      data_source: 'FOB2',
       created_by: `${this.userInfo['name']}`,
       updated_by: `${this.userInfo['name']}`,
       mobile: JSON.parse(demoInfo).address.mobileNumber,
