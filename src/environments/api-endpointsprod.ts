@@ -10,6 +10,7 @@ export const endPoints = {
   downloadCsv: '/download_csv',
   pinCodeData: '/get_pincode_data',
   masterData: '/master_data',  
+  sendToMifin: '/send_to_mifin',  
   
   ekyc: {
     getKycData: '/kyc_check',

@@ -93,6 +93,19 @@ export class CommonService {
     });
   }
 
+  sendToMifin(data: any) {
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.sendToMifin,
+      data,
+      {
+        headers,
+      }
+    );
+  }
   // ekyc api
   getKycData(inputObject: any) {
     headers = headers.delete('Bd-id');

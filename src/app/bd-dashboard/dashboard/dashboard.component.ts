@@ -506,6 +506,7 @@ export class DashboardComponent implements OnInit {
           alert(`${res.message}`);
         } else {
           this.allExistingFarmers = res.data;
+          //this.allPipelineFarmers = res.data;
           if (this.selectedViewType == 'EXISTING_FARMS_MAP_VIEW') {
             this.filterFarms(this.selectedViewType);
           }
@@ -576,6 +577,29 @@ export class DashboardComponent implements OnInit {
     if(type == 'loan'){
       if(confirm("Are you sure ? you want to send for loan")) {
         console.log("confirm if");
+        const input_obj = {
+          farmerId: farmerId,
+        };
+        this.spinner.show();
+        this.commonService.sendToMifin(input_obj).subscribe(
+          (res: any) => {
+            console.log('sendToMifin res : ', res)
+            if (res.message != 'Success' || !res.status) {
+              this.spinner.hide();
+              this.toastr.error(`${res.data}!`);
+            } else {
+              this.spinner.hide();
+              this.toastr.success('Send For Loan Success.');
+              this.router.navigate(['/bd/dashboard']);
+            }
+          },
+          (error: any) => {
+            this.spinner.hide();
+            this.toastr.error(
+              `Failed to fetch farmer details, please try again...`
+            );
+          }
+        );
       } else {
         console.log('confirm else');
       }
