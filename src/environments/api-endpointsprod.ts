@@ -1,4 +1,5 @@
-export const baseUrl = 'https://fobapi.agrisaathi.com';
+// OLD : export const baseUrl = 'https://fobapi.agrisaathi.com';
+export const baseUrl = 'https://api1.agrisaathi.com/v1/farmeronboarding';
 
 export const endPoints = {
   getAllFarmers: '/get_all_farmers',
@@ -9,9 +10,9 @@ export const endPoints = {
   getDocument: '/farmer_presigned_s3_url',
   downloadCsv: '/download_csv',
   pinCodeData: '/get_pincode_data',
-  masterData: '/master_data',  
-  sendToMifin: '/send_to_mifin',  
-  
+  masterData: '/master_data',
+  sendToMifin: '/send_to_mifin',
+
   ekyc: {
     getKycData: '/kyc_check',
     getAadhaarEkycVerification: '/aadhaar_ekyc',
