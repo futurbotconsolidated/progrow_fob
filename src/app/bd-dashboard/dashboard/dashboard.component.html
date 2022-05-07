@@ -261,7 +261,7 @@
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
                           <td>
-                            <a *ngIf="x.loan_account_number" href="http://65.2.60.231/mifin/{{x.loan_account_number}}" class="btn btn-send-for-loan cursor-pointer" target="_blank">View Loan</a>
+                            <a *ngIf="x.loan_account_number" href="http://65.2.60.231/mifin/{{x.loan_account_number}}" class="btn btn-send-for-loan cursor-pointer" target="_blank">{{x.loan_account_number}}</a>
                             <a *ngIf="!x.loan_account_number" href="javascript:void(0)" (click)="getFarmerDetailsById(x.farmerId,'loan')" class="btn btn-send-for-loan cursor-pointer">Send For Loan</a>
                           </td>
                           <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
