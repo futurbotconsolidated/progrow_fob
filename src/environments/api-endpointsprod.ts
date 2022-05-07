@@ -1,4 +1,5 @@
-export const baseUrl = 'https://fobapi.agrisaathi.com';
+// OLD : export const baseUrl = 'https://fobapi.agrisaathi.com';
+export const baseUrl = 'https://api1.agrisaathi.com/v1/farmeronboarding';
 
 export const endPoints = {
   getAllFarmers: '/get_all_farmers',
