@@ -221,8 +221,11 @@
                       </div>
                     </div>
                   </div>
+                  <div class="dash-aef-container" [ngStyle]="tableMaxWidth">
+                  <div class="row">
+                    <div class="col-md-12">
                   <div class="table-responsive listview-table">
-                    <table *ngIf="allExistingFarmers.length" datatable [dtOptions]="dtOptions" class="table table-hover">
+                    <table *ngIf="allExistingFarmers.length" datatable [dtOptions]="dtOptions" class="table table-hover current-max-width" >
                       <thead>
                         <tr>
                           <th>URN</th>
@@ -239,50 +242,57 @@
                           <th>Updated Date</th>
                           <th>Branch</th>
                           <th></th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let x of allExistingFarmers">
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">{{x.farmerId}}</td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                        <tr *ngFor="let x of allExistingFarmers; let i = index;">
+                          <td>{{x.farmerId}}</td>
+                          <td>
                             {{ x.farmerDetails?.firstName }}
                             {{ x.farmerDetails?.middleName }}
                             {{ x.farmerDetails?.lastName }}
                           </td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                          <td>
                             {{ x.address?.mobileNumber }}
                           </td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                          <td>
                             {{ x.createdDate | date:'EE, MMM d, y' }}
                           </td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                          <td>
                             {{ (x.address.addressLine1.length>8)? (x.address.addressLine1 | slice:0:8)+'...':(x.address.addressLine1) }}
                           </td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
+                          <td>NA</td>
+                          <td>NA</td>
                           <td>
-                            <a *ngIf="x.loan_account_number" href="http://65.2.60.231/mifin/" class="btn btn-send-for-loan cursor-pointer" target="_blank">{{x.loan_account_number}}</a>
-                            <a *ngIf="!x.loan_account_number" href="javascript:void(0)" (click)="getFarmerDetailsById(x.farmerId,'loan')" class="btn btn-send-for-loan cursor-pointer">Send For Loan</a>
+                            <a *ngIf="x.loan_account_number" href="http://65.2.60.231/mifin/" target="_blank">{{x.loan_account_number}}</a>
+                            <span *ngIf="!x.loan_account_number">
+                              <a *ngIf="loanAccountData[i]" href="http://65.2.60.231/mifin/" target="_blank">{{loanAccountData[i]}}</a>                              
+                              <a *ngIf="!loanAccountData[i]" href="javascript:void(0)" (click)="getLoanAccountById(x.farmerId,'loan', i)" class="btn btn-send-for-loan cursor-pointer loan-{{x.farmerId}}">Send For Loan</a>
+                            </span>                            
                           </td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">NA</td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')"
-                            title="Created BD ID: {{x.bd_id}}">
+                          <td>NA</td>
+                          <td title="Created BD ID: {{x.bd_id}}">
                             {{x.bd_name}}</td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                          <td>
                             {{x.updatedBy}}
                           </td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                          <td>
                             {{ x.updatedDate | date:'EE, MMM d, y' }}
                           </td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'view')">
+                          <td>
                             {{ x.branch_name }}
                           </td>
-                          <td (click)="getFarmerDetailsById(x.farmerId,'edit')" class="cursor-pointer"><i class="fa fa-edit"></i></td>
+                          <td><a (click)="getFarmerDetailsById(x.farmerId,'view')" class="btn btn-view-f cursor-pointer">View</a></td>
+                          <td><a (click)="getFarmerDetailsById(x.farmerId,'edit')" class="btn btn-view-f cursor-pointer">Edit</a></td>
                         </tr>
                       </tbody>
                     </table>
                     <div *ngIf="!allExistingFarmers.length">No data available in table</div>
                   </div>
+                </div>
+                </div>
+              </div>
                 </div>
                 <div class="tab-pane fade" [ngClass]="{
                   show: selectedViewType == 'EXISTING_FARMS_MAP_VIEW',
@@ -351,22 +361,29 @@
                     <table class="table">
                       <thead>
                         <tr>
-                          <th>Area of Interest</th>
-                          <th>Farm Size</th>
-                          <th>Crop Type</th>
-                          <th>Farm Score</th>
-                          <th></th>
+                          <th>URN</th>
+                          <th>Farmer Name</th>
+                          <th>Mobile</th>
+                          <th>Date of Registration</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let x of allPipelineFarmers">
-                          <td>{{ x.area_of_interest }}</td>
-                          <td>{{ x.farm_size }}</td>
-                          <td>{{ x.crop_type }}</td>
-                          <td>{{ x.frcm_score }}</td>
+                          <td>{{x.farmerId}}</td>
                           <td>
-                            <a href="javascript:void(0);" class="btn btn_add_farmer">Add Farmer</a>
+                            {{ x.farmerDetails?.firstName }}
+                            {{ x.farmerDetails?.middleName }}
+                            {{ x.farmerDetails?.lastName }}
                           </td>
+                          <td>
+                            {{ x.address?.mobileNumber }}
+                          </td>
+                          <td>
+                            {{ x.createdDate | date:'EE, MMM d, y' }}
+                          </td>
+                          <!-- <td>
+                            <a href="javascript:void(0);" class="btn btn_add_farmer">Add Farmer</a>
+                          </td> -->
                         </tr>
                       </tbody>
                     </table>
