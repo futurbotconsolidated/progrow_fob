@@ -93,14 +93,18 @@ export class CommonService {
     });
   }
 
-  sendToMifin(data: any) {
+  sendToMifin(farmer_id: any) {
+    const input_obj = {
+      farmer_id: farmer_id,
+      bd_id: String(this.userInfo['custom:access_type']),
+    };
     headers = headers.delete('Bd-id');
     headers = headers.delete('Filter-Type');
     headers = headers.delete('Farmer-Id');
     headers = headers.set('Authorization', this.token);
     return this.http.post(
       this.baseUrl + this.endPoints.sendToMifin,
-      data,
+      input_obj,
       {
         headers,
       }

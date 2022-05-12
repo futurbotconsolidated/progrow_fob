@@ -604,11 +604,8 @@ export class DashboardComponent implements OnInit {
   getLoanAccountById(farmerId: any, type: string, index: number) {
     if(confirm("Are you sure ? you want to send for loan")) {
       console.log("confirm if");
-      const input_obj = {
-        farmerId: farmerId,
-      };
       this.spinner.show();      
-      this.commonService.sendToMifin(input_obj).subscribe(
+      this.commonService.sendToMifin(farmerId).subscribe(
         (res: any) => {
           console.log('sendToMifin res : ', res)
           if (!res.status) { //res.message != 'Success' || 

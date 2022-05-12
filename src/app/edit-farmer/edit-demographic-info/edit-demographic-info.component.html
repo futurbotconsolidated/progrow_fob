@@ -7,9 +7,24 @@
                     <div class="actual-facts summery-bg full-height">
                         <h4 class="summery-heading"><span>KYC Details</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile kyc-details">
-                            <p><span><i class="fa fa-check"></i>Pan Card</span><span><a href="javascript:void(0);">View</a></span></p>
-                            <p><span><i class="fa fa-check"></i>Adhar Card</span><span><a href="javascript:void(0);">View</a></span></p>
-
+                            <p *ngIf="demographicDisp?.identityProof?.NREGANumber">
+                                <span><i class="fa fa-check"></i>NREGA </span><span><a (click)="openFileModalPopup(fileUploadFileFor.NREGA, 0)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="demographicDisp?.identityProof?.aadhaarNumber">
+                                <span><i class="fa fa-check"></i>Aadhaar Card</span><span><a (click)="openFileModalPopup(fileUploadFileFor.aadhaarCard, 0)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="demographicDisp?.identityProof?.drivingLicenceNumber">
+                                <span><i class="fa fa-check"></i>Driving Licence</span><span><a (click)="openFileModalPopup(fileUploadFileFor.drivingLicence, 0)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="demographicDisp?.identityProof?.panNumber">
+                                <span><i class="fa fa-check"></i>Pan Card</span><span><a (click)="openFileModalPopup(fileUploadFileFor.panCard, 0)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="demographicDisp?.identityProof?.passportNumber">
+                                <span><i class="fa fa-check"></i>Passport</span><span><a (click)="openFileModalPopup(fileUploadFileFor.passport, 0)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="demographicDisp?.identityProof?.voterIdNumber">
+                                <span><i class="fa fa-check"></i>Voter Id</span><span><a (click)="openFileModalPopup(fileUploadFileFor.voterId, 0)" href="javascript:void(0);">View</a></span>
+                            </p>                            
                         </div>
                     </div>
                 </div>
@@ -131,3 +146,41 @@
         </div>
     </div>
 </article>
+
+<!-- START: Common Modal Popup for File Upload and Preview -->
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header p-2 common_button_color">
+          <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+        </div>
+        <div class="modal-body">
+          <!-- START : Image - 1  -->
+          <div class="row" >
+            <div class="col-md-6 mb-1" [hidden]="!fileUpload.new.isImage1Required">
+              <p class="fs-6">Preview Image</p>
+              <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" /><br>
+              <a [href]="fileUpload.new.imageSrc1" target="_blank">View File</a>
+            </div>
+            <div class="col-md-6 mb-1" [hidden]="!fileUpload.new.isImage2Required">
+              <p class="fs-6">Preview Image</p>
+              <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" /><br>
+              <a [href]="fileUpload.new.imageSrc2" target="_blank">View File</a>
+            </div>
+
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let imageSrc of fileUpload.new.imageMultiple">
+              <p class="fs-6">Preview Image</p>
+              <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" /><br/>
+              <a [href]="imageSrc" target="_blank">View File</a>
+            </div>
+  
+          </div>
+          <!-- END : Image - Multiple -->
+        </div>
+        <div class="modal-footer p-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Common Modal Popup for File Upload and Preview -->

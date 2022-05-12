@@ -271,7 +271,8 @@
                               <a *ngIf="!loanAccountData[i]" href="javascript:void(0)" (click)="getLoanAccountById(x.farmerId,'loan', i)" class="btn btn-send-for-loan cursor-pointer loan-{{x.farmerId}}">Send For Loan</a>
                             </span>                            
                           </td>
-                          <td>NA</td>
+                          <td><span *ngIf="x.form_status">{{x.form_status}}%</span>
+                            <span *ngIf="!x.form_status">NA</span></td>
                           <td title="Created BD ID: {{x.bd_id}}">
                             {{x.bd_name}}</td>
                           <td>
