@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../../shared/common.service';
+import { Router } from '@angular/router';
 
 declare var $: any;
 
@@ -17,13 +18,10 @@ export class EditDemographicInfoComponent implements OnInit {
       imageSrc1: '',
       imageSrc2: '',
       imageMultiple: [] as any,
-      isImage1Required: true,
-      isImage2Required: false,
-      isMultiple: false,
       fileIndex: 0,
     },
-    imageHeading1: 'Front Image',
-    imageHeading2: 'Back Image',
+    // imageHeading1: 'Front Image',
+    // imageHeading2: 'Back Image',
   } as any;
 
   fileUploadFileFor = {
@@ -52,13 +50,6 @@ export class EditDemographicInfoComponent implements OnInit {
       front: `${this.concatePage}_DrivingLicenceFront`,
       back: `${this.concatePage}_DrivingLicenceBack`,
     },
-
-    /*
-    addressProof: {
-      front: `${this.concatePage}_addressProofFront`,
-      back: `${this.concatePage}_addressProofBack`,
-    },
-    */
     voterId: {
       front: `${this.concatePage}_voterIdFront`,
       back: `${this.concatePage}_voterIdBack`,
@@ -79,6 +70,7 @@ export class EditDemographicInfoComponent implements OnInit {
     },
   };
   constructor(
+    public router: Router,
     public commonService: CommonService
   ) {
     const A: any = localStorage.getItem('farmer-details');
@@ -88,35 +80,27 @@ export class EditDemographicInfoComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    localStorage.setItem('router_url', this.router.url);
+  }
 
   openFileModalPopup(type: string, fileIndex: number) {
     this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
     this.fileUpload.new.imageSrc2 = '';
     this.fileUpload.new.imageMultiple = [];
-    this.fileUpload.new.isImage1Required = false;
-    this.fileUpload.new.isImage2Required = false;
-    this.fileUpload.new.isMultiple = false;
     this.fileUpload.new.fileIndex = fileIndex;
-    this.fileUpload.imageHeading1 = 'Front Image';
-    this.fileUpload.imageHeading2 = 'Back Image';
+    // this.fileUpload.imageHeading1 = 'Front Image';
+    // this.fileUpload.imageHeading2 = 'Back Image';
 
     if (type === this.fileUploadFileFor.panCard) {
-
       this.fileUpload.popupTitle = 'PAN Card Image';
-      this.fileUpload.new.isImage1Required = true;
-
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.panCard.front
             );
-    }
-
-    else if (type === this.fileUploadFileFor.aadhaarCard) {
+    } else if (type === this.fileUploadFileFor.aadhaarCard) {
       this.fileUpload.popupTitle = 'Aadhaar Card Image';
-      this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.isImage2Required = true;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.aadhaarCard.front
@@ -128,8 +112,6 @@ export class EditDemographicInfoComponent implements OnInit {
 
     } else if (type === this.fileUploadFileFor.drivingLicence) {
       this.fileUpload.popupTitle = 'Driving Licence Image';
-      this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.isImage2Required = true;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.drivingLicence.front
@@ -139,9 +121,7 @@ export class EditDemographicInfoComponent implements OnInit {
               this.indexedDBFileNameManage.drivingLicence.back
             );
     } else if (type === this.fileUploadFileFor.voterId) {
-      this.fileUpload.popupTitle = 'Upload Voter Id Image';
-      this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.isImage2Required = true;
+      this.fileUpload.popupTitle = 'Voter Id Image';
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.voterId.front
@@ -152,8 +132,6 @@ export class EditDemographicInfoComponent implements OnInit {
             );
     } else if (type === this.fileUploadFileFor.passport) {
       this.fileUpload.popupTitle = 'Passport Image';
-      this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.isImage2Required = true;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.passport.front
@@ -164,8 +142,6 @@ export class EditDemographicInfoComponent implements OnInit {
             );
     } else if (type === this.fileUploadFileFor.NREGA) {
       this.fileUpload.popupTitle = 'NREGA Image';
-      this.fileUpload.new.isImage1Required = true;
-      this.fileUpload.new.isImage2Required = true;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.NREGA.front
@@ -174,52 +150,32 @@ export class EditDemographicInfoComponent implements OnInit {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.NREGA.back
             );
-    } else if (type === this.fileUploadFileFor.farmerProfile) {
-      this.fileUpload.popupTitle = 'Farmer Profile Image';
-      this.fileUpload.imageHeading1 = 'Farmer Image';
-      this.fileUpload.new.isImage1Required = true;
-          this.fileUpload.new.imageSrc1 =
-            this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.farmerProfile.front
-            );
- 
+    // } else if (type === this.fileUploadFileFor.farmerProfile) {
+    //   this.fileUpload.popupTitle = 'Farmer Profile Image';
+    //   this.fileUpload.imageHeading1 = 'Farmer Image';      
+    //       this.fileUpload.new.imageSrc1 =
+    //         this.commonService.fetchFarmerDocument(
+    //           this.indexedDBFileNameManage.farmerProfile.front
+    //         ); 
     } else if (type === this.fileUploadFileFor.ownershipPicture) {
       this.fileUpload.popupTitle = 'Ownership Picture Image';
-      this.fileUpload.imageHeading1 = 'Ownership Picture Image';
-      this.fileUpload.new.isMultiple = true;
-      var fCount = 0;
-      let demoInfoFiles: any = localStorage.getItem('demo-info-files');
-      if (demoInfoFiles) {
-        demoInfoFiles = JSON.parse(demoInfoFiles);
-        // let difkey =
-        //   this.indexedDBFileNameManage.ownershipPicture.count +
-        //   '_' +
-        //   this.fileUpload.new.fileIndex;
-        // if (demoInfoFiles[difkey]) {
-        //   fCount = demoInfoFiles[difkey];
-        // }
-      }
-      if (!fCount) {
-        let farmerFiles: any = localStorage.getItem('farmer-files');
-        if (farmerFiles) {
-          farmerFiles = JSON.parse(farmerFiles);
-          for (let ffi = 0; ffi < Object.keys(farmerFiles).length; ffi++) {
-            // if (
-            //   farmerFiles.hasOwnProperty(
-            //     this.indexedDBFileNameManage.ownershipPicture.front +
-            //       '_' +
-            //       this.fileUpload.new.fileIndex +
-            //       '_' +
-            //       ffi
-            //   )
-            // ) {
-            //   fCount++;
-            // }
+      // this.fileUpload.imageHeading1 = 'Ownership Picture Image';
+      let farmerFiles: any = localStorage.getItem('farmer-files');
+      if (farmerFiles) {
+        farmerFiles = JSON.parse(farmerFiles);
+        for (let fIndex = 0; fIndex < Object.keys(farmerFiles).length; fIndex++) {
+          let ownershipPicture =
+          this.commonService.fetchFarmerDocument(
+            this.indexedDBFileNameManage.ownershipPicture.front +
+              '_' +
+              this.fileUpload.new.fileIndex +
+              '_' +
+              fIndex
+          );
+          if (ownershipPicture) {
+            this.fileUpload.new.imageMultiple.push(ownershipPicture);
           }
         }
-      }
-      for (let fIndex = 0; fIndex < fCount; fIndex++) {
-  
       }
     }
     $('#fileUploadModalPopup').modal('show');

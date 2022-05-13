@@ -262,7 +262,7 @@
                           <td>
                             {{ (x.address.addressLine1.length>8)? (x.address.addressLine1 | slice:0:8)+'...':(x.address.addressLine1) }}
                           </td>
-                          <td>NA</td>
+                          <td>{{x.fa_frcm_score || 'NA' }}</td>
                           <td>NA</td>
                           <td>
                             <a *ngIf="x.loan_account_number" href="http://65.2.60.231/mifin/" target="_blank">{{x.loan_account_number}}</a>
@@ -359,35 +359,47 @@
                     active: selectedViewType == 'FARMS_PIPELINE_LIST_VIEW'
                   }" id="farms_pipeline_list_view" role="tabpanel">
                   <div class="table-responsive listview-table">
-                    <table class="table">
+                    <table *ngIf="allPipelineFarmers.length" datatable [dtOptions]="dtOptions" class="table table-hover current-max-width" >
                       <thead>
                         <tr>
+                          <th>FRCM Score</th>
                           <th>URN</th>
                           <th>Farmer Name</th>
+                          <th>Farm Size(Hectares)</th>
                           <th>Mobile</th>
                           <th>Date of Registration</th>
+                          <th></th>
+                          <th></th>
+                          <th>Land</th>
+                          <th>Added By</th>
+                          <th>Branch Name</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let x of allPipelineFarmers">
+                          <td>{{x.fa_frcm_score || 'NA' }}</td>
                           <td>{{x.farmerId}}</td>
                           <td>
                             {{ x.farmerDetails?.firstName }}
                             {{ x.farmerDetails?.middleName }}
                             {{ x.farmerDetails?.lastName }}
                           </td>
+                          <td>{{x.fa_field_size || 'NA' }}</td>
                           <td>
                             {{ x.address?.mobileNumber }}
-                          </td>
+                          </td>                          
                           <td>
                             {{ x.createdDate | date:'EE, MMM d, y' }}
                           </td>
-                          <!-- <td>
-                            <a href="javascript:void(0);" class="btn btn_add_farmer">Add Farmer</a>
-                          </td> -->
+                          <td><a (click)="getFarmerDetailsById(x.farmerId,'view')" class="btn btn-view-f cursor-pointer">View</a></td>
+                          <td><a (click)="getFarmerDetailsById(x.farmerId,'edit')" class="btn btn-view-f cursor-pointer">Edit</a></td>
+                          <td>NA</td>
+                          <td>{{ x.createdBy }}</td>
+                          <td>{{ x.branch_name }}</td>
                         </tr>
                       </tbody>
                     </table>
+                    <div *ngIf="!allPipelineFarmers.length">No data available in table</div>
                   </div>
                 </div>
                 <div class="tab-pane fade" [ngClass]="{

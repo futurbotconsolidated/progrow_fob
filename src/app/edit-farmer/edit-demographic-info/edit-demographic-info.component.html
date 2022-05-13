@@ -101,7 +101,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="actual-facts summery-bg full-height">
-                        <h4 class="summery-heading"><span>Property ownership</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Property ownership</span><a  href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
 
                             <table class="table">
@@ -115,10 +115,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let x of demographicDisp?.propertyOwnership">
+                                    <tr *ngFor="let x of demographicDisp?.propertyOwnership; let i = index">
                                         <td>{{x.propertyType}}</td>
                                         <td>
-                                            <p><a href="javascript:void(0);">View</a></p>
+                                            <p><a href="javascript:void(0)" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">View</a></p>
                                         </td>
                                         <td>{{x.ownershipType}}</td>
                                         <td>{{x.particular}}</td>
@@ -155,27 +155,23 @@
           <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
         </div>
         <div class="modal-body">
-          <!-- START : Image - 1  -->
           <div class="row" >
-            <div class="col-md-6 mb-1" [hidden]="!fileUpload.new.isImage1Required">
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageSrc1">
               <p class="fs-6">Preview Image</p>
               <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" /><br>
               <a [href]="fileUpload.new.imageSrc1" target="_blank">View File</a>
             </div>
-            <div class="col-md-6 mb-1" [hidden]="!fileUpload.new.isImage2Required">
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageSrc2">
               <p class="fs-6">Preview Image</p>
               <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" /><br>
               <a [href]="fileUpload.new.imageSrc2" target="_blank">View File</a>
             </div>
-
             <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let imageSrc of fileUpload.new.imageMultiple">
               <p class="fs-6">Preview Image</p>
               <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" /><br/>
               <a [href]="imageSrc" target="_blank">View File</a>
-            </div>
-  
+            </div>  
           </div>
-          <!-- END : Image - Multiple -->
         </div>
         <div class="modal-footer p-2">
           <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>

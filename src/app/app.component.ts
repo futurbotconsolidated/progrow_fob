@@ -32,12 +32,7 @@ export class AppComponent {
           sessionStorage.clear();
           this.oauthService.initCodeFlow();
         } else {
-          let router_url = localStorage.getItem('router_url');
-          if(router_url){
-            this.router.navigate([router_url]);
-          } else {
-            this.router.navigate(['/bd/dashboard']);
-          }          
+          this.router.navigate(['/bd/dashboard']);
         }
       });
   }
