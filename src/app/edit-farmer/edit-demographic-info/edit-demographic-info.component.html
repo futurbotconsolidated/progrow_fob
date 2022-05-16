@@ -156,6 +156,8 @@
         </div>
         <div class="modal-body">
           <div class="row" >
+            <div class="col-md-12 mb-1" [hidden]="!fileUpload.description">{{fileUpload.description}}</div>
+            <div class="col-md-12 mb-1" [hidden]="!fileUpload.kyc">{{fileUpload.kyc}}</div>
             <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageSrc1">
               <p class="fs-6">Preview Image</p>
               <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" /><br>

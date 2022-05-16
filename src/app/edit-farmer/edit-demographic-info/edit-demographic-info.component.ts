@@ -12,7 +12,7 @@ declare var $: any;
 export class EditDemographicInfoComponent implements OnInit {
   demographicDisp = {} as any;
   fileUpload = {
-    fileFor: '',
+    // fileFor: '',
     popupTitle: '',
     new: {
       imageSrc1: '',
@@ -20,8 +20,8 @@ export class EditDemographicInfoComponent implements OnInit {
       imageMultiple: [] as any,
       fileIndex: 0,
     },
-    // imageHeading1: 'Front Image',
-    // imageHeading2: 'Back Image',
+    description: '',
+    kyc: '',
   } as any;
 
   fileUploadFileFor = {
@@ -76,7 +76,6 @@ export class EditDemographicInfoComponent implements OnInit {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.demographicDisp = JSON.parse(A).demographic_info;
-      console.log('this.demographicDisp : ', this.demographicDisp);
     }
   }
 
@@ -85,22 +84,25 @@ export class EditDemographicInfoComponent implements OnInit {
   }
 
   openFileModalPopup(type: string, fileIndex: number) {
-    this.fileUpload.fileFor = type;
+    //this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
     this.fileUpload.new.imageSrc2 = '';
     this.fileUpload.new.imageMultiple = [];
     this.fileUpload.new.fileIndex = fileIndex;
-    // this.fileUpload.imageHeading1 = 'Front Image';
-    // this.fileUpload.imageHeading2 = 'Back Image';
-
+    this.fileUpload.description = '';
+    this.fileUpload.kyc = '';
     if (type === this.fileUploadFileFor.panCard) {
       this.fileUpload.popupTitle = 'PAN Card Image';
+      this.fileUpload.description = 'PAN Card: '+this.demographicDisp.identityProof.panNumber;
+      this.fileUpload.kyc = 'Verified: '+this.demographicDisp.kycData.pan.isVerified;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.panCard.front
             );
     } else if (type === this.fileUploadFileFor.aadhaarCard) {
       this.fileUpload.popupTitle = 'Aadhaar Card Image';
+      this.fileUpload.description = 'Aadhaar Card: '+this.demographicDisp.identityProof.aadhaarNumber;
+      this.fileUpload.kyc = 'Verified: '+this.demographicDisp.kycData.aadhaar.isVerified;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.aadhaarCard.front
@@ -112,6 +114,8 @@ export class EditDemographicInfoComponent implements OnInit {
 
     } else if (type === this.fileUploadFileFor.drivingLicence) {
       this.fileUpload.popupTitle = 'Driving Licence Image';
+      this.fileUpload.description = 'Driving Licence: '+this.demographicDisp.identityProof.drivingLicenceNumber;
+      this.fileUpload.kyc = 'Verified: '+this.demographicDisp.kycData.driving_licence.isVerified;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.drivingLicence.front
@@ -122,6 +126,8 @@ export class EditDemographicInfoComponent implements OnInit {
             );
     } else if (type === this.fileUploadFileFor.voterId) {
       this.fileUpload.popupTitle = 'Voter Id Image';
+      this.fileUpload.description = 'Voter Id: '+this.demographicDisp.identityProof.voterIdNumber;
+      this.fileUpload.kyc = 'Verified: '+this.demographicDisp.kycData.voter_id.isVerified;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.voterId.front
@@ -132,6 +138,8 @@ export class EditDemographicInfoComponent implements OnInit {
             );
     } else if (type === this.fileUploadFileFor.passport) {
       this.fileUpload.popupTitle = 'Passport Image';
+      this.fileUpload.description = 'Voter Id: '+this.demographicDisp.identityProof.passportNumber;
+      this.fileUpload.kyc = 'Verified: '+this.demographicDisp.kycData.passport.isVerified;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.passport.front
@@ -142,6 +150,8 @@ export class EditDemographicInfoComponent implements OnInit {
             );
     } else if (type === this.fileUploadFileFor.NREGA) {
       this.fileUpload.popupTitle = 'NREGA Image';
+      this.fileUpload.description = 'NREGA: '+this.demographicDisp.identityProof.NREGANumber;
+      this.fileUpload.kyc = 'Verified: '+this.demographicDisp.kycData.nrega.isVerified;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.NREGA.front
@@ -159,7 +169,6 @@ export class EditDemographicInfoComponent implements OnInit {
     //         ); 
     } else if (type === this.fileUploadFileFor.ownershipPicture) {
       this.fileUpload.popupTitle = 'Ownership Picture Image';
-      // this.fileUpload.imageHeading1 = 'Ownership Picture Image';
       let farmerFiles: any = localStorage.getItem('farmer-files');
       if (farmerFiles) {
         farmerFiles = JSON.parse(farmerFiles);
