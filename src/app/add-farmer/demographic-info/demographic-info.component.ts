@@ -1059,7 +1059,7 @@ export class DemographicInfoComponent
           this.indexedDBFileNameManage.ownershipPicture.count +
           '_' +
           this.fileUpload.new.fileIndex;
-        demoInfoFiles[difkey] = event.target.files.length;
+        demoInfoFiles[difkey] = event.target.files.length+1;
         localStorage.setItem('demo-info-files', JSON.stringify(demoInfoFiles));
       }
     }

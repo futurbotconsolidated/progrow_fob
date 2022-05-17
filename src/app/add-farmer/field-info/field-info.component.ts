@@ -1149,7 +1149,7 @@ export class FieldInfoComponent implements OnInit {
       } else {
         fieldInfoFiles = {};
       }
-      fieldInfoFiles[difkey] = this.fileUpload.new.imageMultiple.length;
+      fieldInfoFiles[difkey] = this.fileUpload.new.imageMultiple.length+1;
       localStorage.setItem(this.localStoragePageName, JSON.stringify(fieldInfoFiles));
     }
   }

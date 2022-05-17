@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+declare var $: any;
+import { CommonService } from '../../shared/common.service';
 
 @Component({
   selector: 'app-edit-co-applicant',
@@ -7,13 +9,322 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditCoApplicantComponent implements OnInit {
   coApplicantDisp = {} as any;
-  constructor() {
+  fileUpload = {
+    coaNo: '',
+    fileFor: '',
+    popupTitle: '',
+    new: {
+      imageSrc1: '',
+      imageSrc2: '',
+    },
+    description: '',
+    kyc: '',
+  } as any;
+  displayCoApplicant1ProfileImage = '' as any;
+  displayCoApplicant2ProfileImage = '' as any;
+  indexedDBPageName = 'coapplicant';
+  concatePage1 = 'coapplicant1';
+  concatePage2 = 'coapplicant2';
+  indexedDBName = 'registerFarmer';
+  indexedDBFileNameManage = {
+    coa1: {
+      panCard: {
+        front: `${this.concatePage1}_PANCardFront`,
+        back: '',
+      },
+      aadhaarCard: {
+        front: `${this.concatePage1}_AadhaarCardFront`,
+        back: `${this.concatePage1}_AadhaarCardBack`,
+      },
+      drivingLicence: {
+        front: `${this.concatePage1}_DrivingLicenceFront`,
+        back: `${this.concatePage1}_DrivingLicenceBack`,
+      },
+
+      voterId: {
+        front: `${this.concatePage1}_voterIdFront`,
+        back: `${this.concatePage1}_voterIdBack`,
+      },
+      passport: {
+        front: `${this.concatePage1}_passportFront`,
+        back: `${this.concatePage1}_passportBack`,
+      },
+      NREGA: {
+        front: `${this.concatePage1}_NREGAFront`,
+        back: `${this.concatePage1}_NREGABack`,
+      },
+
+      farmerProfile: { front: `${this.concatePage1}_farmerProfileImage` },
+    },
+    coa2: {
+      panCard: {
+        front: `${this.concatePage2}_PANCardFront`,
+        back: '',
+      },
+      aadhaarCard: {
+        front: `${this.concatePage2}_AadhaarCardFront`,
+        back: `${this.concatePage2}_AadhaarCardBack`,
+      },
+      drivingLicence: {
+        front: `${this.concatePage2}_DrivingLicenceFront`,
+        back: `${this.concatePage2}_DrivingLicenceBack`,
+      },
+
+      voterId: {
+        front: `${this.concatePage2}_voterIdFront`,
+        back: `${this.concatePage2}_voterIdBack`,
+      },
+      passport: {
+        front: `${this.concatePage2}_passportFront`,
+        back: `${this.concatePage2}_passportBack`,
+      },
+      NREGA: {
+        front: `${this.concatePage2}_NREGAFront`,
+        back: `${this.concatePage2}_NREGABack`,
+      },
+      farmerProfile: { front: `${this.concatePage2}_farmerProfileImage` },
+    },
+  };
+
+  fileUploadFileFor = {
+    coa1: {
+      panCard: 'PAN',
+      aadhaarCard: 'AADHAAR',
+      drivingLicence: 'DRIVING_LICENCE',
+      voterId: 'VOTERID',
+      passport: 'PASSPORT',
+      NREGA: 'NREGA',
+      farmerProfile: 'FARMER_PROFILE',
+    },
+    coa2: {
+      panCard: 'PAN',
+      aadhaarCard: 'AADHAAR',
+      drivingLicence: 'DRIVING_LICENCE',
+      voterId: 'VOTERID',
+      passport: 'PASSPORT',
+      NREGA: 'NREGA',
+      farmerProfile: 'FARMER_PROFILE',
+    },
+  };
+
+  constructor(
+    public commonService: CommonService,
+  ) {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
-      const coArray = JSON.parse(A).co_applicant_details;
-      this.coApplicantDisp =
-        Array.isArray(coArray) && coArray.length ? coArray[0] : null;
+      this.coApplicantDisp = JSON.parse(A).co_applicant_details;
+      console.log('coApplicantDisp : ', this.coApplicantDisp);
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+  openFileModalPopup(coaNo: string, type: string) {
+    this.fileUpload.coaNo = coaNo;
+    this.fileUpload.fileFor = type;
+    this.fileUpload.new.imageSrc1 = '';
+    this.fileUpload.new.imageSrc2 = '';
+    this.fileUpload.description = '';
+    this.fileUpload.kyc = '';
+    if (type === this.fileUploadFileFor.coa1.panCard && coaNo === 'coa1') {
+      this.fileUpload.popupTitle = 'PAN Card Image';
+      this.fileUpload.description = 'PAN Card: ' + this.coApplicantDisp[0].identityProof.panNumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.pan?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.panCard.front
+        );
+    } else if (
+      type === this.fileUploadFileFor.coa2.panCard &&
+      coaNo === 'coa2'
+    ) {
+      this.fileUpload.popupTitle = 'PAN Card Image';
+      this.fileUpload.description = 'PAN Card: ' + this.coApplicantDisp[1].identityProof.panNumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.pan?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.panCard.front
+        );
+    } else if (
+      type === this.fileUploadFileFor.coa1.aadhaarCard &&
+      coaNo === 'coa1'
+    ) {
+      this.fileUpload.popupTitle = 'Aadhaar Card Image';
+      this.fileUpload.description = 'Aadhaar Card: ' + this.coApplicantDisp[0].identityProof.aadhaarNumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.aadhaar?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.aadhaarCard.front
+        );
+      this.fileUpload.new.imageSrc2 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.aadhaarCard.back
+        );
+    } else if (
+      type === this.fileUploadFileFor.coa2.aadhaarCard &&
+      coaNo === 'coa2'
+    ) {
+      this.fileUpload.popupTitle = 'Aadhaar Card Image';
+      this.fileUpload.description = 'Aadhaar Card: ' + this.coApplicantDisp[1].identityProof.aadhaarNumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.aadhaar?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.aadhaarCard.front
+        );
+      this.fileUpload.new.imageSrc2 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.aadhaarCard.back
+        );
+    } else if (
+      type === this.fileUploadFileFor.coa1.drivingLicence &&
+      coaNo === 'coa1'
+    ) {
+      this.fileUpload.popupTitle = 'Driving Licence Image';
+      this.fileUpload.description = 'Driving Licence: ' + this.coApplicantDisp[0].identityProof.drivingLicenceNumber;
+      // let kycdata = this.coApplicantDisp[0]?.kycData?.driving_licence?.data || {};
+      // let kycdata_var = JSON.stringify(kycdata);
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.driving_licence?.isVerified || 'NA');
+      // + kycdata_var;
+      // let kycdata = this.coApplicantDisp[0]?.kycData?.driving_licence?.data || {};
+      // console.log('kycdata : ', kycdata);
+      // kycdata.forEach((x: any) => {
+      //   console.log(x);
+      // });
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.drivingLicence.front
+        );
+      this.fileUpload.new.imageSrc2 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.drivingLicence.back
+        );
+    } else if (
+      type === this.fileUploadFileFor.coa2.drivingLicence &&
+      coaNo === 'coa2'
+    ) {
+      this.fileUpload.popupTitle = 'Driving Licence Image';
+      this.fileUpload.description = 'Driving Licence: ' + this.coApplicantDisp[1].identityProof.drivingLicenceNumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.driving_licence?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.drivingLicence.front
+        );
+      this.fileUpload.new.imageSrc2 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.drivingLicence.back
+        );
+    } else if (
+      type === this.fileUploadFileFor.coa1.voterId &&
+      coaNo === 'coa1'
+    ) {
+      this.fileUpload.popupTitle = 'Voter Id Image';
+      this.fileUpload.description = 'Voter Id: ' + this.coApplicantDisp[0].identityProof.voterIdNumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.voter_id?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.voterId.front
+        );
+      this.fileUpload.new.imageSrc2 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.voterId.back
+        );
+    } else if (
+      type === this.fileUploadFileFor.coa2.voterId &&
+      coaNo === 'coa2'
+    ) {
+      this.fileUpload.popupTitle = 'Voter Id Image';
+      this.fileUpload.description = 'Voter Id: ' + this.coApplicantDisp[1].identityProof.voterIdNumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.voter_id?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.voterId.front
+        );
+      this.fileUpload.new.imageSrc2 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.voterId.back
+        );
+    } else if (
+      type === this.fileUploadFileFor.coa1.passport &&
+      coaNo === 'coa1'
+    ) {
+      this.fileUpload.popupTitle = 'Passport Image';
+      this.fileUpload.description = 'Passport Number: ' + this.coApplicantDisp[0].identityProof.passportNumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.passport?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.passport.front
+        );
+      this.fileUpload.new.imageSrc2 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.passport.back
+        );
+    } else if (
+      type === this.fileUploadFileFor.coa2.passport &&
+      coaNo === 'coa2'
+    ) {
+      this.fileUpload.popupTitle = 'Passport Image';
+      this.fileUpload.description = 'Passport Number: ' + this.coApplicantDisp[1].identityProof.passportNumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.passport?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.passport.front
+        );
+      this.fileUpload.new.imageSrc2 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.passport.back
+        );
+    } else if (type === this.fileUploadFileFor.coa1.NREGA && coaNo === 'coa1') {
+      this.fileUpload.popupTitle = 'NREGA Image';
+      this.fileUpload.description = 'NREGA Number: ' + this.coApplicantDisp[0].identityProof.NREGANumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.nrega?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.NREGA.front
+        );
+      this.fileUpload.new.imageSrc2 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa1.NREGA.back
+        );
+    } else if (type === this.fileUploadFileFor.coa2.NREGA && coaNo === 'coa2') {
+      this.fileUpload.popupTitle = 'NREGA Image';
+      this.fileUpload.description = 'NREGA Number: ' + this.coApplicantDisp[1].identityProof.NREGANumber;
+      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.nrega?.isVerified || 'NA');
+      this.fileUpload.new.imageSrc1 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.NREGA.front
+        );
+      this.fileUpload.new.imageSrc2 =
+        this.commonService.fetchFarmerDocument(
+          this.indexedDBFileNameManage.coa2.NREGA.back
+        );
+      // } else if (
+      //   type === this.fileUploadFileFor.coa1.farmerProfile &&
+      //   coaNo === 'coa1'
+      // ) {
+      //   this.fileUpload.popupTitle = 'Farmer Profile Image';
+      //       this.fileUpload.new.imageSrc1 =
+      //         this.commonService.fetchFarmerDocument(
+      //           this.indexedDBFileNameManage.coa1.farmerProfile.front
+      //         );
+      //       this.displayCoApplicant1ProfileImage =
+      //         this.commonService.fetchFarmerDocument(
+      //           this.indexedDBFileNameManage.coa1.farmerProfile.front
+      //         );
+      // } else if (
+      //   type === this.fileUploadFileFor.coa2.farmerProfile &&
+      //   coaNo === 'coa2'
+      // ) {
+      //   this.fileUpload.popupTitle = 'Farmer Profile Image';
+      //       this.fileUpload.new.imageSrc1 =
+      //         this.commonService.fetchFarmerDocument(
+      //           this.indexedDBFileNameManage.coa2.farmerProfile.front
+      //         );
+      //       this.displayCoApplicant2ProfileImage =
+      //         this.commonService.fetchFarmerDocument(
+      //           this.indexedDBFileNameManage.coa2.farmerProfile.front
+      //         );
+    }
+    $('#fileUploadModalPopup').modal('show');
+  }
+
 }
+
