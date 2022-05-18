@@ -365,10 +365,10 @@
                           <th>FRCM Score</th>
                           <th>URN</th>
                           <th>Farmer Name</th>
-                          <th>Farm Size(Hectares)</th>
+                          <th>Farm Size (Hectares)</th>
                           <th>Mobile</th>
                           <th>Date of Registration</th>                          
-                          <th>Land</th>
+                          <th>Land Record</th>
                           <th>Added By</th>
                           <th>Branch Name</th>
                           <th></th>
@@ -391,7 +391,7 @@
                           <td>
                             {{ x.createdDate | date:'EE, MMM d, y' }}
                           </td>                          
-                          <td>NA</td>
+                          <td><span *ngIf="!x.fieldInfo[0]?.field_ownership_detail?.ownership_document_url">NA</span><a *ngIf="x.fieldInfo[0]?.field_ownership_detail?.ownership_document_url" href="{{x.fieldInfo[0]?.field_ownership_detail?.ownership_document_url}}" target="_blank">View</a></td>
                           <td>{{ x.createdBy }}</td>
                           <td>{{ x.branch_name }}</td>
                           <td><a (click)="getFarmerDetailsById(x.farmerId,'view')" class="btn btn-view-f cursor-pointer">View</a></td>

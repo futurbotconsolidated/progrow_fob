@@ -124,11 +124,21 @@ export class EditCoApplicantComponent implements OnInit {
     this.fileUpload.new.imageSrc1 = '';
     this.fileUpload.new.imageSrc2 = '';
     this.fileUpload.description = '';
-    this.fileUpload.kyc = '';
+    this.fileUpload.kyc = [];
     if (type === this.fileUploadFileFor.coa1.panCard && coaNo === 'coa1') {
-      this.fileUpload.popupTitle = 'PAN Card Image';
+      this.fileUpload.popupTitle = 'PAN Card';
       this.fileUpload.description = 'PAN Card: ' + this.coApplicantDisp[0].identityProof.panNumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.pan?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[0]?.kycData?.pan?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[0]?.kycData?.pan?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa1.panCard.front
@@ -137,9 +147,19 @@ export class EditCoApplicantComponent implements OnInit {
       type === this.fileUploadFileFor.coa2.panCard &&
       coaNo === 'coa2'
     ) {
-      this.fileUpload.popupTitle = 'PAN Card Image';
+      this.fileUpload.popupTitle = 'PAN Card';
       this.fileUpload.description = 'PAN Card: ' + this.coApplicantDisp[1].identityProof.panNumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.pan?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[1]?.kycData?.pan?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[1]?.kycData?.pan?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa2.panCard.front
@@ -148,9 +168,19 @@ export class EditCoApplicantComponent implements OnInit {
       type === this.fileUploadFileFor.coa1.aadhaarCard &&
       coaNo === 'coa1'
     ) {
-      this.fileUpload.popupTitle = 'Aadhaar Card Image';
+      this.fileUpload.popupTitle = 'Aadhaar Card';
       this.fileUpload.description = 'Aadhaar Card: ' + this.coApplicantDisp[0].identityProof.aadhaarNumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.aadhaar?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[0]?.kycData?.aadhaar?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[0]?.kycData?.aadhaar?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa1.aadhaarCard.front
@@ -163,9 +193,19 @@ export class EditCoApplicantComponent implements OnInit {
       type === this.fileUploadFileFor.coa2.aadhaarCard &&
       coaNo === 'coa2'
     ) {
-      this.fileUpload.popupTitle = 'Aadhaar Card Image';
+      this.fileUpload.popupTitle = 'Aadhaar Card';
       this.fileUpload.description = 'Aadhaar Card: ' + this.coApplicantDisp[1].identityProof.aadhaarNumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.aadhaar?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[1]?.kycData?.aadhaar?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[1]?.kycData?.aadhaar?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa2.aadhaarCard.front
@@ -178,17 +218,19 @@ export class EditCoApplicantComponent implements OnInit {
       type === this.fileUploadFileFor.coa1.drivingLicence &&
       coaNo === 'coa1'
     ) {
-      this.fileUpload.popupTitle = 'Driving Licence Image';
+      this.fileUpload.popupTitle = 'Driving Licence';
       this.fileUpload.description = 'Driving Licence: ' + this.coApplicantDisp[0].identityProof.drivingLicenceNumber;
-      // let kycdata = this.coApplicantDisp[0]?.kycData?.driving_licence?.data || {};
-      // let kycdata_var = JSON.stringify(kycdata);
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.driving_licence?.isVerified || 'NA');
-      // + kycdata_var;
-      // let kycdata = this.coApplicantDisp[0]?.kycData?.driving_licence?.data || {};
-      // console.log('kycdata : ', kycdata);
-      // kycdata.forEach((x: any) => {
-      //   console.log(x);
-      // });
+      let kycdata = (this.coApplicantDisp[0]?.kycData?.driving_licence?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[0]?.kycData?.driving_licence?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa1.drivingLicence.front
@@ -201,9 +243,19 @@ export class EditCoApplicantComponent implements OnInit {
       type === this.fileUploadFileFor.coa2.drivingLicence &&
       coaNo === 'coa2'
     ) {
-      this.fileUpload.popupTitle = 'Driving Licence Image';
+      this.fileUpload.popupTitle = 'Driving Licence';
       this.fileUpload.description = 'Driving Licence: ' + this.coApplicantDisp[1].identityProof.drivingLicenceNumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.driving_licence?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[1]?.kycData?.driving_licence?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[1]?.kycData?.driving_licence?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa2.drivingLicence.front
@@ -216,9 +268,19 @@ export class EditCoApplicantComponent implements OnInit {
       type === this.fileUploadFileFor.coa1.voterId &&
       coaNo === 'coa1'
     ) {
-      this.fileUpload.popupTitle = 'Voter Id Image';
+      this.fileUpload.popupTitle = 'Voter Id';
       this.fileUpload.description = 'Voter Id: ' + this.coApplicantDisp[0].identityProof.voterIdNumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.voter_id?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[0]?.kycData?.voter_id?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[0]?.kycData?.voter_id?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa1.voterId.front
@@ -231,9 +293,19 @@ export class EditCoApplicantComponent implements OnInit {
       type === this.fileUploadFileFor.coa2.voterId &&
       coaNo === 'coa2'
     ) {
-      this.fileUpload.popupTitle = 'Voter Id Image';
+      this.fileUpload.popupTitle = 'Voter Id';
       this.fileUpload.description = 'Voter Id: ' + this.coApplicantDisp[1].identityProof.voterIdNumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.voter_id?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[1]?.kycData?.voter_id?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[1]?.kycData?.voter_id?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa2.voterId.front
@@ -246,9 +318,19 @@ export class EditCoApplicantComponent implements OnInit {
       type === this.fileUploadFileFor.coa1.passport &&
       coaNo === 'coa1'
     ) {
-      this.fileUpload.popupTitle = 'Passport Image';
+      this.fileUpload.popupTitle = 'Passport';
       this.fileUpload.description = 'Passport Number: ' + this.coApplicantDisp[0].identityProof.passportNumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.passport?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[0]?.kycData?.passport?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[0]?.kycData?.passport?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa1.passport.front
@@ -261,9 +343,19 @@ export class EditCoApplicantComponent implements OnInit {
       type === this.fileUploadFileFor.coa2.passport &&
       coaNo === 'coa2'
     ) {
-      this.fileUpload.popupTitle = 'Passport Image';
+      this.fileUpload.popupTitle = 'Passport';
       this.fileUpload.description = 'Passport Number: ' + this.coApplicantDisp[1].identityProof.passportNumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.passport?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[1]?.kycData?.passport?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[1]?.kycData?.passport?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa2.passport.front
@@ -273,9 +365,19 @@ export class EditCoApplicantComponent implements OnInit {
           this.indexedDBFileNameManage.coa2.passport.back
         );
     } else if (type === this.fileUploadFileFor.coa1.NREGA && coaNo === 'coa1') {
-      this.fileUpload.popupTitle = 'NREGA Image';
+      this.fileUpload.popupTitle = 'NREGA';
       this.fileUpload.description = 'NREGA Number: ' + this.coApplicantDisp[0].identityProof.NREGANumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[0]?.kycData?.nrega?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[0]?.kycData?.nrega?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[0]?.kycData?.nrega?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa1.NREGA.front
@@ -285,9 +387,19 @@ export class EditCoApplicantComponent implements OnInit {
           this.indexedDBFileNameManage.coa1.NREGA.back
         );
     } else if (type === this.fileUploadFileFor.coa2.NREGA && coaNo === 'coa2') {
-      this.fileUpload.popupTitle = 'NREGA Image';
+      this.fileUpload.popupTitle = 'NREGA';
       this.fileUpload.description = 'NREGA Number: ' + this.coApplicantDisp[1].identityProof.NREGANumber;
-      this.fileUpload.kyc = 'Verified: ' + (this.coApplicantDisp[1]?.kycData?.nrega?.isVerified || 'NA');
+      let kycdata = (this.coApplicantDisp[1]?.kycData?.nrega?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[1]?.kycData?.nrega?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa2.NREGA.front
