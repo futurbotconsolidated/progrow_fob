@@ -878,7 +878,7 @@ export class DemographicInfoComponent
   onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
       let c_file_count = this.fileUpload.new.imageMultiple.length;
-      for (let findex = 0; findex < event.target.files.length; findex++) {
+      for (let findex:any = 0; findex < event.target.files.length; findex++) {
         const file = event.target.files[findex];
 
         // if (file.size > 300000) {
@@ -971,7 +971,7 @@ export class DemographicInfoComponent
                 this.indexedDBFileNameManage.ownershipPicture.front +
                 '_' +
                 this.fileUpload.new.fileIndex +
-                '_' +parseInt(parseInt(c_file_count)+findex);
+                '_' +(parseInt(c_file_count)+parseInt(findex));
             }
           }
           /* START: ngx-indexed-db feature to store files(images/docs) */
