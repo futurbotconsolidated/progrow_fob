@@ -391,7 +391,7 @@
                           <td>
                             {{ x.createdDate | date:'EE, MMM d, y' }}
                           </td>                          
-                          <td><span *ngIf="!x.fieldInfo[0]?.field_ownership_detail?.ownership_document_url">NA</span><a *ngIf="x.fieldInfo[0]?.field_ownership_detail?.ownership_document_url" href="{{x.fieldInfo[0]?.field_ownership_detail?.ownership_document_url}}" target="_blank">View</a></td>
+                          <td><span *ngIf="!x.fa_ownership_document_url">NA</span><a *ngIf="x.fa_ownership_document_url" href="{{x.fa_ownership_document_url}}" target="_blank">View</a></td>
                           <td>{{ x.createdBy }}</td>
                           <td>{{ x.branch_name }}</td>
                           <td><a (click)="getFarmerDetailsById(x.farmerId,'view')" class="btn btn-view-f cursor-pointer">View</a></td>

@@ -18,7 +18,7 @@ export class EditCoApplicantComponent implements OnInit {
       imageSrc2: '',
     },
     description: '',
-    kyc: '',
+    kyc: [],
   } as any;
   displayCoApplicant1ProfileImage = '' as any;
   displayCoApplicant2ProfileImage = '' as any;

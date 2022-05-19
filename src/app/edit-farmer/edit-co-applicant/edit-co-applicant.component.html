@@ -114,6 +114,118 @@
 
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>KYC Details</span> <a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <div class="d-flex-profile kyc-details">
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.NREGANumber">
+                                <span><i class="fa fa-check"></i>NREGA </span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.NREGA)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.aadhaarNumber">
+                                <span><i class="fa fa-check"></i>Aadhaar Card</span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.aadhaarCard)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.drivingLicenceNumber">
+                                <span><i class="fa fa-check"></i>Driving Licence</span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.drivingLicence)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.panNumber">
+                                <span><i class="fa fa-check"></i>Pan Card</span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.panCard)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.passportNumber">
+                                <span><i class="fa fa-check"></i>Passport</span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.passport)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.voterIdNumber">
+                                <span><i class="fa fa-check"></i>Voter Id</span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.voterId)" href="javascript:void(0);">View</a></span>
+                            </p> 
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-9">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Co-Applicant 2 details</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <ul class="d-flex-profile">
+                            <li>
+                                <h5>Name</h5>
+                                <p> {{coApplicantDisp[1]?.farmerDetails['firstName']}} {{coApplicantDisp[1]?.farmerDetails['middleName']}} {{coApplicantDisp[1]?.farmerDetails['lastName']}}</p>
+                            </li>
+                            <li>
+                                <h5>Gender</h5>
+                                <p>{{coApplicantDisp[1]?.farmerDetails['gender']}}</p>
+                            </li>
+                            <li>
+                                <h5>Religion</h5>
+                                <p>{{coApplicantDisp[1]?.farmerDetails['religion']}}</p>
+                            </li>
+                            <li>
+                                <h5>Caste/Tribe</h5>
+                                <p>{{coApplicantDisp[1]?.farmerDetails['caste']}}</p>
+                            </li>
+                            <li>
+                                <h5>Education</h5>
+                                <p>{{coApplicantDisp[1]?.educationQualification}}</p>
+                            </li>
+                            <li>
+                                <h5>Occupation</h5>
+                                <p>{{coApplicantDisp[1]?.otherDetails['occupation']}}</p>
+                            </li>
+                            <li>
+                                <h5>Annual Income</h5>
+                                <p>INR {{coApplicantDisp[1]?.otherDetails['fpoName']}}</p>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Income Streams</span><a href="javascript:void(0)">
+                                <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <div class="d-flex-profile">
+                            <p>N/A</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Property ownership</span><a href="javascript:void(0)">
+                                <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <ul class="d-flex-profile">
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Photo</th>
+                                        <th>Ownership Type</th>
+                                        <th>Perticular</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of coApplicantDisp[1]?.propertyOwnership">
+                                        <td>{{x.propertyType}}</td>
+                                        <td>
+                                            <p><a href="javascript:void(0);">View</a></p>
+                                        </td>
+                                        <td>{{x.ownershipType}}</td>
+                                        <td>{{x.particular}}</td>
+                                        <td>INR {{x.cumulativeValue}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
 
         </div>
     </div>

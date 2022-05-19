@@ -21,7 +21,7 @@ export class EditDemographicInfoComponent implements OnInit {
       fileIndex: 0,
     },
     description: '',
-    kyc: '',
+    kyc: [],
   } as any;
 
   fileUploadFileFor = {
@@ -88,19 +88,39 @@ export class EditDemographicInfoComponent implements OnInit {
     this.fileUpload.new.imageMultiple = [];
     this.fileUpload.new.fileIndex = fileIndex;
     this.fileUpload.description = '';
-    this.fileUpload.kyc = '';
+    this.fileUpload.kyc = [];
     if (type === this.fileUploadFileFor.panCard) {
-      this.fileUpload.popupTitle = 'PAN Card Image';
+      this.fileUpload.popupTitle = 'PAN Card';
       this.fileUpload.description = 'PAN Card: '+this.demographicDisp.identityProof.panNumber;
-      this.fileUpload.kyc = 'Verified: '+(this.demographicDisp?.kycData?.pan?.isVerified || 'NA');
+      let kycdata = (this.demographicDisp.kycData?.pan?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.demographicDisp.kycData?.pan?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.panCard.front
             );
     } else if (type === this.fileUploadFileFor.aadhaarCard) {
-      this.fileUpload.popupTitle = 'Aadhaar Card Image';
+      this.fileUpload.popupTitle = 'Aadhaar Card';
       this.fileUpload.description = 'Aadhaar Card: '+this.demographicDisp.identityProof.aadhaarNumber;
-      this.fileUpload.kyc = 'Verified: '+(this.demographicDisp?.kycData?.aadhaar?.isVerified || 'NA');
+      let kycdata = (this.demographicDisp.kycData?.aadhaar?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.demographicDisp.kycData?.aadhaar?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.aadhaarCard.front
@@ -111,9 +131,19 @@ export class EditDemographicInfoComponent implements OnInit {
             );
 
     } else if (type === this.fileUploadFileFor.drivingLicence) {
-      this.fileUpload.popupTitle = 'Driving Licence Image';
+      this.fileUpload.popupTitle = 'Driving Licence';
       this.fileUpload.description = 'Driving Licence: '+this.demographicDisp.identityProof.drivingLicenceNumber;
-      this.fileUpload.kyc = 'Verified: '+(this.demographicDisp?.kycData?.driving_licence?.isVerified || 'NA');
+      let kycdata = (this.demographicDisp.kycData?.driving_licence?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.demographicDisp.kycData?.driving_licence?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr; 
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.drivingLicence.front
@@ -123,9 +153,19 @@ export class EditDemographicInfoComponent implements OnInit {
               this.indexedDBFileNameManage.drivingLicence.back
             );
     } else if (type === this.fileUploadFileFor.voterId) {
-      this.fileUpload.popupTitle = 'Voter Id Image';
+      this.fileUpload.popupTitle = 'Voter Id';
       this.fileUpload.description = 'Voter Id: '+this.demographicDisp.identityProof.voterIdNumber;
-      this.fileUpload.kyc = 'Verified: '+(this.demographicDisp?.kycData?.voter_id?.isVerified || 'NA');
+      let kycdata = (this.demographicDisp.kycData?.voter_id?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.demographicDisp.kycData?.voter_id?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr;
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.voterId.front
@@ -135,9 +175,19 @@ export class EditDemographicInfoComponent implements OnInit {
               this.indexedDBFileNameManage.voterId.back
             );
     } else if (type === this.fileUploadFileFor.passport) {
-      this.fileUpload.popupTitle = 'Passport Image';
+      this.fileUpload.popupTitle = 'Passport';
       this.fileUpload.description = 'Voter Id: '+this.demographicDisp.identityProof.passportNumber;
-      this.fileUpload.kyc = 'Verified: '+(this.demographicDisp?.kycData?.passport?.isVerified || 'NA');
+      let kycdata = (this.demographicDisp.kycData?.passport?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.demographicDisp.kycData?.passport?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr; 
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.passport.front
@@ -147,9 +197,19 @@ export class EditDemographicInfoComponent implements OnInit {
               this.indexedDBFileNameManage.passport.back
             );
     } else if (type === this.fileUploadFileFor.NREGA) {
-      this.fileUpload.popupTitle = 'NREGA Image';
+      this.fileUpload.popupTitle = 'NREGA';
       this.fileUpload.description = 'NREGA: '+this.demographicDisp.identityProof.NREGANumber;
-      this.fileUpload.kyc = 'Verified: '+(this.demographicDisp?.kycData?.nrega?.isVerified || 'NA');
+      let kycdata = (this.demographicDisp.kycData?.nrega?.data || {});
+      let kycdata_var = JSON.stringify(kycdata);
+      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
+      let kycdata_s = kycdata_var.split(',');
+      let kycdata_arr:any = [];
+      kycdata_arr.push('Verified: ' + (this.demographicDisp.kycData?.nrega?.isVerified || 'NA'));
+      kycdata_s.forEach((x: any) => {
+        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
+        kycdata_arr.push(y);
+      });
+      this.fileUpload.kyc = kycdata_arr; 
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.NREGA.front

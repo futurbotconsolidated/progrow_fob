@@ -1049,6 +1049,7 @@ export class FieldInfoComponent implements OnInit {
 
   onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
+      let c_file_count = this.fileUpload.new.imageMultiple.length;
       this.fileUpload.new.fileIndex = fileIndex;      
       for (let findex = 0; findex < event.target.files.length; findex++) {
         const file = event.target.files[findex];        
@@ -1070,7 +1071,6 @@ export class FieldInfoComponent implements OnInit {
           if (
             this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
           ) {
-            if (type === 'FRONT_IMAGE') {
               let type = 'file';
               if (imageSrc.includes('data:image/')) {
                 type = 'image';                
@@ -1081,12 +1081,10 @@ export class FieldInfoComponent implements OnInit {
                 name: file.name,
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
-              selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+this.fileUpload.new.imageMultiple.length);
-            }
+              selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+c_file_count);            
           } else if (
             this.fileUpload.fileFor === this.fileUploadFileFor.testPicture
           ) {
-            if (type === 'FRONT_IMAGE') {
               let type = 'file';
               if (imageSrc.includes('data:image/')) {
                 type = 'image';
@@ -1097,8 +1095,7 @@ export class FieldInfoComponent implements OnInit {
                 name: file.name,
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
-              selectedImageFor = this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+this.fileUpload.new.imageMultiple.length);
-            }
+              selectedImageFor = this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+c_file_count);            
           }
           /* START: ngx-indexed-db feature to store files(images/docs) */
           // if file already exist then delete then add
@@ -1148,8 +1145,12 @@ export class FieldInfoComponent implements OnInit {
         fieldInfoFiles = JSON.parse(fieldInfoFiles);
       } else {
         fieldInfoFiles = {};
+      }      
+      if(fieldInfoFiles[difkey]){
+      fieldInfoFiles[difkey] = parseInt(fieldInfoFiles[difkey]) + event.target.files.length;
+      } else {
+        fieldInfoFiles[difkey] = event.target.files.length;
       }
-      fieldInfoFiles[difkey] = this.fileUpload.new.imageMultiple.length+1;
       localStorage.setItem(this.localStoragePageName, JSON.stringify(fieldInfoFiles));
     }
   }

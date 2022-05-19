@@ -155,9 +155,15 @@
           <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
         </div>
         <div class="modal-body">
-          <div class="row" >
-            <div class="col-md-12 mb-1" [hidden]="!fileUpload.description">{{fileUpload.description}}</div>
-            <div class="col-md-12 mb-1" [hidden]="!fileUpload.kyc">{{fileUpload.kyc}}</div>
+          <div class="row">
+            <div class="col-md-12 mb-1 txt-capitalize" [hidden]="!fileUpload.description">{{fileUpload.description}}</div>
+            <div class="col-md-12 mb-1" [hidden]="!fileUpload.kyc"><b>KYC Detail:</b>
+                <div class="row">
+                    <div class="col-md-6 txt-capitalize" *ngFor="let x of fileUpload.kyc">
+                        {{x}}
+                    </div>
+                </div>
+            </div> 
             <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageSrc1">
               <p class="fs-6">Preview Image</p>
               <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" /><br>
