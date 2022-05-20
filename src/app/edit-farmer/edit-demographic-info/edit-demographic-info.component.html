@@ -141,6 +141,10 @@
                             </p>
                             <p *ngIf="demographicDisp?.propertyStatus">Property Status: <b>{{demographicDisp?.propertyStatus}}</b>
                             </p>
+                            <p *ngIf="demographicDisp?.otherDetails?.annualIncome">Annual Income(₹): <b>{{demographicDisp?.otherDetails?.annualIncome}}</b>
+                            <p *ngIf="demographicDisp?.otherDetails?.educationalQualification">Educational Qualification: <b>{{demographicDisp?.otherDetails?.educationalQualification}}</b>
+                            <p *ngIf="demographicDisp?.otherDetails?.occupation">Occupation: <b>{{demographicDisp?.otherDetails?.occupation}}</b>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -160,7 +164,20 @@
           <div class="row">
             <div class="col-md-12 mb-1 txt-capitalize" [hidden]="!fileUpload.description">{{fileUpload.description}}</div>
             <div class="col-md-12 mb-1" [hidden]="!fileUpload.kyc"><b>KYC Detail:</b>
-                <div class="row">
+                <div class="row" *ngIf="this.fileUpload.fileFor == this.fileUploadFileFor.aadhaarCard ">
+                    <div class="col-md-9">   
+                    <p>Verified: {{fileUpload.kyc?.isVerified || 'NA'}}</p>                     
+                    <p>Name: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.name || ''}}</p>
+                    <p>Gender: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.gender || ''}}</p>
+                    <p>DOB: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.dob || ''}}</p>
+                    <p>Current Address: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.current_address || ''}}</p>
+                    <p>Permanent Address: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.permanent_address || ''}}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <img *ngIf="fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.image" src="data:image/jpeg;base64,{{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.image}}" alt="">
+                    </div>
+                </div>
+                <div class="row" *ngIf="this.fileUpload.fileFor != this.fileUploadFileFor.aadhaarCard ">
                     <div class="col-md-6 txt-capitalize" *ngFor="let x of fileUpload.kyc">
                         {{x}}
                     </div>

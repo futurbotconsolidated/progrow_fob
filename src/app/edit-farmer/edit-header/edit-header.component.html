@@ -180,8 +180,10 @@
                 <li>
                     <span><img src="../../../assets/images/profile-address.svg" alt=""></span>
                     <div><span><b>KYC Valid Address: </b> {{demographicDisp?.address?.addressLine1}}
-                            {{demographicDisp?.address?.addressLine2}} </span>
-                        <br><span><b>Communication Address: </b> N/A</span>
+                            {{demographicDisp?.address?.addressLine2}} {{demographicDisp?.address?.landmark}} {{demographicDisp?.address?.taluk}} {{demographicDisp?.address?.city}} {{demographicDisp?.address?.state}} {{demographicDisp?.address?.pincode}} </span>
+                        <br><span><b>Communication Address: </b> <span *ngIf="demographicDisp?.permAddress?.commOrPerAddress == 'Same as above' ">N/A</span>
+                        <span *ngIf="!(demographicDisp?.permAddress?.commOrPerAddress == 'Same as above')">{{demographicDisp?.permAddress?.addressLine1}} {{demographicDisp?.permAddress?.addressLine2}} {{demographicDisp?.permAddress?.taluk}} {{demographicDisp?.permAddress?.city}} {{demographicDisp?.permAddress?.state}} {{demographicDisp?.permAddress?.pincode}} </span>
+                        </span>
                     </div>
                 </li>
                 <li><div class="col-md-12">

@@ -18,7 +18,7 @@ export class EditCoApplicantComponent implements OnInit {
       imageSrc2: '',
     },
     description: '',
-    kyc: [],
+    kyc: '',
   } as any;
   displayCoApplicant1ProfileImage = '' as any;
   displayCoApplicant2ProfileImage = '' as any;
@@ -124,7 +124,7 @@ export class EditCoApplicantComponent implements OnInit {
     this.fileUpload.new.imageSrc1 = '';
     this.fileUpload.new.imageSrc2 = '';
     this.fileUpload.description = '';
-    this.fileUpload.kyc = [];
+    this.fileUpload.kyc = '';
     if (type === this.fileUploadFileFor.coa1.panCard && coaNo === 'coa1') {
       this.fileUpload.popupTitle = 'PAN Card';
       this.fileUpload.description = 'PAN Card: ' + this.coApplicantDisp[0].identityProof.panNumber;
@@ -170,17 +170,7 @@ export class EditCoApplicantComponent implements OnInit {
     ) {
       this.fileUpload.popupTitle = 'Aadhaar Card';
       this.fileUpload.description = 'Aadhaar Card: ' + this.coApplicantDisp[0].identityProof.aadhaarNumber;
-      let kycdata = (this.coApplicantDisp[0]?.kycData?.aadhaar?.data || {});
-      let kycdata_var = JSON.stringify(kycdata);
-      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
-      let kycdata_s = kycdata_var.split(',');
-      let kycdata_arr:any = [];
-      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[0]?.kycData?.aadhaar?.isVerified || 'NA'));
-      kycdata_s.forEach((x: any) => {
-        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
-        kycdata_arr.push(y);
-      });
-      this.fileUpload.kyc = kycdata_arr;
+      this.fileUpload.kyc = (this.coApplicantDisp[0]?.kycData?.aadhaar || {});
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa1.aadhaarCard.front
@@ -195,17 +185,7 @@ export class EditCoApplicantComponent implements OnInit {
     ) {
       this.fileUpload.popupTitle = 'Aadhaar Card';
       this.fileUpload.description = 'Aadhaar Card: ' + this.coApplicantDisp[1].identityProof.aadhaarNumber;
-      let kycdata = (this.coApplicantDisp[1]?.kycData?.aadhaar?.data || {});
-      let kycdata_var = JSON.stringify(kycdata);
-      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
-      let kycdata_s = kycdata_var.split(',');
-      let kycdata_arr:any = [];
-      kycdata_arr.push('Verified: ' + (this.coApplicantDisp[1]?.kycData?.aadhaar?.isVerified || 'NA'));
-      kycdata_s.forEach((x: any) => {
-        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
-        kycdata_arr.push(y);
-      });
-      this.fileUpload.kyc = kycdata_arr;
+      this.fileUpload.kyc = (this.coApplicantDisp[1]?.kycData?.aadhaar || {});
       this.fileUpload.new.imageSrc1 =
         this.commonService.fetchFarmerDocument(
           this.indexedDBFileNameManage.coa2.aadhaarCard.front

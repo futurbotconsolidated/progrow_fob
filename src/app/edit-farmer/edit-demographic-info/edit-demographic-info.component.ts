@@ -12,7 +12,7 @@ declare var $: any;
 export class EditDemographicInfoComponent implements OnInit {
   demographicDisp = {} as any;
   fileUpload = {
-    // fileFor: '',
+    fileFor: '',
     popupTitle: '',
     new: {
       imageSrc1: '',
@@ -21,7 +21,7 @@ export class EditDemographicInfoComponent implements OnInit {
       fileIndex: 0,
     },
     description: '',
-    kyc: [],
+    kyc: '',
   } as any;
 
   fileUploadFileFor = {
@@ -76,19 +76,20 @@ export class EditDemographicInfoComponent implements OnInit {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.demographicDisp = JSON.parse(A).demographic_info;
+      console.log('demographicDisp : ',this.demographicDisp);
     }
   }
 
   ngOnInit(): void {}
 
   openFileModalPopup(type: string, fileIndex: number) {
-    //this.fileUpload.fileFor = type;
+    this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
     this.fileUpload.new.imageSrc2 = '';
     this.fileUpload.new.imageMultiple = [];
     this.fileUpload.new.fileIndex = fileIndex;
     this.fileUpload.description = '';
-    this.fileUpload.kyc = [];
+    this.fileUpload.kyc = '';
     if (type === this.fileUploadFileFor.panCard) {
       this.fileUpload.popupTitle = 'PAN Card';
       this.fileUpload.description = 'PAN Card: '+this.demographicDisp.identityProof.panNumber;
@@ -110,17 +111,7 @@ export class EditDemographicInfoComponent implements OnInit {
     } else if (type === this.fileUploadFileFor.aadhaarCard) {
       this.fileUpload.popupTitle = 'Aadhaar Card';
       this.fileUpload.description = 'Aadhaar Card: '+this.demographicDisp.identityProof.aadhaarNumber;
-      let kycdata = (this.demographicDisp.kycData?.aadhaar?.data || {});
-      let kycdata_var = JSON.stringify(kycdata);
-      kycdata_var = kycdata_var.toString().replace('{','').replace('}','');
-      let kycdata_s = kycdata_var.split(',');
-      let kycdata_arr:any = [];
-      kycdata_arr.push('Verified: ' + (this.demographicDisp.kycData?.aadhaar?.isVerified || 'NA'));
-      kycdata_s.forEach((x: any) => {
-        let y = x.toString().replace('"','').replace('"','').replace('"','').replace('"','').replace(':',':  ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ').replace('_',' ');
-        kycdata_arr.push(y);
-      });
-      this.fileUpload.kyc = kycdata_arr;
+      this.fileUpload.kyc = (this.demographicDisp.kycData?.aadhaar || {});
           this.fileUpload.new.imageSrc1 =
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.aadhaarCard.front

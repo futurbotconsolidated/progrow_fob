@@ -45,7 +45,12 @@
                     <div class="actual-facts summery-bg full-height">
                         <h4 class="summery-heading"><span>Other Loan</span> <a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile kyc-details">
-                            <p><span><i class="fa fa-check"></i>N/A</span></p>
+                            <p>Bank : {{financialPlanDisp?.otherLoanBank || 'NA'}}</p>
+                            <p>Credited Amount : {{financialPlanDisp?.otherLoanCreditedAmount || 'NA'}}</p>
+                            <p>Disbursement Date : {{financialPlanDisp?.otherLoanDisbursementDate || 'NA'}}</p>
+                            <p>Repayment Amount : {{financialPlanDisp?.otherLoanRepaymentAmount || 'NA'}}</p>
+                            <p>Repayment Date : {{financialPlanDisp?.otherLoanRepaymentDate || 'NA'}}</p>
+                            <!-- <p><span><i class="fa fa-check"></i>N/A</span></p> -->
                         </div>
                     </div>
                 </div>
@@ -122,6 +127,81 @@
                                 <p>N/A</p>
                             </li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="actual-facts summery-bg">
+                        <h4 class="summery-heading"><span>Season crop wise selling information</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Season
+                                    </th>
+                                    <th>
+                                        Crop
+                                    </th>
+                                    <th>
+                                        Sold at
+                                    </th>
+                                    <th>
+                                        Quantity Sold (in KG)
+                                    </th>
+                                    <th>
+                                        Selling Price(₹)
+                                    </th>
+                                    <th>
+                                        Selling Date
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let x of financialPlanDisp?.seasonCrop">
+                                    <td>{{x.season}}</td>
+                                    <td>{{x.crop}}</td>
+                                    <td>{{x.soldAt}}</td>
+                                    <td>{{x.quantitySold}}</td>
+                                    <td>{{x.sellingPrice}} </td>
+                                    <td>{{x.sellingDate}} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <ul class="d-flex-profile">
+                            <li>
+                                <h5>&nbsp;</h5>
+                                <p> Monthly</p>
+                            </li>
+                            <li>
+                                <h5>Grocery: </h5>
+                                <p>N/A</p>
+                            </li>
+                            <li>
+                                <h5>Health: </h5>
+                                <p>N/A</p>
+                            </li>
+                            <li>
+                                <h5>Education: </h5>
+                                <p>N/A</p>
+                            </li>
+                            <li>
+                                <h5>Rent:</h5>
+                                <p>N/A</p>
+                            </li>
+                            <li>
+                                <h5>Electricity:</h5>
+                                <p>N/A</p>
+                            </li>
+                            <li>
+                                <h5>Interest:</h5>
+                                <p>N/A</p>
+                            </li>
+                            <li>
+                                <h5>Others:</h5>
+                                <p>N/A</p>
+                            </li>
+                        </ul> -->
                     </div>
                 </div>
             </div>

@@ -11,6 +11,7 @@ export class EditFinancialPlanningComponent implements OnInit {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.financialPlanDisp = JSON.parse(A).financial_planning;
+      console.log('financialPlanDisp : ', this.financialPlanDisp);
     }
   }
 
