@@ -76,7 +76,6 @@ export class EditDemographicInfoComponent implements OnInit {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.demographicDisp = JSON.parse(A).demographic_info;
-      console.log('demographicDisp : ',this.demographicDisp);
     }
   }
 
