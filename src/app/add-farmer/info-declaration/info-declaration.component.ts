@@ -104,8 +104,6 @@ export class InfoDeclarationComponent implements OnInit {
       is_required_yn: true,
     };
 
-    console.log(INPUT_OBJ);
-
     // update farmer
     if (this.farmerId) {
       this.addFarmerService.updateFarmer(INPUT_OBJ).subscribe(
@@ -246,9 +244,7 @@ export class InfoDeclarationComponent implements OnInit {
     }
 
     // clear indexed db data
-    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {
-      console.log('success? ', successDeleted);
-    });
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {});
 
     this.router.navigate(['/bd/dashboard']);
   }

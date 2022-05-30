@@ -88,8 +88,6 @@ export const data = {
     warehouseProduce: ['Yes', 'No'],
   },
   demoGraphic: {
-    addressProofType: ['Aadhaar ID', 'Driving Licence '],
-
     gender: ['Male', 'Female', 'Other'],
     religion: [
       'Hindu',

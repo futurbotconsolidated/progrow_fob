@@ -413,20 +413,23 @@
                             </h3>
                             <div class="display-flex">
                                 <div class="flex-1 lable-top">
-                                    <label>Credited Amount</label>
+                                    <label>Credited Amount(₹)</label>
                                     <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="KCCLoanCreditedAmount">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="date" class="form-control" formControlName="KCCLoanDisbursementDate">
+                                    <input type="date" class="form-control" formControlName="KCCLoanDisbursementDate" (change)="checkRepaymentDate()">
                                 </div>
                                 <div class="flex-1 lable-top">
-                                    <label>Repayment Amount</label>
+                                    <label>Repayment Amount(₹)</label>
                                     <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="KCCLoanRepaymentAmount">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="date" class="form-control" formControlName="KCCLoanRepaymentDate">
+                                    <input type="date" class="form-control" formControlName="KCCLoanRepaymentDate" (change)="checkRepaymentDate()">
+                                    <div *ngIf="KCCLoanRepaymentDateError" class="form-text text-danger">
+                                        <small *ngIf="KCCLoanRepaymentDateError">Repayment date is greater than date of disbursement</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -453,7 +456,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="other-loan form-details-inner">
+                        <div class="other-loan form-details-inner ol-transaction">
                             <h3 class="form-title">5E. Please provide details.</h3>
                             <div class="row align-items-center">
                                 <div class="col-md-2 lable-top">
@@ -461,20 +464,23 @@
                                     <input type="text" class="form-control" formControlName="otherLoanBank">
                                 </div>
                                 <div class="col-md-2 lable-top">
-                                    <label>Credited Amount</label>
+                                    <label>Credited Amount(₹)</label>
                                     <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="otherLoanCreditedAmount">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="date" class="form-control" formControlName="otherLoanDisbursementDate">
+                                    <input type="date" class="form-control" formControlName="otherLoanDisbursementDate" (change)="checkOtherRepaymentDate()">
                                 </div>
                                 <div class="col-md-2 lable-top">
-                                    <label>Repayment Amount</label>
+                                    <label>Repayment Amount(₹)</label>
                                     <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="otherLoanRepaymentAmount">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="date" class="form-control" formControlName="otherLoanRepaymentDate">
+                                    <input type="date" class="form-control" formControlName="otherLoanRepaymentDate" (change)="checkOtherRepaymentDate()">
+                                    <div *ngIf="otherLoanRepaymentDateError" class="form-text text-danger">
+                                        <small *ngIf="otherLoanRepaymentDateError">Repayment date is greater than date of disbursement</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -485,7 +491,7 @@
                                 last season?</h3>
                             <div class="row align-items-center">
                                 <div class="col-md-2 lable-top">
-                                    <label>Amount paid</label>
+                                    <label>Amount paid(₹)</label>
                                     <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="PMFBYAmountPaid">
                                 </div>
                                 <div class="col-md-2 lable-top">
@@ -511,7 +517,7 @@
                                         <input type="text" class="form-control" formControlName="monthYearTaken">
                                     </div>
                                     <div class="col-md-2 lable-top">
-                                        <label>Premium paid</label>
+                                        <label>Premium paid(₹)</label>
                                         <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="premiumPaid">
                                     </div>
                                     <div class="col-md-3 lable-top">

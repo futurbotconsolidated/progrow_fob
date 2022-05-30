@@ -26,8 +26,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {}
 
   routeNavigate() {
-    console.log(this.router.url);
-
     if (this.router.url?.includes('/add/concept-cards')) {
       this.router.navigate(['/add/questionary']);
     } else if (this.router.url?.includes('/add/questionary')) {

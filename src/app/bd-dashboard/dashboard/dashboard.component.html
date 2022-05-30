@@ -201,10 +201,10 @@
                     active: selectedViewType == 'EXISTING_FARMS_LIST_VIEW'
                   }" id="existing_farms_list_view" role="tabpanel">
                   <div class="row">
-                    <div class="col-sm-3 mb-3">
+                    <div class="col-sm-2 mb-3">
                       <div class="form-group">
                         <label for="live">Select Filter:</label>
-                        <select id="live" class="flex-1 form-select" name="filterType" (change)="onChangeFilter($event)">
+                        <select id="live" class="flex-1 form-select db-filter-type" name="filterType" (change)="onChangeFilter($event)">
                           <option value="all" [selected]="filterType == 'all'">All</option>
                           <option value="today" [selected]="filterType == 'today'">Today</option>
                           <option value="this_week" [selected]="filterType == 'this_week'">This Week</option>
@@ -212,6 +212,12 @@
                           <option value="three_week" [selected]="filterType == 'three_week'">Last Three Week</option>
                           <option value="this_month" [selected]="filterType == 'this_month'">This Month</option>
                         </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-2 mb-3">
+                      <div class="form-group">
+                        <label class="w-100">&nbsp;</label>
+                        <a href="javascript:void(0)" (click)="downloadCsv()" class="btn btn-farmer">Download CSV</a>
                       </div>
                     </div>
                   </div>
@@ -273,6 +279,21 @@
                   show: selectedViewType == 'EXISTING_FARMS_MAP_VIEW',
                   active: selectedViewType == 'EXISTING_FARMS_MAP_VIEW'
                 }" id="existing_farms_map_view" role="tabpanel">
+                <div class="row">
+                  <div class="col-sm-2 mb-3">
+                    <div class="form-group">
+                      <label for="live">Select Filter:</label>
+                      <select id="live" class="flex-1 form-select db-filter-type" name="filterType" (change)="onChangeFilter($event)">
+                        <option value="all" [selected]="filterType == 'all'">All</option>
+                        <option value="today" [selected]="filterType == 'today'">Today</option>
+                        <option value="this_week" [selected]="filterType == 'this_week'">This Week</option>
+                        <option value="two_week" [selected]="filterType == 'two_week'">Last Two Week</option>
+                        <option value="three_week" [selected]="filterType == 'three_week'">Last Three Week</option>
+                        <option value="this_month" [selected]="filterType == 'this_month'">This Month</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                   <div class="map p-3">
                     <div class="map" id="existing_farmers_mapbox" class="match-parent"></div>
                   </div>

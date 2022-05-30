@@ -14,3 +14,9 @@
   display: inline-block;
   list-style: none;
 }
+#fileUploadModalPopup.modal {
+  z-index: 9999;
+}
+.word-wrap-anywhere{
+  word-wrap: anywhere;
+}

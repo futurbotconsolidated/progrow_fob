@@ -43,6 +43,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isSubmitted = false;
   fileUpload = {
+    coaNo: '',
     fileFor: '',
     popupTitle: '',
     new: {
@@ -68,7 +69,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
 
-  // indexed db variables
+  /* START: indexed db variables */
   displayCoApplicant1ProfileImage = '' as any;
   displayCoApplicant2ProfileImage = '' as any;
   indexedDBPageName = 'coapplicant';
@@ -81,9 +82,18 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         front: `${this.concatePage1}_PANCardFront`,
         back: '',
       },
-      addressProof: {
-        front: `${this.concatePage1}_addressProofFront`,
-        back: `${this.concatePage1}_addressProofBack`,
+      aadhaarCard: {
+        front: `${this.concatePage1}_AadhaarCardFront`,
+        back: `${this.concatePage1}_AadhaarCardBack`,
+      },
+      drivingLicence: {
+        front: `${this.concatePage1}_DrivingLicenceFront`,
+        back: `${this.concatePage1}_DrivingLicenceBack`,
+      },
+
+      voterId: {
+        front: `${this.concatePage1}_voterIdFront`,
+        back: `${this.concatePage1}_voterIdBack`,
       },
       passport: {
         front: `${this.concatePage1}_passportFront`,
@@ -93,10 +103,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         front: `${this.concatePage1}_NREGAFront`,
         back: `${this.concatePage1}_NREGABack`,
       },
-      voterId: {
-        front: `${this.concatePage1}_voterIdFront`,
-        back: `${this.concatePage1}_voterIdBack`,
-      },
+
       farmerProfile: { front: `${this.concatePage1}_farmerProfileImage` },
     },
     coa2: {
@@ -104,9 +111,18 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         front: `${this.concatePage2}_PANCardFront`,
         back: '',
       },
-      addressProof: {
-        front: `${this.concatePage2}_addressProofFront`,
-        back: `${this.concatePage2}_addressProofBack`,
+      aadhaarCard: {
+        front: `${this.concatePage2}_AadhaarCardFront`,
+        back: `${this.concatePage2}_AadhaarCardBack`,
+      },
+      drivingLicence: {
+        front: `${this.concatePage2}_DrivingLicenceFront`,
+        back: `${this.concatePage2}_DrivingLicenceBack`,
+      },
+
+      voterId: {
+        front: `${this.concatePage2}_voterIdFront`,
+        back: `${this.concatePage2}_voterIdBack`,
       },
       passport: {
         front: `${this.concatePage2}_passportFront`,
@@ -116,15 +132,167 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         front: `${this.concatePage2}_NREGAFront`,
         back: `${this.concatePage2}_NREGABack`,
       },
-      voterId: {
-        front: `${this.concatePage2}_voterIdFront`,
-        back: `${this.concatePage2}_voterIdBack`,
-      },
+
       farmerProfile: { front: `${this.concatePage2}_farmerProfileImage` },
     },
   };
 
+  fileUploadFileFor = {
+    coa1: {
+      panCard: 'PAN',
+      aadhaarCard: 'AADHAAR',
+      drivingLicence: 'DRIVING_LICENCE',
+      voterId: 'VOTERID',
+      passport: 'PASSPORT',
+      NREGA: 'NREGA',
+      farmerProfile: 'FARMER_PROFILE',
+    },
+    coa2: {
+      panCard: 'PAN',
+      aadhaarCard: 'AADHAAR',
+      drivingLicence: 'DRIVING_LICENCE',
+      voterId: 'VOTERID',
+      passport: 'PASSPORT',
+      NREGA: 'NREGA',
+      farmerProfile: 'FARMER_PROFILE',
+    },
+  };
+  /* END: indexed db variables */
+
   farmerId = ''; // edit feature
+
+  /* START: KYC Data Structure & Related Variables */
+  kycFieldButtonLabels = {
+    verify: 'Verify',
+    verified: 'Verified',
+    try_again: 'Try again',
+    confirm: 'Confirm',
+  };
+
+  kycProofNames = {
+    coa1: {
+      pan: 'pan',
+      aadhaar: 'aadhaar',
+      driving_licence: 'driving_licence',
+      voter_id: 'voter_id',
+      passport: 'passport',
+      nrega: 'nrega',
+    },
+    coa2: {
+      pan: 'pan',
+      aadhaar: 'aadhaar',
+      driving_licence: 'driving_licence',
+      voter_id: 'voter_id',
+      passport: 'passport',
+      nrega: 'nrega',
+    },
+  };
+
+  kycData = {
+    coa1: {
+      pan: {
+        id: '',
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+      aadhaar: {
+        id: '',
+        verificationLinkData: {},
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+      driving_licence: {
+        id: '',
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+      voter_id: {
+        id: '',
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+      passport: {
+        id: '',
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+      nrega: {
+        id: '',
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+    },
+    coa2: {
+      pan: {
+        id: '',
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+      aadhaar: {
+        id: '',
+        verificationLinkData: {},
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+      driving_licence: {
+        id: '',
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+      voter_id: {
+        id: '',
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+      passport: {
+        id: '',
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+      nrega: {
+        id: '',
+        data: {},
+        isVerified: false,
+        showVerify: true,
+        showTryAgain: false,
+        showConfirm: false,
+      },
+    },
+  } as any;
+  /* END: KYC Data Structure & Related Variables */
   /* END: Varaibles ---------------------------------------------*/
 
   constructor(
@@ -165,7 +333,8 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       landmark: new FormControl(''),
 
       phoneNumber: new FormControl('', [
-        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
         Validators.pattern('^[0-9]*$'),
       ]),
 
@@ -185,8 +354,12 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       monthlyRent: new FormControl(''),
       familyMembers: new FormArray([]),
 
-      addressProof: new FormControl(''),
       PANnumber: new FormControl('', [validatePANNumber]),
+      aadhaarNumber: new FormControl('', [
+        Validators.minLength(12),
+        Validators.maxLength(12),
+      ]),
+      drivingLicenceNumber: new FormControl(''),
       voterIdNumber: new FormControl(''),
       passportNumber: new FormControl(''),
       NREGANumber: new FormControl(''),
@@ -214,7 +387,11 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       citycoa2: new FormControl(''),
       statecoa2: new FormControl(''),
       landmarkcoa2: new FormControl(''),
-      phoneNumbercoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
+      phoneNumbercoa2: new FormControl('', [
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern('^[0-9]*$'),
+      ]),
 
       emailcoa2: new FormControl('', [Validators.email]),
       yrsInAddresscoa2: new FormControl('', [Validators.pattern('^[0-9]*$')]),
@@ -232,8 +409,12 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       monthlyRentcoa2: new FormControl(''),
       familyMemberscoa2: new FormArray([]),
 
-      addressProofcoa2: new FormControl(''),
       PANnumbercoa2: new FormControl(''),
+      aadhaarNumbercoa2: new FormControl('', [
+        Validators.minLength(12),
+        Validators.maxLength(12),
+      ]),
+      drivingLicenceNumbercoa2: new FormControl(''),
       voterIdNumbercoa2: new FormControl(''),
       passportNumbercoa2: new FormControl(''),
       NREGANumbercoa2: new FormControl(''),
@@ -276,7 +457,23 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     // ----------------------- End auto save --------------------
     // if case is for EDIT and else case is for NEW/DRAFT
     if (this.farmerId) {
-      let editForm: any = localStorage.getItem('edit-coapplicant-form');
+      // assign kyc data to populate
+      const coApplRaw: any = localStorage.getItem('edit-co-applicant');
+      if (coApplRaw) {
+        console.log(coApplRaw);
+
+        const A = JSON.parse(coApplRaw);
+        if (Array.isArray(A) && A.length && A[0].kycData) {
+          this.kycData.coa1 = A[0].kycData;
+          console.log(this.kycData);
+        }
+        if (Array.isArray(A) && A.length > 1 && A[1].kycData) {
+          this.kycData.coa2 = A[1].kycData;
+          console.log(this.kycData);
+        }
+      }
+
+      let editForm: any = localStorage.getItem('edit-co-applicant-form');
       if (editForm) {
         editForm = JSON.parse(editForm);
         this.editDynamicBindFormArray(editForm);
@@ -310,6 +507,20 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         this.patchFarmerDetails(); // bind/patch fresh api data
       }
     } else {
+      // assign kyc data to populate
+      const coApplRaw: any = localStorage.getItem('co-applicant');
+      if (coApplRaw) {
+        const A = JSON.parse(coApplRaw);
+        if (Array.isArray(A) && A.length && A[0].kycData) {
+          this.kycData.coa1 = A[0].kycData;
+        }
+        if (Array.isArray(A) && A.length > 1 && A[1].kycData) {
+          this.kycData.coa2 = A[1].kycData;
+        }
+      }
+
+      // assign other data to populate
+
       let coApplicant: any = localStorage.getItem('co-applicant-form');
       if (coApplicant) {
         coApplicant = JSON.parse(coApplicant);
@@ -341,10 +552,15 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     }
-    if(!(this.coApplicantForm.get('familyMembers') as FormArray).controls.length){
+    if (
+      !(this.coApplicantForm.get('familyMembers') as FormArray).controls.length
+    ) {
       this.addFamilyMembers('');
     }
-    if(!(this.coApplicantForm.get('familyMemberscoa2') as FormArray).controls.length){
+    if (
+      !(this.coApplicantForm.get('familyMemberscoa2') as FormArray).controls
+        .length
+    ) {
       this.addFamilyMembers('coa2');
     }
   }
@@ -355,11 +571,9 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       .getMessage()
       .subscribe((data) => {
         this.nextRoute = data.routeName;
-        console.log(this.router.url);
 
         if (this.router.url?.includes('/add/co-applicant')) {
           this.validateAndNext();
-          console.log(data.routeName);
         }
       });
   }
@@ -427,7 +641,8 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /* START: functions used indexed-db ============================================ */
-  openFileModalPopup(type: string) {
+  openFileModalPopup(coaNo: string, type: string) {
+    this.fileUpload.coaNo = coaNo;
     this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
     this.fileUpload.new.imageSrc2 = '';
@@ -436,7 +651,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     this.fileUpload.imageHeading1 = 'Front Image';
     this.fileUpload.imageHeading2 = 'Back Image';
 
-    if (type === 'PAN') {
+    if (type === this.fileUploadFileFor.coa1.panCard && coaNo === 'coa1') {
       if (!this.coApplicantForm.value.PANnumber) {
         this.toastr.error('please enter PAN Number.', 'Error!');
         return;
@@ -456,7 +671,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               this.indexedDBFileNameManage.coa1.panCard.front
             );
         });
-    } else if (type === 'PANcoa2') {
+    } else if (
+      type === this.fileUploadFileFor.coa2.panCard &&
+      coaNo === 'coa2'
+    ) {
       if (!this.coApplicantForm.value.PANnumbercoa2) {
         this.toastr.error('please enter PAN Number.', 'Error!');
         return;
@@ -476,26 +694,28 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               this.indexedDBFileNameManage.coa2.panCard.front
             );
         });
-    } else if (type === 'ADDRESS_PROOF') {
-      if (!this.coApplicantForm.value.addressProof) {
-        this.toastr.error('please select Address Proof Type.', 'Error!');
+    } else if (
+      type === this.fileUploadFileFor.coa1.aadhaarCard &&
+      coaNo === 'coa1'
+    ) {
+      if (!this.coApplicantForm.value.aadhaarNumber) {
+        this.toastr.error('please enter Aadhaar Number.', 'Error!');
         return;
       }
-      const A = this.coApplicantForm.value.addressProof;
-      this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
+      this.fileUpload.popupTitle = 'Upload Aadhaar Card Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.dbService
         .getByIndex(
           this.indexedDBName,
           'fileFor',
-          `${this.indexedDBFileNameManage.coa1.addressProof.front}`
+          `${this.indexedDBFileNameManage.coa1.aadhaarCard.front}`
         )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc1 =
             farmer?.file ||
             this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.coa1.addressProof.front
+              this.indexedDBFileNameManage.coa1.aadhaarCard.front
             );
         });
 
@@ -503,35 +723,37 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         .getByIndex(
           this.indexedDBName,
           'fileFor',
-          `${this.indexedDBFileNameManage.coa1.addressProof.back}`
+          `${this.indexedDBFileNameManage.coa1.aadhaarCard.back}`
         )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc2 =
             farmer?.file ||
             this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.coa1.addressProof.back
+              this.indexedDBFileNameManage.coa1.aadhaarCard.back
             );
         });
-    } else if (type === 'ADDRESS_PROOFcoa2') {
-      if (!this.coApplicantForm.value.addressProofcoa2) {
-        this.toastr.error('please select Address Proof Type.', 'Error!');
+    } else if (
+      type === this.fileUploadFileFor.coa2.aadhaarCard &&
+      coaNo === 'coa2'
+    ) {
+      if (!this.coApplicantForm.value.aadhaarNumbercoa2) {
+        this.toastr.error('please enter Aadhaar Number.', 'Error!');
         return;
       }
-      const A = this.coApplicantForm.value.addressProofcoa2;
-      this.fileUpload.popupTitle = `Upload ${A || ''} Image`;
+      this.fileUpload.popupTitle = 'Upload Aadhaar Card Image';
       this.fileUpload.new.isImage1Required = true;
       this.fileUpload.new.isImage2Required = true;
       this.dbService
         .getByIndex(
           this.indexedDBName,
           'fileFor',
-          `${this.indexedDBFileNameManage.coa2.addressProof.front}`
+          `${this.indexedDBFileNameManage.coa2.aadhaarCard.front}`
         )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc1 =
             farmer?.file ||
             this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.coa2.addressProof.front
+              this.indexedDBFileNameManage.coa2.aadhaarCard.front
             );
         });
 
@@ -539,16 +761,95 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         .getByIndex(
           this.indexedDBName,
           'fileFor',
-          `${this.indexedDBFileNameManage.coa2.addressProof.back}`
+          `${this.indexedDBFileNameManage.coa2.aadhaarCard.back}`
         )
         .subscribe((farmer: any) => {
           this.fileUpload.new.imageSrc2 =
             farmer?.file ||
             this.commonService.fetchFarmerDocument(
-              this.indexedDBFileNameManage.coa2.addressProof.back
+              this.indexedDBFileNameManage.coa2.aadhaarCard.back
             );
         });
-    } else if (type === 'VOTERID') {
+    } else if (
+      type === this.fileUploadFileFor.coa1.drivingLicence &&
+      coaNo === 'coa1'
+    ) {
+      if (!this.coApplicantForm.value.drivingLicenceNumber) {
+        this.toastr.error('please enter Driving Licence Number.', 'Error!');
+        return;
+      }
+      this.fileUpload.popupTitle = 'Upload Driving Licence Image';
+      this.fileUpload.new.isImage1Required = true;
+      this.fileUpload.new.isImage2Required = true;
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.drivingLicence.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.drivingLicence.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa1.drivingLicence.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa1.drivingLicence.back
+            );
+        });
+    } else if (
+      type === this.fileUploadFileFor.coa2.drivingLicence &&
+      coaNo === 'coa2'
+    ) {
+      if (!this.coApplicantForm.value.drivingLicenceNumbercoa2) {
+        this.toastr.error('please enter Driving Licence Number.', 'Error!');
+        return;
+      }
+      this.fileUpload.popupTitle = 'Upload Driving Licence Image';
+      this.fileUpload.new.isImage1Required = true;
+      this.fileUpload.new.isImage2Required = true;
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.drivingLicence.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.drivingLicence.front
+            );
+        });
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.coa2.drivingLicence.back}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc2 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.coa2.drivingLicence.back
+            );
+        });
+    } else if (
+      type === this.fileUploadFileFor.coa1.voterId &&
+      coaNo === 'coa1'
+    ) {
       if (!this.coApplicantForm.value.voterIdNumber) {
         this.toastr.error('please enter  Voter Id Number.', 'Error!');
         return;
@@ -583,7 +884,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               this.indexedDBFileNameManage.coa1.voterId.back
             );
         });
-    } else if (type === 'VOTERIDcoa2') {
+    } else if (
+      type === this.fileUploadFileFor.coa2.voterId &&
+      coaNo === 'coa2'
+    ) {
       if (!this.coApplicantForm.value.voterIdNumbercoa2) {
         this.toastr.error('please enter  Voter Id Number.', 'Error!');
         return;
@@ -618,7 +922,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               this.indexedDBFileNameManage.coa2.voterId.back
             );
         });
-    } else if (type === 'PASSPORT') {
+    } else if (
+      type === this.fileUploadFileFor.coa1.passport &&
+      coaNo === 'coa1'
+    ) {
       if (!this.coApplicantForm.value.passportNumber) {
         this.toastr.error('please enter Passport Number.', 'Error!');
         return;
@@ -653,7 +960,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               this.indexedDBFileNameManage.coa1.passport.back
             );
         });
-    } else if (type === 'PASSPORTcoa2') {
+    } else if (
+      type === this.fileUploadFileFor.coa2.passport &&
+      coaNo === 'coa2'
+    ) {
       if (!this.coApplicantForm.value.passportNumbercoa2) {
         this.toastr.error('please enter Passport Number.', 'Error!');
         return;
@@ -688,7 +998,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               this.indexedDBFileNameManage.coa2.passport.back
             );
         });
-    } else if (type === 'NREGA') {
+    } else if (type === this.fileUploadFileFor.coa1.NREGA && coaNo === 'coa1') {
       if (!this.coApplicantForm.value.NREGANumber) {
         this.toastr.error('please enter NREGA Number.', 'Error!');
         return;
@@ -723,7 +1033,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               this.indexedDBFileNameManage.coa1.NREGA.back
             );
         });
-    } else if (type === 'NREGAcoa2') {
+    } else if (type === this.fileUploadFileFor.coa2.NREGA && coaNo === 'coa2') {
       if (!this.coApplicantForm.value.NREGANumbercoa2) {
         this.toastr.error('please enter NREGA Number.', 'Error!');
         return;
@@ -758,7 +1068,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               this.indexedDBFileNameManage.coa2.NREGA.back
             );
         });
-    } else if (type === 'FARMER_PROFILE') {
+    } else if (
+      type === this.fileUploadFileFor.coa1.farmerProfile &&
+      coaNo === 'coa1'
+    ) {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
@@ -780,7 +1093,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               this.indexedDBFileNameManage.coa1.farmerProfile.front
             );
         });
-    } else if (type === 'FARMER_PROFILEcoa2') {
+    } else if (
+      type === this.fileUploadFileFor.coa2.farmerProfile &&
+      coaNo === 'coa2'
+    ) {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
       this.fileUpload.imageHeading1 = 'Farmer Image';
       this.fileUpload.new.isImage1Required = true;
@@ -825,36 +1141,76 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       reader.onload = () => {
         const imageSrc = reader.result;
 
-        if (this.fileUpload.fileFor === 'PAN' && type == 'FRONT_IMAGE') {
+        if (
+          this.fileUpload.coaNo === 'coa1' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa1.panCard &&
+          type == 'FRONT_IMAGE'
+        ) {
           this.fileUpload.new.imageSrc1 = imageSrc;
           selectedImageFor = this.indexedDBFileNameManage.coa1.panCard.front;
         } else if (
-          this.fileUpload.fileFor === 'PANcoa2' &&
+          this.fileUpload.coaNo === 'coa2' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa2.panCard &&
           type == 'FRONT_IMAGE'
         ) {
           this.fileUpload.new.imageSrc1 = imageSrc;
           selectedImageFor = this.indexedDBFileNameManage.coa2.panCard.front;
-        } else if (this.fileUpload.fileFor === 'ADDRESS_PROOF') {
+        } else if (
+          this.fileUpload.coaNo === 'coa1' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa1.aadhaarCard
+        ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor =
-              this.indexedDBFileNameManage.coa1.addressProof.front;
+              this.indexedDBFileNameManage.coa1.aadhaarCard.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
             selectedImageFor =
-              this.indexedDBFileNameManage.coa1.addressProof.back;
+              this.indexedDBFileNameManage.coa1.aadhaarCard.back;
           }
-        } else if (this.fileUpload.fileFor === 'ADDRESS_PROOFcoa2') {
+        } else if (
+          this.fileUpload.coaNo === 'coa2' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa2.aadhaarCard
+        ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor =
-              this.indexedDBFileNameManage.coa2.addressProof.front;
+              this.indexedDBFileNameManage.coa2.aadhaarCard.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
             selectedImageFor =
-              this.indexedDBFileNameManage.coa2.addressProof.back;
+              this.indexedDBFileNameManage.coa2.aadhaarCard.back;
           }
-        } else if (this.fileUpload.fileFor === 'VOTERID') {
+        } else if (
+          this.fileUpload.coaNo === 'coa1' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa1.drivingLicence
+        ) {
+          if (type === 'FRONT_IMAGE') {
+            this.fileUpload.new.imageSrc1 = imageSrc;
+            selectedImageFor =
+              this.indexedDBFileNameManage.coa1.drivingLicence.front;
+          } else if (type === 'BACK_IMAGE') {
+            this.fileUpload.new.imageSrc2 = imageSrc;
+            selectedImageFor =
+              this.indexedDBFileNameManage.coa1.drivingLicence.back;
+          }
+        } else if (
+          this.fileUpload.coaNo === 'coa2' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa2.drivingLicence
+        ) {
+          if (type === 'FRONT_IMAGE') {
+            this.fileUpload.new.imageSrc1 = imageSrc;
+            selectedImageFor =
+              this.indexedDBFileNameManage.coa2.drivingLicence.front;
+          } else if (type === 'BACK_IMAGE') {
+            this.fileUpload.new.imageSrc2 = imageSrc;
+            selectedImageFor =
+              this.indexedDBFileNameManage.coa2.drivingLicence.back;
+          }
+        } else if (
+          this.fileUpload.coaNo === 'coa1' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa1.voterId
+        ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa1.voterId.front;
@@ -862,7 +1218,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.fileUpload.new.imageSrc2 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa1.voterId.back;
           }
-        } else if (this.fileUpload.fileFor === 'VOTERIDcoa2') {
+        } else if (
+          this.fileUpload.coaNo === 'coa2' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa2.voterId
+        ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa2.voterId.front;
@@ -870,7 +1229,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.fileUpload.new.imageSrc2 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa2.voterId.back;
           }
-        } else if (this.fileUpload.fileFor === 'PASSPORT') {
+        } else if (
+          this.fileUpload.coaNo === 'coa1' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa1.passport
+        ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa1.passport.front;
@@ -878,7 +1240,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.fileUpload.new.imageSrc2 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa1.passport.back;
           }
-        } else if (this.fileUpload.fileFor === 'PASSPORTcoa2') {
+        } else if (
+          this.fileUpload.coaNo === 'coa2' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa2.passport
+        ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa2.passport.front;
@@ -886,7 +1251,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.fileUpload.new.imageSrc2 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa2.passport.back;
           }
-        } else if (this.fileUpload.fileFor === 'NREGA') {
+        } else if (
+          this.fileUpload.coaNo === 'coa1' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa1.NREGA
+        ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa1.NREGA.front;
@@ -894,7 +1262,10 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.fileUpload.new.imageSrc2 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa1.NREGA.back;
           }
-        } else if (this.fileUpload.fileFor === 'NREGAcoa2') {
+        } else if (
+          this.fileUpload.coaNo === 'coa2' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa2.NREGA
+        ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa2.NREGA.front;
@@ -902,14 +1273,20 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.fileUpload.new.imageSrc2 = imageSrc;
             selectedImageFor = this.indexedDBFileNameManage.coa2.NREGA.back;
           }
-        } else if (this.fileUpload.fileFor === 'FARMER_PROFILE') {
+        } else if (
+          this.fileUpload.coaNo === 'coa1' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa1.farmerProfile
+        ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor =
               this.indexedDBFileNameManage.coa1.farmerProfile.front;
             this.displayCoApplicant1ProfileImage = imageSrc;
           }
-        } else if (this.fileUpload.fileFor === 'FARMER_PROFILEcoa2') {
+        } else if (
+          this.fileUpload.coaNo === 'coa2' &&
+          this.fileUpload.fileFor === this.fileUploadFileFor.coa2.farmerProfile
+        ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
             selectedImageFor =
@@ -954,7 +1331,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   removeImage(event: any, type: string) {
-    if (type == 'FARMER_PROFILE') {
+    if (type === this.fileUploadFileFor.coa1.farmerProfile) {
       this.dbService
         .getByIndex(
           this.indexedDBName,
@@ -971,7 +1348,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
               });
           }
         });
-    } else if (type == 'FARMER_PROFILEcoa2') {
+    } else if (type === this.fileUploadFileFor.coa2.farmerProfile) {
       this.dbService
         .getByIndex(
           this.indexedDBName,
@@ -991,33 +1368,33 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  getIndexedDBImage(type: string) {
-    if (type == 'FARMER_PROFILE') {
-      this.dbService
-        .getByIndex(
-          this.indexedDBName,
-          'fileFor',
-          this.indexedDBFileNameManage.coa1.farmerProfile.front
-        )
-        .subscribe((file: any) => {
-          if (file && file !== undefined && Object.keys(file).length) {
-            this.displayCoApplicant1ProfileImage = file.file;
-          }
-        });
-    } else if (type == 'FARMER_PROFILEcoa2') {
-      this.dbService
-        .getByIndex(
-          this.indexedDBName,
-          'fileFor',
-          this.indexedDBFileNameManage.coa2.farmerProfile.front
-        )
-        .subscribe((file: any) => {
-          if (file && file !== undefined && Object.keys(file).length) {
-            this.displayCoApplicant2ProfileImage = file.file;
-          }
-        });
-    }
-  }
+  // getIndexedDBImage(type: string) {
+  //   if (type == 'FARMER_PROFILE') {
+  //     this.dbService
+  //       .getByIndex(
+  //         this.indexedDBName,
+  //         'fileFor',
+  //         this.indexedDBFileNameManage.coa1.farmerProfile.front
+  //       )
+  //       .subscribe((file: any) => {
+  //         if (file && file !== undefined && Object.keys(file).length) {
+  //           this.displayCoApplicant1ProfileImage = file.file;
+  //         }
+  //       });
+  //   } else if (type == 'FARMER_PROFILEcoa2') {
+  //     this.dbService
+  //       .getByIndex(
+  //         this.indexedDBName,
+  //         'fileFor',
+  //         this.indexedDBFileNameManage.coa2.farmerProfile.front
+  //       )
+  //       .subscribe((file: any) => {
+  //         if (file && file !== undefined && Object.keys(file).length) {
+  //           this.displayCoApplicant2ProfileImage = file.file;
+  //         }
+  //       });
+  //   }
+  // }
   /* END: functions used indexed-db ============================================ */
 
   // patch edit farmer details
@@ -1054,174 +1431,183 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     // other details
     const A: any = localStorage.getItem('farmer-details');
     const coData = JSON.parse(A).co_applicant_details;
-    //if (A && Array.isArray(coData) && coData.length === 2) {
-      const C1 = coData[0] || {};
-      const C2 = coData[1] || {};
+    const C1 = coData ? coData[0] : {};
+    const C2 = coData ? coData[1] : {};
 
-      // Prefill: edit data
-      this.coApplicantForm.patchValue({
-        // Co-Applicant 1
-        salutation: C1.farmerDetails['salutation'],
-        firstName: C1.farmerDetails['firstName'],
-        middleName: C1.farmerDetails['middleName'],
-        lastName: C1.farmerDetails['lastName'],
-        dob: C1.farmerDetails['dob'],
-        gender: C1.farmerDetails['gender'],
-        religion: C1.farmerDetails['religion'],
-        caste: C1.farmerDetails['caste'],
+    console.log(coData);
 
-        educationalQualification: C1.otherDetails['educationalQualification'],
-        occupation: C1.otherDetails['occupation'],
-        annualIncome: C1.otherDetails['annualIncome'],
+    // assign kyc data to populate
+    this.kycData.coa1 = C1.hasOwnProperty('kycData')
+      ? C1.kycData
+      : this.kycData.coa1;
+    this.kycData.coa2 = C2.hasOwnProperty('kycData')
+      ? C2.kycData
+      : this.kycData.coa2;
 
-        address1: C1.address['addressLine1'],
-        address2: C1.address['addressLine2'],
-        pinCode: C1.address['pincode'],
-        taluk: C1.address['taluk'],
-        city: C1.address['city'],
-        state: C1.address['state'],
-        landmark: C1.address['landmark'],
-        phoneNumber: C1.address['phoneNumber'],
-        email: C1.address['email'],
-        yrsInAddress: C1.address['yrsInAddress'],
-        yrsInCity: C1.address['yrsInCity'],
+    console.log(this.kycData);
 
-        commOrPerAddress: C1.permAddress?.commOrPerAddress,
-        permAddressLine1: C1.permAddress?.addressLine1,
-        permAddressLine2: C1.permAddress?.addressLine2,
-        permPincode: C1.permAddress?.pincode,
-        permTaluk: C1.permAddress?.taluk,
-        permCity: C1.permAddress?.city,
-        permState: C1.permAddress?.state,
+    // Prefill: edit data
+    this.coApplicantForm.patchValue({
+      // Co-Applicant 1
+      salutation: C1.farmerDetails['salutation'] || '',
+      firstName: C1.farmerDetails['firstName'],
+      middleName: C1.farmerDetails['middleName'],
+      lastName: C1.farmerDetails['lastName'],
+      dob: C1.farmerDetails['dob'],
+      gender: C1.farmerDetails['gender'],
+      religion: C1.farmerDetails['religion'],
+      caste: C1.farmerDetails['caste'],
 
-        propertyStatus: C1.propertyStatus,
-        monthlyRent: C1.monthlyRent,
-        familyMembers: C1.familyMembers,
+      educationalQualification: C1.otherDetails['educationalQualification'],
+      occupation: C1.otherDetails['occupation'],
+      annualIncome: C1.otherDetails['annualIncome'],
 
-        addressProof: C1.addressProof['selectedIdProof'],
-        PANnumber: C1.identityProof['panNumber'],
-        voterIdNumber: C1.identityProof['voterIdNumber'],
-        passportNumber: C1.identityProof['passportNumber'],
-        NREGANumber: C1.identityProof['NREGANumber'],
+      address1: C1.address['addressLine1'],
+      address2: C1.address['addressLine2'],
+      pinCode: C1.address['pincode'],
+      taluk: C1.address['taluk'],
+      city: C1.address['city'],
+      state: C1.address['state'],
+      landmark: C1.address['landmark'],
+      phoneNumber: C1.address['phoneNumber'],
+      email: C1.address['email'],
+      yrsInAddress: C1.address['yrsInAddress'],
+      yrsInCity: C1.address['yrsInCity'],
 
-        // Co-Applicant 1
-        salutationcoa2: C2.farmerDetails['salutation'],
-        firstNamecoa2: C2.farmerDetails['firstName'],
-        middleNamecoa2: C2.farmerDetails['middleName'],
-        lastNamecoa2: C2.farmerDetails['lastName'],
-        dobcoa2: C2.farmerDetails['dob'],
-        gendercoa2: C2.farmerDetails['gender'],
-        religioncoa2: C2.farmerDetails['religion'],
-        castecoa2: C2.farmerDetails['caste'],
+      commOrPerAddress: C1.permAddress?.commOrPerAddress,
+      permAddressLine1: C1.permAddress?.addressLine1,
+      permAddressLine2: C1.permAddress?.addressLine2,
+      permPincode: C1.permAddress?.pincode,
+      permTaluk: C1.permAddress?.taluk,
+      permCity: C1.permAddress?.city,
+      permState: C1.permAddress?.state,
 
-        educationalQualificationcoa2:
-          C2.otherDetails['educationalQualification'],
-        occupationcoa2: C2.otherDetails['occupation'],
-        annualIncomecoa2: C2.otherDetails['annualIncome'],
+      propertyStatus: C1.propertyStatus,
+      monthlyRent: C1.monthlyRent,
+      familyMembers: C1.familyMembers,
 
-        address1coa2: C2.address['addressLine1'],
-        address2coa2: C2.address['addressLine2'],
-        pinCodecoa2: C2.address['pincode'],
-        talukcoa2: C2.address['taluk'],
-        citycoa2: C2.address['city'],
-        statecoa2: C2.address['state'],
-        landmarkcoa2: C2.address['landmark'],
-        phoneNumbercoa2: C2.address['phoneNumber'],
-        emailcoa2: C2.address['email'],
-        yrsInAddresscoa2: C2.address['yrsInAddress'],
-        yrsInCitycoa2: C2.address['yrsInCity'],
+      PANnumber: C1.identityProof['panNumber'],
+      aadhaarNumber: C1.identityProof['aadhaarNumber'],
+      drivingLicenceNumber: C1.identityProof['drivingLicenceNumber'],
+      voterIdNumber: C1.identityProof['voterIdNumber'],
+      passportNumber: C1.identityProof['passportNumber'],
+      NREGANumber: C1.identityProof['NREGANumber'],
 
-        commOrPerAddresscoa2: C2.permAddress?.commOrPerAddress,
-        permAddressLine1coa2: C2.permAddress?.addressLine1,
-        permAddressLine2coa2: C2.permAddress?.addressLine2,
-        permPincodecoa2: C2.permAddress?.pincode,
-        permTalukcoa2: C2.permAddress?.taluk,
-        permCitycoa2: C2.permAddress?.city,
-        permStatecoa2: C2.permAddress?.state,
+      // Co-Applicant 1
+      salutationcoa2: C2.farmerDetails['salutation'] || '',
+      firstNamecoa2: C2.farmerDetails['firstName'],
+      middleNamecoa2: C2.farmerDetails['middleName'],
+      lastNamecoa2: C2.farmerDetails['lastName'],
+      dobcoa2: C2.farmerDetails['dob'],
+      gendercoa2: C2.farmerDetails['gender'],
+      religioncoa2: C2.farmerDetails['religion'],
+      castecoa2: C2.farmerDetails['caste'],
 
-        propertyStatuscoa2: C2.propertyStatus,
-        monthlyRentcoa2: C2.monthlyRent,
-        familyMemberscoa2: C2.familyMembers,
+      educationalQualificationcoa2: C2.otherDetails['educationalQualification'],
+      occupationcoa2: C2.otherDetails['occupation'],
+      annualIncomecoa2: C2.otherDetails['annualIncome'],
 
-        addressProofcoa2: C2.addressProof['selectedIdProof'],
-        PANnumbercoa2: C2.identityProof['panNumber'],
-        voterIdNumbercoa2: C2.identityProof['voterIdNumber'],
-        passportNumbercoa2: C2.identityProof['passportNumber'],
-        NREGANumbercoa2: C2.identityProof['NREGANumber'],
-      });
+      address1coa2: C2.address['addressLine1'],
+      address2coa2: C2.address['addressLine2'],
+      pinCodecoa2: C2.address['pincode'],
+      talukcoa2: C2.address['taluk'],
+      citycoa2: C2.address['city'],
+      statecoa2: C2.address['state'],
+      landmarkcoa2: C2.address['landmark'],
+      phoneNumbercoa2: C2.address['phoneNumber'],
+      emailcoa2: C2.address['email'],
+      yrsInAddresscoa2: C2.address['yrsInAddress'],
+      yrsInCitycoa2: C2.address['yrsInCity'],
 
-      if (C1.address['pincode']) {
-        this.getPinCodeData(
-          { target: { value: C1.address['pincode'] } },
-          'ADDRESS'
-        );
-      }
-      if (C1.permAddress?.pincode) {
-        this.getPinCodeData(
-          { target: { value: C1.permAddress?.pincode } },
-          'PERMANENT_ADDRESS'
-        );
-      }
+      commOrPerAddresscoa2: C2.permAddress?.commOrPerAddress,
+      permAddressLine1coa2: C2.permAddress?.addressLine1,
+      permAddressLine2coa2: C2.permAddress?.addressLine2,
+      permPincodecoa2: C2.permAddress?.pincode,
+      permTalukcoa2: C2.permAddress?.taluk,
+      permCitycoa2: C2.permAddress?.city,
+      permStatecoa2: C2.permAddress?.state,
 
-      if (C2.address['pincode']) {
-        this.getPinCodeData(
-          { target: { value: C2.address['pincode'] } },
-          'ADDRESScoa2'
-        );
-      }
-      if (C2.permAddress?.pincode) {
-        this.getPinCodeData(
-          { target: { value: C2.permAddress?.pincode } },
-          'PERMANENT_ADDRESScoa2'
-        );
-      }
-      this.familyMembers = this.coApplicantForm.get('familyMembers') as FormArray;
-      C1.familyMembers.map((item: any) => {
-        this.familyMembers.push(
-          this.formBuilder.group({
-            name: new FormControl(item.name),
-            relation: new FormControl(item.relation),
-            education: new FormControl(item.education),
-            occupation: new FormControl(item.occupation),
-            dependency: new FormControl(item.dependency),
-          })
-        );
-      });
-      this.familyMemberscoa2 = this.coApplicantForm.get('familyMemberscoa2') as FormArray;
-      C2.familyMembers.map((item: any) => {
-        this.familyMemberscoa2.push(
-          this.formBuilder.group({
-            name: new FormControl(item.name),
-            relation: new FormControl(item.relation),
-            education: new FormControl(item.education),
-            occupation: new FormControl(item.occupation),
-            dependency: new FormControl(item.dependency),
-          })
-        );
-      });
+      propertyStatuscoa2: C2.propertyStatus,
+      monthlyRentcoa2: C2.monthlyRent,
+      familyMemberscoa2: C2.familyMembers,
+
+      PANnumbercoa2: C2.identityProof['panNumber'],
+      aadhaarNumbercoa2: C2.identityProof['aadhaarNumber'],
+      drivingLicenceNumbercoa2: C2.identityProof['drivingLicenceNumber'],
+      voterIdNumbercoa2: C2.identityProof['voterIdNumber'],
+      passportNumbercoa2: C2.identityProof['passportNumber'],
+      NREGANumbercoa2: C2.identityProof['NREGANumber'],
+    });
+
+    if (C1.address['pincode']) {
+      this.getPinCodeData(
+        { target: { value: C1.address['pincode'] } },
+        'ADDRESS'
+      );
+    }
+    if (C1.permAddress?.pincode) {
+      this.getPinCodeData(
+        { target: { value: C1.permAddress?.pincode } },
+        'PERMANENT_ADDRESS'
+      );
+    }
+
+    if (C2.address['pincode']) {
+      this.getPinCodeData(
+        { target: { value: C2.address['pincode'] } },
+        'ADDRESScoa2'
+      );
+    }
+    if (C2.permAddress?.pincode) {
+      this.getPinCodeData(
+        { target: { value: C2.permAddress?.pincode } },
+        'PERMANENT_ADDRESScoa2'
+      );
+    }
+    this.familyMembers = this.coApplicantForm.get('familyMembers') as FormArray;
+    C1.familyMembers.map((item: any) => {
+      this.familyMembers.push(
+        this.formBuilder.group({
+          name: new FormControl(item.name),
+          relation: new FormControl(item.relation),
+          education: new FormControl(item.education),
+          occupation: new FormControl(item.occupation),
+          dependency: new FormControl(item.dependency),
+        })
+      );
+    });
+    this.familyMemberscoa2 = this.coApplicantForm.get(
+      'familyMemberscoa2'
+    ) as FormArray;
+    C2.familyMembers.map((item: any) => {
+      this.familyMemberscoa2.push(
+        this.formBuilder.group({
+          name: new FormControl(item.name),
+          relation: new FormControl(item.relation),
+          education: new FormControl(item.education),
+          occupation: new FormControl(item.occupation),
+          dependency: new FormControl(item.dependency),
+        })
+      );
+    });
     // }
   }
 
   validateAndNext() {
     this.isSubmitted = true;
-    console.log(this.coApplicantForm);
 
-    // if (this.coApplicantForm.invalid) {
-    //   this.toastr.error('please enter values for required fields', 'Error!');
-    //   return;
-    // } else {
     const formValue = this.coApplicantForm.value;
     const coapparr = [] as any;
     const obj = {
       identityProof: {
         panNumber: formValue.PANnumber,
+        aadhaarNumber: formValue.aadhaarNumber,
+        drivingLicenceNumber: formValue.drivingLicenceNumber,
         voterIdNumber: formValue.voterIdNumber,
         passportNumber: formValue.passportNumber,
         NREGANumber: formValue.NREGANumber,
       },
-      addressProof: {
-        selectedIdProof: formValue.addressProof,
-      },
+
       farmerDetails: {
         salutation: formValue.salutation,
         firstName: formValue.firstName,
@@ -1264,18 +1650,20 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       propertyStatus: formValue.propertyStatus,
       monthlyRent: formValue.monthlyRent,
       familyMembers: formValue.familyMembers,
+
+      kycData: this.kycData.coa1,
     };
 
     const objcoa2 = {
       identityProof: {
         panNumber: formValue.PANnumbercoa2,
+        aadhaarNumber: formValue.aadhaarNumbercoa2,
+        drivingLicenceNumber: formValue.drivingLicenceNumbercoa2,
         passportNumber: formValue.passportNumbercoa2,
         NREGANumber: formValue.NREGANumbercoa2,
         voterIdNumber: formValue.voterIdNumbercoa2,
       },
-      addressProof: {
-        selectedIdProof: formValue.addressProofcoa2,
-      },
+
       farmerDetails: {
         salutation: formValue.salutationcoa2,
         firstName: formValue.firstNamecoa2,
@@ -1319,8 +1707,9 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
       familyMembers: formValue.familyMemberscoa2,
       propertyStatus: formValue.propertyStatuscoa2,
       monthlyRent: formValue.monthlyRentcoa2,
+
+      kycData: this.kycData.coa2,
     };
-    console.log(this.coApplicantForm);
 
     coapparr.push(obj);
     coapparr.push(objcoa2);
@@ -1334,7 +1723,22 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     const url = `/add/${this.nextRoute}/${this.farmerId}`;
     this.router.navigate([url]);
-    // }
+  }
+  objectKeyCount(object: any) {
+    return object ? Object.keys(object).length : 0;
+  }
+
+  setSelectedValue(
+    event: any,
+    formCtlName: any,
+    opt_val: any,
+    valueType: string
+  ) {
+    if (valueType === 'manual') {
+      this.coApplicantForm.get(formCtlName)?.setValue(event.target.value);
+    } else if (valueType === 'list') {
+      this.coApplicantForm.get(formCtlName)?.setValue(opt_val);
+    }
   }
   /* END: NON-API Function Calls------------------------------------------------------------------------ */
 
@@ -1407,7 +1811,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         (error: any) => {
           this.spinner.hide();
-          alert('Failed to fetch PinCode Details, please try againn...');
+          alert('Failed to fetch PinCode Details, please try again...');
         }
       );
     }
@@ -1427,7 +1831,9 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         })
       );
     });
-    this.familyMemberscoa2 = this.coApplicantForm.get('familyMemberscoa2') as FormArray;
+    this.familyMemberscoa2 = this.coApplicantForm.get(
+      'familyMemberscoa2'
+    ) as FormArray;
     fieldValues.familyMemberscoa2.map((item: any) => {
       this.familyMemberscoa2.push(
         this.formBuilder.group({
@@ -1439,6 +1845,583 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         })
       );
     });
-  }  
+  }
+
+  /* PAN,Voter ID,Driving Licence EKYC related : start */
+  getKycData(event: any, coaNo: string, proofType: string) {
+    let INPUT_OBJ = {};
+    // PAN Card
+    if (proofType === this.kycProofNames.coa1.pan && coaNo === 'coa1') {
+      const A = this.coApplicantForm.value.PANnumber;
+      if (!A) {
+        this.toastr.info('please enter PAN number', 'Info!');
+        return;
+      } else if (
+        this.f['PANnumber'].errors &&
+        this.f['PANnumber'].errors['invalidPanNumber']
+      ) {
+        this.toastr.info(' Please enter valid PAN Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        id_type: 'PAN',
+        id_no: this.coApplicantForm.value.PANnumber,
+      };
+    } else if (proofType === this.kycProofNames.coa2.pan && coaNo === 'coa2') {
+      const A = this.coApplicantForm.value.PANnumbercoa2;
+      if (!A) {
+        this.toastr.info('please enter PAN number', 'Info!');
+        return;
+      } else if (
+        this.f['PANnumbercoa2'].errors &&
+        this.f['PANnumbercoa2'].errors['invalidPanNumber']
+      ) {
+        this.toastr.info(' Please enter valid PAN Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        id_type: 'PAN',
+        id_no: this.coApplicantForm.value.PANnumbercoa2,
+      };
+    }
+    // VOTER ID
+    else if (
+      proofType === this.kycProofNames.coa1.voter_id &&
+      coaNo === 'coa1'
+    ) {
+      const A = this.coApplicantForm.value.voterIdNumber;
+      if (!A) {
+        this.toastr.info('please enter Voter Id Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        id_type: 'VOTER_ID',
+        id_no: this.coApplicantForm.value.voterIdNumber,
+      };
+    } else if (
+      proofType === this.kycProofNames.coa2.voter_id &&
+      coaNo === 'coa2'
+    ) {
+      const A = this.coApplicantForm.value.voterIdNumbercoa2;
+      if (!A) {
+        this.toastr.info('please enter Voter Id Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        id_type: 'VOTER_ID',
+        id_no: this.coApplicantForm.value.voterIdNumbercoa2,
+      };
+    }
+    // DRIVING_LICENSE
+    else if (
+      proofType === this.kycProofNames.coa1.driving_licence &&
+      coaNo === 'coa1'
+    ) {
+      const A = this.coApplicantForm.value.drivingLicenceNumber;
+      if (!A) {
+        this.toastr.info('please enter Driving Licence Number', 'Info!');
+        return;
+      }
+
+      const B = this.coApplicantForm.value.dob;
+      if (!B) {
+        this.toastr.info(
+          'please select Date Of Birth as per Driving Licence',
+          'Info!'
+        );
+        return;
+      }
+      // convert date farmat from 'YYYY-MM-DD' to 'dd/MM/yyyy'
+      const C = this.coApplicantForm.value.dob.split('-');
+
+      INPUT_OBJ = {
+        id_type: 'DRIVING_LICENSE',
+        id_no: this.coApplicantForm.value.drivingLicenceNumber,
+        dob: `${C[1]}/${C[2]}/${C[0]}`,
+      };
+    } else if (
+      proofType === this.kycProofNames.coa2.driving_licence &&
+      coaNo === 'coa2'
+    ) {
+      const A = this.coApplicantForm.value.drivingLicenceNumbercoa2;
+      if (!A) {
+        this.toastr.info('please enter Driving Licence Number', 'Info!');
+        return;
+      }
+
+      const B = this.coApplicantForm.value.dobcoa2;
+      if (!B) {
+        this.toastr.info(
+          'please select Date Of Birth as per Driving Licence',
+          'Info!'
+        );
+        return;
+      }
+      // convert date farmat from 'YYYY-MM-DD' to 'dd/MM/yyyy'
+      const C = this.coApplicantForm.value.dobcoa2.split('-');
+
+      INPUT_OBJ = {
+        id_type: 'DRIVING_LICENSE',
+        id_no: this.coApplicantForm.value.drivingLicenceNumbercoa2,
+        dob: `${C[1]}/${C[2]}/${C[0]}`,
+      };
+    }
+
+    this.spinner.show();
+    this.commonService.getKycData(INPUT_OBJ).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+
+        // PAN Card - COA1
+        if (proofType === this.kycProofNames.coa1.pan) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.data.message}`, 'Info!');
+            this.setKycDataVariables(coaNo, proofType, 'api_failed', '');
+          } else if (!res.data.hasOwnProperty('full_name')) {
+            this.toastr.info(`Invalid PAN Number`, 'Info!');
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+        // PAN Card - COA2
+        if (proofType === this.kycProofNames.coa2.pan) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.data.message}`, 'Info!');
+            this.setKycDataVariables(coaNo, proofType, 'api_failed', '');
+          } else if (!res.data.hasOwnProperty('full_name')) {
+            this.toastr.info(`Invalid PAN Number`, 'Info!');
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+
+        // VOTER ID - COA1
+        if (proofType === this.kycProofNames.coa1.voter_id) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.data.message}`, 'Info!');
+            this.setKycDataVariables(coaNo, proofType, 'api_failed', '');
+          } else if (!res.data.hasOwnProperty('name')) {
+            this.toastr.info(`Invalid Voter Id Number`, 'Info!');
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        } // VOTER ID - COA2
+        if (proofType === this.kycProofNames.coa2.voter_id) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.data.message}`, 'Info!');
+            this.setKycDataVariables(coaNo, proofType, 'api_failed', '');
+          } else if (!res.data.hasOwnProperty('name')) {
+            this.toastr.info(`Invalid Voter Id Number`, 'Info!');
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+
+        // DRIVING_LICENSE - COA1
+        if (proofType === this.kycProofNames.coa1.driving_licence) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.data.message}`, 'Info!');
+            this.setKycDataVariables(coaNo, proofType, 'api_failed', '');
+          } else if (!res.data.hasOwnProperty("Holder's Name")) {
+            this.toastr.info(`Invalid Driving Licence Number`, 'Info!');
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        } // DRIVING_LICENSE - COA2
+        if (proofType === this.kycProofNames.coa2.driving_licence) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.data.message}`, 'Info!');
+            this.setKycDataVariables(coaNo, proofType, 'api_failed', '');
+          } else if (!res.data.hasOwnProperty("Holder's Name")) {
+            this.toastr.info(`Invalid Driving Licence Number`, 'Info!');
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setKycDataVariables(
+              coaNo,
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch KYC Details, please try again...');
+        this.setKycDataVariables(coaNo, proofType, 'api_failed', '');
+      }
+    );
+  }
+
+  setKycDataVariables(
+    coaNo: string,
+    proofType: string,
+    type: string,
+    apiData = {}
+  ) {
+    if (type === 'api_failed') {
+      this.kycData[coaNo][proofType].data = {};
+      this.kycData[coaNo][proofType].showVerify = false;
+      this.kycData[coaNo][proofType].showTryAgain = true;
+      this.kycData[coaNo][proofType].showConfirm = false;
+      this.kycData[coaNo][proofType].isVerified = false;
+    } else if (type === 'api_success_invalid_data') {
+      this.kycData[coaNo][proofType].data = {};
+      this.kycData[coaNo][proofType].showVerify = false;
+      this.kycData[coaNo][proofType].showTryAgain = true;
+      this.kycData[coaNo][proofType].showConfirm = false;
+      this.kycData[coaNo][proofType].isVerified = false;
+    } else if (type === 'api_success_valid_data') {
+      this.kycData[coaNo][proofType].data = apiData;
+      this.kycData[coaNo][proofType].showVerify = true;
+      this.kycData[coaNo][proofType].showTryAgain = false;
+      this.kycData[coaNo][proofType].showConfirm = true;
+      this.kycData[coaNo][proofType].isVerified = false;
+    } else if (type === 'confirm') {
+      this.kycData[coaNo][proofType].showVerify = false;
+      this.kycData[coaNo][proofType].showTryAgain = false;
+      this.kycData[coaNo][proofType].showConfirm = false;
+      this.kycData[coaNo][proofType].isVerified = true;
+    }
+  }
+  /* PAN,Voter ID,Driving Licence EKYC related : end */
+
+  /* Aadhaar EKYC related : start */
+  getAadhaarEkycVerification(event: any, coaNo: string, proofType: string) {
+    let INPUT_OBJ = {};
+
+    // Aadhaar Card
+    if (proofType === this.kycProofNames.coa1.aadhaar && coaNo === 'coa1') {
+      /*  
+      // checking for Aadhaar Mandatory is not required
+      const aadhaarInput = this.coApplicantForm.value.aadhaarNumber;
+      if (!aadhaarInput) {
+        this.toastr.info('please enter Aadhaar Number', 'Info!');
+        return;
+      } else if (aadhaarInput && aadhaarInput.length !== 12) {
+        this.toastr.info('please enter 12 digit valid Aadhaar Number', 'Info!');
+        return;
+      } else */
+
+      const phoneNumberInput = this.coApplicantForm.value.phoneNumber;
+      if (
+        !phoneNumberInput ||
+        (phoneNumberInput && phoneNumberInput.trim().length !== 10)
+      ) {
+        this.toastr.info('please enter your 10 digit Mobile Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        mobile_no: phoneNumberInput,
+      };
+    } else if (
+      proofType === this.kycProofNames.coa2.aadhaar &&
+      coaNo === 'coa2'
+    ) {
+      /*
+      // checking for Aadhaar Mandatory is not required
+      const aadhaarInput = this.coApplicantForm.value.aadhaarNumbercoa2;
+      if (!aadhaarInput) {
+        this.toastr.info('please enter Aadhaar Number', 'Info!');
+        return;
+      } else if (aadhaarInput && aadhaarInput.length !== 12) {
+        this.toastr.info('please enter 12 digit valid Aadhaar Number', 'Info!');
+        return;
+      } else */
+
+      const phoneNumberInput = this.coApplicantForm.value.phoneNumbercoa2;
+      if (
+        !phoneNumberInput ||
+        (phoneNumberInput && phoneNumberInput.trim().length !== 10)
+      ) {
+        this.toastr.info('please enter your 10 digit Mobile Number', 'Info!');
+        return;
+      }
+      INPUT_OBJ = {
+        mobile_no: phoneNumberInput,
+      };
+    }
+    this.spinner.show();
+    this.commonService.getAadhaarEkycVerification(INPUT_OBJ).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (
+          ['coa1', 'coa2'].includes(coaNo) &&
+          (proofType === this.kycProofNames.coa1.aadhaar ||
+            proofType === this.kycProofNames.coa2.aadhaar)
+        ) {
+          if (res && !res.status) {
+            this.toastr.info(`${res.message}`, 'Info!');
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_1',
+              proofType,
+              'api_failed',
+              ''
+            );
+          } else if (
+            !res.data.hasOwnProperty('kId') ||
+            !res.data.hasOwnProperty('redirect_url')
+          ) {
+            this.toastr.info(`Invalid Aadhaar Card Number`, 'Info!');
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_1',
+              proofType,
+              'api_success_invalid_data',
+              res.data
+            );
+          } else {
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_1',
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch KYC Details, please try again...');
+        this.setAadhaarEkycDataVariables(
+          coaNo,
+          'api_1',
+          proofType,
+          'api_failed',
+          ''
+        );
+      }
+    );
+  }
+  getAadhaarDetails(event: any, coaNo: string, proofType: string) {
+    let INPUT_OBJ = {};
+    if (proofType === this.kycProofNames.coa1.aadhaar && coaNo === 'coa1') {
+      INPUT_OBJ = {
+        kId: this.kycData.coa1.aadhaar.verificationLinkData['kId'],
+      };
+    } else if (
+      proofType === this.kycProofNames.coa2.aadhaar &&
+      coaNo === 'coa2'
+    ) {
+      INPUT_OBJ = {
+        kId: this.kycData.coa2.aadhaar.verificationLinkData['kId'],
+      };
+    }
+    this.spinner.show();
+    this.commonService.getAadhaarDetails(INPUT_OBJ).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (
+          ['coa1', 'coa2'].includes(coaNo) &&
+          (proofType === this.kycProofNames.coa1.aadhaar ||
+            proofType === this.kycProofNames.coa2.aadhaar)
+        ) {
+          if (
+            res &&
+            (!res.status || (res.status && res.data && res.data.code))
+          ) {
+            this.toastr.info(`${res.message}`, 'Info!');
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_2',
+              proofType,
+              'api_failed',
+              ''
+            );
+          } else if (
+            res.data &&
+            res.data.actions &&
+            Array.isArray(res.data.actions) &&
+            res.data.actions.length &&
+            res.data.actions[0].details &&
+            !Object.keys(res.data.actions[0].details).length
+          ) {
+            this.toastr.info(
+              `Please complete the verification process`,
+              'Info!'
+            );
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_2',
+              proofType,
+              'api_success_invalid_data',
+              ''
+            );
+          } else if (
+            res.data &&
+            res.data.actions &&
+            Array.isArray(res.data.actions) &&
+            res.data.actions.length &&
+            res.data.actions[0].details &&
+            res.data.actions[0].details.aadhaar
+          ) {
+            this.toastr.info(
+              `Please verify the Aadhaar details and confirm to complete the process`,
+              'Info!'
+            );
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_2',
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          } else {
+            this.setAadhaarEkycDataVariables(
+              coaNo,
+              'api_2',
+              proofType,
+              'api_success_valid_data',
+              res.data
+            );
+          }
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        alert('Failed to fetch KYC Details, please try again...');
+        this.setAadhaarEkycDataVariables(
+          coaNo,
+          'api_2',
+          proofType,
+          'api_failed',
+          ''
+        );
+      }
+    );
+  }
+
+  setAadhaarEkycDataVariables(
+    coaNo: string,
+    apiCalled: string,
+    proofType: string,
+    type: string,
+    apiData: any
+  ) {
+    if (apiCalled === 'api_1') {
+      if (type === 'api_failed') {
+        this.kycData[coaNo][proofType].verificationLinkData = {};
+        this.kycData[coaNo][proofType].data = {};
+        this.kycData[coaNo][proofType].showVerify = false;
+        this.kycData[coaNo][proofType].showTryAgain = true;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = false;
+      } else if (type === 'api_success_invalid_data') {
+        this.kycData[coaNo][proofType].verificationLinkData = {};
+        this.kycData[coaNo][proofType].data = {};
+        this.kycData[coaNo][proofType].showVerify = false;
+        this.kycData[coaNo][proofType].showTryAgain = true;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = false;
+      } else if (type === 'api_success_valid_data') {
+        this.kycData[coaNo][proofType].verificationLinkData = apiData;
+        this.kycData[coaNo][proofType].data = {};
+        this.kycData[coaNo][proofType].showVerify = true;
+        this.kycData[coaNo][proofType].showTryAgain = false;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = false;
+      }
+    } else if (apiCalled === 'api_2') {
+      if (type === 'api_failed') {
+        this.kycData[coaNo][proofType].data = {};
+        this.kycData[coaNo][proofType].showVerify = false;
+        this.kycData[coaNo][proofType].showTryAgain = true;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = false;
+      } else if (type === 'api_success_invalid_data') {
+        this.kycData[coaNo][proofType].data = {};
+        this.kycData[coaNo][proofType].showVerify = false;
+        this.kycData[coaNo][proofType].showTryAgain = true;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = false;
+      } else if (type === 'api_success_valid_data') {
+        // prefill the First Name from Aadhaar Data
+        if (coaNo === 'coa1') {
+          this.coApplicantForm
+            .get('firstName')
+            ?.setValue(apiData?.actions[0].details.aadhaar.name);
+        } else if (coaNo === 'coa2') {
+          this.coApplicantForm
+            .get('firstNamecoa2')
+            ?.setValue(apiData?.actions[0].details.aadhaar.name);
+        }
+
+        this.kycData[coaNo][proofType].data = apiData;
+        this.kycData[coaNo][proofType].showVerify = true;
+        this.kycData[coaNo][proofType].showTryAgain = false;
+        this.kycData[coaNo][proofType].showConfirm = true;
+        this.kycData[coaNo][proofType].isVerified = false;
+      } else if (type === 'confirm') {
+        this.kycData[coaNo][proofType].showVerify = false;
+        this.kycData[coaNo][proofType].showTryAgain = false;
+        this.kycData[coaNo][proofType].showConfirm = false;
+        this.kycData[coaNo][proofType].isVerified = true;
+      }
+    }
+  }
+  /* Aadhaar EKYC related : end */
+
   /* END: API Function Calls------------------------------------------------------------------------ */
 }
