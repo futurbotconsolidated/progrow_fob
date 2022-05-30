@@ -234,9 +234,9 @@
                           <th>Date of Registration</th>
                           <th>Address</th>
                           <th>FRCM Score</th>
-                          <th>Cibil Score</th>
+                          <!-- <th>Cibil Score</th> -->
                           <th>Loan ID</th>
-                          <th>Status</th>
+                          <th>Profile Completion%</th>
                           <th>Added By</th>
                           <th>Updated By</th>
                           <th>Updated Date</th>
@@ -263,7 +263,7 @@
                             {{ (x.address.addressLine1.length>8)? (x.address.addressLine1 | slice:0:8)+'...':(x.address.addressLine1) }}
                           </td>
                           <td>{{x.fa_frcm_score || 'NA' }}</td>
-                          <td>NA</td>
+                          <!-- <td>NA</td> -->
                           <td>
                             <a *ngIf="x.loan_account_number" href="http://65.2.60.231/mifin/" target="_blank">{{x.loan_account_number}}</a>
                             <span *ngIf="!x.loan_account_number">
@@ -365,14 +365,14 @@
                           <th>FRCM Score</th>
                           <th>URN</th>
                           <th>Farmer Name</th>
-                          <th>Farm Size(Hectares)</th>
+                          <th>Farm Size (Hectares)</th>
                           <th>Mobile</th>
-                          <th>Date of Registration</th>
-                          <th></th>
-                          <th></th>
-                          <th>Land</th>
+                          <th>Date of Registration</th>                          
+                          <th>Land Record</th>
                           <th>Added By</th>
                           <th>Branch Name</th>
+                          <th></th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -390,12 +390,12 @@
                           </td>                          
                           <td>
                             {{ x.createdDate | date:'EE, MMM d, y' }}
-                          </td>
-                          <td><a (click)="getFarmerDetailsById(x.farmerId,'view')" class="btn btn-view-f cursor-pointer">View</a></td>
-                          <td><a (click)="getFarmerDetailsById(x.farmerId,'edit')" class="btn btn-view-f cursor-pointer">Edit</a></td>
-                          <td>NA</td>
+                          </td>                          
+                          <td><span *ngIf="!x.fa_ownership_document_url">NA</span><a *ngIf="x.fa_ownership_document_url" href="{{x.fa_ownership_document_url}}" target="_blank">View</a></td>
                           <td>{{ x.createdBy }}</td>
                           <td>{{ x.branch_name }}</td>
+                          <td><a (click)="getFarmerDetailsById(x.farmerId,'view')" class="btn btn-view-f cursor-pointer">View</a></td>
+                          <td><a (click)="getFarmerDetailsById(x.farmerId,'edit')" class="btn btn-view-f cursor-pointer">Edit</a></td>
                         </tr>
                       </tbody>
                     </table>

@@ -3,13 +3,29 @@
     <div class="bg-color summery">
         <div class="demographic-profile">
             <div class="row">
+                <div class="col-md-12"><div class="summery-bg"><h2 class="form-title">Co-Applicant 1</h2></div></div>
                 <div class="col-md-3">
                     <div class="actual-facts summery-bg full-height">
                         <h4 class="summery-heading"><span>KYC Details</span> <a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile kyc-details">
-                            <p><span><i class="fa fa-check"></i>Pan Card</span><span><a href="javascript:void(0);">View</a></span></p>
-                            <p><span><i class="fa fa-check"></i>Adhar Card</span><span><a href="javascript:void(0);">View</a></span></p>
-
+                            <p *ngIf="coApplicantDisp[0]?.identityProof?.NREGANumber">
+                                <span><i class="fa fa-check"></i>NREGA </span><span><a (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.NREGA)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[0]?.identityProof?.aadhaarNumber">
+                                <span><i class="fa fa-check"></i>Aadhaar Card</span><span><a (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.aadhaarCard)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[0]?.identityProof?.drivingLicenceNumber">
+                                <span><i class="fa fa-check"></i>Driving Licence</span><span><a (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.drivingLicence)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[0]?.identityProof?.panNumber">
+                                <span><i class="fa fa-check"></i>Pan Card</span><span><a (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.panCard)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[0]?.identityProof?.passportNumber">
+                                <span><i class="fa fa-check"></i>Passport</span><span><a (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.passport)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[0]?.identityProof?.voterIdNumber">
+                                <span><i class="fa fa-check"></i>Voter Id</span><span><a (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.voterId)" href="javascript:void(0);">View</a></span>
+                            </p> 
                         </div>
                     </div>
 
@@ -21,31 +37,144 @@
                         <ul class="d-flex-profile">
                             <li>
                                 <h5>Name</h5>
-                                <p> {{coApplicantDisp?.farmerDetails['firstName']}} {{coApplicantDisp?.farmerDetails['middleName']}} {{coApplicantDisp?.farmerDetails['lastName']}}</p>
+                                <p> {{coApplicantDisp[0]?.farmerDetails['firstName']}} {{coApplicantDisp[0]?.farmerDetails['middleName']}} {{coApplicantDisp[0]?.farmerDetails['lastName']}}</p>
                             </li>
                             <li>
                                 <h5>Gender</h5>
-                                <p>{{coApplicantDisp?.farmerDetails['gender']}}</p>
+                                <p>{{coApplicantDisp[0]?.farmerDetails['gender']}}</p>
                             </li>
                             <li>
                                 <h5>Religion</h5>
-                                <p>{{coApplicantDisp?.farmerDetails['religion']}}</p>
+                                <p>{{coApplicantDisp[0]?.farmerDetails['religion']}}</p>
                             </li>
                             <li>
                                 <h5>Caste/Tribe</h5>
-                                <p>{{coApplicantDisp?.farmerDetails['caste']}}</p>
+                                <p>{{coApplicantDisp[0]?.farmerDetails['caste']}}</p>
                             </li>
                             <li>
                                 <h5>Education</h5>
-                                <p>{{coApplicantDisp?.educationQualification}}</p>
+                                <p>{{coApplicantDisp[0]?.educationQualification}}</p>
                             </li>
                             <li>
                                 <h5>Occupation</h5>
-                                <p>{{coApplicantDisp?.otherDetails['occupation']}}</p>
+                                <p>{{coApplicantDisp[0]?.otherDetails['occupation']}}</p>
                             </li>
                             <li>
                                 <h5>Annual Income</h5>
-                                <p>INR {{coApplicantDisp?.otherDetails['fpoName']}}</p>
+                                <p>INR {{coApplicantDisp[0]?.otherDetails['fpoName']}}</p>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><div class="summery-bg"><h2 class="form-title">Co-Applicant 2</h2></div></div>
+                <div class="col-md-3">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Income Streams</span><a href="javascript:void(0)">
+                                <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <div class="d-flex-profile">
+                            <p>N/A</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Property ownership</span><a href="javascript:void(0)">
+                                <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <ul class="d-flex-profile">
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Photo</th>
+                                        <th>Ownership Type</th>
+                                        <th>Perticular</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of coApplicantDisp[0]?.propertyOwnership">
+                                        <td>{{x.propertyType}}</td>
+                                        <td>
+                                            <p><a href="javascript:void(0);">View</a></p>
+                                        </td>
+                                        <td>{{x.ownershipType}}</td>
+                                        <td>{{x.particular}}</td>
+                                        <td>INR {{x.cumulativeValue}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>KYC Details</span> <a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <div class="d-flex-profile kyc-details">
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.NREGANumber">
+                                <span><i class="fa fa-check"></i>NREGA </span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.NREGA)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.aadhaarNumber">
+                                <span><i class="fa fa-check"></i>Aadhaar Card</span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.aadhaarCard)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.drivingLicenceNumber">
+                                <span><i class="fa fa-check"></i>Driving Licence</span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.drivingLicence)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.panNumber">
+                                <span><i class="fa fa-check"></i>Pan Card</span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.panCard)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.passportNumber">
+                                <span><i class="fa fa-check"></i>Passport</span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.passport)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="coApplicantDisp[1]?.identityProof?.voterIdNumber">
+                                <span><i class="fa fa-check"></i>Voter Id</span><span><a (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.voterId)" href="javascript:void(0);">View</a></span>
+                            </p> 
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-9">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Co-Applicant details</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <ul class="d-flex-profile">
+                            <li>
+                                <h5>Name</h5>
+                                <p> {{coApplicantDisp[1]?.farmerDetails['firstName']}} {{coApplicantDisp[1]?.farmerDetails['middleName']}} {{coApplicantDisp[1]?.farmerDetails['lastName']}}</p>
+                            </li>
+                            <li>
+                                <h5>Gender</h5>
+                                <p>{{coApplicantDisp[1]?.farmerDetails['gender']}}</p>
+                            </li>
+                            <li>
+                                <h5>Religion</h5>
+                                <p>{{coApplicantDisp[1]?.farmerDetails['religion']}}</p>
+                            </li>
+                            <li>
+                                <h5>Caste/Tribe</h5>
+                                <p>{{coApplicantDisp[1]?.farmerDetails['caste']}}</p>
+                            </li>
+                            <li>
+                                <h5>Education</h5>
+                                <p>{{coApplicantDisp[1]?.educationQualification}}</p>
+                            </li>
+                            <li>
+                                <h5>Occupation</h5>
+                                <p>{{coApplicantDisp[1]?.otherDetails['occupation']}}</p>
+                            </li>
+                            <li>
+                                <h5>Annual Income</h5>
+                                <p>INR {{coApplicantDisp[1]?.otherDetails['fpoName']}}</p>
                             </li>
 
                         </ul>
@@ -81,7 +210,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let x of coApplicantDisp?.propertyOwnership">
+                                    <tr *ngFor="let x of coApplicantDisp[1]?.propertyOwnership">
                                         <td>{{x.propertyType}}</td>
                                         <td>
                                             <p><a href="javascript:void(0);">View</a></p>
@@ -106,3 +235,53 @@
 
 
 </article>
+
+<!-- START: Common Modal Popup for File Upload and Preview -->
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header p-2 common_button_color">
+          <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 mb-1" [hidden]="!fileUpload.description">{{fileUpload.description}}</div>
+            <div class="col-md-12 mb-1" [hidden]="!fileUpload.kyc"><b>KYC Detail:</b>
+                <div class="row" *ngIf="(( this.fileUpload.coaNo == 'coa1' && this.fileUpload.fileFor == this.fileUploadFileFor.coa1.aadhaarCard) || ( this.fileUpload.coaNo == 'coa2' && this.fileUpload.fileFor == this.fileUploadFileFor.coa2.aadhaarCard)) ">
+                    <div class="col-md-9">   
+                        <p>Verified: {{fileUpload.kyc?.isVerified || 'NA'}}</p>                     
+                        <p>Name: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.name || ''}}</p>
+                        <p>Gender: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.gender || ''}}</p>
+                        <p>DOB: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.dob || ''}}</p>
+                        <p>Current Address: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.current_address || ''}}</p>
+                        <p>Permanent Address: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.permanent_address || ''}}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <img *ngIf="fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.image" src="data:image/jpeg;base64,{{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.image}}" alt="">
+                    </div>
+                </div>
+                <div class="row" *ngIf="!(( this.fileUpload.coaNo == 'coa1' && this.fileUpload.fileFor == this.fileUploadFileFor.coa1.aadhaarCard) || ( this.fileUpload.coaNo == 'coa2' && this.fileUpload.fileFor == this.fileUploadFileFor.coa2.aadhaarCard)) ">
+                    <div class="col-md-6 txt-capitalize" *ngFor="let x of fileUpload.kyc">
+                        {{x}}
+                    </div>
+                </div>
+            </div>              
+            <div class="col-md-4 mb-1" *ngIf="fileUpload.new.imageSrc1">
+              <p class="fs-6">Preview Image</p>
+              <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" />
+              <p *ngIf="fileUpload.new.imageSrc1"><a [href]="fileUpload.new.imageSrc1" target="_blank">View File</a></p>
+            </div>  
+            <div class="col-md-4 mb-1" *ngIf="fileUpload.new.imageSrc2">
+              <p class="fs-6">Preview Image</p>
+              <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" />
+              <p *ngIf="fileUpload.new.imageSrc2"><a [href]="fileUpload.new.imageSrc2" target="_blank">View File</a></p>
+            </div>  
+          </div>
+        </div>
+        <div class="modal-footer p-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Common Modal Popup for File Upload and Preview -->

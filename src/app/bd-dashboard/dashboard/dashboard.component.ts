@@ -713,6 +713,7 @@ export class DashboardComponent implements OnInit {
           res.data.forEach((farmer: any, index: number) => {
             let fa_frcm_score:any = 0;
             let fa_field_size:any = 0;
+            let fa_ownership_document_url = '';
             farmer.fieldInfo.forEach((field: any, index: number) => {
               if(field.field_area_ha){
                 fa_field_size = parseFloat(fa_field_size) + parseFloat(field.field_area_ha);
@@ -720,9 +721,13 @@ export class DashboardComponent implements OnInit {
               if(field.frcm_score.score){
                 fa_frcm_score = parseFloat(fa_frcm_score) + parseFloat(field.frcm_score.score);
               }
+              if(field.field_ownership_detail?.ownership_document_url && field.field_ownership_detail?.ownership_document_url != 'Download'){
+                fa_ownership_document_url = field.field_ownership_detail?.ownership_document_url;
+              }
             });
             farmer.fa_field_size = fa_field_size;
             farmer.fa_frcm_score = fa_frcm_score;
+            farmer.fa_ownership_document_url = fa_ownership_document_url;
             if(farmer.data_source == 'LEAD'){
               this.allPipelineFarmers.push(farmer);
             } else {

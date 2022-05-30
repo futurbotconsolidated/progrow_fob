@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from '../../shared/common.service';
 
 declare const L: any;
 import 'leaflet-draw';
-
+declare var $: any;
 @Component({
   selector: 'app-edit-field-info',
   templateUrl: './edit-field-info.component.html',
@@ -18,8 +19,37 @@ export class EditFieldInfoComponent implements OnInit {
   enumerateDetails = [] as any;
   typesOfTests = [] as any;
   editFieldArea = <any>[];
-
-  constructor(private spinner: NgxSpinnerService) {
+  fileUpload = {
+    fileFor: '',
+    popupTitle: '',
+    new: {
+      imageMultiple: [] as any,
+      isMultiple: false,
+      fileIndex: 0,
+    },
+   } as any;
+  localStoragePageName = 'field-info-files';
+  indexedDBPageName = 'field_info';
+  concatePage = 'field';
+  indexedDBName = 'registerFarmer';
+  indexedDBFileNameManage = {
+    ownershipPicture: {
+      front: `${this.concatePage}_ownershipPictureImage`,
+      count: `${this.concatePage}_ownershipPictureImageCount`
+    },
+    testPicture: {
+      front: `${this.concatePage}_testPictureImage`,
+      count: `${this.concatePage}_testPictureImageCount`
+    },
+  };
+  fileUploadFileFor = {
+    ownershipPicture: 'OWENERSHIP_PICTURE',
+    testPicture: 'TEST_PICTURE',
+  };
+  constructor(
+    public commonService: CommonService,
+    private spinner: NgxSpinnerService
+    ) {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.fieldInfo = JSON.parse(A).fieldInfo;
@@ -36,10 +66,11 @@ export class EditFieldInfoComponent implements OnInit {
         this.historicalDetails.push(
           el.historical_season_detail.historicalFieldDetails
         );
-        this.typesOfTests.push(el.testOnFields);
+        el.test_on_fields.forEach((eltof: any) => {
+        this.typesOfTests.push(eltof);
+        });
         this.enumerateDetails.push(el.enumerate_planned_season);
       });
-
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           this.setGeoLocation.bind(this)
@@ -151,4 +182,76 @@ export class EditFieldInfoComponent implements OnInit {
       map.fitBounds(polygon.getBounds());
     });
   }
+  openFileModalPopup(type: string, fileIndex: number) {
+    this.fileUpload.fileFor = type;    
+    this.fileUpload.new.imageMultiple = [];
+    this.fileUpload.new.isMultiple = false;
+    this.fileUpload.new.fileIndex = fileIndex;
+
+    if (type === this.fileUploadFileFor.ownershipPicture) {
+      this.fileUpload.popupTitle = 'Ownership Documents';
+      this.fileUpload.new.isMultiple = true;
+      let farmerFiles: any = localStorage.getItem('farmer-files');
+      if (farmerFiles) {
+        farmerFiles = JSON.parse(farmerFiles);
+      for (let fIndex = 0; fIndex <= Object.keys(farmerFiles).length; fIndex++) {
+            let imageSrc =
+              this.commonService.fetchFarmerDocument(
+                this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + fIndex
+              );
+            if (imageSrc) {
+              let type = 'file';
+              if (imageSrc.includes('data:image/') || imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
+                type = 'image';
+              }
+              let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];
+              let imgObj = {
+                file: imageSrc,
+                type: type,
+                name: filename.toString().substring(0, 60),
+              };
+              this.fileUpload.new.imageMultiple.push(imgObj);
+            }
+          }
+      }
+    } else if (type === this.fileUploadFileFor.testPicture) {
+      this.fileUpload.popupTitle = 'Test Reports';
+      this.fileUpload.new.isMultiple = true;
+      let farmerFiles: any = localStorage.getItem('farmer-files');
+      if (farmerFiles) {
+        farmerFiles = JSON.parse(farmerFiles);
+        for (let fIndex = 0; fIndex <= Object.keys(farmerFiles).length; fIndex++) {        
+            let imageSrc =
+              this.commonService.fetchFarmerDocument(
+                this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + fIndex
+              );
+            if (imageSrc) {
+              let type = 'file';
+              if ( imageSrc.includes('data:image/') || imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
+                type = 'image';
+              }
+              let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];
+              let imgObj = {
+                file: imageSrc,
+                type: type,
+                name: filename.toString().substring(0, 60),
+              };
+              this.fileUpload.new.imageMultiple.push(imgObj);
+            }  
+        }       
+      }
+    }
+    $('#fileUploadModalPopup').modal('show');
+  }
+
+  downloadFile(data: any) {
+    let dwldLink = document.createElement("a");
+    dwldLink.setAttribute("target", "_blank");
+    dwldLink.setAttribute("href", data);
+    dwldLink.style.visibility = "hidden";
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
 }

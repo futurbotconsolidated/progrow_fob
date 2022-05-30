@@ -26,7 +26,5 @@ export class SummaryComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    // localStorage.setItem('router_url', this.router.url);
-  }
+  ngOnInit(): void {}
 }

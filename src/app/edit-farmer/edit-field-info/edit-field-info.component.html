@@ -102,12 +102,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let x of ownerShipDetails">
+                                    <tr *ngFor="let x of ownerShipDetails; let i = index;">
                                         <td>{{x.fieldOwnId}}</td>
                                         <td>{{x.ownerType}}</td>
                                         <td>{{x.fieldOwnCoOwner}}</td>
                                         <td>{{x.fieldOwnCoPh}}</td>
-                                        <td>{{x.dependency}} <a href="javascript:void(0);">View</a></td>
+                                        <td>{{x.dependency}} <a href="javascript:void(0);" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">View</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -141,12 +141,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let x of typesOfTests">
+                                    <tr *ngFor="let x of typesOfTests; let i = index;">
                                         <td>{{x?.typeOfTest}}</td>
                                         <td>{{x?.yesNo}}</td>
                                         <td>{{x?.lastDone}}</td>
                                         <td>{{x?.testResult}}</td>
-                                        <td>{{x?.dependency}} <a href="javascript:void(0);">View</a></td>
+                                        <td>{{x?.dependency}} <a href="javascript:void(0);" (click)="openFileModalPopup(fileUploadFileFor.testPicture, i)">View</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -168,3 +168,33 @@
 
 
 </article>
+
+
+<!-- START: Common Modal Popup for File Upload and Preview -->
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header p-2 common_button_color">
+          <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+        </div>
+        <div class="modal-body">
+          <!-- START : Image - Multiple  -->
+            <div class="row" [hidden]="!fileUpload.new.imageMultiple">
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let fileData of fileUpload.new.imageMultiple">
+              <p class="fs-6" *ngIf="fileData.type=='image'">Preview Image</p>
+              <p class="fs-6" *ngIf="fileData.type !='image'">File</p>
+              <img [src]="fileData.file" *ngIf="fileData.type=='image'" style="height: 150px; width: 150px" /><br/>
+              <p *ngIf="fileData.type=='image'"><a href="{{fileData.file}}" target="_blank">View File</a></p>
+              <p *ngIf="fileData.type!='image'"><a href="javascript:void(0)" (click)="downloadFile(fileData.file)">View File</a></p>            
+                <!-- <p class="word-wrap-anywhere">{{fileData.name}}</p> -->
+            </div>  
+          </div>
+          <!-- END : Image - Multiple -->
+        </div>
+        <div class="modal-footer p-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Common Modal Popup for File Upload and Preview -->

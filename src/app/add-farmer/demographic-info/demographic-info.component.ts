@@ -877,43 +877,8 @@ export class DemographicInfoComponent
 
   onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
-      if (this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture) {
-        this.fileUpload.new.fileIndex = fileIndex;
-        this.fileUpload.new.imageMultiple = [];
-        var fCount = 0;
-        let demoInfoFiles: any = localStorage.getItem('demo-info-files');
-        if (demoInfoFiles) {
-          demoInfoFiles = JSON.parse(demoInfoFiles);
-          let difkey =
-            this.indexedDBFileNameManage.ownershipPicture.count +
-            '_' +
-            this.fileUpload.new.fileIndex;
-          if (demoInfoFiles[difkey]) {
-            fCount = demoInfoFiles[difkey];
-          }
-        }
-        for (let fIndex = 0; fIndex < fCount; fIndex++) {
-          this.dbService
-            .getByIndex(
-              this.indexedDBName,
-              'fileFor',
-              this.indexedDBFileNameManage.ownershipPicture.front +
-                '_' +
-                this.fileUpload.new.fileIndex +
-                '_' +
-                fIndex
-            )
-            .subscribe((file: any) => {
-              if (file && file !== undefined && Object.keys(file).length) {
-                // delete if exists
-                this.dbService
-                  .deleteByKey(this.indexedDBName, file.id)
-                  .subscribe((status) => {});
-              }
-            });
-        }
-      }
-      for (let findex = 0; findex < event.target.files.length; findex++) {
+      let c_file_count = this.fileUpload.new.imageMultiple.length;
+      for (let findex:any = 0; findex < event.target.files.length; findex++) {
         const file = event.target.files[findex];
 
         // if (file.size > 300000) {
@@ -1006,8 +971,7 @@ export class DemographicInfoComponent
                 this.indexedDBFileNameManage.ownershipPicture.front +
                 '_' +
                 this.fileUpload.new.fileIndex +
-                '_' +
-                findex;
+                '_' +(parseInt(c_file_count)+parseInt(findex));
             }
           }
           /* START: ngx-indexed-db feature to store files(images/docs) */
@@ -1059,7 +1023,11 @@ export class DemographicInfoComponent
           this.indexedDBFileNameManage.ownershipPicture.count +
           '_' +
           this.fileUpload.new.fileIndex;
-        demoInfoFiles[difkey] = event.target.files.length;
+        if(demoInfoFiles[difkey]){
+          demoInfoFiles[difkey] = parseInt(demoInfoFiles[difkey]) + event.target.files.length;
+        } else {
+          demoInfoFiles[difkey] = event.target.files.length;
+        }
         localStorage.setItem('demo-info-files', JSON.stringify(demoInfoFiles));
       }
     }
