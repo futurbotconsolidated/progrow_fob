@@ -9,6 +9,9 @@ export const endPoints = {
   documentUpload: '/document_upload',
   getDocument: '/farmer_presigned_s3_url',
   downloadCsv: '/download_csv',
+  pinCodeData: '/get_pincode_data',
+  masterData: '/master_data',  
+  sendToMifin: '/send_to_mifin',  
 
   ekyc: {
     getKycData: '/kyc_check',

@@ -59,24 +59,29 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><b>N/A</b></td>
-                                    <td><b>N/A</b></td>
-                                    <td><b>N/A</b></td>
-                                    <td><b>N/A</b></td>
-                                    <td><b>N/A</b></td>
+                                    <td><b>{{cropMrktPlanDisp?.year1 || 'NA'}}</b></td>
+                                    <td><b>{{cropMrktPlanDisp?.crop1 || 'NA'}}</b></td>
+                                    <td><b>{{cropMrktPlanDisp?.selfConsumption1 || 'NA'}}</b></td>
+                                    <td><b>{{cropMrktPlanDisp?.seedReplacement1 || 'NA'}}</b></td>
+                                    <td><b>{{cropMrktPlanDisp?.sellAtMarketPlace1 || 'NA'}}</b></td>
                                 </tr>
                                 <tr>
-                                    <td><b>N/A</b></td>
-                                    <td><b>N/A</b></td>
-                                    <td><b>N/A</b></td>
-                                    <td><b>N/A</b></td>
-                                    <td><b>N/A</b></td>
+                                    <td><b>{{cropMrktPlanDisp?.year2 || 'NA'}}</b></td>
+                                    <td><b>{{cropMrktPlanDisp?.crop2 || 'NA'}}</b></td>
+                                    <td><b>{{cropMrktPlanDisp?.selfConsumption2 || 'NA'}}</b></td>
+                                    <td><b>{{cropMrktPlanDisp?.seedReplacement2 || 'NA'}}</b></td>
+                                    <td><b>{{cropMrktPlanDisp?.sellAtMarketPlace2 || 'NA'}}</b></td>
                                 </tr>
-
                             </tbody>
                         </table>
+                        
                         <div class="d-flex-profile kcc-details py-4">
-                            <p><span>Where do you sell the produce?</span><span><b>N/A</b></span></p>
+                            <p>Where do you sell the produce?</p>
+                        <p><span>Particular-1</span><span><b>{{cropMrktPlanDisp?.particular1 || 'NA'}}</b></span></p>
+                        <p><span>Particular-2</span><span><b>{{cropMrktPlanDisp?.particular2 || 'NA'}}</b></span></p>
+                        <p><span>Particular-3</span><span><b>{{cropMrktPlanDisp?.particular3 || 'NA'}}</b></span></p>
+                        <p><span>Particular-4</span><span><b>{{cropMrktPlanDisp?.particular4 || 'NA'}}</b></span></p>                        
+                        <p><span>Comment : </span><span><b>{{cropMrktPlanDisp?.sellProduceComment || 'NA'}}</b></span></p>
                             <p><span>Are you satisfied with the existing farm gate grading
                                     method?</span><span><b>{{cropMrktPlanDisp?.farmGateGrading}}</b></span>
                             </p>

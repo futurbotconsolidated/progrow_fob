@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
 import { validatePANNumber } from '../../shared/custom-validators';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { formatDate } from '@angular/common';
 
 declare var $: any;
 import { data } from '../../shared/fob_master_data';
@@ -1781,30 +1782,30 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             alert('Failed to fetch PinCode Details, please try again...');
           } else {
             if (type === 'ADDRESS') {
-              this.pinCodeAPIData = res.result;
+              this.pinCodeAPIData = res.data;
 
               this.coApplicantForm.patchValue({
-                city: this.pinCodeAPIData[0].district,
-                state: this.pinCodeAPIData[0].state,
+                city: this.pinCodeAPIData[0].district_name,
+                state: this.pinCodeAPIData[0].state_name,
               });
             } else if (type === 'ADDRESScoa2') {
-              this.pinCodeAPIDatacoa2 = res.result;
+              this.pinCodeAPIDatacoa2 = res.data;
               this.coApplicantForm.patchValue({
-                citycoa2: this.pinCodeAPIDatacoa2[0].district,
-                statecoa2: this.pinCodeAPIDatacoa2[0].state,
+                citycoa2: this.pinCodeAPIDatacoa2[0].district_name,
+                statecoa2: this.pinCodeAPIDatacoa2[0].state_name,
               });
             } else if (type === 'PERMANENT_ADDRESS') {
-              this.permPinCodeAPIData = res.result;
+              this.permPinCodeAPIData = res.data;
 
               this.coApplicantForm.patchValue({
-                permCity: this.permPinCodeAPIData[0].district,
-                permState: this.permPinCodeAPIData[0].state,
+                permCity: this.permPinCodeAPIData[0].district_name,
+                permState: this.permPinCodeAPIData[0].state_name,
               });
             } else if (type === 'PERMANENT_ADDRESScoa2') {
-              this.permPinCodeAPIDatacoa2 = res.result;
+              this.permPinCodeAPIDatacoa2 = res.data;
               this.coApplicantForm.patchValue({
-                permCitycoa2: this.permPinCodeAPIDatacoa2[0].district,
-                permStatecoa2: this.permPinCodeAPIDatacoa2[0].state,
+                permCitycoa2: this.permPinCodeAPIDatacoa2[0].district_name,
+                permStatecoa2: this.permPinCodeAPIDatacoa2[0].state_name,
               });
             }
           }
@@ -1932,13 +1933,15 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
       // convert date farmat from 'YYYY-MM-DD' to 'dd/MM/yyyy'
-      const C = this.coApplicantForm.value.dob.split('-');
-
+      // const C = this.coApplicantForm.value.dob.split('-');
+      let dob = formatDate(this.coApplicantForm.value.dob,'dd/MM/yyyy','en_IN') as string;
       INPUT_OBJ = {
         id_type: 'DRIVING_LICENSE',
         id_no: this.coApplicantForm.value.drivingLicenceNumber,
-        dob: `${C[1]}/${C[2]}/${C[0]}`,
+        dob: `${dob}`,
+        // dob: `${C[1]}/${C[2]}/${C[0]}`,
       };
+      console.log('INPUT_OBJ : ', INPUT_OBJ);
     } else if (
       proofType === this.kycProofNames.coa2.driving_licence &&
       coaNo === 'coa2'
@@ -1958,13 +1961,15 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
       // convert date farmat from 'YYYY-MM-DD' to 'dd/MM/yyyy'
-      const C = this.coApplicantForm.value.dobcoa2.split('-');
-
+      // const C = this.coApplicantForm.value.dobcoa2.split('-');
+      let dob = formatDate(this.coApplicantForm.value.dobcoa2,'dd/MM/yyyy','en_IN') as string;
       INPUT_OBJ = {
         id_type: 'DRIVING_LICENSE',
         id_no: this.coApplicantForm.value.drivingLicenceNumbercoa2,
-        dob: `${C[1]}/${C[2]}/${C[0]}`,
+        dob: `${dob}`,
+        // dob: `${C[1]}/${C[2]}/${C[0]}`,
       };
+      console.log('INPUT_OBJ : ', INPUT_OBJ);
     }
 
     this.spinner.show();
@@ -2397,22 +2402,46 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         this.kycData[coaNo][proofType].showConfirm = false;
         this.kycData[coaNo][proofType].isVerified = false;
       } else if (type === 'api_success_valid_data') {
-        // prefill the First Name from Aadhaar Data
-        if (coaNo === 'coa1') {
-          this.coApplicantForm
-            .get('firstName')
-            ?.setValue(apiData?.actions[0].details.aadhaar.name);
-        } else if (coaNo === 'coa2') {
-          this.coApplicantForm
-            .get('firstNamecoa2')
-            ?.setValue(apiData?.actions[0].details.aadhaar.name);
-        }
-
         this.kycData[coaNo][proofType].data = apiData;
         this.kycData[coaNo][proofType].showVerify = true;
         this.kycData[coaNo][proofType].showTryAgain = false;
         this.kycData[coaNo][proofType].showConfirm = true;
         this.kycData[coaNo][proofType].isVerified = false;
+		// prefill the First Name from Aadhaar Data
+        if (!this.farmerId && proofType === 'aadhaar' && coaNo === 'coa1' && apiData?.actions[0].details.aadhaar.name) {
+          let aadhaar_name = apiData?.actions[0].details.aadhaar.name;
+          let aadhaar_name_arr = aadhaar_name.toString().split(" ");
+          if(aadhaar_name_arr.length >=1){
+            this.coApplicantForm.get('firstName')?.setValue(aadhaar_name_arr[0]);
+          }
+          if(aadhaar_name_arr.length >=2){
+            this.coApplicantForm.get('middleName')?.setValue(aadhaar_name_arr[1]);
+          }
+          if(aadhaar_name_arr.length >=3){
+            let lastName = '';
+            for (let i = 2; i < aadhaar_name_arr.length; i++) {
+              lastName =+ aadhaar_name_arr[i]+' ';
+            }
+            this.coApplicantForm.get('lastName')?.setValue(lastName);
+          }  
+        }
+        if (!this.farmerId && proofType === 'aadhaar' && coaNo === 'coa2' && apiData?.actions[0].details.aadhaar.name) {
+          let aadhaar_name = apiData?.actions[0].details.aadhaar.name;
+          let aadhaar_name_arr = aadhaar_name.toString().split(" ");
+          if(aadhaar_name_arr.length >=1){
+            this.coApplicantForm.get('firstNamecoa2')?.setValue(aadhaar_name_arr[0]);
+          }
+          if(aadhaar_name_arr.length >=2){
+            this.coApplicantForm.get('middleNamecoa2')?.setValue(aadhaar_name_arr[1]);
+          }
+          if(aadhaar_name_arr.length >=3){
+            let lastName = '';
+            for (let i = 2; i < aadhaar_name_arr.length; i++) {
+              lastName =+ aadhaar_name_arr[i]+' ';
+            }
+            this.coApplicantForm.get('lastNamecoa2')?.setValue(lastName);
+          }  
+        }
       } else if (type === 'confirm') {
         this.kycData[coaNo][proofType].showVerify = false;
         this.kycData[coaNo][proofType].showTryAgain = false;

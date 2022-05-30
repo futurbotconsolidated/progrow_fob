@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { tap } from 'rxjs/operators';
 import { CommonService } from '../../shared/common.service';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { formatDate } from '@angular/common';
 import {
   FormGroup,
   FormControl,
@@ -341,8 +342,9 @@ export class DemographicInfoComponent
       // assign other data to populate
       let editForm: any = localStorage.getItem('edit-demographic-info-form');
       if (editForm) {
-        editForm = JSON.parse(editForm);        
-        this.patchFarmerDetails(editForm);
+        editForm = JSON.parse(editForm); 
+        this.demographicInfoForm.patchValue(editForm);       
+        this.patchFarmerFormDetails(editForm);
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
           this.getPinCodeData(
@@ -389,7 +391,8 @@ export class DemographicInfoComponent
       let demoInfo: any = localStorage.getItem('demographic-info-form');
       if (demoInfo) {
         demoInfo = JSON.parse(demoInfo);
-        this.patchFarmerDetails(demoInfo);
+        this.demographicInfoForm.patchValue(demoInfo);
+        this.patchFarmerFormDetails(demoInfo);
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
           this.getPinCodeData(
@@ -427,6 +430,7 @@ export class DemographicInfoComponent
     if(!(this.demographicInfoForm.get('familyMembers') as FormArray).controls.length){
       this.addFamilyMembers();
     }
+
   }
   ngAfterViewInit(): void {
     /** subscribe to Observables, which are triggered from header selections*/
@@ -876,43 +880,8 @@ export class DemographicInfoComponent
 
   onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
-      if (this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture) {
-        this.fileUpload.new.fileIndex = fileIndex;
-        this.fileUpload.new.imageMultiple = [];
-        var fCount = 0;
-        let demoInfoFiles: any = localStorage.getItem('demo-info-files');
-        if (demoInfoFiles) {
-          demoInfoFiles = JSON.parse(demoInfoFiles);
-          let difkey =
-            this.indexedDBFileNameManage.ownershipPicture.count +
-            '_' +
-            this.fileUpload.new.fileIndex;
-          if (demoInfoFiles[difkey]) {
-            fCount = demoInfoFiles[difkey];
-          }
-        }
-        for (let fIndex = 0; fIndex < fCount; fIndex++) {
-          this.dbService
-            .getByIndex(
-              this.indexedDBName,
-              'fileFor',
-              this.indexedDBFileNameManage.ownershipPicture.front +
-                '_' +
-                this.fileUpload.new.fileIndex +
-                '_' +
-                fIndex
-            )
-            .subscribe((file: any) => {
-              if (file && file !== undefined && Object.keys(file).length) {
-                // delete if exists
-                this.dbService
-                  .deleteByKey(this.indexedDBName, file.id)
-                  .subscribe((status) => {});
-              }
-            });
-        }
-      }
-      for (let findex = 0; findex < event.target.files.length; findex++) {
+      let c_file_count = this.fileUpload.new.imageMultiple.length;
+      for (let findex:any = 0; findex < event.target.files.length; findex++) {
         const file = event.target.files[findex];
 
         // if (file.size > 300000) {
@@ -1005,8 +974,7 @@ export class DemographicInfoComponent
                 this.indexedDBFileNameManage.ownershipPicture.front +
                 '_' +
                 this.fileUpload.new.fileIndex +
-                '_' +
-                findex;
+                '_' +(parseInt(c_file_count)+parseInt(findex));
             }
           }
           /* START: ngx-indexed-db feature to store files(images/docs) */
@@ -1058,7 +1026,11 @@ export class DemographicInfoComponent
           this.indexedDBFileNameManage.ownershipPicture.count +
           '_' +
           this.fileUpload.new.fileIndex;
-        demoInfoFiles[difkey] = event.target.files.length;
+        if(demoInfoFiles[difkey]){
+          demoInfoFiles[difkey] = parseInt(demoInfoFiles[difkey]) + event.target.files.length;
+        } else {
+          demoInfoFiles[difkey] = event.target.files.length;
+        }
         localStorage.setItem('demo-info-files', JSON.stringify(demoInfoFiles));
       }
     }
@@ -1106,23 +1078,6 @@ export class DemographicInfoComponent
   // patch edit farmer details
   patchFarmerDetails(B: any) {
     this.demographicInfoForm.patchValue(B);
-    // patch farmer Profile image
-    this.dbService
-      .getByIndex(
-        this.indexedDBName,
-        'fileFor',
-        `${this.indexedDBFileNameManage.farmerProfile.front}`
-      )
-      .subscribe((farmer: any) => {
-        this.displayFarmerProfileImage =
-          farmer?.file ||
-          this.commonService.fetchFarmerDocument(
-            this.indexedDBFileNameManage.farmerProfile.front
-          );
-      });
-
-    // other details
-
       // assign kyc data to populate
       if (B.kycData) {
         this.kycData = B.kycData;
@@ -1204,6 +1159,26 @@ export class DemographicInfoComponent
         );
       }
 
+      this.patchFarmerFormDetails(B);
+  }
+
+  patchFarmerFormDetails(B: any) {
+    // patch farmer Profile image
+    this.dbService
+      .getByIndex(
+        this.indexedDBName,
+        'fileFor',
+        `${this.indexedDBFileNameManage.farmerProfile.front}`
+      )
+      .subscribe((farmer: any) => {
+        this.displayFarmerProfileImage =
+          farmer?.file ||
+          this.commonService.fetchFarmerDocument(
+            this.indexedDBFileNameManage.farmerProfile.front
+          );
+      });
+
+      if(B.propertyOwnership){
       this.propertyOwnership = this.demographicInfoForm.get(
         'propertyOwnership'
       ) as FormArray;
@@ -1220,7 +1195,8 @@ export class DemographicInfoComponent
           })
         );
       });
-
+    }
+    if(B.familyMembers){
       this.familyMembers = this.demographicInfoForm.get('familyMembers') as FormArray;
       B.familyMembers.map((item: any) => {
         this.familyMembers.push(
@@ -1232,8 +1208,8 @@ export class DemographicInfoComponent
             dependency: new FormControl(item.dependency),
           })
         );
-      });
-      
+      }); 
+    }     
   }
 
   validateAndNext() {
@@ -1381,16 +1357,16 @@ export class DemographicInfoComponent
             alert(`${res[0].Message}`);
           } else {
             if (type === 'ADDRESS') {
-              this.pinCodeAPIData = res.result;
+              this.pinCodeAPIData = res.data;
               this.demographicInfoForm.patchValue({
-                city: this.pinCodeAPIData[0].district,
-                state: this.pinCodeAPIData[0].state,
+                city: this.pinCodeAPIData[0].district_name,
+                state: this.pinCodeAPIData[0].state_name,
               });
             } else if (type === 'PERMANENT_ADDRESS') {
-              this.permPinCodeAPIData = res.result;
+              this.permPinCodeAPIData = res.data;
               this.demographicInfoForm.patchValue({
-                permCity: this.permPinCodeAPIData[0].district,
-                permState: this.permPinCodeAPIData[0].state,
+                permCity: this.permPinCodeAPIData[0].district_name,
+                permState: this.permPinCodeAPIData[0].state_name,
               });
             }
           }
@@ -1453,13 +1429,15 @@ export class DemographicInfoComponent
         return;
       }
       // convert date farmat from 'YYYY-MM-DD' to 'dd/MM/yyyy'
-      const C = this.demographicInfoForm.value.dob.split('-');
-
+      // const C = this.demographicInfoForm.value.dob.split('-');
+      let dob = formatDate(this.demographicInfoForm.value.dob,'dd/MM/yyyy','en_IN') as string;
       INPUT_OBJ = {
         id_type: 'DRIVING_LICENSE',
         id_no: this.demographicInfoForm.value.drivingLicenceNumber,
-        dob: `${C[1]}/${C[2]}/${C[0]}`,
-      };
+        dob: `${dob}`,
+        // dob: `${C[1]}/${C[2]}/${C[0]}`,
+      };      
+      console.log('INPUT_OBJ : ', INPUT_OBJ);
     }
 
     this.spinner.show();
@@ -1755,16 +1733,28 @@ export class DemographicInfoComponent
         this.kycData[proofType].showConfirm = false;
         this.kycData[proofType].isVerified = false;
       } else if (type === 'api_success_valid_data') {
-        if (proofType === 'aadhaar') {
-          this.demographicInfoForm
-            .get('firstName')
-            ?.setValue(apiData?.actions[0].details.aadhaar.name);
-        }
         this.kycData[proofType].data = apiData;
         this.kycData[proofType].showVerify = true;
         this.kycData[proofType].showTryAgain = false;
         this.kycData[proofType].showConfirm = true;
         this.kycData[proofType].isVerified = false;
+        if (!this.farmerId && proofType === 'aadhaar' && apiData?.actions[0].details.aadhaar.name) {
+          let aadhaar_name = apiData?.actions[0].details.aadhaar.name;
+          let aadhaar_name_arr = aadhaar_name.toString().split(" ");
+          if(aadhaar_name_arr.length >=1){
+            this.demographicInfoForm.get('firstName')?.setValue(aadhaar_name_arr[0]);
+          }
+          if(aadhaar_name_arr.length >=2){
+            this.demographicInfoForm.get('middleName')?.setValue(aadhaar_name_arr[1]);
+          }
+          if(aadhaar_name_arr.length >=3){
+            let lastName = '';
+            for (let i = 2; i < aadhaar_name_arr.length; i++) {
+              lastName =+ aadhaar_name_arr[i]+' ';
+            }
+            this.demographicInfoForm.get('lastName')?.setValue(lastName);
+          } 
+        }
       } else if (type === 'confirm') {
         this.kycData[proofType].showVerify = false;
         this.kycData[proofType].showTryAgain = false;

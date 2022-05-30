@@ -27,10 +27,30 @@ table.dataTable tbody tr {
     width: 100%;
     max-width: 235px;
 }
+.btn-send-for-loan {
+	background: #2EADC4 0% 0% no-repeat padding-box;
+	box-shadow: 0px 1px 2px #00000038;
+	border-radius: 5px;
+	color: #fff;
+	font-size: 14px;
+	padding: 8px 8px;
+	min-width: 116px;
+}
+.btn-view-f {
+	background: #2EADC4 0% 0% no-repeat padding-box;
+	box-shadow: 0px 1px 2px #00000038;
+	border-radius: 5px;
+	color: #fff;
+	font-size: 14px;
+	padding: 8px 8px;
+}
 @media only screen and (min-device-width: 992px) and (max-device-width: 1500px) {
+  article.right-sec.lsn-rs-collapse header{
+    padding-left: 55px;
+   }
   .lsn-tv-div {
     position: fixed;
-    top: 46px;
+    top: 15px;
     z-index: 9999;    
     background-color: #DEF5D6;
     display: inline-block;

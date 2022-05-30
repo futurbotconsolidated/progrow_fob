@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { CommonService } from '../../shared/common.service';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-header',
@@ -12,7 +14,7 @@ export class EditHeaderComponent implements OnInit {
   /* START: Variables */
   farmerId = '';
   demographicDisp = {} as any;
-
+  userInfo: any;
   // indexed db variables
   displayFarmerProfileImage = '' as any;
   concatePage = 'demographic';
@@ -22,10 +24,13 @@ export class EditHeaderComponent implements OnInit {
   /* END: Variables */
 
   constructor(
+    public oauthService: OAuthService,
+    public router: Router,
     private activatedRoute: ActivatedRoute,
     private dbService: NgxIndexedDBService,
     public commonService: CommonService
   ) {
+    this.userInfo = this.oauthService.getIdentityClaims();
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'];
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
@@ -39,4 +44,10 @@ export class EditHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  logOut() {
+    this.oauthService.logOut();
+    this.router.navigate(['/']);
+  }
+
 }
