@@ -4,6 +4,7 @@ import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { CommonService } from '../../shared/common.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-edit-header',
@@ -21,6 +22,7 @@ export class EditHeaderComponent implements OnInit {
   indexedDBFileNameManage = {
     farmerProfile: { front: `${this.concatePage}_farmerProfileImage` },
   };
+  dob = 'NA';
   /* END: Variables */
 
   constructor(
@@ -35,6 +37,9 @@ export class EditHeaderComponent implements OnInit {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.demographicDisp = JSON.parse(A).demographic_info;
+      if(this.demographicDisp?.farmerDetails?.dob){
+        this.dob = formatDate(this.demographicDisp?.farmerDetails?.dob, 'dd-MM-yyyy', 'en_IN');
+      }
     }
 
     // patch farmer Profile image
