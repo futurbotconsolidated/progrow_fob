@@ -173,15 +173,15 @@ export class DashboardComponent implements OnInit {
     if (mapViewType === 'existing_farmers_mapbox') {
       // geojson coordinates
       map.on('load', () => {
-        map.loadImage(
-          'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
-          (error: any, image: any) => {
-            if (error) {
-              throw error;
-            }
-            map.addImage('custom-marker', image);
-          }
-        );
+        // map.loadImage(
+        //   'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+        //   (error: any, image: any) => {
+        //     if (error) {
+        //       throw error;
+        //     }
+        //     map.addImage('custom-marker', image);
+        //   }
+        // );
         let field_f_index = 0;
         if (useData.length) {
           useData.forEach((elem: any, index: number) => {
@@ -222,7 +222,7 @@ export class DashboardComponent implements OnInit {
                 });
                 coordinates_arr.push(coordinates_a);
               }
-              const popupDescription = `<div class="field_popup" style="width:260px;">
+              const popupDescription = `<div class="field_popup">
            <div class="row">
              <div class="col-md-6 text-left">
                <label class="fw-bold">Farmer Id</label>
@@ -321,43 +321,52 @@ export class DashboardComponent implements OnInit {
                     'line-width': 3,
                   },
                 });
-                // Add a layer(marker) showing the field location.
-                map.addLayer({
-                  id: `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
-                  type: 'symbol',
-                  source: `figure${i}_${index}_${f_index}_${field_f_index}`,
-                  layout: {
-                    'icon-image': 'custom-marker',
-                  } as any,
-                });
+               
+                // Create a default Marker and add it to the map.
+                const marker1 = new mapboxgl.Marker()
+                .setLngLat(h[0])
+                .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupDescription))
+                .addTo(map);
+ 
+                // // Add a layer(marker) showing the field location.
+                // map.addLayer({
+                //   id: `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
+                //   type: 'symbol',
+                //   source: `figure${i}_${index}_${f_index}_${field_f_index}`,
+                //   layout: {
+                //     'icon-image': 'custom-marker',
+                //   } as any,
+                // });
 
-                // When a click event occurs on a feature in the places layer, open a popup at the
-                // location of the feature, with description HTML from its properties.
-                map.on('click', `icon_figure${i}_${index}_${f_index}_${field_f_index}`, (e) => {
-                  new mapboxgl.Popup()
-                    .setLngLat(h[0])
-                    .setHTML(popupDescription)
-                    .setMaxWidth('400px')
-                    .addTo(map);
-                });
+                // // When a click event occurs on a feature in the places layer, open a popup at the
+                // // location of the feature, with description HTML from its properties.
+                // map.on('click', `icon_figure${i}_${index}_${f_index}_${field_f_index}`, (e) => {
+                //   new mapboxgl.Popup()
+                //     .setLngLat(h[0])
+                //     .setHTML(popupDescription)
+                //     .setMaxWidth('400px')
+                //     .addTo(map);
+                // });
 
-                // Change the cursor to a pointer when the mouse is over the places layer.
-                map.on(
-                  'mouseenter',
-                  `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
-                  () => {
-                    map.getCanvas().style.cursor = 'pointer';
-                  }
-                );
+                // // Change the cursor to a pointer when the mouse is over the places layer.
+                // map.on(
+                //   'mouseenter',
+                //   `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
+                //   () => {
+                //     map.getCanvas().style.cursor = 'pointer';
+                //   }
+                // );
 
-                // Change it back to a pointer when it leaves.
-                map.on(
-                  'mouseleave',
-                  `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
-                  () => {
-                    map.getCanvas().style.cursor = '';
-                  }
-                );
+                // // Change it back to a pointer when it leaves.
+                // map.on(
+                //   'mouseleave',
+                //   `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
+                //   () => {
+                //     map.getCanvas().style.cursor = '';
+                //   }
+                // );
+
+
               });
             });
 
@@ -375,15 +384,15 @@ export class DashboardComponent implements OnInit {
     } else if (mapViewType === 'farms_pipeline_mapbox') {
       // geojson coordinates
       map.on('load', () => {
-        map.loadImage(
-          'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
-          (error: any, image: any) => {
-            if (error) {
-              throw error;
-            }
-            map.addImage('custom-marker', image);
-          }
-        );
+        // map.loadImage(
+        //   'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+        //   (error: any, image: any) => {
+        //     if (error) {
+        //       throw error;
+        //     }
+        //     map.addImage('custom-marker', image);
+        //   }
+        // );
         let field_f_index = 0;
         if (useData.length) {
           useData.forEach((elem: any, index: number) => {
@@ -424,7 +433,7 @@ export class DashboardComponent implements OnInit {
                 });
                 coordinates_arr.push(coordinates_a);
               }
-              const popupDescription = `<div class="field_popup" style="width:260px;">
+              const popupDescription = `<div class="field_popup">
            <div class="row">
              <div class="col-md-6 text-left">
                <label class="fw-bold">Farmer Id</label>
@@ -523,43 +532,51 @@ export class DashboardComponent implements OnInit {
                     'line-width': 3,
                   },
                 });
-                // Add a layer(marker) showing the field location.
-                map.addLayer({
-                  id: `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
-                  type: 'symbol',
-                  source: `figure${i}_${index}_${f_index}_${field_f_index}`,
-                  layout: {
-                    'icon-image': 'custom-marker',
-                  } as any,
-                });
 
-                // When a click event occurs on a feature in the places layer, open a popup at the
-                // location of the feature, with description HTML from its properties.
-                map.on('click', `icon_figure${i}_${index}_${f_index}_${field_f_index}`, (e) => {
-                  new mapboxgl.Popup()
-                    .setLngLat(h[0])
-                    .setHTML(popupDescription)
-                    .setMaxWidth('400px')
-                    .addTo(map);
-                });
+                // Create a default Marker and add it to the map.
+                const marker1 = new mapboxgl.Marker()
+                .setLngLat(h[0])
+                .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupDescription))
+                .addTo(map);
 
-                // Change the cursor to a pointer when the mouse is over the places layer.
-                map.on(
-                  'mouseenter',
-                  `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
-                  () => {
-                    map.getCanvas().style.cursor = 'pointer';
-                  }
-                );
+                // // Add a layer(marker) showing the field location.
+                // map.addLayer({
+                //   id: `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
+                //   type: 'symbol',
+                //   source: `figure${i}_${index}_${f_index}_${field_f_index}`,
+                //   layout: {
+                //     'icon-image': 'custom-marker',
+                //   } as any,
+                // });
 
-                // Change it back to a pointer when it leaves.
-                map.on(
-                  'mouseleave',
-                  `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
-                  () => {
-                    map.getCanvas().style.cursor = '';
-                  }
-                );
+                // // When a click event occurs on a feature in the places layer, open a popup at the
+                // // location of the feature, with description HTML from its properties.
+                // map.on('click', `icon_figure${i}_${index}_${f_index}_${field_f_index}`, (e) => {
+                //   new mapboxgl.Popup()
+                //     .setLngLat(h[0])
+                //     .setHTML(popupDescription)
+                //     .setMaxWidth('400px')
+                //     .addTo(map);
+                // });
+
+                // // Change the cursor to a pointer when the mouse is over the places layer.
+                // map.on(
+                //   'mouseenter',
+                //   `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
+                //   () => {
+                //     map.getCanvas().style.cursor = 'pointer';
+                //   }
+                // );
+
+                // // Change it back to a pointer when it leaves.
+                // map.on(
+                //   'mouseleave',
+                //   `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
+                //   () => {
+                //     map.getCanvas().style.cursor = '';
+                //   }
+                // );
+
               });
             });
 
@@ -723,11 +740,11 @@ export class DashboardComponent implements OnInit {
             let fa_field_size:any = 0;
             let fa_ownership_document_url = '';
             farmer.fieldInfo.forEach((field: any, index: number) => {
-              if(field.field_area_ha){
-                fa_field_size = parseFloat(fa_field_size) + parseFloat(field.field_area_ha);
+              if(field?.field_area_ha){
+                fa_field_size = parseFloat(fa_field_size) + parseFloat(field?.field_area_ha || 0);
               }
-              if(field.frcm_score.score){
-                fa_frcm_score = parseFloat(fa_frcm_score) + parseFloat(field.frcm_score.score);
+              if(field?.frcm_score?.frcm_score){
+                fa_frcm_score = parseFloat(fa_frcm_score) + parseFloat(field?.frcm_score?.frcm_score || 0);
               }
               if(field.field_ownership_detail?.ownership_document_url && field.field_ownership_detail?.ownership_document_url != 'Download'){
                 fa_ownership_document_url = field.field_ownership_detail?.ownership_document_url;
