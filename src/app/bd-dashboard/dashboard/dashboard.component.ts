@@ -182,11 +182,13 @@ export class DashboardComponent implements OnInit {
             map.addImage('custom-marker', image);
           }
         );
+        let field_f_index = 0;
         if (useData.length) {
           useData.forEach((elem: any, index: number) => {
             // prepare popup
-            elem['fieldInfo'].forEach((f_elem: any, f_index: number) => {
-              if (!f_elem.field_boundary.geometry.coordinates.length) {
+            elem['fieldInfo'].forEach((f_elem: any, f_index: number) => { 
+              field_f_index++;               
+              if (!f_elem?.field_boundary?.geometry?.coordinates.length) {
                 return;
               }
               let coordinates_arr = [] as any;
@@ -269,7 +271,7 @@ export class DashboardComponent implements OnInit {
 
               coordinates_arr.forEach((h: any, i: number) => {
                 // Add Source
-                map.addSource(`figure${i}_${index}_${f_index}`, {
+                map.addSource(`figure${i}_${index}_${f_index}_${field_f_index}`, {
                   type: 'geojson',
                   data: {
                     type: 'Feature',
@@ -283,7 +285,7 @@ export class DashboardComponent implements OnInit {
 
                 let line_h = h;
                 line_h.push(h[0]);
-                map.addSource(`line_source_figure${i}_${index}_${f_index}`, {
+                map.addSource(`line_source_figure${i}_${index}_${f_index}_${field_f_index}`, {
                   type: 'geojson',
                   data: {
                     type: 'Feature',
@@ -297,9 +299,9 @@ export class DashboardComponent implements OnInit {
 
                 // Add a layer showing the fields.
                 map.addLayer({
-                  id: `figure${i}_${index}_${f_index}`,
+                  id: `figure${i}_${index}_${f_index}_${field_f_index}`,
                   type: 'fill',
-                  source: `figure${i}_${index}_${f_index}`,
+                  source: `figure${i}_${index}_${f_index}_${field_f_index}`,
                   layout: {},
                   paint: {
                     'fill-outline-color': 'red',
@@ -310,9 +312,9 @@ export class DashboardComponent implements OnInit {
 
                 // Add a layer showing the fields.
                 map.addLayer({
-                  id: `line_figure${i}_${index}_${f_index}`,
+                  id: `line_figure${i}_${index}_${f_index}_${field_f_index}`,
                   type: 'line',
-                  source: `line_source_figure${i}_${index}_${f_index}`,
+                  source: `line_source_figure${i}_${index}_${f_index}_${field_f_index}`,
                   layout: {},
                   paint: {
                     'line-color': 'red',
@@ -321,9 +323,9 @@ export class DashboardComponent implements OnInit {
                 });
                 // Add a layer(marker) showing the field location.
                 map.addLayer({
-                  id: `icon_figure${i}_${index}_${f_index}`,
+                  id: `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
                   type: 'symbol',
-                  source: `figure${i}_${index}_${f_index}`,
+                  source: `figure${i}_${index}_${f_index}_${field_f_index}`,
                   layout: {
                     'icon-image': 'custom-marker',
                   } as any,
@@ -331,7 +333,7 @@ export class DashboardComponent implements OnInit {
 
                 // When a click event occurs on a feature in the places layer, open a popup at the
                 // location of the feature, with description HTML from its properties.
-                map.on('click', `icon_figure${i}_${index}_${f_index}`, (e) => {
+                map.on('click', `icon_figure${i}_${index}_${f_index}_${field_f_index}`, (e) => {
                   new mapboxgl.Popup()
                     .setLngLat(h[0])
                     .setHTML(popupDescription)
@@ -342,7 +344,7 @@ export class DashboardComponent implements OnInit {
                 // Change the cursor to a pointer when the mouse is over the places layer.
                 map.on(
                   'mouseenter',
-                  `icon_figure${i}_${index}_${f_index}`,
+                  `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
                   () => {
                     map.getCanvas().style.cursor = 'pointer';
                   }
@@ -351,7 +353,7 @@ export class DashboardComponent implements OnInit {
                 // Change it back to a pointer when it leaves.
                 map.on(
                   'mouseleave',
-                  `icon_figure${i}_${index}_${f_index}`,
+                  `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
                   () => {
                     map.getCanvas().style.cursor = '';
                   }
@@ -367,6 +369,8 @@ export class DashboardComponent implements OnInit {
         } else {
           this.spinner.hide();
         }
+        console.log('field_f_index : ', field_f_index);  
+        console.log('getStyle sources : ', map.getStyle().sources);        
       });
     } else if (mapViewType === 'farms_pipeline_mapbox') {
       // geojson coordinates
@@ -380,10 +384,12 @@ export class DashboardComponent implements OnInit {
             map.addImage('custom-marker', image);
           }
         );
+        let field_f_index = 0;
         if (useData.length) {
           useData.forEach((elem: any, index: number) => {
             // prepare popup
             elem['fieldInfo'].forEach((f_elem: any, f_index: number) => {
+              field_f_index++;
               if (!f_elem.field_boundary.geometry.coordinates.length) {
                 return;
               }
@@ -467,7 +473,7 @@ export class DashboardComponent implements OnInit {
 
               coordinates_arr.forEach((h: any, i: number) => {
                 // Add Source
-                map.addSource(`figure${i}_${index}_${f_index}`, {
+                map.addSource(`figure${i}_${index}_${f_index}_${field_f_index}`, {
                   type: 'geojson',
                   data: {
                     type: 'Feature',
@@ -481,7 +487,7 @@ export class DashboardComponent implements OnInit {
 
                 let line_h = h;
                 line_h.push(h[0]);
-                map.addSource(`line_source_figure${i}_${index}_${f_index}`, {
+                map.addSource(`line_source_figure${i}_${index}_${f_index}_${field_f_index}`, {
                   type: 'geojson',
                   data: {
                     type: 'Feature',
@@ -495,9 +501,9 @@ export class DashboardComponent implements OnInit {
 
                 // Add a layer showing the fields.
                 map.addLayer({
-                  id: `figure${i}_${index}_${f_index}`,
+                  id: `figure${i}_${index}_${f_index}_${field_f_index}`,
                   type: 'fill',
-                  source: `figure${i}_${index}_${f_index}`,
+                  source: `figure${i}_${index}_${f_index}_${field_f_index}`,
                   layout: {},
                   paint: {
                     'fill-outline-color': 'red',
@@ -508,9 +514,9 @@ export class DashboardComponent implements OnInit {
 
                 // Add a layer showing the fields.
                 map.addLayer({
-                  id: `line_figure${i}_${index}_${f_index}`,
+                  id: `line_figure${i}_${index}_${f_index}_${field_f_index}`,
                   type: 'line',
-                  source: `line_source_figure${i}_${index}_${f_index}`,
+                  source: `line_source_figure${i}_${index}_${f_index}_${field_f_index}`,
                   layout: {},
                   paint: {
                     'line-color': 'red',
@@ -519,9 +525,9 @@ export class DashboardComponent implements OnInit {
                 });
                 // Add a layer(marker) showing the field location.
                 map.addLayer({
-                  id: `icon_figure${i}_${index}_${f_index}`,
+                  id: `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
                   type: 'symbol',
-                  source: `figure${i}_${index}_${f_index}`,
+                  source: `figure${i}_${index}_${f_index}_${field_f_index}`,
                   layout: {
                     'icon-image': 'custom-marker',
                   } as any,
@@ -529,7 +535,7 @@ export class DashboardComponent implements OnInit {
 
                 // When a click event occurs on a feature in the places layer, open a popup at the
                 // location of the feature, with description HTML from its properties.
-                map.on('click', `icon_figure${i}_${index}_${f_index}`, (e) => {
+                map.on('click', `icon_figure${i}_${index}_${f_index}_${field_f_index}`, (e) => {
                   new mapboxgl.Popup()
                     .setLngLat(h[0])
                     .setHTML(popupDescription)
@@ -540,7 +546,7 @@ export class DashboardComponent implements OnInit {
                 // Change the cursor to a pointer when the mouse is over the places layer.
                 map.on(
                   'mouseenter',
-                  `icon_figure${i}_${index}_${f_index}`,
+                  `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
                   () => {
                     map.getCanvas().style.cursor = 'pointer';
                   }
@@ -549,7 +555,7 @@ export class DashboardComponent implements OnInit {
                 // Change it back to a pointer when it leaves.
                 map.on(
                   'mouseleave',
-                  `icon_figure${i}_${index}_${f_index}`,
+                  `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
                   () => {
                     map.getCanvas().style.cursor = '';
                   }
@@ -565,6 +571,8 @@ export class DashboardComponent implements OnInit {
         } else {
           this.spinner.hide();
         }
+        console.log('field_f_index : ', field_f_index);
+        console.log('getStyle sources : ', map.getStyle().sources);
       });
     } else {
       map.on('load', () => {
