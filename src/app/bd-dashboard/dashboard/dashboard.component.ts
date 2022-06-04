@@ -710,15 +710,18 @@ export class DashboardComponent implements OnInit {
         } else {
           this.allExistingFarmers = [];
           this.allPipelineFarmers = [];
+          
           res.data.forEach((farmer: any, index: number) => {
             let fa_frcm_score:any = 0;
             let fa_field_size:any = 0;
             let fa_ownership_document_url = '';
+            let counter = 0;
             farmer.fieldInfo.forEach((field: any, index: number) => {
               if(field.field_area_ha){
                 fa_field_size = parseFloat(fa_field_size) + parseFloat(field.field_area_ha);
               }
               if(field.frcm_score?.aggregate_score){
+                counter = counter + 1;
                 fa_frcm_score = parseFloat(fa_frcm_score) + parseFloat(field.frcm_score?.aggregate_score);
               }
               if(field.field_ownership_detail?.ownership_document_url && field.field_ownership_detail?.ownership_document_url != 'Download'){
@@ -726,7 +729,12 @@ export class DashboardComponent implements OnInit {
               }
             });
             farmer.fa_field_size = fa_field_size;
-            farmer.fa_frcm_score = fa_frcm_score;
+            if(counter!=0){
+              farmer.fa_frcm_score = parseInt(fa_frcm_score/counter);
+            }
+            else{
+              farmer.fa_frcm_score = 0;
+            }
             farmer.fa_ownership_document_url = fa_ownership_document_url;
             if(farmer.data_source == 'LEAD'){
               this.allPipelineFarmers.push(farmer);
