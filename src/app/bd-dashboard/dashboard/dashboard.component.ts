@@ -730,7 +730,7 @@ export class DashboardComponent implements OnInit {
             });
             farmer.fa_field_size = fa_field_size;
             if(counter!=0){
-              farmer.fa_frcm_score = parseInt(fa_frcm_score/counter);
+              farmer.fa_frcm_score = parseInt(fa_frcm_score)/counter;
             }
             else{
               farmer.fa_frcm_score = 0;
