@@ -718,8 +718,8 @@ export class DashboardComponent implements OnInit {
               if(field.field_area_ha){
                 fa_field_size = parseFloat(fa_field_size) + parseFloat(field.field_area_ha);
               }
-              if(field.frcm_score.score){
-                fa_frcm_score = parseFloat(fa_frcm_score) + parseFloat(field.frcm_score.score);
+              if(field.frcm_score?.aggregate_score){
+                fa_frcm_score = parseFloat(fa_frcm_score) + parseFloat(field.frcm_score?.aggregate_score);
               }
               if(field.field_ownership_detail?.ownership_document_url && field.field_ownership_detail?.ownership_document_url != 'Download'){
                 fa_ownership_document_url = field.field_ownership_detail?.ownership_document_url;
