@@ -541,7 +541,7 @@
               <div class="display-flex">
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in present address</label>
-                  <input type="text" class="form-control" formControlName="yrsInAddress" placeholder="" maxlength="3" />
+                  <input type="text" class="form-control" formControlName="yrsInAddress" placeholder="" maxlength="3" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['yrsInAddress'].errors" class="form-text text-danger">
                     <small *ngIf="f['yrsInAddress'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -549,7 +549,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in city/village</label>
-                  <input type="text" class="form-control" formControlName="yrsInCity" placeholder="" maxlength="3" />
+                  <input type="text" class="form-control" formControlName="yrsInCity" placeholder="" maxlength="3" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['yrsInCity'].errors" class="form-text text-danger">
                     <small *ngIf="f['yrsInCity'].errors['pattern']">
                       Only Numbers are allowed</small>

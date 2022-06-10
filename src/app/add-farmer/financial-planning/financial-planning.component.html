@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Planned cultivation area (In Hectares)</label>
-                                    <input type="text" class="form-control" maxlength="3" (keypress)="validateNo($event)" formControlName="plannedCultivationArea">
+                                    <input type="text" class="form-control" maxlength="6" (keypress)="validateDecimalNo($event)" formControlName="plannedCultivationArea">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Amount(₹)</label>
@@ -352,15 +352,15 @@
                                             <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="groceryExpense"></td>
                                         </tr>
                                         <tr>
-                                            <td>Health** - Doctors Expense/ Medical Treatment</td>
+                                            <td>Health - Doctors Expense/ Medical Treatment</td>
                                             <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="medicalExpense"></td>
                                         </tr>
                                         <tr>
-                                            <td>Education**</td>
+                                            <td>Education</td>
                                             <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="educationExpense"></td>
                                         </tr>
                                         <tr>
-                                            <td>Rental paying**</td>
+                                            <td>Rental paying</td>
                                             <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="rentalExpense"></td>
                                         </tr>
                                     </tbody>
@@ -376,11 +376,11 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>House Electricity**</td>
+                                            <td>House Electricity</td>
                                             <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="electricityExpense"></td>
                                         </tr>
                                         <tr>
-                                            <td>Interest Payments**</td>
+                                            <td>Interest Payments</td>
                                             <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="interestExpense"></td>
                                         </tr>
                                         <tr>
