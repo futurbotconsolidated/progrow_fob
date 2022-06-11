@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
+import * as turf from "@turf/turf";
 import * as mapboxgl from 'mapbox-gl';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
@@ -357,38 +358,32 @@ export class DashboardComponent implements OnInit {
               let lat = parseFloat(branch.branch_data.lat);
               let long = parseFloat(branch.branch_data.long);
               console.log('long : ', long, ' lat : ', lat);
+              // Draw a marker
               new mapboxgl.Marker({ color: "#00FF00" })
                 .setLngLat([long, lat])
                 .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupDescription))
                 .addTo(map);
 
+              // draw a circle
+              let _center = turf.point([long, lat]);
+              let _radius = 25;
+              let _options: any = {
+                steps: 80,
+                units: 'kilometers' // or "mile"
+              };
+              let _circle = turf.circle(_center, _radius, _options);
               map.addSource(`source_circle_${b_circle_index}`, {
-                type: 'geojson',
-                data: {
-                  type: 'Feature',
-                  geometry: {
-                    type: 'Point',
-                    coordinates: [long, lat],
-                  },
-                  properties: {},
-                } as any,
+                type: "geojson",
+                data: _circle,
               });
-
               map.addLayer({
-                "id": `b_circle_${b_circle_index}`,
-                "type": "circle",
-                "source": `source_circle_${b_circle_index}`,
-                 "paint": {
-                  // "circle-radius": 80,
-                  "circle-radius": {
-                    stops: [
-                      [1, 70], [2, 80],[3, 90], [4, 100],[5, 110], [6, 120],[7, 130], [8, 140],[9, 150], [10, 160],[11, 170], [12, 180],[13, 190], [14, 200],[15, 210], [16, 220],[17, 230], [18, 240],[19, 250], [20, 260],[21, 270], [22, 280],
-                    ],
-                    base: 1
-                  },
-                  "circle-color": "#0000FF",
-                  "circle-opacity": 0.3
-                }
+                id: `b_circle_${b_circle_index}`,
+                type: "fill",
+                source: `source_circle_${b_circle_index}`,
+                paint: {
+                  "fill-color": "#1A73E8",
+                  "fill-opacity": 0.25,
+                },
               });
             }
           });
@@ -695,7 +690,7 @@ export class DashboardComponent implements OnInit {
             value: field?.frcm_score[key].toString().trim()
           };
           score.push(s_obj);
-        }        
+        }
       });
       this.score_farmer.push(score);
       // this.score_farmer.push(score);
