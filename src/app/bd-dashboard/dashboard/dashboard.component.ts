@@ -7,7 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-
+declare var $: any;
 import { mapData } from '../../../assets/overlay_data';
 
 @Component({
@@ -30,6 +30,7 @@ export class DashboardComponent implements OnInit {
   lsn_tv_show = false;
   tableMaxWidth: any = { 'max-width': '1000px' };
   filterType = 'this_month';
+  score_farmer: any = [];
   /* END: Variables */
 
   constructor(
@@ -313,46 +314,6 @@ export class DashboardComponent implements OnInit {
 
                 // Create a default Marker and add it to the map.
                 new mapboxgl.Marker().setLngLat(h[0]).setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupDescription)).addTo(map);
-
-                // // Add a layer(marker) showing the field location.
-                // map.addLayer({
-                //   id: `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
-                //   type: 'symbol',
-                //   source: `figure${i}_${index}_${f_index}_${field_f_index}`,
-                //   layout: {
-                //     'icon-image': 'custom-marker',
-                //   } as any,
-                // });
-
-                // // When a click event occurs on a feature in the places layer, open a popup at the
-                // // location of the feature, with description HTML from its properties.
-                // map.on('click', `icon_figure${i}_${index}_${f_index}_${field_f_index}`, (e) => {
-                //   new mapboxgl.Popup()
-                //     .setLngLat(h[0])
-                //     .setHTML(popupDescription)
-                //     .setMaxWidth('400px')
-                //     .addTo(map);
-                // });
-
-                // // Change the cursor to a pointer when the mouse is over the places layer.
-                // map.on(
-                //   'mouseenter',
-                //   `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
-                //   () => {
-                //     map.getCanvas().style.cursor = 'pointer';
-                //   }
-                // );
-
-                // // Change it back to a pointer when it leaves.
-                // map.on(
-                //   'mouseleave',
-                //   `icon_figure${i}_${index}_${f_index}_${field_f_index}`,
-                //   () => {
-                //     map.getCanvas().style.cursor = '';
-                //   }
-                // );
-
-
               });
             });
 
@@ -370,12 +331,35 @@ export class DashboardComponent implements OnInit {
           this.allBranches.forEach((branch: any, index: number) => {
             if (branch?.branch_data?.lat || branch?.branch_data?.long) {
               b_circle_index++;
+              let popupDescription = `<div class="field_popup">
+                    <div class="row">
+                      <div class="col-md-6 text-left">
+                        <label class="fw-bold">Branch</label>
+                        <p class="text-capitalize">${branch?.branch_name}</p>
+                      </div>
+                      <div class="col-md-6 text-left">
+                        <label class="fw-bold">Branch ID</label>
+                        <p class="text-capitalize">${branch?.branch_unique_id}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 text-left">
+                      <label class="fw-bold">Visit</label>
+                      <p class="text-capitalize"><a href="${branch.branch_data?.map_url}" target="_blank">Take Me</a></p> 
+                      </div>
+                      <!--<div class="col-md-6 text-left">
+                        <label class="fw-bold">Branch ID</label>
+                        <p class="text-capitalize">${branch?.branch_unique_id}</p>
+                      </div>-->
+                    </div>
+                  </div>`;
               // console.log('branch : '+index+' : ', branch);
               let lat = parseFloat(branch.branch_data.lat);
               let long = parseFloat(branch.branch_data.long);
               console.log('long : ', long, ' lat : ', lat);
               new mapboxgl.Marker({ color: "#00FF00" })
                 .setLngLat([long, lat])
+                .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupDescription))
                 .addTo(map);
 
               map.addSource(`source_circle_${b_circle_index}`, {
@@ -697,6 +681,31 @@ export class DashboardComponent implements OnInit {
     this.dbService.clear('registerFarmer').subscribe((successDeleted) => { });
   }
 
+  openScoreModalPopup(farmer: any) {
+    this.score_farmer = [];
+    farmer?.fieldInfo.forEach((field: any) => {
+      let score: any = [];
+      // console.log('field : ', field);
+      // console.log('frcm_score : ', field?.frcm_score);
+      Object.keys(field?.frcm_score).forEach((key: any) => {
+        console.log('type : ', typeof (field?.frcm_score[key]));
+        if (field?.frcm_score[key].toString().trim()) {
+          let s_obj = {
+            title: key.toString().trim().replaceAll('_', ' '),
+            value: field?.frcm_score[key].toString().trim()
+          };
+          score.push(s_obj);
+        }        
+      });
+      this.score_farmer.push(score);
+      // this.score_farmer.push(score);
+    });
+
+    console.log('this.score_farmer : ', this.score_farmer);
+    // console.log('farmer : ', farmer);
+    $('#scoreModalPopup').modal('show');
+  }
+
   /* END: Non-API Function Calls */
 
   /* START: API Function Calls */
@@ -772,7 +781,6 @@ export class DashboardComponent implements OnInit {
               } else if (res?.data) {
                 localStorage.setItem('master-data', JSON.stringify(res.data));
                 this.allBranches = res?.data?.branches;
-                console.log('Data : ', res?.data);
               } else {
                 console.log('Failed to fetch master data !');
               }

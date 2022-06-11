@@ -15,7 +15,7 @@
                 <!-- PAN Card Field -->
                 <div class="farmer-details-inner lable-top">
                   <label for="PANnumber">PAN Card Number </label>
-                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN Number" [readonly]="kycData.pan.isVerified" />
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN Number" [readonly]="kycData.pan.isVerified" (keyup)="checkPAN($event)" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
                       Please enter valid PAN Number</small>
@@ -505,7 +505,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="required">Phone No.</label>
-                  <input type="text" class="form-control" formControlName="phoneNumber" placeholder="" minlength="10" maxlength="10" (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="phoneNumber" placeholder="" minlength="10" maxlength="10" (keypress)="validateNo($event)" (keyup)="checkMobileNo($event)" />
                   <div *ngIf="isSubmitted && f['phoneNumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['phoneNumber'].errors['required']">
                       Phone No. is required</small>

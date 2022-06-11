@@ -44,6 +44,15 @@ table.dataTable tbody tr {
 	font-size: 14px;
 	padding: 8px 8px;
 }
+.modal{
+  z-index: 9992;
+}
+.txt-capitalize{
+  text-transform: capitalize;
+}
+.fw-500{
+  font-weight: 500;
+}
 @media only screen and (min-device-width: 992px) and (max-device-width: 1500px) {
   article.right-sec.lsn-rs-collapse header{
     padding-left: 55px;

@@ -83,6 +83,41 @@ export class CommonService {
     // );
     // return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }
+
+  checkMobileNo(data: any) {
+    const input_obj = {
+      mobile: data,
+    };
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.checkMobile,
+      input_obj,
+      {
+        headers,
+      }
+    );
+  }
+
+  checkPAN(data: any) {
+    const input_obj = {
+      mobile: data,
+    };
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.checkPAN,
+      input_obj,
+      {
+        headers,
+      }
+    );
+  }
+
   getMasterData() {
     headers = headers.delete('Bd-id');
     headers = headers.delete('Filter-Type');
