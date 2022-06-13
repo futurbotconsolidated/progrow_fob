@@ -752,7 +752,7 @@ export class DashboardComponent implements OnInit {
       },
       (error: any) => {
         this.spinner.hide();
-        if (error?.statusText == 'Unauthorized') {
+        if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
           this.logOut();
           return;
         } else {
@@ -785,7 +785,12 @@ export class DashboardComponent implements OnInit {
           },
           (error: any) => {
             this.spinner.hide();
-            console.log('Failed to fetch master data, please try again...');
+            if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+              this.logOut();
+              return;
+            } else {
+              console.log('Failed to fetch master data, please try again...');
+            }
           }
         );
       } else if (master_data?.branches?.length) {
@@ -805,7 +810,12 @@ export class DashboardComponent implements OnInit {
         }
       },
       (error: any) => {
-        alert('Failed to fetch farmers CSV data, please try again...');
+        if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+          this.logOut();
+          return;
+        } else {
+          alert('Failed to fetch farmers CSV data, please try again...');
+        }
       }
     );
   }
@@ -862,9 +872,14 @@ export class DashboardComponent implements OnInit {
       },
       (error: any) => {
         this.spinner.hide();
-        this.toastr.error(
-          `Failed to fetch farmer details, please try again...`
-        );
+        if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+          this.logOut();
+          return;
+        } else {
+          this.toastr.error(
+            `Failed to fetch farmer details, please try again...`
+          );
+        }
       }
     );
   }
@@ -891,9 +906,14 @@ export class DashboardComponent implements OnInit {
         },
         (error: any) => {
           this.spinner.hide();
-          this.toastr.error(
-            `Failed to fetch farmer details, please try again...`
-          );
+          if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+            this.logOut();
+            return;
+          } else {
+            this.toastr.error(
+              `Failed to fetch farmer details, please try again...`
+            );
+          }
         }
       );
     } else {
@@ -919,7 +939,12 @@ export class DashboardComponent implements OnInit {
       },
       (error: any) => {
         this.spinner.hide();
-        this.toastr.error(`Failed to fetch farmer files, please try again...`);
+        if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+          this.logOut();
+          return;
+        } else {
+          this.toastr.error(`Failed to fetch farmer files, please try again...`);
+        }
       }
     );
   }

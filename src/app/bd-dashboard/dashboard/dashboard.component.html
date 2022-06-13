@@ -111,7 +111,7 @@
                     transform="translate(9.432 17.676)" />
                 </g>
               </g>
-            </svg><span>Farmers Covered : {{ allExistingFarmers.length }}</span>
+            </svg><span>Farmers Covered: {{ allExistingFarmers.length }}</span>
           </li>
           <li>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -260,24 +260,20 @@
                             <tbody>
                               <tr *ngFor="let x of allExistingFarmers; let i = index;">
                                 <td>{{x.farmerId}}</td>
-                                <td> {{ x.farmerDetails?.firstName }} {{ x.farmerDetails?.middleName }} {{
-                                  x.farmerDetails?.lastName }} </td>
-                                <td> {{ x.address?.mobileNumber }} </td>
-                                <td> {{ x.createdDate | date:'EE, MMM d, y' }} </td>
-                                <td>
-                                  {{ (x.address.addressLine1.length>8)? (x.address.addressLine1 |
-                                  slice:0:8)+'...':(x.address.addressLine1) }}
-                                </td>
+                                <td>{{x.farmerDetails?.firstName}} {{x.farmerDetails?.middleName}}
+                                  {{x.farmerDetails?.lastName}}</td>
+                                <td>{{x.address?.mobileNumber}}</td>
+                                <td>{{x.createdDate | date:'EE, MMM d, y'}}</td>
+                                <td>{{(x.address.addressLine1.length>8)? (x.address.addressLine1 |
+                                  slice:0:8)+'...':(x.address.addressLine1)}}</td>
                                 <td><a *ngIf="x.fa_frcm_score" href="javascript:void(0)"
                                     (click)="openScoreModalPopup(x)">{{x.fa_frcm_score || 'NA' }}</a><span
                                     *ngIf="!x.fa_frcm_score">{{x.fa_frcm_score || 'NA' }}</span></td>
                                 <!-- <td>NA</td> -->
-                                <td>
-                                  <a *ngIf="x.loan_account_number" href="http://65.2.60.231/mifin/"
+                                <td><a *ngIf="x.loan_account_number" href="http://65.2.60.231/mifin/"
                                     target="_blank">{{x.loan_account_number}}</a>
-                                  <span *ngIf="!x.loan_account_number">
-                                    <a *ngIf="loanAccountData[i]" href="http://65.2.60.231/mifin/"
-                                      target="_blank">{{loanAccountData[i]}}</a>
+                                  <span *ngIf="!x.loan_account_number"><a *ngIf="loanAccountData[i]"
+                                      href="http://65.2.60.231/mifin/" target="_blank">{{loanAccountData[i]}}</a>
                                     <a *ngIf="!loanAccountData[i]" href="javascript:void(0)"
                                       (click)="getLoanAccountById(x.farmerId,'loan', i)"
                                       class="btn btn-send-for-loan cursor-pointer loan-{{x.farmerId}}">Send For Loan</a>
@@ -286,10 +282,10 @@
                                 <td><span *ngIf="x.form_status">{{x.form_status}}%</span>
                                   <span *ngIf="!x.form_status">NA</span>
                                 </td>
-                                <td title="Created BD ID: {{x.bd_id}}"> {{x.bd_name}}/td>
-                                <td> {{x.updatedBy}} </td>
-                                <td> {{ x.updatedDate | date:'EE, MMM d, y' }} </td>
-                                <td> {{ x.branch_name }} </td>
+                                <td title="Created BD ID: {{x.bd_id}}">{{x.bd_name}}</td>
+                                <td>{{x.updatedBy}}</td>
+                                <td>{{ x.updatedDate | date:'EE, MMM d, y' }}</td>
+                                <td>{{ x.branch_name }}</td>
                                 <td><a (click)="getFarmerDetailsById(x.farmerId,'view')"
                                     class="btn btn-view-f cursor-pointer">View</a></td>
                                 <td><a (click)="getFarmerDetailsById(x.farmerId,'edit')"
