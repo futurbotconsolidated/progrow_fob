@@ -680,10 +680,7 @@ export class DashboardComponent implements OnInit {
     this.score_farmer = [];
     farmer?.fieldInfo.forEach((field: any) => {
       let score: any = [];
-      // console.log('field : ', field);
-      // console.log('frcm_score : ', field?.frcm_score);
       Object.keys(field?.frcm_score).forEach((key: any) => {
-        console.log('type : ', typeof (field?.frcm_score[key]));
         if (field?.frcm_score[key].toString().trim()) {
           let s_obj = {
             title: key.toString().trim().replaceAll('_', ' '),
@@ -693,11 +690,7 @@ export class DashboardComponent implements OnInit {
         }
       });
       this.score_farmer.push(score);
-      // this.score_farmer.push(score);
     });
-
-    console.log('this.score_farmer : ', this.score_farmer);
-    // console.log('farmer : ', farmer);
     $('#scoreModalPopup').modal('show');
   }
 

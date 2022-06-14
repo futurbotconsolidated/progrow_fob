@@ -51,6 +51,7 @@ export class DemographicInfoComponent
       isImage2Required: false,
       isMultiple: false,
       fileIndex: 0,
+      isAudioVideoRequired: false,
     },
     imageHeading1: 'Front Image',
     imageHeading2: 'Back Image',
@@ -62,6 +63,7 @@ export class DemographicInfoComponent
   familyMembers!: FormArray;
   propertyOwnership!: FormArray;
   demographicInfoForm: FormGroup;
+  recordInterview!: FormArray;
 
   check_errors: any = {};
   nextRoute: any;
@@ -111,6 +113,9 @@ export class DemographicInfoComponent
       front: `${this.concatePage}_ownershipPictureImage`,
       count: `${this.concatePage}_ownershipPictureImageCount`,
     },
+    recordAudioVideo: {
+      front: `${this.concatePage}_recordInterviewAudioVideo`,
+    },
   };
   fileUploadFileFor = {
     panCard: 'PAN',
@@ -121,6 +126,7 @@ export class DemographicInfoComponent
     NREGA: 'NREGA',
     farmerProfile: 'FARMER_PROFILE',
     ownershipPicture: 'OWENERSHIP_PICTURE',
+    recordAudioVideo: 'RECORD_AUDIO_VIDEO',
   };
   /* END: indexed db variables */
 
@@ -285,6 +291,7 @@ export class DemographicInfoComponent
       voterIdNumber: new FormControl(''),
       passportNumber: new FormControl(''),
       NREGANumber: new FormControl(''),
+      recordInterview: new FormArray([]),
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
@@ -418,11 +425,11 @@ export class DemographicInfoComponent
         // });
       }
     }
-    if (
-      !(this.demographicInfoForm.get('propertyOwnership') as FormArray).controls
-        .length
-    ) {
+    if (!(this.demographicInfoForm.get('propertyOwnership') as FormArray).controls.length) {
       this.addPropertyOwnership();
+    }
+    if (!(this.demographicInfoForm.get('recordInterview') as FormArray).controls.length) {
+      this.addRecordInterview();
     }
     if (!(this.demographicInfoForm.get('familyMembers') as FormArray).controls.length) {
       this.addFamilyMembers();
@@ -480,6 +487,27 @@ export class DemographicInfoComponent
 
   removePropertyOwnership(index: any) {
     this.propertyOwnership.removeAt(index);
+  }
+
+  createRecordInterview(): FormGroup {
+    return this.formBuilder.group({
+      recordType: new FormControl(''),
+    });
+  }
+
+  getRecordInterviewControls() {
+    return (this.demographicInfoForm.get('recordInterview') as FormArray).controls;
+  }
+
+  addRecordInterview(): void {
+    this.recordInterview = this.demographicInfoForm.get(
+      'recordInterview'
+    ) as FormArray;
+    this.recordInterview.push(this.createRecordInterview());
+  }
+
+  removeRecordInterview(index: any) {
+    this.recordInterview.removeAt(index);
   }
 
   createFamilyMembers(): FormGroup {
@@ -548,6 +576,7 @@ export class DemographicInfoComponent
     this.fileUpload.new.isImage1Required = false;
     this.fileUpload.new.isImage2Required = false;
     this.fileUpload.new.isMultiple = false;
+    this.fileUpload.new.isAudioVideoRequired = false;
     this.fileUpload.new.fileIndex = fileIndex;
     this.fileUpload.imageHeading1 = 'Front Image';
     this.fileUpload.imageHeading2 = 'Back Image';
@@ -870,8 +899,26 @@ export class DemographicInfoComponent
             }
           });
       }
+    } else if (type === this.fileUploadFileFor.recordAudioVideo) {
+      this.fileUpload.popupTitle = 'Upload Record Interview';
+      this.fileUpload.new.isAudioVideoRequired = true;
+      this.fileUpload.imageHeading1 = 'Audio/Video';
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.recordAudioVideo.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.recordAudioVideo.front
+            );
+        });
     }
-    $('#fileUploadModalPopup').modal('show');
+    $('#demofileUploadModalPopup').modal('show');
   }
 
   onFileChange(event: any, type = '', fileIndex: number) {
@@ -879,14 +926,17 @@ export class DemographicInfoComponent
       let c_file_count = this.fileUpload.new.imageMultiple.length;
       for (let findex: any = 0; findex < event.target.files.length; findex++) {
         const file = event.target.files[findex];
-
-        // if (file.size > 300000) {
-        //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
-        //   return;
-        // }
-        if (file.type.split('/')[0] != 'image') {
-          this.toastr.error('Only Image files are allowed.', 'Error!');
-          return;
+        if (this.fileUpload.fileFor === this.fileUploadFileFor.recordAudioVideo) {
+          console.log('file.size : ', file.size);
+        } else {
+          // if (file.size > 300000) {
+          //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
+          //   return;
+          // }
+          if (file.type.split('/')[0] != 'image') {
+            this.toastr.error('Only Image files are allowed.', 'Error!');
+            return;
+          }
         }
 
         /* START: reading file and Patching the Selected File */
@@ -960,6 +1010,14 @@ export class DemographicInfoComponent
               selectedImageFor =
                 this.indexedDBFileNameManage.farmerProfile.front;
               this.displayFarmerProfileImage = imageSrc;
+            }
+          } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.recordAudioVideo
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.recordAudioVideo.front + '_' + this.fileUpload.new.fileIndex;
+              //this.displayFarmerProfileImage = imageSrc;
             }
           } else if (
             this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
@@ -1140,6 +1198,7 @@ export class DemographicInfoComponent
       sourceOfIncomeOther: B.sourceOfIncomeOther,
       agriculturalInterest: B.agricultureChildrenInterested,
       innovativeWaysFarming: B.innovativeFarmingWays,
+      recordInterview: B.recordInterview,
     });
 
     if (B.address['pincode']) {
@@ -1206,10 +1265,22 @@ export class DemographicInfoComponent
         );
       });
     }
+
+    if (B.recordInterview) {
+      this.recordInterview = this.demographicInfoForm.get(
+        'recordInterview'
+      ) as FormArray;
+      B.recordInterview.map((item: any) => {
+        this.recordInterview.push(
+          this.formBuilder.group({
+            recordType: new FormControl(item.recordType),
+          })
+        );
+      });
+    }
   }
 
   validateAndNext() {
-    console.log();
     this.isSubmitted = true;
     if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
@@ -1291,7 +1362,7 @@ export class DemographicInfoComponent
 
         propertyStatus: formValue.propertyStatus,
         monthlyRent: formValue.monthlyRent,
-
+        recordInterview: formValue.recordInterview,
         kycData: this.kycData,
       };
 
@@ -1415,6 +1486,17 @@ export class DemographicInfoComponent
     } else {
       this.check_errors.mobile = 'Please enter valid phone number!';
     }
+  }
+
+  downloadFile(data: any) {
+    console.log(data);
+    let dwldLink = document.createElement("a");
+    dwldLink.setAttribute("target", "_blank");
+    dwldLink.setAttribute("href", data);
+    dwldLink.style.visibility = "hidden";
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
   }
 
   checkPAN(event: any) {
