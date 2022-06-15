@@ -64,12 +64,52 @@ export class CommonService {
   }
 
   getPinCodeData(data: any) {
-    return this.http.get(
-      `https://api.worldpostallocations.com/?postalcode=${data}&countrycode=IN`
+    const input_obj = {
+      pincode: data,
+    };
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.pinCodeData,
+      input_obj,
+      {
+        headers,
+      }
     );
+    // return this.http.get(
+    //   `https://api.worldpostallocations.com/?postalcode=${data}&countrycode=IN`
+    // );
     // return this.http.get(`https://api.postalpincode.in/pincode/${data}`);
   }
+  getMasterData() {
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.get(this.baseUrl + this.endPoints.masterData, {
+      headers,
+    });
+  }
 
+  sendToMifin(farmer_id: any) {
+    const input_obj = {
+      farmer_id: farmer_id,
+      bd_id: String(this.userInfo['custom:access_type']),
+    };
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.sendToMifin,
+      input_obj,
+      {
+        headers,
+      }
+    );
+  }
   // ekyc api
   getKycData(inputObject: any) {
     headers = headers.delete('Bd-id');

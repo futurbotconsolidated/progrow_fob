@@ -125,7 +125,7 @@ export class FieldInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.fieldInforMaster = data.fieldInfo; // read master data
-    this.commonMaster = data.commonData; // read master data
+    // this.commonMaster = data.commonData; // read master data 
 
     this.SoilQualityStar = this.fieldInforMaster['soilQuality'];
 
@@ -202,6 +202,9 @@ export class FieldInfoComponent implements OnInit {
             // editFieldInfo.historicalFieldDetails.push(
             //   fiv.historical_season_detail.historicalFieldDetails
             // );
+            if(typeof(fiv.planned_season_detail.plannedFieldDetails) == 'object'){
+              fiv.planned_season_detail.plannedFieldDetails.crop_id = fiv.crop_id;
+            }
             editFieldInfo.plannedFieldDetails.push(
               fiv.planned_season_detail.plannedFieldDetails
             );
@@ -210,8 +213,7 @@ export class FieldInfoComponent implements OnInit {
               editFieldInfo.testType.push(fiv.test_on_fields);
             }
             editFieldInfo.cropCycleOnReports = fiv.undertaking_cultivation.uc;
-            editFieldInfo.plannedSeason =
-              fiv.planned_season_detail.plannedSeason;
+            editFieldInfo.plannedSeason = fiv.crop_season_id+'##'+fiv.planned_season_detail.plannedSeason;
             editFieldInfo.plannedCrops = fiv.planned_season_detail.plannedCrops;
             this.editFieldArea.push(fiv.field_area_ha);
             this.selectedCoordinates.push(
@@ -248,9 +250,32 @@ export class FieldInfoComponent implements OnInit {
     if (!(this.fieldInfoForm.get('testType') as FormArray).controls.length) {
       this.addTestType();
     }
+
+    this.commonMaster.crops = [];
+    this.commonMaster.season = [];
+    this.commonService.getMasterData().subscribe(
+      (res: any) => {
+        //this.spinner.hide();
+        if (res && !res.status) {
+          console.log(`${res[0].Message}`);
+        } else {
+          if(res.data && res.data.crops){
+            this.commonMaster.crops = res.data.crops;
+          }
+          if(res.data && res.data.seasons){
+            this.commonMaster.season = res.data.seasons;
+          }
+        }
+      },
+      (error: any) => {
+        //this.spinner.hide();
+        console.log('Failed to fetch PinCode Details, please try again...');
+      }
+    );
   }
 
   bindItemsInEdit(fieldValues: any) {
+    console.log('fieldValues : ', fieldValues);
     this.fieldInfoForm.patchValue(fieldValues);
     fieldValues.plannedFieldDetails.map((item: any, index: number) => {
       const plannedDetails = <any>{};
@@ -261,7 +286,11 @@ export class FieldInfoComponent implements OnInit {
         item.irrigationSystem
       );
       plannedDetails['waterSource'] = new FormControl(item.waterSource);
+      if(item.crop_id){
+        plannedDetails['crop'] = new FormControl(item.crop_id+'##'+item.crop);
+      } else {
       plannedDetails['crop'] = new FormControl(item.crop);
+      }
       plannedDetails['soilQuality'] = new FormControl(item.soilQuality);
       plannedDetails['waterQuality'] = new FormControl(item.waterQuality);
       plannedDetails['yieldQuality'] = new FormControl(item.yieldQuality);
@@ -823,18 +852,25 @@ export class FieldInfoComponent implements OnInit {
           test_arr.push(tdata);
         }
       });
+      let season_arr = this.fieldInfoForm.value.plannedSeason.split('##');
+      let crop_arr = this.fieldInfoForm.value.plannedFieldDetails[i].crop?.split('##');
+      let plannedFieldDetails = this.fieldInfoForm.value.plannedFieldDetails[i];
+      plannedFieldDetails.crop = crop_arr[1];
 
       obj = {
         field_ui_id: field_ui_id,
+        crop_season_id: season_arr[0],
+        crop_id: crop_arr[0],
         field_name: this.fieldInfoForm.value.plannedFieldDetails[i].fieldName,
         field_boundary: drawnCoordinates_obj,
         field_area_ha:
           this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
         field_address: 'test',
         planned_season_detail: {
-          plannedSeason: this.fieldInfoForm.value.plannedSeason,
+          plannedSeason: season_arr[1],
           plannedCrops: this.fieldInfoForm.value.plannedCrops,
-          plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
+          plannedFieldDetails: plannedFieldDetails,
+          // plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
         },
         historical_season_detail: {
           // historicalSeason: this.fieldInfoForm.value.historicalSeason,
@@ -853,10 +889,11 @@ export class FieldInfoComponent implements OnInit {
       fieldArr.push(obj);
     });
 
-    if (!fieldArr.length) {
-      this.toastr.error('Please Plot at least One Field', 'Error!');
-      return;
-    } else {
+    console.log('fieldArr : ', fieldArr);
+    // if (!fieldArr.length) {
+    //   this.toastr.error('Please Plot at least One Field', 'Error!');
+    //   return;
+    // } else {
       if (this.farmerId) {
         localStorage.setItem('edit-field-info', JSON.stringify(fieldArr));
         localStorage.setItem(
@@ -872,7 +909,7 @@ export class FieldInfoComponent implements OnInit {
       }
       const url = `/add/${this.nextRoute}/${this.farmerId}`;
       this.router.navigate([url]);
-    }
+    // }
   }
 
   SoilQualityRating(soilQualityStar: any, i: number) {
@@ -935,14 +972,14 @@ export class FieldInfoComponent implements OnInit {
     this.fileUpload.imageHeading1 = 'Front Image';
 
     if (type === this.fileUploadFileFor.ownershipPicture) {
-      this.fileUpload.popupTitle = 'Upload Ownership Picture Image';
-      this.fileUpload.imageHeading1 = 'Ownership Picture Image';
+      this.fileUpload.popupTitle = 'Upload Ownership Documents';
+      this.fileUpload.imageHeading1 = 'Ownership Documents';
       this.fileUpload.new.isMultiple = true;
       var fCount = this.getFileCount(
         this.indexedDBFileNameManage.ownershipPicture.count + '_' + this.fileUpload.new.fileIndex,
         this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex
       );
-      for (let fIndex = 0; fIndex < fCount; fIndex++) {
+      for (let fIndex = 0; fIndex <= fCount; fIndex++) {
         this.dbService
           .getByIndex(
             this.indexedDBName,
@@ -956,30 +993,29 @@ export class FieldInfoComponent implements OnInit {
                 this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + fIndex
               );
             if (imageSrc) {
-              console.log('ownershipPicture : ', imageSrc);
               let type = 'file';
-              if (imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
+              if (imageSrc.includes('data:image/') || imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
                 type = 'image';
               }
               let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];
               let imgObj = {
                 file: imageSrc,
                 type: type,
-                name: filename,
+                name: filename.toString().substring(0, 60),
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
             }
           });
       }
     } else if (type === this.fileUploadFileFor.testPicture) {
-      this.fileUpload.popupTitle = 'Upload Ownership Picture Image';
-      this.fileUpload.imageHeading1 = 'Ownership Picture Image';
+      this.fileUpload.popupTitle = 'Upload Test Reports';
+      this.fileUpload.imageHeading1 = 'Test Reports';
       this.fileUpload.new.isMultiple = true;
       var fCount = this.getFileCount(
         this.indexedDBFileNameManage.testPicture.count + '_' + this.fileUpload.new.fileIndex,
         this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex
       );
-      for (let fIndex = 0; fIndex < fCount; fIndex++) {
+      for (let fIndex = 0; fIndex <= fCount; fIndex++) {
         this.dbService
           .getByIndex(
             this.indexedDBName,
@@ -994,14 +1030,14 @@ export class FieldInfoComponent implements OnInit {
               );
             if (imageSrc) {
               let type = 'file';
-              if (imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
+              if ( imageSrc.includes('data:image/') || imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
                 type = 'image';
               }
               let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];
               let imgObj = {
                 file: imageSrc,
                 type: type,
-                name: filename,
+                name: filename.toString().substring(0, 60),
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
             }
@@ -1013,6 +1049,7 @@ export class FieldInfoComponent implements OnInit {
 
   onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
+      let c_file_count = this.fileUpload.new.imageMultiple.length;
       this.fileUpload.new.fileIndex = fileIndex;      
       for (let findex = 0; findex < event.target.files.length; findex++) {
         const file = event.target.files[findex];        
@@ -1034,7 +1071,6 @@ export class FieldInfoComponent implements OnInit {
           if (
             this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
           ) {
-            if (type === 'FRONT_IMAGE') {
               let type = 'file';
               if (imageSrc.includes('data:image/')) {
                 type = 'image';                
@@ -1045,12 +1081,10 @@ export class FieldInfoComponent implements OnInit {
                 name: file.name,
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
-              selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+this.fileUpload.new.imageMultiple.length);
-            }
+              selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+c_file_count);            
           } else if (
             this.fileUpload.fileFor === this.fileUploadFileFor.testPicture
           ) {
-            if (type === 'FRONT_IMAGE') {
               let type = 'file';
               if (imageSrc.includes('data:image/')) {
                 type = 'image';
@@ -1061,8 +1095,7 @@ export class FieldInfoComponent implements OnInit {
                 name: file.name,
               };
               this.fileUpload.new.imageMultiple.push(imgObj);
-              selectedImageFor = this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+this.fileUpload.new.imageMultiple.length);
-            }
+              selectedImageFor = this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+c_file_count);            
           }
           /* START: ngx-indexed-db feature to store files(images/docs) */
           // if file already exist then delete then add
@@ -1112,8 +1145,12 @@ export class FieldInfoComponent implements OnInit {
         fieldInfoFiles = JSON.parse(fieldInfoFiles);
       } else {
         fieldInfoFiles = {};
+      }      
+      if(fieldInfoFiles[difkey]){
+      fieldInfoFiles[difkey] = parseInt(fieldInfoFiles[difkey]) + event.target.files.length;
+      } else {
+        fieldInfoFiles[difkey] = event.target.files.length;
       }
-      fieldInfoFiles[difkey] = event.target.files.length;
       localStorage.setItem(this.localStoragePageName, JSON.stringify(fieldInfoFiles));
     }
   }
@@ -1123,11 +1160,10 @@ export class FieldInfoComponent implements OnInit {
     let fieldInfoFiles: any = localStorage.getItem(this.localStoragePageName);
     if (fieldInfoFiles) {
       fieldInfoFiles = JSON.parse(fieldInfoFiles);
-      if (fieldInfoFiles[ckey]) {
+      if (fieldInfoFiles.hasOwnProperty(ckey)) {
         fCount = fieldInfoFiles[ckey];
       }
     }
-    if (!fCount) {
       let farmerFiles: any = localStorage.getItem('farmer-files');
       if (farmerFiles) {
         farmerFiles = JSON.parse(farmerFiles);
@@ -1137,7 +1173,6 @@ export class FieldInfoComponent implements OnInit {
           }
         }
       }
-    }
     return fCount;
   }
 

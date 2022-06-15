@@ -120,7 +120,7 @@ export const data = {
     ],
     propertyStatus: ['Own', 'Parental', 'Rented', 'Leased', 'Company Provided'],
     commOrPerAddress: ['Same as above', 'Different address'],
-    dependency: [1, 2],
+    dependency: ['Yes', 'No'],
     innovativeWaysFarming: [
       'Mulch',
       'Solar Pump',

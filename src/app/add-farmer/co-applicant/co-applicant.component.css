@@ -50,3 +50,6 @@ input.form-control,
 .text-decoration-underline{
   cursor: pointer;
 }
+.p-10{
+  padding: 10px;
+}

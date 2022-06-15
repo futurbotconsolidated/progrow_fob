@@ -49,7 +49,7 @@
                     <p><b>Full Name:</b> {{kycData.pan.data['full_name']}}</p>
                     <p><b>Category:</b> {{kycData.pan.data['category']}}</p>
                     <p><b>Status:</b> {{kycData.pan.data['status']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.pan.showConfirm" (click)="setKycDataVariables(kycProofNames.pan,'confirm','')">
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.pan.showConfirm" (click)="setKycDataVariables(kycProofNames.pan,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
                 </div>
@@ -147,7 +147,7 @@
                       Process.</small><br />
                     <p><b>Verification Link: </b> <a href="{{kycData.aadhaar.verificationLinkData['redirect_url']}}" target="_blank">Click Here</a></p>
 
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100 mt-2" [hidden]="objectKeyCount(kycData.aadhaar.data)"
+                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10" [hidden]="objectKeyCount(kycData.aadhaar.data)"
                       (click)="getAadhaarDetails($event,kycProofNames.aadhaar)">
                       Get Aadhaar Details</button><br />
                     <small>Please wait for at least 10 seconds after completing the verification process using above Verifiction Link and then click on Above <u>Get Aadhaar Details</u> button.
@@ -156,14 +156,21 @@
 
                   <!-- second api data: Aadhaar details display -->
                   <div *ngIf="objectKeyCount(kycData.aadhaar.data)">
+                    <div class="row">
+                      <div class="col-md-9">
                     <p><b>Name:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.name || ''}}</p>
                     <p><b>Gender:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.gender || ''}}</p>
                     <p><b>DOB:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.dob || ''}}</p>
                     <p><b>Current Address:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.current_address || ''}}</p>
                     <p><b>Permanent Address:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.permanent_address || ''}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100 mt-2" [hidden]="!kycData.aadhaar.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10" [hidden]="!kycData.aadhaar.showConfirm"
                       (click)="setAadhaarEkycDataVariables('api_2',kycProofNames.aadhaar,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
+                    </div>
+                    <div class="col-md-3">
+                      <img *ngIf="kycData.aadhaar.data.actions[0].details.aadhaar.image" src="data:image/jpeg;base64,{{kycData.aadhaar.data.actions[0].details.aadhaar.image}}" alt="">
+                    </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -191,7 +198,7 @@
               </div>
               <div class="lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.drivingLicence, 0)"> Upload Image
+                <button type="button" class="btn common_button_color text-white btn-sm p-10" data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.drivingLicence, 0)"> Upload Image
                 </button>
               </div>
             </div>
@@ -211,7 +218,7 @@
                     <p><b>Initial Issuing Office:</b> {{kycData.driving_licence.data['Initial Issuing Office']}}</p>
                     <p><b>Current Status:</b> {{kycData.driving_licence.data['Current Status']}}</p>
                     <p><b>Old / New DL No.:</b> {{kycData.driving_licence.data['Old / New DL No.']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.driving_licence.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.driving_licence.showConfirm"
                       (click)="setKycDataVariables(kycProofNames.driving_licence,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -260,10 +267,10 @@
                   <div>
                     <p><b>Name:</b> {{kycData.voter_id.data['name']}}</p>
                     <p><b>Age:</b> {{kycData.voter_id.data['age']}}</p>
-                    <p><b>Taluk:</b> {{kycData.voter_id.data['ac_name']}}</p>
+                    <p><b>Taluka:</b> {{kycData.voter_id.data['ac_name']}}</p>
                     <p><b>District:</b> {{kycData.voter_id.data['dist_name']}}</p>
                     <p><b>State:</b> {{kycData.voter_id.data['st_name']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.voter_id.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.voter_id.showConfirm"
                       (click)="setKycDataVariables(kycProofNames.voter_id,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -453,8 +460,8 @@
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="talukDropdown">
                       <div class="dropdown_scroll_bar">
                         <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation }}"
-                          (click)="setSelectedValue($event, 'taluk', indVal.postalLocation, 'list')">
-                          {{ indVal.postalLocation }}
+                          (click)="setSelectedValue($event, 'taluk', indVal.office_name, 'list')">
+                          {{ indVal.office_name }}
                         </button>
                       </div>
                     </div>
@@ -463,13 +470,13 @@
 
                   <!-- <select class="form-select" formControlName="taluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.postalLocation }}">
-                      {{ indVal.postalLocation }}
+                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.office_name }}">
+                      {{ indVal.office_name }}
                     </option>
                   </select>-->
                   <div *ngIf="isSubmitted && f['taluk'].errors" class="form-text text-danger">
                     <small *ngIf="f['taluk'].errors['required']">
-                      Taluk is required</small>
+                      Taluka is required</small>
                   </div>
                 </div>
 
@@ -604,7 +611,7 @@
               </div>
               <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='Different address'">
                 <div class="flex-1 lable-top">
-                  <label class="required">Pin Code</label>
+                  <label class="required">Pincode</label>
                   <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6" (keypress)="validateNo($event)" maxlength="6"
                     (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
                   <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
@@ -625,9 +632,9 @@
                       data-bs-toggle="dropdown" aria-expanded="false" />
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="permTalukDropdown">
                       <div class="dropdown_scroll_bar">
-                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation }}"
-                          (click)="setSelectedValue($event, 'permTaluk', indVal.postalLocation, 'list')">
-                          {{ indVal.postalLocation }}
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.office_name }}"
+                          (click)="setSelectedValue($event, 'permTaluk', indVal.office_name, 'list')">
+                          {{ indVal.office_name }}
                         </button>
                       </div>
                     </div>
@@ -636,13 +643,13 @@
 
                   <!-- <select class="form-select" formControlName="permTaluk">
                     <option value="">...</option>
-                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.postalLocation }}">
-                      {{ indVal.postalLocation }}
+                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.office_name }}">
+                      {{ indVal.office_name }}
                     </option>
                   </select> -->
                   <div *ngIf="isSubmitted && f['permTaluk'].errors" class="form-text text-danger">
                     <small *ngIf="f['permTaluk'].errors['required']">
-                      Taluk is required</small>
+                      Taluka is required</small>
                   </div>
                 </div>
                 <div class="flex-1 lable-top">
@@ -948,7 +955,8 @@
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
-            <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" />
+            <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" /><br>
+            <a *ngIf="fileUpload.new.imageSrc1" [href]="fileUpload.new.imageSrc1" target="_blank">View File</a>
           </div>
 
         </div>
@@ -963,7 +971,8 @@
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
-            <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" />
+            <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" /><br>
+            <a *ngIf="fileUpload.new.imageSrc2" [href]="fileUpload.new.imageSrc2" target="_blank">View File</a>
           </div>
 
         </div>
@@ -978,7 +987,8 @@
           <div class="row" [hidden]="!fileUpload.new.imageMultiple">
           <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let imageSrc of fileUpload.new.imageMultiple">
             <p class="fs-6">Preview Image</p>
-            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" />
+            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" /><br/>
+            <a *ngIf="imageSrc" [href]="imageSrc" target="_blank">View File</a>
           </div>
 
         </div>
