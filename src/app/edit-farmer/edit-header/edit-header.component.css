@@ -37,3 +37,6 @@ ul.ul-flex li {
 .hori-navigation ul li a{
   padding: 6px 14px;
 }
+.logout-div{
+  cursor: pointer;
+}

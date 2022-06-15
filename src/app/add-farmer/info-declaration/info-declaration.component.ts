@@ -41,7 +41,7 @@ export class InfoDeclarationComponent implements OnInit {
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   checkedData() {
     if (this.declarationForm.value.agreedTerms) {
@@ -121,30 +121,32 @@ export class InfoDeclarationComponent implements OnInit {
                 this.dbService
                   .getAll(this.indexedDBName)
                   .subscribe((files: any) => {
-                    const requestData = {
-                      farmerId: res.farmerId,
-                      fileData: {} as any,
-                    };
-                    files.forEach((x: any) => {
+                    files.forEach((x: any, fi: number) => {
+                      const requestData = {
+                        farmerId: res.farmerId,
+                        fileData: {} as any,
+                      };
                       requestData.fileData[x.fileFor] = x.file;
-                    });
-                    this.addFarmerService.documentUpload(requestData).subscribe(
-                      (res: any) => {
-                        this.spinner.hide();
-                        if (res.message != 'Success' || !res.status) {
-                          this.toastr.error(`${res.message}!`);
-                          return;
-                        } else {
-                          this.clearRoute();
+                      this.addFarmerService.documentUpload(requestData).subscribe(
+                        (res: any) => {
+                          if (res.message != 'Success' || !res.status) {
+                            console.log(`${res.message}!`);
+                            // this.toastr.error(`${res.message}!`);
+                            // return;
+                          }
+                        },
+                        (error: any) => {
+                          console.log('Failed to upload a document details, please try again...');
+                          // this.toastr.error(
+                          //   'Failed to upload a document details, please try again...'
+                          // );
                         }
-                      },
-                      (error: any) => {
+                      );
+                      if ((files.length - 1) == fi) {
                         this.spinner.hide();
-                        this.toastr.error(
-                          'Failed to upload a document details, please try again...'
-                        );
+                        this.clearRoute();
                       }
-                    );
+                    });
                   });
               } else {
                 this.spinner.hide();
@@ -174,30 +176,36 @@ export class InfoDeclarationComponent implements OnInit {
                 this.dbService
                   .getAll(this.indexedDBName)
                   .subscribe((files: any) => {
-                    const requestData = {
-                      farmerId: res.farmerId,
-                      fileData: {} as any,
-                    };
-                    files.forEach((x: any) => {
+                    files.forEach((x: any, fi: number) => {
+                      const requestData = {
+                        farmerId: res.farmerId,
+                        fileData: {} as any,
+                      };
                       requestData.fileData[x.fileFor] = x.file;
-                    });
-                    this.addFarmerService.documentUpload(requestData).subscribe(
-                      (res: any) => {
-                        this.spinner.hide();
-                        if (res.message != 'Success' || !res.status) {
-                          this.toastr.error(`${res.message}!`);
-                          return;
-                        } else {
-                          this.clearRoute();
+                      this.addFarmerService.documentUpload(requestData).subscribe(
+                        (res: any) => {
+                          // this.spinner.hide();
+                          if (res.message != 'Success' || !res.status) {
+                            console.log(`${res.message}!`);
+                            // this.toastr.error(`${res.message}!`);
+                            return;
+                          } else {
+                            // this.clearRoute();
+                          }
+                        },
+                        (error: any) => {
+                          console.log('Failed to upload a document details, please try again...');
+                          // this.spinner.hide();
+                          // this.toastr.error(
+                          //   'Failed to upload a document details, please try again...'
+                          // );
                         }
-                      },
-                      (error: any) => {
+                      );
+                      if ((files.length - 1) == fi) {
                         this.spinner.hide();
-                        this.toastr.error(
-                          'Failed to upload a document details, please try again...'
-                        );
+                        this.clearRoute();
                       }
-                    );
+                    });
                   });
               } else {
                 this.spinner.hide();
@@ -245,7 +253,7 @@ export class InfoDeclarationComponent implements OnInit {
     }
 
     // clear indexed db data
-    this.dbService.clear('registerFarmer').subscribe((successDeleted) => {});
+    this.dbService.clear('registerFarmer').subscribe((successDeleted) => { });
 
     this.router.navigate(['/bd/dashboard']);
   }

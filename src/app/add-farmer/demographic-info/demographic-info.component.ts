@@ -34,8 +34,7 @@ function sleep(ms: number): Promise<any> {
   styleUrls: ['./demographic-info.component.css'],
 })
 export class DemographicInfoComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   /* START: Varaibles ------------------------------------------------- */
   private observableSubscription: any;
 
@@ -52,6 +51,7 @@ export class DemographicInfoComponent
       isImage2Required: false,
       isMultiple: false,
       fileIndex: 0,
+      isAudioVideoRequired: false,
     },
     imageHeading1: 'Front Image',
     imageHeading2: 'Back Image',
@@ -63,7 +63,9 @@ export class DemographicInfoComponent
   familyMembers!: FormArray;
   propertyOwnership!: FormArray;
   demographicInfoForm: FormGroup;
+  recordInterview!: FormArray;
 
+  check_errors: any = {};
   nextRoute: any;
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
     SaveStatus.Idle;
@@ -111,6 +113,9 @@ export class DemographicInfoComponent
       front: `${this.concatePage}_ownershipPictureImage`,
       count: `${this.concatePage}_ownershipPictureImageCount`,
     },
+    recordAudioVideo: {
+      front: `${this.concatePage}_recordInterviewAudioVideo`,
+    },
   };
   fileUploadFileFor = {
     panCard: 'PAN',
@@ -121,6 +126,7 @@ export class DemographicInfoComponent
     NREGA: 'NREGA',
     farmerProfile: 'FARMER_PROFILE',
     ownershipPicture: 'OWENERSHIP_PICTURE',
+    recordAudioVideo: 'RECORD_AUDIO_VIDEO',
   };
   /* END: indexed db variables */
 
@@ -288,6 +294,7 @@ export class DemographicInfoComponent
       voterIdNumber: new FormControl(''),
       passportNumber: new FormControl(''),
       NREGANumber: new FormControl(''),
+      recordInterview: new FormArray([]),
     });
 
     this.farmerId = this.activatedRoute.snapshot.params['farmerId'] || '';
@@ -342,8 +349,8 @@ export class DemographicInfoComponent
       // assign other data to populate
       let editForm: any = localStorage.getItem('edit-demographic-info-form');
       if (editForm) {
-        editForm = JSON.parse(editForm); 
-        this.demographicInfoForm.patchValue(editForm);       
+        editForm = JSON.parse(editForm);
+        this.demographicInfoForm.patchValue(editForm);
         this.patchFarmerFormDetails(editForm);
         //  call pincode apis again when we come back to the page again
         if (this.val.pinCode) {
@@ -376,7 +383,7 @@ export class DemographicInfoComponent
       } else {
         const farmerDetails: any = localStorage.getItem('farmer-details');
         if (farmerDetails) {
-          let demoInfo = JSON.parse(farmerDetails).demographic_info;        
+          let demoInfo = JSON.parse(farmerDetails).demographic_info;
           this.patchFarmerDetails(demoInfo); // bind/patch fresh api data
         }
       }
@@ -421,13 +428,13 @@ export class DemographicInfoComponent
         // });
       }
     }
-    if (
-      !(this.demographicInfoForm.get('propertyOwnership') as FormArray).controls
-        .length
-    ) {
+    if (!(this.demographicInfoForm.get('propertyOwnership') as FormArray).controls.length) {
       this.addPropertyOwnership();
     }
-    if(!(this.demographicInfoForm.get('familyMembers') as FormArray).controls.length){
+    if (!(this.demographicInfoForm.get('recordInterview') as FormArray).controls.length) {
+      this.addRecordInterview();
+    }
+    if (!(this.demographicInfoForm.get('familyMembers') as FormArray).controls.length) {
       this.addFamilyMembers();
     }
 
@@ -483,6 +490,27 @@ export class DemographicInfoComponent
 
   removePropertyOwnership(index: any) {
     this.propertyOwnership.removeAt(index);
+  }
+
+  createRecordInterview(): FormGroup {
+    return this.formBuilder.group({
+      recordType: new FormControl(''),
+    });
+  }
+
+  getRecordInterviewControls() {
+    return (this.demographicInfoForm.get('recordInterview') as FormArray).controls;
+  }
+
+  addRecordInterview(): void {
+    this.recordInterview = this.demographicInfoForm.get(
+      'recordInterview'
+    ) as FormArray;
+    this.recordInterview.push(this.createRecordInterview());
+  }
+
+  removeRecordInterview(index: any) {
+    this.recordInterview.removeAt(index);
   }
 
   createFamilyMembers(): FormGroup {
@@ -551,6 +579,7 @@ export class DemographicInfoComponent
     this.fileUpload.new.isImage1Required = false;
     this.fileUpload.new.isImage2Required = false;
     this.fileUpload.new.isMultiple = false;
+    this.fileUpload.new.isAudioVideoRequired = false;
     this.fileUpload.new.fileIndex = fileIndex;
     this.fileUpload.imageHeading1 = 'Front Image';
     this.fileUpload.imageHeading2 = 'Back Image';
@@ -835,10 +864,10 @@ export class DemographicInfoComponent
             if (
               farmerFiles.hasOwnProperty(
                 this.indexedDBFileNameManage.ownershipPicture.front +
-                  '_' +
-                  this.fileUpload.new.fileIndex +
-                  '_' +
-                  ffi
+                '_' +
+                this.fileUpload.new.fileIndex +
+                '_' +
+                ffi
               )
             ) {
               fCount++;
@@ -851,12 +880,11 @@ export class DemographicInfoComponent
           .getByIndex(
             this.indexedDBName,
             'fileFor',
-            `${
-              this.indexedDBFileNameManage.ownershipPicture.front +
-              '_' +
-              this.fileUpload.new.fileIndex +
-              '_' +
-              fIndex
+            `${this.indexedDBFileNameManage.ownershipPicture.front +
+            '_' +
+            this.fileUpload.new.fileIndex +
+            '_' +
+            fIndex
             }`
           )
           .subscribe((farmer: any) => {
@@ -864,33 +892,54 @@ export class DemographicInfoComponent
               farmer?.file ||
               this.commonService.fetchFarmerDocument(
                 this.indexedDBFileNameManage.ownershipPicture.front +
-                  '_' +
-                  this.fileUpload.new.fileIndex +
-                  '_' +
-                  fIndex
+                '_' +
+                this.fileUpload.new.fileIndex +
+                '_' +
+                fIndex
               );
             if (ownershipPicture) {
               this.fileUpload.new.imageMultiple.push(ownershipPicture);
             }
           });
       }
+    } else if (type === this.fileUploadFileFor.recordAudioVideo) {
+      this.fileUpload.popupTitle = 'Upload Record Interview';
+      this.fileUpload.new.isAudioVideoRequired = true;
+      this.fileUpload.imageHeading1 = 'Audio/Video';
+
+      this.dbService
+        .getByIndex(
+          this.indexedDBName,
+          'fileFor',
+          `${this.indexedDBFileNameManage.recordAudioVideo.front}`
+        )
+        .subscribe((farmer: any) => {
+          this.fileUpload.new.imageSrc1 =
+            farmer?.file ||
+            this.commonService.fetchFarmerDocument(
+              this.indexedDBFileNameManage.recordAudioVideo.front
+            );
+        });
     }
-    $('#fileUploadModalPopup').modal('show');
+    $('#demofileUploadModalPopup').modal('show');
   }
 
   onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
       let c_file_count = this.fileUpload.new.imageMultiple.length;
-      for (let findex:any = 0; findex < event.target.files.length; findex++) {
+      for (let findex: any = 0; findex < event.target.files.length; findex++) {
         const file = event.target.files[findex];
-
-        // if (file.size > 300000) {
-        //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
-        //   return;
-        // }
-        if (file.type.split('/')[0] != 'image') {
-          this.toastr.error('Only Image files are allowed.', 'Error!');
-          return;
+        if (this.fileUpload.fileFor === this.fileUploadFileFor.recordAudioVideo) {
+          console.log('file.size : ', file.size);
+        } else {
+          // if (file.size > 300000) {
+          //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
+          //   return;
+          // }
+          if (file.type.split('/')[0] != 'image') {
+            this.toastr.error('Only Image files are allowed.', 'Error!');
+            return;
+          }
         }
 
         /* START: reading file and Patching the Selected File */
@@ -966,6 +1015,14 @@ export class DemographicInfoComponent
               this.displayFarmerProfileImage = imageSrc;
             }
           } else if (
+            this.fileUpload.fileFor === this.fileUploadFileFor.recordAudioVideo
+          ) {
+            if (type === 'FRONT_IMAGE') {
+              this.fileUpload.new.imageSrc1 = imageSrc;
+              selectedImageFor = this.indexedDBFileNameManage.recordAudioVideo.front + '_' + this.fileUpload.new.fileIndex;
+              //this.displayFarmerProfileImage = imageSrc;
+            }
+          } else if (
             this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
           ) {
             if (type === 'FRONT_IMAGE') {
@@ -974,7 +1031,7 @@ export class DemographicInfoComponent
                 this.indexedDBFileNameManage.ownershipPicture.front +
                 '_' +
                 this.fileUpload.new.fileIndex +
-                '_' +(parseInt(c_file_count)+parseInt(findex));
+                '_' + (parseInt(c_file_count) + parseInt(findex));
             }
           }
           /* START: ngx-indexed-db feature to store files(images/docs) */
@@ -986,7 +1043,7 @@ export class DemographicInfoComponent
                 // delete if exists
                 this.dbService
                   .deleteByKey(this.indexedDBName, file.id)
-                  .subscribe((status) => {});
+                  .subscribe((status) => { });
                 // then add new
                 this.dbService
                   .add(this.indexedDBName, {
@@ -994,7 +1051,7 @@ export class DemographicInfoComponent
                     fileFor: selectedImageFor,
                     file: imageSrc,
                   })
-                  .subscribe((key) => {});
+                  .subscribe((key) => { });
               } else {
                 // add new
                 this.dbService
@@ -1003,7 +1060,7 @@ export class DemographicInfoComponent
                     fileFor: selectedImageFor,
                     file: imageSrc,
                   })
-                  .subscribe((key) => {});
+                  .subscribe((key) => { });
               }
             });
           /* END: ngx-indexed-db feature to store files(images/docs) */
@@ -1026,7 +1083,7 @@ export class DemographicInfoComponent
           this.indexedDBFileNameManage.ownershipPicture.count +
           '_' +
           this.fileUpload.new.fileIndex;
-        if(demoInfoFiles[difkey]){
+        if (demoInfoFiles[difkey]) {
           demoInfoFiles[difkey] = parseInt(demoInfoFiles[difkey]) + event.target.files.length;
         } else {
           demoInfoFiles[difkey] = event.target.files.length;
@@ -1078,88 +1135,89 @@ export class DemographicInfoComponent
   // patch edit farmer details
   patchFarmerDetails(B: any) {
     this.demographicInfoForm.patchValue(B);
-      // assign kyc data to populate
-      if (B.kycData) {
-        this.kycData = B.kycData;
-      }
+    // assign kyc data to populate
+    if (B.kycData) {
+      this.kycData = B.kycData;
+    }
 
-      // create form group
-      this.demographicInfoForm.patchValue({
-        salutation: B.farmerDetails['salutation'],
-        firstName: B.farmerDetails['firstName'],
+    // create form group
+    this.demographicInfoForm.patchValue({
+      salutation: B.farmerDetails['salutation'],
+      firstName: B.farmerDetails['firstName'],
 
-        // addressProof: B.addressProof['selectedIdProof'],
-        PANnumber: B.identityProof['panNumber'],
-        aadhaarNumber: B.identityProof['aadhaarNumber'],
-        drivingLicenceNumber: B.identityProof['drivingLicenceNumber'],
-        voterIdNumber: B.identityProof['voterIdNumber'],
-        passportNumber: B.identityProof['passportNumber'],
-        NREGANumber: B.identityProof['NREGANumber'],
+      // addressProof: B.addressProof['selectedIdProof'],
+      PANnumber: B.identityProof['panNumber'],
+      aadhaarNumber: B.identityProof['aadhaarNumber'],
+      drivingLicenceNumber: B.identityProof['drivingLicenceNumber'],
+      voterIdNumber: B.identityProof['voterIdNumber'],
+      passportNumber: B.identityProof['passportNumber'],
+      NREGANumber: B.identityProof['NREGANumber'],
 
-        middleName: B.farmerDetails['middleName'],
-        lastName: B.farmerDetails['lastName'],
-        dob: B.farmerDetails['dob'],
-        gender: B.farmerDetails['gender'],
-        religion: B.farmerDetails['religion'],
-        caste: B.farmerDetails['caste'],
-        educationalQualification: B.otherDetails['educationalQualification'],
-        occupation: B.otherDetails['occupation'],
-        annualIncome: B.otherDetails['annualIncome'],
+      middleName: B.farmerDetails['middleName'],
+      lastName: B.farmerDetails['lastName'],
+      dob: B.farmerDetails['dob'],
+      gender: B.farmerDetails['gender'],
+      religion: B.farmerDetails['religion'],
+      caste: B.farmerDetails['caste'],
+      educationalQualification: B.otherDetails['educationalQualification'],
+      occupation: B.otherDetails['occupation'],
+      annualIncome: B.otherDetails['annualIncome'],
 
-        address1: B.address['addressLine1'],
-        address2: B.address['addressLine2'],
-        pinCode: B.address['pincode'],
-        taluk: B.address['taluk'],
-        city: B.address['city'],
-        state: B.address['state'],
-        landmark: B.address['landmark'],
+      address1: B.address['addressLine1'],
+      address2: B.address['addressLine2'],
+      pinCode: B.address['pincode'],
+      taluk: B.address['taluk'],
+      city: B.address['city'],
+      state: B.address['state'],
+      landmark: B.address['landmark'],
 
-        phoneNumber: B.address['mobileNumber'],
-        mobile1: B.address['mobile1'],
-        mobile2: B.address['mobile2'],
-        email: B.address['email'],
+      phoneNumber: B.address['mobileNumber'],
+      mobile1: B.address['mobile1'],
+      mobile2: B.address['mobile2'],
+      email: B.address['email'],
 
-        yrsInAddress: B.yrsInAddress,
-        yrsInCity: B.yrsInCity,
+      yrsInAddress: B.yrsInAddress,
+      yrsInCity: B.yrsInCity,
 
-        permAddressLine1: B.permAddress?.addressLine1,
-        permAddressLine2: B.permAddress?.addressLine2,
-        permPincode: B.permAddress?.pincode,
-        permTaluk: B.permAddress?.taluk,
-        permCity: B.permAddress?.city,
-        permState: B.permAddress?.state,
+      permAddressLine1: B.permAddress?.addressLine1,
+      permAddressLine2: B.permAddress?.addressLine2,
+      permPincode: B.permAddress?.pincode,
+      permTaluk: B.permAddress?.taluk,
+      permCity: B.permAddress?.city,
+      permState: B.permAddress?.state,
 
-        propertyStatus: B.propertyStatus,
-        monthlyRent: B.monthlyRent,
-        commOrPerAddress: B.permAddress?.commOrPerAddress,
-        familyMembers: B.familyMembers,
-        propertyOwnership: B.propertyOwnership,
-        phoneType: B.phoneType,
-        phoneOperating: B.phoneUsedBy,
-        cultivationAdvice: B.cultivationAdvice,
-        cultivationAdviceOther: B.cultivationAdviceOther,
-        adviceMedium: B.adviceMedium,
-        adviceMediumOther: B.adviceMediumOther,
-        sourceOfIncome: B.sourceOfIncome,
-        sourceOfIncomeOther: B.sourceOfIncomeOther,
-        agriculturalInterest: B.agricultureChildrenInterested,
-        innovativeWaysFarming: B.innovativeFarmingWays,
-      });
+      propertyStatus: B.propertyStatus,
+      monthlyRent: B.monthlyRent,
+      commOrPerAddress: B.permAddress?.commOrPerAddress,
+      familyMembers: B.familyMembers,
+      propertyOwnership: B.propertyOwnership,
+      phoneType: B.phoneType,
+      phoneOperating: B.phoneUsedBy,
+      cultivationAdvice: B.cultivationAdvice,
+      cultivationAdviceOther: B.cultivationAdviceOther,
+      adviceMedium: B.adviceMedium,
+      adviceMediumOther: B.adviceMediumOther,
+      sourceOfIncome: B.sourceOfIncome,
+      sourceOfIncomeOther: B.sourceOfIncomeOther,
+      agriculturalInterest: B.agricultureChildrenInterested,
+      innovativeWaysFarming: B.innovativeFarmingWays,
+      recordInterview: B.recordInterview,
+    });
 
-      if (B.address['pincode']) {
-        this.getPinCodeData(
-          { target: { value: B.address['pincode'] } },
-          'ADDRESS'
-        );
-      }
-      if (B.permAddress?.pincode) {
-        this.getPinCodeData(
-          { target: { value: B.permAddress?.pincode } },
-          'PERMANENT_ADDRESS'
-        );
-      }
+    if (B.address['pincode']) {
+      this.getPinCodeData(
+        { target: { value: B.address['pincode'] } },
+        'ADDRESS'
+      );
+    }
+    if (B.permAddress?.pincode) {
+      this.getPinCodeData(
+        { target: { value: B.permAddress?.pincode } },
+        'PERMANENT_ADDRESS'
+      );
+    }
 
-      this.patchFarmerFormDetails(B);
+    this.patchFarmerFormDetails(B);
   }
 
   patchFarmerFormDetails(B: any) {
@@ -1178,7 +1236,7 @@ export class DemographicInfoComponent
           );
       });
 
-      if(B.propertyOwnership){
+    if (B.propertyOwnership) {
       this.propertyOwnership = this.demographicInfoForm.get(
         'propertyOwnership'
       ) as FormArray;
@@ -1196,7 +1254,7 @@ export class DemographicInfoComponent
         );
       });
     }
-    if(B.familyMembers){
+    if (B.familyMembers) {
       this.familyMembers = this.demographicInfoForm.get('familyMembers') as FormArray;
       B.familyMembers.map((item: any) => {
         this.familyMembers.push(
@@ -1208,14 +1266,33 @@ export class DemographicInfoComponent
             dependency: new FormControl(item.dependency),
           })
         );
-      }); 
-    }     
+      });
+    }
+
+    if (B.recordInterview) {
+      this.recordInterview = this.demographicInfoForm.get(
+        'recordInterview'
+      ) as FormArray;
+      B.recordInterview.map((item: any) => {
+        this.recordInterview.push(
+          this.formBuilder.group({
+            recordType: new FormControl(item.recordType),
+          })
+        );
+      });
+    }
   }
 
   validateAndNext() {
     this.isSubmitted = true;
     if (this.demographicInfoForm.invalid) {
       this.toastr.error('please enter values for required fields', 'Error!');
+      return;
+    } else if (this.check_errors?.mobile) {
+      this.toastr.error(this.check_errors?.mobile, 'Error!');
+      return;
+    } else if (this.check_errors?.pan) {
+      this.toastr.error(this.check_errors?.pan, 'Error!');
       return;
     } else {
       const formValue = this.demographicInfoForm.value;
@@ -1288,7 +1365,7 @@ export class DemographicInfoComponent
 
         propertyStatus: formValue.propertyStatus,
         monthlyRent: formValue.monthlyRent,
-
+        recordInterview: formValue.recordInterview,
         kycData: this.kycData,
       };
 
@@ -1379,6 +1456,88 @@ export class DemographicInfoComponent
     }
   }
 
+  checkMobileNo(event: any) {
+    this.check_errors.mobile = false;
+    let edit_mobile_no = '';
+    // check length and proceed
+    if (event && event.target.value.trim().length == 10 && event.target.value == parseInt(event.target.value)) {
+      if (this.farmerId) {
+        const farmerDetails: any = localStorage.getItem('farmer-details');
+        if (farmerDetails) {
+          let demoInfo = JSON.parse(farmerDetails).demographic_info;
+          edit_mobile_no = demoInfo?.address?.mobileNumber;
+        }
+      }
+      if (edit_mobile_no != event.target.value) {
+        this.spinner.show();
+        this.commonService.checkMobileNo(event.target.value.trim()).subscribe(
+          (res: any) => {
+            this.spinner.hide();
+            if (res && !res.status) {
+              this.check_errors.mobile = res.message;
+              alert(`${res.message}`);
+            } else {
+              console.log('response : ', res);
+            }
+          },
+          (error: any) => {
+            this.spinner.hide();
+            alert('Failed to fetch Mobile Details, please try again...');
+          }
+        );
+      }
+    } else {
+      this.check_errors.mobile = 'Please enter valid phone number!';
+    }
+  }
+
+  downloadFile(data: any) {
+    console.log(data);
+    let dwldLink = document.createElement("a");
+    dwldLink.setAttribute("target", "_blank");
+    dwldLink.setAttribute("href", data);
+    dwldLink.style.visibility = "hidden";
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
+  checkPAN(event: any) {
+    this.check_errors.pan = false;
+    let edit_pan_no = '';
+    // check length and proceed
+    if (event && event.target.value.trim().length == 10) {
+      if (this.farmerId) {
+        const farmerDetails: any = localStorage.getItem('farmer-details');
+        if (farmerDetails) {
+          let demoInfo = JSON.parse(farmerDetails).demographic_info;
+          edit_pan_no = demoInfo?.identityProof?.panNumber;
+        }
+      }
+      if (edit_pan_no != event.target.value) {
+        this.spinner.show();
+        this.commonService.checkPAN(event.target.value.trim()).subscribe(
+          (res: any) => {
+            console.log('res : ', res);
+            this.spinner.hide();
+            if (res && !res.status) {
+              this.check_errors.pan = res.message;
+              alert(`${res.message}`);
+            } else {
+              console.log('response : ', res);
+            }
+          },
+          (error: any) => {
+            this.spinner.hide();
+            alert('Failed to fetch Mobile Details, please try again...');
+          }
+        );
+      }
+    } else {
+      this.check_errors.pan = 'Please enter valid PAN card number!';
+    }
+  }
+
   /* PAN,Voter ID,Driving Licence EKYC related : start */
   getKycData(event: any, proofType: string) {
     let INPUT_OBJ = {};
@@ -1430,13 +1589,13 @@ export class DemographicInfoComponent
       }
       // convert date farmat from 'YYYY-MM-DD' to 'dd/MM/yyyy'
       // const C = this.demographicInfoForm.value.dob.split('-');
-      let dob = formatDate(this.demographicInfoForm.value.dob,'dd/MM/yyyy','en_IN') as string;
+      let dob = formatDate(this.demographicInfoForm.value.dob, 'dd/MM/yyyy', 'en_IN') as string;
       INPUT_OBJ = {
         id_type: 'DRIVING_LICENSE',
         id_no: this.demographicInfoForm.value.drivingLicenceNumber,
         dob: `${dob}`,
         // dob: `${C[1]}/${C[2]}/${C[0]}`,
-      };      
+      };
       console.log('INPUT_OBJ : ', INPUT_OBJ);
     }
 
@@ -1741,19 +1900,19 @@ export class DemographicInfoComponent
         if (!this.farmerId && proofType === 'aadhaar' && apiData?.actions[0].details.aadhaar.name) {
           let aadhaar_name = apiData?.actions[0].details.aadhaar.name;
           let aadhaar_name_arr = aadhaar_name.toString().split(" ");
-          if(aadhaar_name_arr.length >=1){
+          if (aadhaar_name_arr.length >= 1) {
             this.demographicInfoForm.get('firstName')?.setValue(aadhaar_name_arr[0]);
           }
-          if(aadhaar_name_arr.length >=2){
+          if (aadhaar_name_arr.length >= 2) {
             this.demographicInfoForm.get('middleName')?.setValue(aadhaar_name_arr[1]);
           }
-          if(aadhaar_name_arr.length >=3){
+          if (aadhaar_name_arr.length >= 3) {
             let lastName = '';
             for (let i = 2; i < aadhaar_name_arr.length; i++) {
-              lastName =+ aadhaar_name_arr[i]+' ';
+              lastName = lastName + aadhaar_name_arr[i].toString() + ' ';
             }
             this.demographicInfoForm.get('lastName')?.setValue(lastName);
-          } 
+          }
         }
       } else if (type === 'confirm') {
         this.kycData[proofType].showVerify = false;

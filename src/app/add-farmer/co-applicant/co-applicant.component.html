@@ -517,7 +517,7 @@
               <div class="display-flex">
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in present address</label>
-                  <input type="text" class="form-control" formControlName="yrsInAddress" placeholder="" maxlength="3" />
+                  <input type="text" class="form-control" formControlName="yrsInAddress" placeholder="" maxlength="3" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['yrsInAddress'].errors" class="form-text text-danger">
                     <small *ngIf="f['yrsInAddress'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -525,7 +525,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in city/village</label>
-                  <input type="text" class="form-control" formControlName="yrsInCity" placeholder="" maxlength="3" />
+                  <input type="text" class="form-control" formControlName="yrsInCity" placeholder="" maxlength="3" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['yrsInCity'].errors" class="form-text text-danger">
                     <small *ngIf="f['yrsInCity'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -583,7 +583,7 @@
               <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddress!='Different address'">
                 <div class="flex-1 lable-top">
                   <label class="">Pincode</label>
-                  <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
+                  <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
                     <small *ngIf="f['permPincode'].errors['required']">
                       PinCode is required</small>
@@ -1285,7 +1285,7 @@
               <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddresscoa2!='Different address'">
                 <div class="flex-1 lable-top">
                   <label class="">Pincode</label>
-                  <input type="text" class="form-control" formControlName="permPincodecoa2" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESScoa2')" />
+                  <input type="text" class="form-control" formControlName="permPincodecoa2" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESScoa2')" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['permPincodecoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['permPincodecoa2'].errors['required']">
                       PinCode is required</small>

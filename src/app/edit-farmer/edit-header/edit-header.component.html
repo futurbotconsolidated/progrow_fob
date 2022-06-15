@@ -150,7 +150,7 @@
                         <span>{{demographicDisp?.farmerDetails?.firstName}}
                             {{demographicDisp?.farmerDetails?.middleName}}
                             {{demographicDisp?.farmerDetails?.lastName}}</span><br/>
-                            <span><img src="../../../assets/images/profile-date.svg" alt=""> {{demographicDisp?.farmerDetails?.dob}}</span>
+                            <span *ngIf="dob"><img src="../../../assets/images/profile-date.svg" alt=""> {{dob}}</span>
                     </li>
                     <!-- <li><span>STATUS: </span><br>
                         <span class="color-green">Approved</span></li> -->
