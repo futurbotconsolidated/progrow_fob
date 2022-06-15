@@ -12,6 +12,8 @@ export const endPoints = {
   pinCodeData: '/get_pincode_data',
   masterData: '/master_data',
   sendToMifin: '/send_to_mifin',
+  checkMobile: '/check_mobile',
+  checkPAN: '/check_pan',
 
   ekyc: {
     getKycData: '/kyc_check',

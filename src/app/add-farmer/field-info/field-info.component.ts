@@ -64,6 +64,8 @@ export class FieldInfoComponent implements OnInit {
   field_boundary: any;
   fieldArea = <any>[];
   editFieldArea = <any>[];
+  editFieldFrcmScore = <any>[];
+  editFieldGroundVisits = <any>[];
   fieldIndexMapIds = <any>[];
 
   farmerId = ''; // edit feature
@@ -132,6 +134,8 @@ export class FieldInfoComponent implements OnInit {
     this.selectedCoordinates = [];
     this.fieldArea = [];
     this.editFieldArea = [];
+    this.editFieldFrcmScore = [];
+    this.editFieldGroundVisits = [];
     this.fieldIndexMapIds = [];
     // -----------------------start auto save --------------------
     // draft feature is not required in edit operation
@@ -174,9 +178,13 @@ export class FieldInfoComponent implements OnInit {
         map_info = JSON.parse(map_info);
         if (map_info) {
           this.editFieldArea = [];
+          this.editFieldFrcmScore = [];
+          this.editFieldGroundVisits = [];          
           this.selectedCoordinates = [];
           map_info.forEach((el: any) => {
             this.editFieldArea.push(el.field_area_ha);
+            this.editFieldFrcmScore.push(el.frcm_score);
+            this.editFieldGroundVisits.push(el.ground_visits);
             this.selectedCoordinates.push(
               el.field_boundary.geometry.coordinates
             );
@@ -195,6 +203,8 @@ export class FieldInfoComponent implements OnInit {
           editFieldInfo.testType = [] as any;
           editFieldInfo.enumerate = [] as any;
           this.editFieldArea = [];
+          this.editFieldFrcmScore = [];
+          this.editFieldGroundVisits = [];
           this.selectedCoordinates = [];
           edit_field_info.forEach((fiv: any, findex: number) => {
             editFieldInfo.enumerate.push(fiv.enumerate_planned_season);
@@ -216,6 +226,8 @@ export class FieldInfoComponent implements OnInit {
             editFieldInfo.plannedSeason = fiv.crop_season_id+'##'+fiv.planned_season_detail.plannedSeason;
             editFieldInfo.plannedCrops = fiv.planned_season_detail.plannedCrops;
             this.editFieldArea.push(fiv.field_area_ha);
+            this.editFieldFrcmScore.push(fiv.frcm_score);
+            this.editFieldGroundVisits.push(fiv.ground_visits);            
             this.selectedCoordinates.push(
               fiv.field_boundary.geometry.coordinates
             );
@@ -240,9 +252,13 @@ export class FieldInfoComponent implements OnInit {
       map_info = JSON.parse(map_info);
       if (map_info) {
         this.editFieldArea = [];
+        this.editFieldFrcmScore = [];
+        this.editFieldGroundVisits = [];
         this.selectedCoordinates = [];
         map_info.forEach((el: any) => {
           this.editFieldArea.push(el.field_area_ha);
+          this.editFieldFrcmScore.push(el.frcm_score);
+          this.editFieldGroundVisits.push(el.ground_visits);
           this.selectedCoordinates.push(el.field_boundary.geometry.coordinates);
         });
       }
@@ -691,6 +707,8 @@ export class FieldInfoComponent implements OnInit {
         field_index: index,
         leaflet_id: polygon._leaflet_id,
         coordinates: x,
+        frcm_score: this.editFieldFrcmScore[index],
+        ground_visits: this.editFieldGroundVisits[index],
       };
       this.fieldIndexMapIds.push(fimi_ob);
     });
@@ -833,6 +851,7 @@ export class FieldInfoComponent implements OnInit {
     let fieldArr = [] as any;
     let obj;
     var field_ui_id = 0;
+    var error_flag = 0;
     this.fieldIndexMapIds.forEach((x: any, i: number) => {
       field_ui_id = i + 1;
       this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
@@ -856,6 +875,16 @@ export class FieldInfoComponent implements OnInit {
       let crop_arr = this.fieldInfoForm.value.plannedFieldDetails[i].crop?.split('##');
       let plannedFieldDetails = this.fieldInfoForm.value.plannedFieldDetails[i];
       plannedFieldDetails.crop = crop_arr[1];
+      if(!season_arr[0]){
+        this.toastr.error('Please select planned season', 'Error!');
+        error_flag = 1;
+        return;
+      }
+      if(!crop_arr[0]){
+        this.toastr.error('Please select field crop', 'Error!');
+        error_flag = 1;
+        return;
+      }
 
       obj = {
         field_ui_id: field_ui_id,
@@ -885,6 +914,8 @@ export class FieldInfoComponent implements OnInit {
           uc: this.fieldInfoForm.value.cropCycleOnReports,
         },
         is_required_yn: true,
+        frcm_score: x.frcm_score || {},
+        ground_visits: x.ground_visits || [],
       };
       fieldArr.push(obj);
     });
@@ -907,8 +938,10 @@ export class FieldInfoComponent implements OnInit {
           JSON.stringify(this.fieldInfoForm.value)
         );
       }
+      if(!error_flag){
       const url = `/add/${this.nextRoute}/${this.farmerId}`;
       this.router.navigate([url]);
+      }
     // }
   }
 

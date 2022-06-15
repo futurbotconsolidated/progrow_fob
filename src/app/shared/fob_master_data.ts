@@ -249,7 +249,16 @@ export const data = {
     ],
   },
   fieldInfo: {
-    irrigationSystem: ['Surface Irrigation'],
+    irrigationSystem: [
+      'Surface irrigation',
+      'Micro irrigation', 
+      'Drip irrigation',
+      'Sprinkler irrigation', 
+      'Center pivot',
+      'Irrigation by lateral move (side roll, wheel line, wheelmove)',
+      'Lawn sprinkler systems',
+      'Hose-end sprinklers'
+    ],
     waterSource: ['Pond', 'Well', 'Canal'],
     ownerShipType: [
       'Leased (Joint/Self)',

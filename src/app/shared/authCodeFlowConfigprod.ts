@@ -12,6 +12,6 @@ export const authCodeFlowConfig: AuthConfig = {
   strictDiscoveryDocumentValidation: false,
   responseType: 'code',
   requireHttps: false,
-  showDebugInformation: true,
+  showDebugInformation: false,
   oidc: true,
 };

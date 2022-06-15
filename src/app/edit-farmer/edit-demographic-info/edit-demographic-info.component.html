@@ -67,8 +67,8 @@
                                         {{demographicDisp?.agricultureChildrenInterested}}</b></span>
                             </p>
                             <p>Agri Tech Interests:
-                                <span *ngFor="let x of demographicDisp?.innovativeFarmingWays"> <b>
-                                        {{x }}, </b></span>
+                                <span *ngFor="let x of demographicDisp?.innovativeFarmingWays;let xindex=index;"> <b>
+                                    {{ (xindex>0)? ', ':'' }} {{x }} </b></span>
 
                             </p>
                         </div>
