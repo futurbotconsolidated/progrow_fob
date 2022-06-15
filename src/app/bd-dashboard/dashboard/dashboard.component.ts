@@ -708,6 +708,7 @@ export class DashboardComponent implements OnInit {
         } else {
           this.allExistingFarmers = [];
           this.allPipelineFarmers = [];
+          
           res.data.forEach((farmer: any, index: number) => {
             let fa_frcm_score: any = 0;
             let fa_field_size: any = 0;
@@ -717,6 +718,7 @@ export class DashboardComponent implements OnInit {
               if (field?.field_area_ha) {
                 fa_field_size = parseFloat(fa_field_size) + parseFloat(field?.field_area_ha || 0);
               }
+
               if (field?.frcm_score?.aggregate_score) {
                 counter = counter + 1;
                 fa_frcm_score = parseFloat(fa_frcm_score) + parseFloat(field?.frcm_score?.aggregate_score);
@@ -726,9 +728,11 @@ export class DashboardComponent implements OnInit {
               }
             });
             farmer.fa_field_size = fa_field_size;
+
             if (counter != 0) {
               farmer.fa_frcm_score = Math.round(fa_frcm_score / counter);
             } else {
+
               farmer.fa_frcm_score = 0;
             }
             farmer.fa_ownership_document_url = fa_ownership_document_url;
