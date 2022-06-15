@@ -64,9 +64,10 @@
                                         class="yes">{{summary?.produce_aggregator?.consolidateLoans || 'N/A'}}</span>
                                 </li>
                                 <li>
-                                    <p>Hedging harvest produce</p><span
-                                        class="yes">{{summary?.fieldInfo[0]?.planned_season_detail?.plannedFieldDetails?.expectedProduce
-                                        || 'N/A'}}</span>
+                                    <p>Hedging harvest produce</p>
+                                    <span *ngFor="let x of summary.harvest_produce; let xi = index;">
+                                        {{(xi>0)? ', ':''}}{{x.crop}}: {{x.expectedProduce}}
+                                    </span>
                                 </li>
                                 <li>
                                     <p>Yield improvement</p><span
@@ -74,9 +75,10 @@
                                         'N/A'}}</span>
                                 </li>
                                 <li>
-                                    <p>Scientific crop cycle planning</p><span
-                                        class="yes">{{summary?.fieldInfo[0]?.planned_season_detail?.plannedCrops ||
-                                        'N/A'}}</span>
+                                    <p>Scientific crop cycle planning</p>
+                                    <span *ngFor="let x of summary.planned_crops; let xi = index;">
+                                        {{(xi>0)? ', ':''}}{{x}}
+                                    </span>
                                 </li>
                                 <!-- <li>
                                     <p>Attain benchmark yield quality</p><span class="no">N/A</span>
@@ -96,7 +98,8 @@
                                 <li>
                                     <p>Use of tech</p><span class="no">
                                         <span *ngFor="let x of masterData.technologyAdoption.technologyOpinions">
-                                            {{x.title}}: {{summary?.technology_adoption[x.formCntrlName] || 'N/A'}}<br/>
+                                            {{x.title}}: {{summary?.technology_adoption[x.formCntrlName] ||
+                                            'N/A'}}<br />
                                         </span>
                                     </span>
                                 </li>
@@ -148,7 +151,7 @@
                         <ul>
                             <li>
                                 <p>Household dependents</p>
-                                <span>{{summary?.demographic_info?.familyMembers[0]?.dependency || 'N/A'}}</span>
+                                <span>{{summary.dependency || 'N/A'}}</span>
                             </li>
                             <li>
                                 <p>Cultivation expenditure/season</p>

@@ -19,7 +19,7 @@ export class SummaryComponent implements OnInit {
   constructor(
     public router: Router,
     public oauthService: OAuthService
-  ) {    
+  ) {
     this.userInfo = this.oauthService.getIdentityClaims();
     this.masterData = data; // read master data
     const farmer_details: any = localStorage.getItem('farmer-details');
@@ -30,9 +30,29 @@ export class SummaryComponent implements OnInit {
 
       this.summary.household_expenditure = (parseFloat(this.summary?.financial_planning?.educationExpense) + parseFloat(this.summary?.financial_planning?.electricityExpense) + parseFloat(this.summary?.financial_planning?.familyLoanAmount) + parseFloat(this.summary?.financial_planning?.groceryExpense) + parseFloat(this.summary?.financial_planning?.interestExpense)).toFixed();
 
-      console.log('summary : ', this.summary);
+      this.summary.harvest_produce = [];
+      this.summary.planned_crops = [];
+      this.summary?.fieldInfo.forEach((x: any) => {
+        if (x.planned_season_detail?.plannedFieldDetails?.crop && x.planned_season_detail?.plannedFieldDetails?.expectedProduce) {
+          let exppro = {
+            crop: x.planned_season_detail?.plannedFieldDetails?.crop,
+            expectedProduce: x.planned_season_detail?.plannedFieldDetails?.expectedProduce,
+          }
+          this.summary.harvest_produce.push(exppro);
+        }
+        if (x.planned_season_detail?.plannedCrops) {
+          this.summary.planned_crops.push(x.planned_season_detail?.plannedCrops);
+        }
+      });
+      this.summary.dependency = 'No';
+      this.summary?.demographic_info?.familyMembers.forEach((x: any) => {
+        if (x?.dependency?.toString().toLowerCase() == 'yes') {
+          this.summary.dependency = 'Yes';
+          return;
+        }
+      });
     }
   }
-
+  
   ngOnInit(): void { }
 }
