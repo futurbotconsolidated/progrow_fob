@@ -1,0 +1,179 @@
+<article class="right-sec">
+    <app-edit-header></app-edit-header>
+    <div class="bg-color summery">
+        <div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="actual-facts summery-bg">
+                        <h4 class="summery-heading"><span>Actual facts</span></h4>
+                        <ul *ngFor="let x of summary?.fieldInfo">
+                            <li>
+                                <h5>Field Name</h5>
+                                <p> {{x.field_name || 'N/A'}} </p>
+                            </li>
+                            <li>
+                                <h5>Field ownership</h5>
+                                <p>{{x.field_ownership_detail?.fieldOwnCoOwner || 'N/A'}}
+                                </p>
+                            </li>
+                            <li>
+                                <h5>Field size</h5>
+                                <p>{{x?.field_area_ha}}(Hectare) </p>
+                            </li>
+                            <li>
+                                <h5>Location of field</h5>
+                                <p> <a [href]="'https://maps.google.com?q='+x.field_boundary.geometry.coordinates[0][0]+','+x.field_boundary.geometry.coordinates[0][1]"
+                                        target="_blank">View</a> </p>
+                            </li>
+                            <li>
+                                <h5>Irrigation method</h5>
+                                <p> {{x.planned_season_detail?.plannedFieldDetails?.irrigationSystem || 'N/A'}} </p>
+                            </li>
+                        </ul>
+                        <ul>
+                            <!-- <li>
+                                <h5>Field contiguity</h5>
+                                <p>N/A</p>
+                            </li> -->
+                            <!-- <li>
+                                <h5>Mechanisation</h5>
+                                <p>N/A</p>
+                            </li> -->
+                            <li>
+                                <h5>Type of house</h5>
+                                <p>{{summary.type_of_house || 'N/A'}}</p>                                
+                            </li>
+                            <!-- <li>
+                                <h5>Vehicle</h5>
+                                <p>N/A</p>
+                            </li> -->
+                            <li>
+                                <h5>Sources of income</h5>
+                                <p>{{summary?.demographic_info?.sourceOfIncome}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="summery-data">
+                        <div class="ambition summery-bg">
+                            <h4 class="summery-heading"><span>Ambition</span></h4>
+                            <ul>
+                                <li>
+                                    <p>FPO membership</p><span
+                                        class="yes">{{summary?.produce_aggregator?.consolidateLoans || 'N/A'}}</span>
+                                </li>
+                                <li>
+                                    <p>Hedging harvest produce</p>
+                                    <span *ngFor="let x of summary.harvest_produce; let xi = index;">
+                                        {{(xi>0)? ', ':''}}{{x.crop}}: {{x.expectedProduce}}
+                                    </span>
+                                </li>
+                                <li>
+                                    <p>Yield improvement</p><span
+                                        class="yes">{{summary?.technology_adoption?.farmYieldImprovisation ||
+                                        'N/A'}}</span>
+                                </li>
+                                <li>
+                                    <p>Scientific crop cycle planning</p>
+                                    <span *ngFor="let x of summary.planned_crops; let xi = index;">
+                                        {{(xi>0)? ', ':''}}{{x}}
+                                    </span>
+                                </li>
+                                <!-- <li>
+                                    <p>Attain benchmark yield quality</p><span class="no">N/A</span>
+                                </li> -->
+                                <li>
+                                    <p>Awareness of agri tech</p><span
+                                        class="yes">{{(summary?.technology_adoption?.farmYieldImprovisation ||
+                                        summary?.technology_adoption?.iotSensors ||
+                                        summary?.technology_adoption?.microIrrigation ||
+                                        summary?.technology_adoption?.payForTechnology ||
+                                        summary?.technology_adoption?.payForTechnologyComment ||
+                                        summary?.technology_adoption?.polyHouse ||
+                                        summary?.technology_adoption?.satelliteTracking ||
+                                        summary?.technology_adoption?.tissueCulture ||
+                                        summary?.technology_adoption?.weatherData )?'Yes':'No'}}</span>
+                                </li>
+                                <li>
+                                    <p>Use of tech</p><span class="no">
+                                        <span *ngFor="let x of masterData.technologyAdoption.technologyOpinions">
+                                            {{x.title}}: {{summary?.technology_adoption[x.formCntrlName] ||
+                                            'N/A'}}<br />
+                                        </span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="attitudes summery-bg">
+                            <h4 class="summery-heading"><span>Attitude</span></h4>
+                            <ul>
+                                <li>
+                                    <p>Availed farm loan waiver</p><span
+                                        class="yes">{{summary?.financial_planning?.availedFarmLoanWaiver ||
+                                        'N/A'}}</span>
+                                </li>
+                                <li>
+                                    <p>Outlook on adoption of technology</p><span
+                                        class="yes">{{(summary?.technology_adoption?.farmYieldImprovisation ||
+                                        summary?.technology_adoption?.iotSensors ||
+                                        summary?.technology_adoption?.microIrrigation ||
+                                        summary?.technology_adoption?.payForTechnology ||
+                                        summary?.technology_adoption?.payForTechnologyComment ||
+                                        summary?.technology_adoption?.polyHouse ||
+                                        summary?.technology_adoption?.satelliteTracking ||
+                                        summary?.technology_adoption?.tissueCulture ||
+                                        summary?.technology_adoption?.weatherData )?'Yes':'No'}}</span>
+                                </li>
+                                <li>
+                                    <p>Outlook on following SOP during cultivation</p><span
+                                        class="yes">{{summary?.produce_aggregator?.followSuggestions || 'N/A'}}</span>
+                                </li>
+                                <li>
+                                    <p>Outlook on harvest marketing advisory</p><span
+                                        class="yes">{{summary?.produce_aggregator?.associatedWithFPO || 'N/A'}}</span>
+                                </li>
+                                <li>
+                                    <p>Outlook on youngsters interested in farming</p><span
+                                        class="yes">{{summary?.demographic_info?.agricultureChildrenInterested ||
+                                        'N/A'}}</span>
+                                </li>
+                                <li>
+                                    <p>Availed crop insurance benefits</p><span
+                                        class="yes">{{summary?.financial_planning?.FRCMCropInsurance || 'N/A'}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="farmer-expenditure">
+                        <ul>
+                            <li>
+                                <p>Household dependents</p>
+                                <span>{{summary.dependency || 'N/A'}}</span>
+                            </li>
+                            <li>
+                                <p>Cultivation expenditure/season</p>
+                                <span>{{summary?.cultivation_expenditure}} </span>
+                            </li>
+                            <li>
+                                <p>Household expenditure/month</p> <span>{{summary?.household_expenditure}}</span>
+                            </li>
+                            <li>
+                                <p>Outstanding liability/month</p><span>{{summary?.household_expenditure}}</span>
+                            </li>
+                            <li>
+                                <p>Interest in other loan product</p>
+                                <p><b>Housing Loan:</b> {{summary?.financial_planning?.housingLoan}}<br />
+                                    <b>Tractor Finance Loan:</b>
+                                    {{summary?.financial_planning?.tractorFinanceLoan}}<br />
+                                    <b>FRCM Crop Insurance:</b> {{summary?.financial_planning?.FRCMCropInsurance}}<br />
+                                    <b>Personal Loan:</b> {{summary?.financial_planning?.personalLoan}}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>

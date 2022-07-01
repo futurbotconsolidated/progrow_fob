@@ -1,0 +1,483 @@
+<div class="main-farmer">
+    <app-sidenav></app-sidenav>
+    <article class="right-sec">
+        <app-header></app-header>
+        <div class="main-sec">
+            <div class="field-info-form">
+                <div class="field-info-map">
+                    <h3 class="form-title"> Mark field numbers on the map corresponding to crop-season-field</h3>
+                    <div class="map">
+                        <div id="map" style="width: 100%; height: 385px; border: 1px solid #ccc"></div>
+                    </div>
+                </div>
+                <form [formGroup]="fieldInfoForm">
+
+                    <div class="form-details">
+                        <div class="form-details-inner">
+                            <h3 class="form-title">1. Planned season details</h3>
+                            <div class="row align-items-center planned-season-deatils">
+                                <div class="col-md-3">
+                                    <h3 class="form-title">A. Planned season</h3>
+                                    <select class="form-select" formControlName="plannedSeason">
+                                        <option value="##">...</option>
+                                        <option *ngFor="let indVal of commonMaster['season']"
+                                            value="{{indVal.crop_season_id+'##'+indVal.crop_season_name}}">
+                                            {{indVal.crop_season_name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <h3 class="form-title">B. Planned crops</h3>
+                                    <input type="text" class="form-control" formControlName="plannedCrops"
+                                        id="planned_copy" placeholder="Enter comma separated crop names here…">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-details-inner">
+                            <div class="row field-details">
+                                <div class="field-tooltip">
+                                    <h3 class="form-title">C. Field details</h3>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-details-inner pt-0">
+                            <div class="row field-details" formArrayName="plannedFieldDetails"
+                                *ngFor="let item of getPlannedFieldDetailsControls(); let i = index;">
+                                <div class="display-flex align-normal mb-3" [formGroupName]="i">
+                                    <div class="col-md-1 lable-top">
+                                        <label>Field ID</label>
+                                        <input type="text" class="form-control  text-center" formControlName="fieldId"
+                                            placeholder="{{i+1}}" [attr.value]="i+1">
+                                    </div>
+                                    <div class="display-flex-1">
+                                        <div class="col-md-2 lable-top">
+                                            <label>Field name</label>
+                                            <input type="text" class="form-control" formControlName="fieldName"
+                                                placeholder="Enter Name">
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Area (in hectares)</label>
+                                            <input type="text" class="form-control" maxlength="5"
+                                                (keypress)="validateDecimalNo($event)" formControlName="fieldArea"
+                                                placeholder="Enter Area">
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Irrigation system</label>
+                                            <select class="form-select" formControlName="irrigationSystem">
+                                                <option value="">...</option>
+                                                <option *ngFor="let indVal of fieldInforMaster['irrigationSystem']"
+                                                    value="{{indVal}}">
+                                                    {{indVal}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Water sources</label>
+                                            <select class="form-select" formControlName="waterSource">
+                                                <option value="">...</option>
+                                                <option *ngFor="let indVal of fieldInforMaster['waterSource']"
+                                                    value="{{indVal}}">
+                                                    {{indVal}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Crop</label>
+                                            <select class="form-select" formControlName="crop">
+                                                <option value="##">...</option>
+                                                <option *ngFor="let indVal of commonMaster['crops']"
+                                                    value="{{indVal.crop_id+'##'+indVal.crop_name}}">
+                                                    {{indVal.crop_name}}</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Expected produce (kg)</label>
+                                            <input type="text" maxlength="8" (keypress)="validateDecimalNo($event)"
+                                                class="form-control" formControlName="expectedProduce"
+                                                placeholder="Enter Value">
+                                        </div>
+                                        <div class="col-md-2 lable-top">
+                                            <label>Soil quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a *ngFor="let soilQualityStar of fieldInforMaster['soilQuality'];  let sqsi = index;"
+                                                        href="javascript:void(0)"
+                                                        (click)="SoilQualityRating(soilQualityStar, i)"
+                                                        [ngClass]="{'active': (soilQualityStar == selectedSoilQualityStar[i])}"><i
+                                                            class="fa fa-star"
+                                                            id="sqs_{{i+1}}_{{sqsi}}"></i><span>{{soilQualityStar}}</span></a>
+                                                    <input type="text" formControlName="soilQuality"
+                                                        [(ngModel)]="selectedSoilQualityStar[i]" hidden>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Perceived water quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a *ngFor="let waterQualityStar of fieldInforMaster['soilQuality']; let wqsi = index;"
+                                                        href="javascript:void(0)"
+                                                        (click)="WaterQualityRating(waterQualityStar, i)"
+                                                        [ngClass]="{'active': (waterQualityStar == selectedWaterQualityStar[i])}"><i
+                                                            class="fa fa-star"
+                                                            id="wqs_{{i+1}}_{{wqsi}}"></i><span>{{waterQualityStar}}</span></a>
+                                                    <input type="text" formControlName="waterQuality"
+                                                        [(ngModel)]="selectedWaterQualityStar[i]" hidden>
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 lable-top">
+                                            <label>Perceived yield quality</label>
+                                            <div class="ratings">
+                                                <div class="star-rate">
+                                                    <a *ngFor="let yieldQualityStar of fieldInforMaster['soilQuality']; let yqsi = index;"
+                                                        href="javascript:void(0)"
+                                                        (click)="YieldQualityRating(yieldQualityStar, i)"
+                                                        [ngClass]="{'active': (yieldQualityStar == selectedYieldQualityStar[i])}"><i
+                                                            class="fa fa-star"
+                                                            id="wqs_{{i+1}}_{{yqsi}}"></i><span>{{yieldQualityStar}}</span></a>
+                                                    <input type="text" formControlName="yieldQuality"
+                                                        [(ngModel)]="selectedYieldQualityStar[i]" hidden>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-auto add-another">
+                                            <a *ngIf="getPlannedFieldDetailsControls().length!=1  && i!=getPlannedFieldDetailsControls().length-1"
+                                                href="javascript:void(0)" class="delete-item "
+                                                (click)="removePlannedFieldDetails(i)"><i
+                                                    class="fa fa-trash-o text-danger"></i></a>
+                                            <a *ngIf="i==getPlannedFieldDetailsControls().length-1"
+                                                href="javascript:void(0)" (click)="addPlannedFieldDetails()">+ Add</a>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="form-details">
+                        <div class="form-details-inner">
+                            <h3 class="form-title">2. Historical season details </h3>
+
+                        </div>
+
+                        <div class="form-details-inner pt-0">
+                            <div class=" field-details " formArrayName="historicalFieldDetails" *ngFor="let item of getHistoFieldDetailsControls(); let i = index;">
+                                <div [formGroupName]="i" class="row">
+                                    <div class="col-md-3">
+                                        <h3 class="form-title">A. Historical season</h3>
+                                        <select class="form-select" formControlName="historicalSeason">
+                                            <option value="">...</option>
+                                            <option *ngFor="let indVal of commonMaster['season']" value="{{indVal.crop_season_name}}">
+                                                {{indVal.crop_season_name}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <h3 class="form-title">B. Historical crops</h3>
+                                        <input type="text" class="form-control" formControlName="historicalCrops" id="planned_copy" placeholder="Enter comma separated crop names here…">
+                                    </div>
+                                    <h3 class="form-title mt-3">C. Field details</h3>
+                                    <div class="display-flex align-normal mb-3">
+                                        <div class="col-md-1 lable-top">
+                                            <label>Field ID</label>
+                                            <input type="text" formControlName="fieldId" class="form-control text-center" placeholder="{{i+1}}" [attr.value]="i+1">
+                                        </div>
+                                        <div class="display-flex-1">
+                                            <div class="col-md-2 lable-top">
+                                                <label>Area (in hectares)</label>
+                                                <input type="text" class="form-control" maxlength="3" (keypress)="validateNo($event)" formControlName="fieldArea" placeholder="Enter Area">
+                                            </div>
+                                            <div class="col-md-2 lable-top">
+                                                <label>Irrigation system</label>
+                                                <select class="form-select" formControlName="irrigationSystem">
+                                                    <option value="">...</option>
+                                                    <option *ngFor="let indVal of fieldInforMaster['irrigationSystem']" value="{{indVal}}">
+                                                        {{indVal}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 lable-top">
+                                                <label>Water sources</label>
+                                                <select class="form-select" formControlName="waterSource">
+                                                    <option value="">...</option>
+                                                    <option *ngFor="let indVal of fieldInforMaster['waterSource']" value="{{indVal}}">
+                                                        {{indVal}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 lable-top">
+                                                <label>Crop</label>
+                                                <select class="form-select" formControlName="crop">
+                                                    <option value="">...</option>
+                                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                                        {{indVal}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 lable-top">
+                                                <label>Soil quality</label>
+                                                <div class="ratings">
+                                                    <div class="star-rate">
+                                                        <a *ngFor="let soilQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)" (click)="HistoSoilQualityRating(soilQualityStar)"
+                                                            [ngClass]="{'active': (soilQualityStar == selectedHistoSoilQualityStar)}"><i class="fa fa-star"
+                                                                id="{{soilQualityStar}}_{{i}}"></i><span>{{soilQualityStar}}</span></a>
+                                                        <input type="text" formControlName="soilQuality" hidden>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 lable-top">
+                                                <label>Perceived water quality</label>
+                                                <div class="ratings">
+                                                    <div class="star-rate">
+                                                        <a *ngFor="let waterQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)"
+                                                            (click)="HistoWaterQualityRating(waterQualityStar)" [ngClass]="{'active': (waterQualityStar == selectedHistoWaterQualityStar)}"><i
+                                                                class="fa fa-star" id="{{waterQualityStar}}"></i><span>{{waterQualityStar}}</span></a>
+                                                        <input type="text" formControlName="waterQuality" hidden>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 lable-top">
+                                                <label>Perceived yield quality</label>
+                                                <div class="ratings">
+                                                    <div class="star-rate">
+                                                        <a *ngFor="let yieldQualityStar of fieldInforMaster['soilQuality']" href="javascript:void(0)"
+                                                            (click)="HistoYieldQualityRating(yieldQualityStar)" [ngClass]="{'active': (yieldQualityStar == selectedHistoYieldQualityStar)}"><i
+                                                                class="fa fa-star" id="{{yieldQualityStar}}"></i><span>{{yieldQualityStar}}</span></a>
+                                                        <input type="text" formControlName="yieldQuality" hidden>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                            <a href="javascript:void(0)" class="delete-item"><i
+                                                    class="fa fa-trash-o"></i></a>
+                                        </div>
+                                            <div class="col-auto add-another">
+                                                <a *ngIf="getHistoFieldDetailsControls().length!=1  && i!=getHistoFieldDetailsControls().length-1" href="javascript:void(0)" class="delete-item "
+                                                    (click)="removeHistoFieldDetail(i)"><i class="fa fa-trash-o text-danger"></i></a>
+                                                <a *ngIf="i==getHistoFieldDetailsControls().length-1" href="javascript:void(0)" (click)="addHistoFieldDetail()">+ Add Another</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+
+
+                    </div> -->
+
+
+                    <div class="form-details">
+                        <h3 class="form-title">2. Field ownership (for planned season only)
+
+                        </h3>
+                        <div class="mb-3" formArrayName="fieldOwnership"
+                            *ngFor="let item of getFieldOwnershipDetailsControls(); let i = index;">
+                            <div class="row align-items-center form-details-inner" [formGroupName]="i">
+
+                                <div class="col-md-1 lable-top">
+                                    <label for="field_id">Field ID</label>
+                                    <input class="form-control text-center" formControlName="fieldOwnId"
+                                        placeholder="{{i+1}}" [attr.value]="i+1">
+                                </div>
+                                <div class="col-md-3" *ngFor="let indGen of fieldInforMaster['ownerShipType']">
+                                    <label class="form-check-label form-check bordered-radio" for="{{indGen}}{{i}}">
+                                        <input class="form-check-input" type="radio" formControlName="ownerType"
+                                            id="{{indGen}}{{i}}" value="{{indGen}}">{{indGen}}</label>
+                                </div>
+
+                                <div class="col-md-7 lable-top mt-3">
+                                    <label>Co-owner details</label>
+                                    <input class="form-control" formControlName="fieldOwnCoOwner"
+                                        placeholder="Name/Add">
+                                </div>
+                                <div class="col-md-3 lable-top mt-3">
+                                    <label>Phone number</label>
+                                    <input type="text" placeholder="" class="form-control" id="fieldOwnCoPh"
+                                        formControlName="fieldOwnCoPh" maxlength="10" phoneMask
+                                        (keypress)="validateNo($event)" placeholder="Enter phone number" />
+                                    <!-- <input class="form-control" formControlName="fieldOwnCoPh" placeholder="9876543210"> -->
+                                </div>
+                                <div class="col-auto add-another">
+                                    <a href="javascript:void(0)"
+                                        (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)"><i
+                                            class="fa fa-upload" aria-hidden="true"></i> Upload documents</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">3. Enumerate (for planned season only)
+
+                        </h3>
+
+                        <div class="mb-3" formArrayName="enumerate"
+                            *ngFor="let item of getEnumerateControls(); let i = index;">
+
+                            <div class="row align-items-center form-details-inner" [formGroupName]="i">
+                                <div class="col-md-1 lable-top">
+                                    <label>Field ID</label>
+                                    <input type="text" class="form-control text-center" formControlName="fieldId"
+                                        placeholder="{{i+1}}" [attr.value]="i+1">
+                                </div>
+                                <div class="col-md-2 lable-top">
+                                    <label>Water source</label>
+                                    <select class="form-select" formControlName="waterSource">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of fieldInforMaster['waterSource']"
+                                            value="{{indVal}}">
+                                            {{indVal}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 lable-top">
+                                    <label>Bore depth (per feet)</label>
+                                    <input type="text" class="form-control" formControlName="boreDepth" maxlength="5"
+                                        (keypress)="validateDecimalNo($event)" placeholder="Enter Value">
+                                </div>
+                                <div class="col-md-2 lable-top">
+                                    <label>Pump depth (per feet)</label>
+                                    <input type="text" class="form-control" formControlName="pumpDepth" maxlength="5"
+                                        (keypress)="validateDecimalNo($event)" placeholder="Enter Value">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">4. Have you been doing soil/water test on the field(s) before undertaking
+                            any cultivation? </h3>
+                        <div class="mb-3" formArrayName="testType"
+                            *ngFor="let item of getTestTypeControls(); let i = index;">
+                            <div class="row align-items-center form-details-inner" [formGroupName]="i">
+                                <div class="col-md-1 lable-top">
+                                    <label>Field ID</label>
+                                    <select class="form-select text-center" formControlName="fieldId">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of this.fieldIndexMapIds;let fimi = index; "
+                                            value="{{indVal.field_display_index}}">{{indVal.field_display_index}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 lable-top">
+                                    <label>Type of test</label>
+                                    <select class="form-select" formControlName="typeOfTest">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of fieldInforMaster['typeOfTest']"
+                                            value="{{indVal}}">{{indVal}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1 lable-top">
+                                    <label>Yes/No</label>
+                                    <select class="form-select" formControlName="yesNo">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of fieldInforMaster['yesNo']" value="{{indVal}}">
+                                            {{indVal}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 lable-top">
+                                    <label>When last done</label>
+                                    <input type="date" class="form-control" formControlName="lastDone" placeholder=""
+                                        value="" />
+                                    <!-- <input type="text" class="form-control" formControlName="lastDone" placeholder="Pick a date" value="Pick a date" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')"> -->
+                                </div>
+                                <div class="col-md-3 lable-top">
+                                    <label>Have you received the last test result?</label>
+                                    <select class="form-select" formControlName="testResult">
+                                        <option value="">...</option>
+                                        <option *ngFor="let indVal of fieldInforMaster['yesNo']" value="{{indVal}}">
+                                            {{indVal}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto add-another">
+                                    <a href="javascript:void(0)"
+                                        (click)="openFileModalPopup(fileUploadFileFor.testPicture, i)"><i
+                                            class="fa fa-upload" aria-hidden="true"></i> Upload Reports</a>
+                                </div>
+                            </div>
+                            <div class="col-auto add-another">
+                                <a *ngIf="getTestTypeControls().length!=1  && i!=getTestTypeControls().length-1"
+                                    href="javascript:void(0)" class="delete-item " (click)="removeTestType(i)"><i
+                                        class="fa fa-trash-o text-danger"></i></a>
+                                <a *ngIf="i==getTestTypeControls().length-1" href="javascript:void(0)"
+                                    (click)="addTestType()">+ Add Another</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">5. Would you be interested in planning crop cycle based on the soil test
+                            and water test reports?</h3>
+                        <div class="row align-items-center">
+                            <div class="select-advice interested-child">
+
+                                <div class="col-auto" *ngFor="let indType of fieldInforMaster['cropCycleOnReports']">
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType}}">
+                                        <input class="form-check-input" type="radio"
+                                            formControlName="cropCycleOnReports" value="{{indType}}"
+                                            id="{{indType}}"><span>{{indType}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+</div>
+
+<!-- START: Common Modal Popup for File Upload and Preview -->
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header p-2 common_button_color">
+                <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+            </div>
+            <div class="modal-body">
+                <!-- START : Image - Multiple  -->
+                <div class="row" [hidden]="!fileUpload.new.isMultiple">
+                    <div class="col-md-6 mb-1">
+                        <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
+                        <input class="form-control form-control-sm formFileSm" id="formFileSm" type="file"
+                            (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="*"
+                            *ngIf="fileUpload.new.isMultiple" multiple="">
+                    </div>
+                </div>
+                <div class="row" [hidden]="!fileUpload.new.imageMultiple">
+                    <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length"
+                        *ngFor="let fileData of fileUpload.new.imageMultiple">
+                        <p class="fs-6" *ngIf="fileData.type=='image'">Preview Image</p>
+                        <p class="fs-6" *ngIf="fileData.type !='image'">File</p>
+                        <img [src]="fileData.file" *ngIf="fileData.type=='image'"
+                            style="height: 150px; width: 150px" /><br />
+                        <p *ngIf="fileData.type=='image'"><a href="{{fileData.file}}" target="_blank">View File</a></p>
+                        <p *ngIf="fileData.type!='image'"><a href="javascript:void(0)"
+                                (click)="downloadFile(fileData.file)">View File</a></p>
+                        <p class="word-wrap-anywhere">{{fileData.name}}</p>
+                    </div>
+                </div>
+                <!-- END : Image - Multiple -->
+            </div>
+            <div class="modal-footer p-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Common Modal Popup for File Upload and Preview -->

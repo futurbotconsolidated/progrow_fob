@@ -1,0 +1,536 @@
+<div class="main-farmer">
+  <aside class="left-menu" [class]="lsn_tv_show? 'lsn-tv-active' : 'lsn-tv-inactive'">
+    <div class="left-sticky-menu">
+      <div class="logo">
+        <a routerLink="/bd/dashboard"><img src="../../../assets/images/logo.png" alt="" /></a>
+      </div>
+    </div>
+  </aside>
+  <div class="lsn-tv-div" [class]="lsn_tv_show? 'lsn-tv-extend' : 'lsn-tv-collapse'">
+    <a *ngIf="!lsn_tv_show" (click)="showLeftSide(true)"><i class="fa fa-angle-double-right"></i></a>
+    <a *ngIf="lsn_tv_show" (click)="showLeftSide(false)"><i class="fa fa-angle-double-left"></i></a>
+  </div>
+  <article class="right-sec" [class]="lsn_tv_show? 'lsn-rs-extend' : 'lsn-rs-collapse'">
+    <header>
+      <div class="bd-header col-sm-10 col-md-10 col-xl-11">
+        <div class="pro-img"><span>SS</span></div>
+        <div class="pro-name">
+          <p>Welcome</p>
+          <h3>{{ userInfo["name"] }}</h3>
+        </div>
+      </div>
+      <div class="bd-header-right col-sm-2 col-md-2 col-xl-1">
+        <div class="logout-div">
+          <a (click)="logOut()" class="btn btn-primary active" style="margin-left: 10px;">Logout </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="farmer-db">
+      <!-- START: Logged In User Details -->
+      <div class="farmer-detail">
+        <ul>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <defs>
+                <style>
+                  .a {
+                    fill: none;
+                  }
+                </style>
+              </defs>
+              <path class="a" d="M0,0H24V24H0Z" />
+              <path
+                d="M19,7h5V9H19Zm-2,5h7v2H17Zm3,5h4v2H20ZM2,22a8,8,0,1,1,16,0H16A6,6,0,1,0,4,22Zm8-9a6,6,0,1,1,6-6A6,6,0,0,1,10,13Zm0-2A4,4,0,1,0,6,7,4,4,0,0,0,10,11Z" />
+            </svg>
+            <span>{{ userInfo["name"] }}</span>
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <defs>
+                <style>
+                  .a {
+                    fill: none;
+                  }
+                </style>
+              </defs>
+              <path class="a" d="M0,0H24V24H0Z" />
+              <path
+                d="M3,3H21a1,1,0,0,1,1,1V20a1,1,0,0,1-1,1H3a1,1,0,0,1-1-1V4A1,1,0,0,1,3,3ZM20,7.238l-7.928,7.1L4,7.216V19H20ZM4.511,5l7.55,6.662L19.5,5Z" />
+            </svg><span>{{ userInfo?.email }}</span>
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <defs>
+                <style>
+                  .a {
+                    fill: #fff;
+                    opacity: 0;
+                  }
+
+                  .b {
+                    fill: none;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke-width: 1.5px;
+                  }
+
+                  .b,
+                  .c {
+                    stroke: #000;
+                  }
+
+                  .b,
+                  .c,
+                  .d {
+                    fill-rule: evenodd;
+                  }
+
+                  .c {
+                    stroke-width: 2px;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(0.491)">
+                <rect class="a" width="24" height="24" transform="translate(-0.491)" />
+                <g transform="translate(3 1)">
+                  <path class="b"
+                    d="M6.563,0,3.6,1.974.4,6.965,0,9.188.521,10.8.794,12.61,1.305,13.7l.836.839,1.219.519,1.486.543.812.469,1.026.742,1.27.172,1.65-.667.946-.618,1.361-1.31.779-1.543.865-3.457L11.4,3.748l-1.5-1.773Z"
+                    transform="translate(2.982 4.936)" />
+                  <path class="c"
+                    d="M9.438,5.056c5.113,1.691,6.55,5.876,6.436,11.11a2.453,2.453,0,0,0,1.552-2.284,3.214,3.214,0,0,0,.933-2.328,2.864,2.864,0,0,0,.177-2.608L18.4,8.186A6.235,6.235,0,0,0,15.7,3.692c.135-1.04-1.039-1.391-2.4-1.645-.4-1-1.6-1.1-2.974-1C10.107.424,9.082-.027,5.752,0A10.79,10.79,0,0,0,.16,7.984a3.293,3.293,0,0,0,.31,2.768,3.191,3.191,0,0,0,1.289,2.769c-.052.916.16,1.655,1.064,1.924l.8,1.325C2.868,10.512,6.471,6.131,9.438,5.056Z"
+                    transform="translate(0 0)" />
+                  <path class="d"
+                    d="M.627,0C1.54.1,1.962.231,2.6,1.439c.308.577,1.4,1.219,1.926.436a1.957,1.957,0,0,1-2.359.645C1.453,2.342-.049,1.827,0,.4Z"
+                    transform="translate(10.856 15.025)" />
+                  <path class="d"
+                    d="M3.9,0C2.99.1,2.568.231,1.926,1.439,1.618,2.017.525,2.658,0,1.876a1.958,1.958,0,0,0,2.359.645C3.077,2.342,4.581,1.827,4.529.4Z"
+                    transform="translate(5.815 15.025)" />
+                  <path class="d"
+                    d="M.309.528A1.031,1.031,0,0,1,0,0,1.226,1.226,0,0,0,.144.156a2.2,2.2,0,0,0,1.992,0A.819.819,0,0,0,2.223.07a1.048,1.048,0,0,1-.292.459A1.219,1.219,0,0,1,.309.528Z"
+                    transform="translate(9.432 17.676)" />
+                </g>
+              </g>
+            </svg><span>Farmers Covered: {{ allExistingFarmers.length }}</span>
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <defs>
+                <style>
+                  .a {
+                    fill: none;
+                  }
+                </style>
+              </defs>
+              <path class="a" d="M0,0H24V24H0Z" />
+              <path
+                d="M2,3.993A1,1,0,0,1,2.992,3H21.008A.993.993,0,0,1,22,3.993V20.007a1,1,0,0,1-.992.993H2.992A.993.993,0,0,1,2,20.007ZM4,5V19H20V5ZM6,7h6v6H6ZM8,9v2h2V9ZM6,15H18v2H6Zm8-8h4V9H14Zm0,4h4v2H14Z" />
+            </svg><span>{{ userInfo?.['custom:access_type'] || "NA" }}</span>
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <defs>
+                <style>
+                  .a {
+                    fill: none;
+                  }
+                </style>
+              </defs>
+              <path class="a" d="M0,0H24V24H0Z" />
+              <path
+                d="M7,4V20H17V4ZM6,2H18a1,1,0,0,1,1,1V21a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V3A1,1,0,0,1,6,2Zm6,15a1,1,0,1,1-1,1A1,1,0,0,1,12,17Z" />
+            </svg><span>{{ userInfo?.phone_number || "NA" }}</span>
+          </li>
+        </ul>
+      </div>
+      <!-- END: Logged In User Details -->
+
+      <!-- Nav Items -->
+      <div class="farmer-tab">
+        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#existing_farms" type="button"
+              role="tab" aria-selected="true" (click)="filterFarms('EXISTING_FARMS_LIST_VIEW')">
+              Existing Farms
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#farms_pipeline" type="button" role="tab"
+              aria-selected="false" (click)="filterFarms('FARMS_PIPELINE_LIST_VIEW')">
+              Farms in Pipeline
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#draft_farmer" type="button" role="tab"
+              aria-selected="false" (click)="filterFarms('DRAFT_FARMER_LIST_VIEW')">
+              Draft Farmer
+            </button>
+          </li>
+        </ul>
+        <div class="add-farmer">
+          <a href="javascript:void(0)" (click)="routePage()" class="btn btn-farmer">Add New Farmer</a>
+        </div>
+      </div>
+
+      <!-- START: Nav tab Content -->
+      <div class="farmer-data">
+        <div class="tab-content" id="pills-tabContent">
+          <!-- START: Existing Farms Content-->
+          <div class="tab-pane fade show active" id="existing_farms" role="tabpanel">
+            <div class="table-result">
+              <ul class="nav nav-tabs view-data" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#existing_farms_list_view"
+                    type="button" role="tab" aria-selected="true" (click)="filterFarms('EXISTING_FARMS_LIST_VIEW')">
+                    <label class="form-check-label form-check" for="listview">
+                      <input class="form-check-input" type="radio" name="ListViewFarms" id="listview" value="List View"
+                        [checked]="selectedViewType == 'EXISTING_FARMS_LIST_VIEW'" />
+                      <span>List View</span>
+                    </label>
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#existing_farms_map_view" type="button"
+                    role="tab" aria-selected="false" (click)="filterFarms('EXISTING_FARMS_MAP_VIEW')">
+                    <label class="form-check-label form-check" for="mapview"><input class="form-check-input"
+                        type="radio" name="ListViewFarms" value="Map View" id="mapview" [checked]="
+                          selectedViewType == 'EXISTING_FARMS_MAP_VIEW'
+                        " /><span> Map View</span>
+                    </label>
+                  </button>
+                </li>
+              </ul>
+              <div class="show-result">
+                <p>{{ allExistingFarmers.length }} Results</p>
+              </div>
+            </div>
+            <div>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade" [ngClass]="{
+                    show: selectedViewType == 'EXISTING_FARMS_LIST_VIEW',
+                    active: selectedViewType == 'EXISTING_FARMS_LIST_VIEW'
+                  }" id="existing_farms_list_view" role="tabpanel">
+                  <div class="row">
+                    <div class="col-sm-2 mb-3">
+                      <div class="form-group">
+                        <label for="live">Select Filter:</label>
+                        <select id="live" class="flex-1 form-select db-filter-type" name="filterType"
+                          (change)="onChangeFilter($event)">
+                          <option value="all" [selected]="filterType == 'all'">All</option>
+                          <option value="today" [selected]="filterType == 'today'">Today</option>
+                          <option value="this_week" [selected]="filterType == 'this_week'">This Week</option>
+                          <option value="two_week" [selected]="filterType == 'two_week'">Last Two Week</option>
+                          <option value="three_week" [selected]="filterType == 'three_week'">Last Three Week</option>
+                          <option value="this_month" [selected]="filterType == 'this_month'">This Month</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-2 mb-3">
+                      <div class="form-group">
+                        <label class="w-100">&nbsp;</label>
+                        <a href="javascript:void(0)" (click)="downloadCsv()" class="btn btn-farmer">Download CSV</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dash-aef-container" [ngStyle]="tableMaxWidth">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="table-responsive listview-table">
+                          <table *ngIf="allExistingFarmers.length" datatable [dtOptions]="dtOptions"
+                            class="table table-hover current-max-width">
+                            <thead>
+                              <tr>
+                                <th>URN</th>
+                                <th>Farmer Name</th>
+                                <th>Mobile</th>
+                                <th>Date of Registration</th>
+                                <th>Address</th>
+                                <th>FRCM Score</th>
+                                <!-- <th>Cibil Score</th> -->
+                                <th>Loan ID</th>
+                                <th>Profile Completion%</th>
+                                <th>Added By</th>
+                                <th>Updated By</th>
+                                <th>Updated Date</th>
+                                <th>Branch</th>
+                                <th></th>
+                                <th></th>
+                                <th>Audit Log</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let x of allExistingFarmers; let i = index;">
+                                <td>{{x.farmerId}}</td>
+                                <td>{{x.farmerDetails?.firstName}} {{x.farmerDetails?.middleName}}
+                                  {{x.farmerDetails?.lastName}}</td>
+                                <td>{{x.address?.mobileNumber}}</td>
+                                <td>{{x.createdDate | date:'EE, MMM d, y'}}</td>
+                                <td>{{(x.address.addressLine1.length>8)? (x.address.addressLine1 |
+                                  slice:0:8)+'...':(x.address.addressLine1)}}</td>
+                                <td><a *ngIf="x.fa_frcm_score" href="javascript:void(0)"
+                                    (click)="openScoreModalPopup(x)">{{x.fa_frcm_score || 'NA' }}</a><span
+                                    *ngIf="!x.fa_frcm_score">{{x.fa_frcm_score || 'NA' }}</span></td>
+                                <!-- <td>NA</td> -->
+                                <td><a *ngIf="x.loan_account_number" href="http://65.2.60.231/mifin/"
+                                    target="_blank">{{x.loan_account_number}}</a>
+                                  <span *ngIf="!x.loan_account_number"><a *ngIf="loanAccountData[i]"
+                                      href="http://65.2.60.231/mifin/" target="_blank">{{loanAccountData[i]}}</a>
+                                    <a *ngIf="!loanAccountData[i]" href="javascript:void(0)"
+                                      (click)="getLoanAccountById(x.farmerId,'loan', i)"
+                                      class="btn btn-send-for-loan cursor-pointer loan-{{x.farmerId}}">Send For Loan</a>
+                                  </span>
+                                </td>
+                                <td><span *ngIf="x.form_status">{{x.form_status}}%</span>
+                                  <span *ngIf="!x.form_status">NA</span>
+                                </td>
+                                <td title="Created BD ID: {{x.bd_id}}">{{x.bd_name}}</td>
+                                <td>{{x.updatedBy}}</td>
+                                <td>{{ x.updatedDate | date:'EE, MMM d, y' }}</td>
+                                <td>{{ x.branch_name }}</td>
+                                <td><a (click)="getFarmerDetailsById(x.farmerId,'view')"
+                                    class="btn btn-view-f cursor-pointer">View</a></td>
+                                <td><a (click)="getFarmerDetailsById(x.farmerId,'edit')"
+                                    class="btn btn-view-f cursor-pointer">Edit</a></td>
+                                <td><a (click)="openAuditModalPopup(x.farmerId)" href="javascript:void(0)"
+                                    class="btn btn-view-f cursor-pointer">View</a></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div *ngIf="!allExistingFarmers.length">No data available in table</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" [ngClass]="{
+                  show: selectedViewType == 'EXISTING_FARMS_MAP_VIEW',
+                  active: selectedViewType == 'EXISTING_FARMS_MAP_VIEW'
+                }" id="existing_farms_map_view" role="tabpanel">
+                  <div class="row">
+                    <div class="col-sm-2 mb-3">
+                      <div class="form-group">
+                        <label for="live">Select Filter:</label>
+                        <select id="live" class="flex-1 form-select db-filter-type" name="filterType"
+                          (change)="onChangeFilter($event)">
+                          <option value="all" [selected]="filterType == 'all'">All</option>
+                          <option value="today" [selected]="filterType == 'today'">Today</option>
+                          <option value="this_week" [selected]="filterType == 'this_week'">This Week</option>
+                          <option value="two_week" [selected]="filterType == 'two_week'">Last Two Week</option>
+                          <option value="three_week" [selected]="filterType == 'three_week'">Last Three Week</option>
+                          <option value="this_month" [selected]="filterType == 'this_month'">This Month</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="map p-3">
+                    <div class="map" id="existing_farmers_mapbox" class="match-parent"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: Existing Farms Content -->
+          <!-- START: Farms In Pipeline Content -->
+          <div class="tab-pane fade" id="farms_pipeline" role="tabpanel">
+            <div class="table-result">
+              <ul class="nav nav-tabs view-data" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#farms_pipeline_list_view"
+                    type="button" role="tab" aria-selected="true" (click)="filterFarms('FARMS_PIPELINE_LIST_VIEW')">
+                    <label class="form-check-label form-check" for="listview-pipeline">
+                      <input class="form-check-input" type="radio" name="ListViewPipeline" id="listview-pipeline"
+                        value="List View" [checked]="selectedViewType == 'FARMS_PIPELINE_LIST_VIEW'" />
+                      <span> List View </span></label>
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#farms_pipeline_map_view" type="button"
+                    role="tab" aria-selected="false" (click)="filterFarms('FARMS_PIPELINE_MAP_VIEW')">
+                    <label class="form-check-label form-check" for="mapview-pipeline"><input class="form-check-input"
+                        type="radio" name="ListViewPipeline" id="mapview-pipeline" value="Map View"
+                        [checked]="selectedViewType == 'FARMS_PIPELINE_MAP_VIEW'" /><span>Map View</span>
+                    </label>
+                  </button>
+                </li>
+              </ul>
+              <div class="show-result">
+                <p>{{ allPipelineFarmers.length }} Results</p>
+              </div>
+            </div>
+            <div>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade" [ngClass]="{
+                    show: selectedViewType == 'FARMS_PIPELINE_LIST_VIEW',
+                    active: selectedViewType == 'FARMS_PIPELINE_LIST_VIEW'
+                  }" id="farms_pipeline_list_view" role="tabpanel">
+                  <div class="table-responsive listview-table">
+                    <table *ngIf="allPipelineFarmers.length" datatable [dtOptions]="dtOptions"
+                      class="table table-hover current-max-width">
+                      <thead>
+                        <tr>
+                          <th>FRCM Score</th>
+                          <th>URN</th>
+                          <th>Farmer Name</th>
+                          <th>Farm Size (Hectares)</th>
+                          <th>Mobile</th>
+                          <th>Date of Registration</th>
+                          <th>Land Record</th>
+                          <th>Added By</th>
+                          <th>Branch Name</th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let x of allPipelineFarmers">
+                          <td>{{x.fa_frcm_score || 'NA' }}</td>
+                          <td>{{x.farmerId}}</td>
+                          <td>
+                            {{ x.farmerDetails?.firstName }}
+                            {{ x.farmerDetails?.middleName }}
+                            {{ x.farmerDetails?.lastName }}
+                          </td>
+                          <td>{{x.fa_field_size || 'NA' }}</td>
+                          <td>
+                            {{ x.address?.mobileNumber }}
+                          </td>
+                          <td>
+                            {{ x.createdDate | date:'EE, MMM d, y' }}
+                          </td>
+                          <td><span *ngIf="!x.fa_ownership_document_url">NA</span><a *ngIf="x.fa_ownership_document_url"
+                              href="{{x.fa_ownership_document_url}}" target="_blank">View</a></td>
+                          <td>{{ x.createdBy }}</td>
+                          <td>{{ x.branch_name }}</td>
+                          <td><a (click)="getFarmerDetailsById(x.farmerId,'view')"
+                              class="btn btn-view-f cursor-pointer">View</a></td>
+                          <td><a (click)="getFarmerDetailsById(x.farmerId,'edit')"
+                              class="btn btn-view-f cursor-pointer">Edit</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div *ngIf="!allPipelineFarmers.length">No data available in table</div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" [ngClass]="{
+                  show: selectedViewType == 'FARMS_PIPELINE_MAP_VIEW',
+                  active: selectedViewType == 'FARMS_PIPELINE_MAP_VIEW'
+                }" id="farms_pipeline_map_view" role="tabpanel">
+                  <div class="map p-3">
+                    <div class="map" id="farms_pipeline_mapbox" class="match-parent"></div>
+                  </div>
+
+                  <!-- <img src="../../../assets//images//map-img.png" alt="" width="100%" /> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: Farms In Pipeline Content -->
+          <!-- START: Draft Farmer Content-->
+          <div class="tab-pane fade" id="draft_farmer" role="tabpanel">
+            <div class="table-result">
+              <ul class="nav nav-tabs view-data" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#draft_farmer_list_view"
+                    type="button" role="tab" aria-selected="true" (click)="filterFarms('DRAFT_FARMER_LIST_VIEW')">
+                    <label class="form-check-label form-check" for="listview">
+                      <input class="form-check-input" type="radio" name="ListViewFarms" id="listview" value="List View"
+                        [checked]="
+                          selectedViewType == 'DRAFT_FARMER_LIST_VIEW'
+                        " />
+                      <span>List View</span>
+                    </label>
+                  </button>
+                </li>
+              </ul>
+              <div class="show-result">
+                <p>{{ allDraftFarmers.length }} Results</p>
+              </div>
+            </div>
+            <div>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade" [ngClass]="{
+                    show: selectedViewType == 'DRAFT_FARMER_LIST_VIEW',
+                    active: selectedViewType == 'DRAFT_FARMER_LIST_VIEW'
+                  }" id="draft_farmer_list_view" role="tabpanel">
+                  <div class="table-responsive listview-table">
+                    <table *ngIf="allDraftFarmers.length" datatable [dtOptions]="dtOptions" class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Farmer Name</th>
+                          <th>Mobile</th>
+                          <th>Date of Registration</th>
+                          <th>Address</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let x of allDraftFarmers">
+                          <td>{{x?.DF_ID}}</td>
+                          <td>
+                            {{ x.demographic_info_form?.firstName }}
+                            {{ x.demographic_info_form?.middleName }}
+                            {{ x.demographic_info_form?.lastName }}
+                          </td>
+                          <td>
+                            {{ x.demographic_info_form?.phoneNumber }}
+                          </td>
+                          <td>
+                            {{ x?.registration_date | date:'EE, MMM d, y' }}
+                          </td>
+                          <td>
+                            {{ (x.demographic_info_form.address1.length>20)? (x.demographic_info_form.address1 |
+                            slice:0:20)+'...':(x.demographic_info_form.address1) }}
+                          </td>
+                          <td><a (click)="editDraftFarmer(x.DF_ID)"><i class="fa fa-edit"></i> Edit</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div *ngIf="!allDraftFarmers.length">No data available in table</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: Draft Farmer Content -->
+        </div>
+      </div>
+      <!-- END: Nav tab Content -->
+    </div>
+  </article>
+</div>
+
+<!-- START: Common Modal Popup for File Upload and Preview -->
+<div class="modal fade" id="scoreModalPopup" tabindex="-1" aria-labelledby="scoreModalPopupLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header p-2 common_button_color">
+        <h6 *ngIf="score_farmer" class="modal-title fs-6" id="scoreModalPopupLabel">FRCM Score</h6>
+        <h6 *ngIf="audit_data" class="modal-title fs-6" id="scoreModalPopupLabel">Audit Report</h6>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="score_farmer">
+        <div class="row" *ngFor="let field of score_farmer; let i = index;">
+          <div class="col-md-12 txt-capitalize"><b>Field : {{i+1}} </b></div>
+          <div class="col-md-6 txt-capitalize" *ngFor="let fd of field; let fdi = index;"><span
+              class="fw-500">{{fd.title}}:</span> {{fd.value}} </div>
+        </div>
+      </div>
+      <div *ngIf="audit_data">
+        <div class="row" *ngFor="let ad of audit_data; let i = index;">
+          <div class="col-md-12 txt-capitalize"><b>Audit : {{i+1}} </b></div>
+          <div class="col-md-6 txt-capitalize"><b>API Name:</b> {{ad.api_name}} </div>
+          <div class="col-md-6 txt-capitalize"><b>Created By:</b> {{ad.created_by}} </div>
+          <div class="col-md-6 txt-capitalize"><b>Date:</b> {{ad.created_timestamp}} </div>
+          <div class="col-md-6 txt-capitalize"><b>Farmer Unique Id:</b> {{ad.farmer_unique_id}} </div>
+          <div class="col-md-12 txt-capitalize"><b>Updated Data:</b> {{ad.updated_data}} </div>          
+        </div>
+      </div>
+      </div>
+      <div class="modal-footer p-2">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END: Common Modal Popup for File Upload and Preview -->

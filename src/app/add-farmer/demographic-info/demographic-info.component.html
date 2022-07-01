@@ -1,0 +1,1211 @@
+<div class="main-farmer">
+  <app-sidenav></app-sidenav>
+  <article class="right-sec">
+    <app-header></app-header>
+    <div class="main-sec">
+      <div class="text-center">{{ saveStatus }}</div>
+      <div class="demographic-info-form">
+        <form [formGroup]="demographicInfoForm">
+          <!-- Question [1, PAN & Profile] -->
+          <div class="demographic-info-left">
+            <!-- START: PAN EKYC & Image Upload -------------------------------------------------------------------->
+            <div class="left-info">
+              <h3 class="form-title">1. Identity proof</h3>
+              <div class="farmer-details mb-2 ">
+                <!-- PAN Card Field -->
+                <div class="farmer-details-inner lable-top">
+                  <label for="PANnumber">PAN Card Number </label>
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber"
+                    placeholder="Enter PAN Number" [readonly]="kycData.pan.isVerified" (change)="checkPAN($event)" />
+                  <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
+                    <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
+                      Please enter valid PAN Number</small>
+                  </div>
+                </div>
+                <!-- KYC Buttons -->
+                <div class="lable-top">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                    [hidden]="!kycData.pan.showVerify" (click)="getKycData($event,kycProofNames.pan)">
+                    {{kycFieldButtonLabels.verify}}</button>
+                  <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                    [hidden]="!kycData.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                    {{kycFieldButtonLabels.verified}}</button>
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                    [hidden]="!kycData.pan.showTryAgain" (click)="getKycData($event,kycProofNames.pan)"> <i
+                      class="fa fa-undo" aria-hidden="true"></i>
+                    {{kycFieldButtonLabels.try_again}}</button>
+                </div>
+                <!-- Image Upload Button modal-->
+                <div class="lable-top">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                    (click)="openFileModalPopup(fileUploadFileFor.panCard, 0)"> Upload Image
+                  </button>
+                </div>
+              </div>
+
+              <!-- START: show PAN kyc api data with confirm button -->
+              <small class="text-decoration-underline" [hidden]="!objectKeyCount(kycData.pan.data)"
+                data-bs-toggle="collapse" data-bs-target="#demoGraphicPanKYCArea" aria-expanded="false"
+                aria-controls="demoGraphicPanKYCArea">
+                Show/Hide details
+              </small>
+              <div class="collapse" id="demoGraphicPanKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Full Name:</b> {{kycData.pan.data['full_name']}}</p>
+                    <p><b>Category:</b> {{kycData.pan.data['category']}}</p>
+                    <p><b>Status:</b> {{kycData.pan.data['status']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10"
+                      [hidden]="!kycData.pan.showConfirm" (click)="setKycDataVariables(kycProofNames.pan,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+              <!-- END: show PAN kyc api data with confirm button -->
+            </div>
+            <!-- END: PAN EKYC & Image Upload -------------------------------------------------------------------->
+
+            <!-- Profile Picture Upload -->
+            <div class="profile-picture">
+              <h4>Profile Picture</h4>
+              <div class="update-profile">
+                <div class="pro-img">
+                  <img class="profile-pic" [hidden]="!displayFarmerProfileImage" src="{{displayFarmerProfileImage}}" />
+                </div>
+                <div class="pro-update">
+                  <a class="avatar" (click)="openFileModalPopup(fileUploadFileFor.farmerProfile, 0)"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                      <defs>
+                        <style>
+                          .a {
+                            fill: none;
+                          }
+                        </style>
+                      </defs>
+                      <path class="a" d="M0,0H24V24H0Z" />
+                      <path
+                        d="M9.827,21.763,14.31,14l3.532,6.117a10.023,10.023,0,0,1-8.015,1.646ZM7.89,21.12A10.028,10.028,0,0,1,2.458,15h8.965L7.89,21.119ZM2.05,13A9.964,9.964,0,0,1,4.633,5.239L9.112,13ZM6.159,3.883a10.021,10.021,0,0,1,8.014-1.646L9.69,10,6.159,3.883Zm9.951-1A10.028,10.028,0,0,1,21.542,9H12.577L16.11,2.881ZM21.95,11a9.964,9.964,0,0,1-2.583,7.761L14.888,11h7.064Z" />
+                    </svg><span>Retake</span></a>
+
+                  <a (click)="removeImage($event,this.fileUploadFileFor.farmerProfile)"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                      <defs>
+                        <style>
+                          .a {
+                            fill: none;
+                          }
+                        </style>
+                      </defs>
+                      <path class="a" d="M0,0H24V24H0Z" />
+                      <path
+                        d="M7,6V3A1,1,0,0,1,8,2h8a1,1,0,0,1,1,1V6h5V8H20V21a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V8H2V6Zm6.414,8,1.768-1.768-1.414-1.414L12,12.586l-1.768-1.768L8.818,12.232,10.586,14,8.818,15.768l1.414,1.414L12,15.414l1.768,1.768,1.414-1.414ZM9,4V6h6V4Z" />
+                    </svg><span>Delete</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question [2] -->
+          <div class="form-details">
+            <h3 class="form-title">2. Address proof</h3>
+
+            <!-- START: Aadhaar EKYC & Image Upload -------------------------------------------------------------------->
+            <div class="farmer-details mb-2">
+              <div class="farmer-details-inner lable-top">
+                <label for="PANnumber">Aadhaar Number </label>
+                <input type="text" class="form-control" id="aadhaarNumber" formControlName="aadhaarNumber"
+                  placeholder="Enter Aadhaar Number" maxlength="12" [readonly]="kycData.aadhaar.isVerified"
+                  (keypress)="validateNo($event)" />
+                <div *ngIf="f['aadhaarNumber'].errors" class="form-text text-danger">
+                  <small *ngIf="f['aadhaarNumber'].errors['minlength']">
+                    Should be 12 digits</small>
+                  <small *ngIf="f['aadhaarNumber'].errors['maxlength']">
+                    Should be 12 digits</small>
+                </div>
+              </div>
+
+              <!-- KYC Buttons -->
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.aadhaar.showVerify"
+                  (click)="getAadhaarEkycVerification($event,kycProofNames.aadhaar)">
+                  {{kycFieldButtonLabels.verify}}</button>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                  [hidden]="!kycData.aadhaar.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.verified}}</button>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.aadhaar.showTryAgain"
+                  (click)="getAadhaarEkycVerification($event,kycProofNames.aadhaar)"> <i class="fa fa-undo"
+                    aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.try_again}}</button>
+              </div>
+
+
+              <!-- Image Upload Button modal-->
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  (click)="openFileModalPopup(fileUploadFileFor.aadhaarCard, 0)"> Upload Image
+                </button>
+              </div>
+            </div>
+
+            <!-- START: show Aadhaar Id kyc api data with confirm button -->
+            <div class="mb-4"
+              *ngIf="objectKeyCount(kycData.aadhaar.verificationLinkData) || objectKeyCount(kycData.aadhaar.data)">
+              <small class="mt-2 text-decoration-underline" data-bs-toggle="collapse" data-bs-target="#aadhaarIdKYCArea"
+                aria-expanded="false" aria-controls="aadhaarIdKYCArea">
+                Show/Hide details
+              </small>
+              <div class="collapse" id="aadhaarIdKYCArea">
+                <div class="card card-body">
+                  <!-- first api data: verification link display -->
+                  <div
+                    [hidden]="!objectKeyCount(kycData.aadhaar.verificationLinkData) || objectKeyCount(kycData.aadhaar.data)">
+                    <small>Please click on below link and complete the verification process and then click on below
+                      <u>Get Aadhaar Details</u> button to get the details and confirm to complete the
+                      Aadhaar KYC
+                      Process.</small><br />
+                    <p><b>Verification Link: </b> <a href="{{kycData.aadhaar.verificationLinkData['redirect_url']}}"
+                        target="_blank">Click Here</a></p>
+
+                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10"
+                      [hidden]="objectKeyCount(kycData.aadhaar.data)"
+                      (click)="getAadhaarDetails($event,kycProofNames.aadhaar)">
+                      Get Aadhaar Details</button><br />
+                    <small>Please wait for at least 10 seconds after completing the verification process using above
+                      Verifiction Link and then click on Above <u>Get Aadhaar Details</u> button.
+                    </small>
+                  </div>
+
+                  <!-- second api data: Aadhaar details display -->
+                  <div *ngIf="objectKeyCount(kycData.aadhaar.data)">
+                    <div class="row">
+                      <div class="col-md-9">
+                        <p><b>Name:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.name || ''}}</p>
+                        <p><b>Gender:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.gender || ''}}</p>
+                        <p><b>DOB:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.dob || ''}}</p>
+                        <p><b>Current Address:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.current_address ||
+                          ''}}</p>
+                        <p><b>Permanent Address:</b> {{kycData.aadhaar.data.actions[0].details.aadhaar.permanent_address
+                          || ''}}</p>
+                        <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10"
+                          [hidden]="!kycData.aadhaar.showConfirm"
+                          (click)="setAadhaarEkycDataVariables('api_2',kycProofNames.aadhaar,'confirm','')">
+                          {{kycFieldButtonLabels.confirm}}</button>
+                      </div>
+                      <div class="col-md-3">
+                        <img *ngIf="kycData.aadhaar.data.actions[0].details.aadhaar.image"
+                          src="data:image/jpeg;base64,{{kycData.aadhaar.data.actions[0].details.aadhaar.image}}" alt="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: show Aadhaar Id kyc api data with confirm button -->
+            <!-- END: Aadhaar EKYC & Image Upload ---------------------------------------------------------------------->
+
+            <!-- START:  DRIVING LICENSE EKYC & Image Upload ----------------------------------------------------------->
+            <div class="farmer-details mt-2 mb-2">
+              <div class="farmer-details-inner lable-top">
+                <label for="drivingLicenceNumber">Driving Licence Number </label>
+                <input type="text" class="form-control" id="drivingLicenceNumber" formControlName="drivingLicenceNumber"
+                  placeholder="Enter Driving Licence Number" [readonly]="kycData.driving_licence.isVerified" />
+              </div>
+
+              <!-- KYC Buttons -->
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.driving_licence.showVerify"
+                  (click)="getKycData($event,kycProofNames.driving_licence)">
+                  {{kycFieldButtonLabels.verify}}</button>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                  [hidden]="!kycData.driving_licence.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.verified}}</button>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.driving_licence.showTryAgain"
+                  (click)="getKycData($event,kycProofNames.driving_licence)"> <i class="fa fa-undo"
+                    aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.try_again}}</button>
+              </div>
+              <div class="lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm p-10" 
+                  (click)="openFileModalPopup(fileUploadFileFor.drivingLicence, 0)"> Upload Image
+                </button>
+              </div>
+            </div>
+
+            <!-- START: show DRIVING LICENSE kyc api data with confirm button -->
+            <div class="">
+              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.driving_licence.data)"
+                data-bs-toggle="collapse" data-bs-target="#demoGraphicDrivingLicenceKYCArea" aria-expanded="false"
+                aria-controls="demoGraphicDrivingLicenceKYCArea">
+                Show/Hide details
+              </small>
+
+              <div class="collapse" id="demoGraphicDrivingLicenceKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Holder's Name:</b> {{kycData.driving_licence.data['Holder\'s Name']}}</p>
+                    <p><b>Initial Issue Date:</b> {{kycData.driving_licence.data['Initial Issue Date']}}</p>
+                    <p><b>Initial Issuing Office:</b> {{kycData.driving_licence.data['Initial Issuing Office']}}</p>
+                    <p><b>Current Status:</b> {{kycData.driving_licence.data['Current Status']}}</p>
+                    <p><b>Old / New DL No.:</b> {{kycData.driving_licence.data['Old / New DL No.']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10"
+                      [hidden]="!kycData.driving_licence.showConfirm"
+                      (click)="setKycDataVariables(kycProofNames.driving_licence,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: show DRIVING LICENSE kyc api data with confirm button -->
+          </div>
+          <!-- END:  DRIVING LICENSE EKYC & Image Upload ----------------------------------------------------------->
+
+
+          <!-- Question [3] -->
+          <div class="form-details">
+            <h3 class="form-title">3. Others details</h3>
+            <!-- START: Voter Id EKYC & Image Upload ----------------------------------------------------------->
+            <div class="farmer-details mb-2">
+              <div class="farmer-details-inner lable-top">
+                <label>Voter Id</label>
+                <input type="text" class="form-control" formControlName="voterIdNumber"
+                  [readonly]="kycData.voter_id.isVerified" />
+              </div>
+              <!-- KYC Buttons -->
+              <div class="lable-top">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.voter_id.showVerify" (click)="getKycData($event,kycProofNames.voter_id)">
+                  {{kycFieldButtonLabels.verify}}</button>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                  [hidden]="!kycData.voter_id.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.verified}}</button>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.voter_id.showTryAgain" (click)="getKycData($event,kycProofNames.voter_id)"> <i
+                    class="fa fa-undo" aria-hidden="true"></i>
+                  {{kycFieldButtonLabels.try_again}}</button>
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  (click)="openFileModalPopup(fileUploadFileFor.voterId, 0)">
+                  Upload Image
+                </button>
+              </div>
+            </div>
+            <!-- START: show Voter Id kyc api data with confirm button -->
+            <div class="mb-4">
+              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.voter_id.data)"
+                data-bs-toggle="collapse" data-bs-target="#demoGraphicVoterIdKYCArea" aria-expanded="false"
+                aria-controls="demoGraphicVoterIdKYCArea">
+                Show/Hide details
+              </small>
+              <div class="collapse" id="demoGraphicVoterIdKYCArea">
+                <div class="card card-body">
+                  <div>
+                    <p><b>Name:</b> {{kycData.voter_id.data['name']}}</p>
+                    <p><b>Age:</b> {{kycData.voter_id.data['age']}}</p>
+                    <p><b>Taluka:</b> {{kycData.voter_id.data['ac_name']}}</p>
+                    <p><b>District:</b> {{kycData.voter_id.data['dist_name']}}</p>
+                    <p><b>State:</b> {{kycData.voter_id.data['st_name']}}</p>
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10"
+                      [hidden]="!kycData.voter_id.showConfirm"
+                      (click)="setKycDataVariables(kycProofNames.voter_id,'confirm','')">
+                      {{kycFieldButtonLabels.confirm}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: show Voter Id kyc api data with confirm button -->
+            <!-- END: Voter Id EKYC & Image Upload ----------------------------------------------------------->
+
+            <!-- START:  Passport Image Upload ----------------------------------------------------------->
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label>Passport Number</label>
+                <input type="text" class="form-control" formControlName="passportNumber" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" 
+                  (click)="openFileModalPopup(fileUploadFileFor.passport, 0)">
+                  Upload Image
+                </button>
+              </div>
+            </div>
+            <!-- END:  Passport Image Upload ----------------------------------------------------------->
+
+            <!-- START:  NREGA Image Upload ----------------------------------------------------------->
+            <div class="farmer-details">
+              <div class="farmer-details-inner lable-top">
+                <label>NREGA Number</label>
+                <input type="text" class="form-control" formControlName="NREGANumber" />
+              </div>
+              <div class="farmer-details-inner lable-top">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" 
+                  (click)="openFileModalPopup(fileUploadFileFor.NREGA, 0)">
+                  Upload Image
+                </button>
+              </div>
+            </div>
+            <!-- END:  NREGA Image Upload ----------------------------------------------------------->
+
+          </div>
+
+          <!-- Question [4A, 4B, 4C, 4D, 4E] -->
+          <div class="form-details">
+            <div class="form-details-inner">
+              <h3 class="form-title">4A. Farmer details</h3>
+              <div class="farmer-details">
+                <div class="small-input">
+                  <select class="form-select" formControlName="salutation">
+                    <option value="">...</option>
+                    <option value="Mr.">Mr.</option>
+                    <option value="Ms.">Ms.</option>
+                    <option value="Mrs.">Mrs.</option>
+                  </select>
+                </div>
+                <div class="farmer-details">
+                  <div class="farmer-details-inner lable-top">
+                    <label class="required">First Name</label>
+                    <input type="text" class="form-control" formControlName="firstName" placeholder="" />
+                    <div *ngIf="isSubmitted && f['firstName'].errors" class="form-text text-danger">
+                      <small *ngIf="f['firstName'].errors['required']">
+                        First Name is required</small>
+                    </div>
+                  </div>
+                  <div class="farmer-details-inner lable-top">
+                    <label>Middle Name</label>
+                    <input type="text" class="form-control" formControlName="middleName" placeholder="" />
+                  </div>
+                  <div class="farmer-details-inner lable-top">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" formControlName="lastName" placeholder="" />
+                  </div>
+                  <div class="farmer-details-inner lable-top">
+                    <label>Date Of Birth</label>
+                    <input type="date" class="form-control" formControlName="dob" placeholder="" value="" />
+                    <!-- <input type="text" class="form-control" formControlName="dob" placeholder="" value=""
+                      onfocus="(this.type='date')" onblur="(this.type='text')" /> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4B. Gender</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen }}gender">
+                  <input class="form-check-input" type="radio" formControlName="gender" value="{{ indGen }}"
+                    id="{{ indGen }}gender" /><span>{{ indGen
+                    }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4C. Religion</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion }}religion">
+                  <input class="form-check-input" type="radio" formControlName="religion" value="{{ indReligion }}"
+                    id="{{ indReligion }}religion" /><span>{{
+                    indReligion }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4D. Caste/Tribe</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste }}caste">
+                  <input class="form-check-input" type="radio" formControlName="caste" value="{{ indCaste }}"
+                    id="{{ indCaste }}caste" /><span>{{
+                    indCaste
+                    }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">4E. Others details</h3>
+              <div class="farmer-details">
+                <div class="farmer-details-inner lable-top">
+                  <label>Educational Qualification</label>
+                  <select class="flex-1 form-select" formControlName="educationalQualification">
+                    <option value="">...</option>
+                    <option *ngFor="let indEdu of demoGraphicMaster['education']" value="{{ indEdu }}">
+                      {{ indEdu }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="farmer-details-inner lable-top">
+                  <label>Occupation</label>
+                  <select class="flex-1 form-select" formControlName="occupation">
+                    <option value="">...</option>
+                    <option *ngFor="let indOccup of demoGraphicMaster['occupation']" value="{{ indOccup }}">
+                      {{ indOccup }}
+                    </option>
+                  </select>
+                </div>
+                <div class="farmer-details-inner lable-top">
+                  <label>Annual Income(₹)</label>
+                  <input type="text" class="form-control" formControlName="annualIncome" placeholder="" maxlength="10"
+                    (keypress)="validateNo($event)" />
+                  <div *ngIf="isSubmitted && f['annualIncome'].errors" class="form-text text-danger">
+                    <small *ngIf="f['annualIncome'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question [5A, 5B, 5C] -->
+          <div class="form-details">
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                5A. Address as per officially valid document
+              </h3>
+              <div class="display-flex">
+                <div class="flex-1 lable-top">
+                  <label class="required">Address line-1</label>
+                  <input type="text" class="form-control" formControlName="address1" placeholder="" />
+                  <div *ngIf="isSubmitted && f['address1'].errors" class="form-text text-danger">
+                    <small *ngIf="f['address1'].errors['required']">
+                      Address is required</small>
+                  </div>
+                </div>
+
+                <div class="flex-1 lable-top">
+                  <label for="">Address line-2</label>
+                  <input type="text" class="form-control" formControlName="address2" placeholder="" />
+                </div>
+              </div>
+              <div class="display-flex">
+                <div class="flex-1 lable-top">
+                  <label class="required">Pincode</label>
+                  <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6"
+                    (keypress)="validateNo($event)" maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" />
+                  <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
+                    <small *ngIf="f['pinCode'].errors['required']">
+                      PinCode is required</small>
+                    <small *ngIf="f['pinCode'].errors['minlength']">
+                      Should be 6 digits</small>
+                    <small *ngIf="f['pinCode'].errors['maxlength']">
+                      Should be 6 digits</small>
+                  </div>
+                </div>
+
+                <div class="flex-1 lable-top">
+                  <label class="required">Tahsil/Taluka/Mandal</label>
+
+
+                  <!-- START: datalist -->
+                  <ng-container>
+                    <input formControlName="taluk" (blur)="setSelectedValue($event, 'taluk', '', 'manual')"
+                      id="talukDropdown" class="form-control" autocomplete="off" data-bs-toggle="dropdown"
+                      aria-expanded="false" />
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left"
+                      aria-labelledby="talukDropdown">
+                      <div class="dropdown_scroll_bar">
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIData"
+                          value="{{ indVal.postalLocation }}"
+                          (click)="setSelectedValue($event, 'taluk', indVal.office_name, 'list')">
+                          {{ indVal.office_name }}
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <!-- END: datalist -->
+
+                  <!-- <select class="form-select" formControlName="taluk">
+                    <option value="">...</option>
+                    <option *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.office_name }}">
+                      {{ indVal.office_name }}
+                    </option>
+                  </select>-->
+                  <div *ngIf="isSubmitted && f['taluk'].errors" class="form-text text-danger">
+                    <small *ngIf="f['taluk'].errors['required']">
+                      Taluka is required</small>
+                  </div>
+                </div>
+
+                <div class="flex-1 lable-top">
+                  <label class="required">District/City</label>
+                  <input type="text" class="form-control" formControlName="city" placeholder="" />
+                  <div *ngIf="isSubmitted && f['city'].errors" class="form-text text-danger">
+                    <small *ngIf="f['city'].errors['required']">
+                      City is required</small>
+                  </div>
+                </div>
+
+                <div class="flex-1 lable-top">
+                  <label class="required">State</label>
+                  <input type="text" class="form-control" formControlName="state" placeholder="" />
+                  <div *ngIf="isSubmitted && f['state'].errors" class="form-text text-danger">
+                    <small *ngIf="f['state'].errors['required']">
+                      State is required</small>
+                  </div>
+                </div>
+              </div>
+              <div class="display-flex">
+                <div class="flex-1 lable-top">
+                  <label for="">Landmark</label>
+                  <input type="text" class="form-control" formControlName="landmark" placeholder="" />
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">Phone No.</label>
+                  <input type="text" class="form-control" formControlName="phoneNumber" placeholder="" minlength="10"
+                    maxlength="10" (keypress)="validateNo($event)" (change)="checkMobileNo($event)" />
+                  <div *ngIf="isSubmitted && f['phoneNumber'].errors" class="form-text text-danger">
+                    <small *ngIf="f['phoneNumber'].errors['required']">
+                      Phone No. is required</small>
+                    <small *ngIf="f['phoneNumber'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                    <small *ngIf="f['phoneNumber'].errors['minlength']">
+                      Should be 10 digits</small>
+                    <small *ngIf="f['phoneNumber'].errors['maxlength']">
+                      Should be 10 digits</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label for="">Mobile 1</label>
+                  <input type="text" class="form-control" formControlName="mobile1" placeholder="" maxlength="10"
+                    (keypress)="validateNo($event)" />
+                  <div *ngIf="f['mobile1'].errors" class="form-text text-danger">
+                    <small *ngIf="f['mobile1'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                    <small *ngIf="f['mobile1'].errors['minlength']">
+                      Please enter 10 Digits</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label for="">Mobile 2</label>
+                  <input type="text" class="form-control" formControlName="mobile2" placeholder="" maxlength="10"
+                    (keypress)="validateNo($event)" />
+                  <div *ngIf="f['mobile2'].errors" class="form-text text-danger">
+                    <small *ngIf="f['mobile2'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                    <small *ngIf="f['mobile2'].errors['minlength']">
+                      Please enter 10 Digits</small>
+                  </div>
+                </div>
+              </div>
+              <div class="display-flex">
+                <div class="flex-1 lable-top">
+                  <label for="">No. of years in present address</label>
+                  <input type="text" class="form-control" formControlName="yrsInAddress" placeholder="" maxlength="3"
+                    (keypress)="validateNo($event)" />
+                  <div *ngIf="isSubmitted && f['yrsInAddress'].errors" class="form-text text-danger">
+                    <small *ngIf="f['yrsInAddress'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label for="">No. of years in city/village</label>
+                  <input type="text" class="form-control" formControlName="yrsInCity" placeholder="" maxlength="3"
+                    (keypress)="validateNo($event)" />
+                  <div *ngIf="isSubmitted && f['yrsInCity'].errors" class="form-text text-danger">
+                    <small *ngIf="f['yrsInCity'].errors['pattern']">
+                      Only Numbers are allowed</small>
+                  </div>
+                </div>
+                <div class="flex-2 lable-top">
+                  <label for="">Email Address</label>
+                  <input type="text" class="form-control" formControlName="email" placeholder="" />
+                  <div *ngIf="isSubmitted && f['email'].errors" class="form-text text-danger">
+                    <small *ngIf="f['email'].errors['email']">
+                      Email address is invalid</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">5B. Property status</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat }}propertyStatus">
+                  <input class="form-check-input" type="radio" formControlName="propertyStatus" value="{{ indStat }}"
+                    id="{{ indStat }}propertyStatus" /><span>{{
+                    indStat
+                    }}</span>
+                </label>
+              </div>
+              <div class="farmer-details">
+                <div class="farmer-details-inner lable-top">
+                  <label for="">Monthly Rent (If rented)(₹)</label>
+                  <input type="text" class="form-control" formControlName="monthlyRent" placeholder=""
+                    (keypress)="validateNo($event)" />
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title required">5C. Communication/Permanent address</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio "
+                  *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat }}commOrPerAddress">
+                  <input class="form-check-input" type="radio" formControlName="commOrPerAddress" value="{{ indStat }}"
+                    id="{{ indStat }}commOrPerAddress" /><span>{{
+                    indStat
+                    }}</span>
+                </label>
+                <div *ngIf="isSubmitted && f['commOrPerAddress'].errors" class="form-text text-danger">
+                  <small *ngIf="f['commOrPerAddress'].errors['required']">
+                    Field is required</small>
+                </div>
+              </div>
+              <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='Different address'">
+                <div class="flex-1 lable-top">
+                  <label class="required">Address line-1</label>
+                  <input type="text" class="form-control" formControlName="permAddressLine1" placeholder="" />
+                  <div *ngIf="isSubmitted && f['permAddressLine1'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permAddressLine1'].errors['required']">
+                      Address is required</small>
+                  </div>
+                </div>
+
+                <div class="flex-1 lable-top">
+                  <label for="">Address line-2</label>
+                  <input type="text" class="form-control" formControlName="permAddressLine2" placeholder="" />
+                </div>
+              </div>
+              <div class="farmer-details" [hidden]="demographicInfoForm.value.commOrPerAddress!='Different address'">
+                <div class="flex-1 lable-top">
+                  <label class="required">Pincode</label>
+                  <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6"
+                    (keypress)="validateNo($event)" maxlength="6"
+                    (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" />
+                  <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permPincode'].errors['required']">
+                      PinCode is required</small>
+                    <small *ngIf="f['permPincode'].errors['minlength']">
+                      Should be 6 digits</small>
+                    <small *ngIf="f['permPincode'].errors['maxlength']">
+                      Should be 6 digits</small>
+                  </div>
+                </div>
+
+                <div class="flex-1 lable-top">
+                  <label class="required">Tahsil/Taluka/Mandal</label>
+                  <!-- START: datalist -->
+                  <ng-container>
+                    <input formControlName="permTaluk" (blur)="setSelectedValue($event, 'permTaluk', '', 'manual')"
+                      id="permTalukDropdown" class="form-control" autocomplete="off" data-bs-toggle="dropdown"
+                      aria-expanded="false" />
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left"
+                      aria-labelledby="permTalukDropdown">
+                      <div class="dropdown_scroll_bar">
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIData"
+                          value="{{ indVal.office_name }}"
+                          (click)="setSelectedValue($event, 'permTaluk', indVal.office_name, 'list')">
+                          {{ indVal.office_name }}
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <!-- END: datalist -->
+
+                  <!-- <select class="form-select" formControlName="permTaluk">
+                    <option value="">...</option>
+                    <option *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.office_name }}">
+                      {{ indVal.office_name }}
+                    </option>
+                  </select> -->
+                  <div *ngIf="isSubmitted && f['permTaluk'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permTaluk'].errors['required']">
+                      Taluka is required</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">District/City</label>
+                  <input type="text" class="form-control" formControlName="permCity" placeholder="" />
+                  <div *ngIf="isSubmitted && f['permCity'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permCity'].errors['required']">
+                      City is required</small>
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label class="required">State</label>
+                  <input type="text" class="form-control" formControlName="permState" placeholder="" />
+                  <div *ngIf="isSubmitted && f['permState'].errors" class="form-text text-danger">
+                    <small *ngIf="f['permState'].errors['required']">
+                      State is required</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question [6] -->
+          <div class="form-details">
+            <div class="row align-items-center">
+              <h3 class="form-title">
+                6. How many members in the family? Record for each member.
+              </h3>
+              <div class="mb-2" formArrayName="familyMembers"
+                *ngFor="let item of getFamilyMembersControls(); let i = index">
+                <div class="display-flex" [formGroupName]="i">
+                  <div class="flex-2 lable-top">
+                    <label>Name</label>
+                    <input type="text" class="form-control" formControlName="name" placeholder="" />
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Relation</label>
+                    <select class="form-select" formControlName="relation">
+                      <option value="">...</option>
+                      <option *ngFor="let indRel of demoGraphicMaster['relation']" value="{{ indRel }}">
+                        {{ indRel }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Education</label>
+                    <select class="flex-1 form-select" formControlName="education">
+                      <option value="">...</option>
+                      <option *ngFor="let indEd of demoGraphicMaster['education']" value="{{ indEd }}">
+                        {{ indEd }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Occupation</label>
+
+                    <select class="flex-1 form-select" formControlName="occupation">
+                      <option value="">...</option>
+                      <option *ngFor="let indOcp of demoGraphicMaster['occupation']" value="{{ indOcp }}">
+                        {{ indOcp }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="flex-1 lable-top">
+                    <label>Dependency</label>
+
+                    <select class="flex-1 form-select" formControlName="dependency">
+                      <option value="">...</option>
+                      <option *ngFor="let indDep of demoGraphicMaster['dependency']" value="{{ indDep }}">
+                        {{ indDep }}
+                      </option>
+                    </select>
+                  </div>
+                  <div *ngIf="
+                      getFamilyMembersControls().length != 1 &&
+                      i != getFamilyMembersControls().length - 1
+                    " class="flex-1 add-another">
+                    <a href="javascript:void(0)" class="delete-item" (click)="removeFamilyMembers(i)"><i
+                        class="fa fa-trash-o text-danger"></i></a>
+                  </div>
+                  <div *ngIf="i == getFamilyMembersControls().length - 1" class="flex-1 add-another">
+                    <a href="javascript:void(0);" (click)="addFamilyMembers()">+ Add Another</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question [7] -->
+          <div class="form-details">
+            <h3 class="form-title">7. Property ownership</h3>
+            <div class="mb-2" formArrayName="propertyOwnership"
+              *ngFor="let item of getPropertyOwnershipControls(); let i = index">
+              <div class="display-flex family-members" [formGroupName]="i">
+                <div class="flex-1 lable-top">
+                  <label>Property Type</label>
+                  <select class="form-select" formControlName="propertyType">
+                    <option value="">...</option>
+                    <option *ngFor="let indVal of demoGraphicMaster['propertyType']" value="{{ indVal }}">
+                      {{ indVal }}
+                    </option>
+                  </select>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label>Upload pictures</label>
+                  <div class="fileUpload" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">
+                    <span></span><img src="../../../assets/images/photo-camera.png" />
+                    <input type="text" name="" class="form-control" />
+                  </div>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label>Ownership Type</label>
+                  <select class="form-select" formControlName="ownershipType">
+                    <option value="">...</option>
+                    <option *ngFor="let indVal of demoGraphicMaster['ownerShipType']" value="{{ indVal }}">
+                      {{ indVal }}
+                    </option>
+                  </select>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label>Particular</label>
+                  <select class="form-select" formControlName="particular">
+                    <option value="">...</option>
+                    <option *ngFor="let indVal of demoGraphicMaster['particular']" value="{{ indVal }}">
+                      {{ indVal }}
+                    </option>
+                  </select>
+                </div>
+                <div class="flex-1 lable-top">
+                  <label>Cumulative value(₹)</label>
+                  <input type="text" name="" class="form-control" formControlName="cumulativeValue" maxlength="10"
+                    (keypress)="validateNo($event)" />
+                </div>
+              </div>
+
+              <div class="row justify-content-end">
+                <div class="col-auto add-another" *ngIf="
+                    getPropertyOwnershipControls().length != 1 &&
+                    i != getPropertyOwnershipControls().length - 1
+                  ">
+                  <a href="javascript:void(0)" class="delete-item" (click)="removePropertyOwnership(i)"><i
+                      class="fa fa-trash-o text-danger"></i></a>
+                </div>
+                <div class="col-auto add-another" *ngIf="i == getPropertyOwnershipControls().length - 1">
+                  <a href="javascript:void(0);" (click)="addPropertyOwnership()">+ Add Another</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question [8A, 8B, 8C, 8D] -->
+          <div class="form-details">
+            <div class="form-details-inner">
+              <h3 class="form-title">8A. What type of phone do you own?</h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indType of demoGraphicMaster['phoneType']" for="{{ indType }}phoneType">
+                  <input class="form-check-input" type="radio" formControlName="phoneType" value="{{ indType }}"
+                    id="{{ indType }}phoneType" /><span>{{
+                    indType
+                    }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                8B. Who is operating the phone in your family?
+              </h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indType of demoGraphicMaster['phoneOperating']" for="{{ indType }}phoneOperating">
+                  <input class="form-check-input" type="radio" formControlName="phoneOperating" value="{{ indType }}"
+                    id="{{ indType }}phoneOperating" /><span>{{
+                    indType
+                    }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                8C. Where all do you seek advice on cultivation?
+              </h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-check"
+                  *ngFor="let indStat of demoGraphicMaster['cultivationAdvice']" for="{{ indStat }}cultivationAdvice">
+                  <input class="form-check-input" type="checkbox" id="{{ indStat }}cultivationAdvice" (click)="
+                      selectCultivationAdvice(
+                        $event,
+                        'cultivationAdvice',
+                        indStat
+                      )
+                    " [checked]="
+                      this.demographicInfoForm.controls[
+                        'cultivationAdvice'
+                      ].value?.includes(indStat)
+                    " /><span>{{ indStat }}</span>
+                </label>
+                <div class="lable-top">
+                  <label>Mention other(if any)</label>
+                  <input class="form-control" type="text" formControlName="cultivationAdviceOther" />
+                </div>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                8D. What medium do you use to seek advice?
+              </h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-check"
+                  *ngFor="let indStat of demoGraphicMaster['adviceMedium']" for="{{ indStat }}adviceMedium">
+                  <input class="form-check-input" type="checkbox" id="{{ indStat }}adviceMedium" (click)="
+                      selectCultivationAdvice(
+                        $event,
+                        'adviceMedium',
+                        indStat
+                      )
+                    " [checked]="
+                      this.demographicInfoForm.controls[
+                        'adviceMedium'
+                      ].value?.includes(indStat)
+                    " /><span>{{ indStat }}</span>
+                </label>
+                <div class="lable-top">
+                  <label>Mention other(if any)</label>
+                  <input class="form-control" type="text" formControlName="adviceMediumOther" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question [9] -->
+          <div class="form-details">
+            <h3 class="form-title">
+              9. Does your household have any source of income other than
+              agriculture?
+            </h3>
+            <div class="farmer-details">
+              <label class="form-check-label form-check bordered-check"
+                *ngFor="let indStat of demoGraphicMaster['sourceOfIncome']" for="{{ indStat }}sourceOfIncome">
+                <input class="form-check-input" type="checkbox" id="{{ indStat }}sourceOfIncome" (click)="
+                    selectCultivationAdvice(
+                      $event,
+                      'sourceOfIncome',
+                      indStat
+                    )
+                  " [checked]="
+                    this.demographicInfoForm.controls[
+                      'sourceOfIncome'
+                    ].value?.includes(indStat)
+                  " /><span>{{ indStat }}</span>
+              </label>
+              <div class="lable-top">
+                <label>Mention other(if any)</label>
+                <input class="form-control" type="text" formControlName="sourceOfIncomeOther" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Question [10A, 10B] -->
+          <div class="form-details">
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                10A. How interested are your children in agriculture?
+              </h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indType of demoGraphicMaster['agriculturalInterest']"
+                  for="{{ indType }}agriculturalInterest">
+                  <input class="form-check-input" type="radio" formControlName="agriculturalInterest"
+                    value="{{ indType}}" id="{{ indType }}agriculturalInterest" /><span>{{
+                    indType
+                    }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-details-inner">
+              <h3 class="form-title">
+                10B. Is the younger generation in your family open to experiment
+                with innovative ways in farming?
+              </h3>
+              <div class="farmer-details">
+                <label class="form-check-label form-check bordered-check"
+                  *ngFor="let indStat of demoGraphicMaster['innovativeWaysFarming']"
+                  for="{{ indStat }}innovativeWaysFarming">
+                  <input class="form-check-input" type="checkbox" id="{{ indStat }}innovativeWaysFarming" (click)="
+                      selectCultivationAdvice(
+                        $event,
+                        'innovativeWaysFarming',
+                        indStat
+                      )
+                    " [checked]="
+                      this.demographicInfoForm.controls[
+                        'innovativeWaysFarming'
+                      ].value?.includes(indStat)
+                    " /><span>{{ indStat }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- Question [11] -->
+          <div class="form-details">
+            <h3 class="form-title">11. Record Interview</h3>
+            <div class="mb-2" formArrayName="recordInterview"
+              *ngFor="let item of getRecordInterviewControls(); let i = index">
+              <div class="row family-members" [formGroupName]="i">
+                <div class="col-md-2">
+                  <label class="form-check-label form-check bordered-radio">
+                    <input class="form-check-input" type="radio" formControlName="recordType"
+                      value="audio" /><span>Audio <svg class="float-right" xmlns="http://www.w3.org/2000/svg" width="15"
+                        height="18" viewBox="0 0 15 18">
+                        <defs>
+                          <style>
+                            .cls-1,
+                            .cls-2 {
+                              fill: #707070;
+                            }
+
+                            .cls-2 {
+                              stroke: #fff;
+                            }
+
+                            .cls-3 {
+                              stroke: none;
+                            }
+
+                            .cls-4 {
+                              fill: none;
+                            }
+                          </style>
+                        </defs>
+                        <g id="microphone" transform="translate(-382 -4192)">
+                          <path id="Polygon_70" data-name="Polygon 70" class="cls-1"
+                            d="M5.1,3.2a3,3,0,0,1,4.8,0l1.5,2A3,3,0,0,1,9,10H6A3,3,0,0,1,3.6,5.2Z"
+                            transform="translate(397 4210) rotate(180)" />
+                          <g id="Rectangle_6414" data-name="Rectangle 6414" class="cls-2"
+                            transform="translate(386 4192)">
+                            <rect class="cls-3" width="7" height="13" rx="3" />
+                            <rect class="cls-4" x="0.5" y="0.5" width="6" height="12" rx="2.5" />
+                          </g>
+                        </g>
+                      </svg>
+                    </span>
+                  </label>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-check-label form-check bordered-radio">
+                    <input class="form-check-input" type="radio" formControlName="recordType"
+                      value="video" /><span>Video <svg class="float-right" xmlns="http://www.w3.org/2000/svg" width="21"
+                        height="14" viewBox="0 0 21 14">
+                        <defs>
+                          <style>
+                            .cls-1 {
+                              fill: #fff;
+                              stroke: #707070;
+                            }
+
+                            .cls-2 {
+                              fill: #707070;
+                            }
+
+                            .cls-3 {
+                              stroke: none;
+                            }
+
+                            .cls-4 {
+                              fill: none;
+                            }
+                          </style>
+                        </defs>
+                        <g id="vdeo" transform="translate(-369 -4190)">
+                          <g id="Rectangle_6415" data-name="Rectangle 6415" class="cls-1"
+                            transform="translate(369 4190)">
+                            <rect class="cls-3" width="21" height="14" rx="3" />
+                            <rect class="cls-4" x="0.5" y="0.5" width="20" height="13" rx="2.5" />
+                          </g>
+                          <rect id="Rectangle_6416" data-name="Rectangle 6416" class="cls-2" width="17" height="10"
+                            rx="2" transform="translate(371 4192)" />
+                        </g>
+                      </svg></span>
+                  </label>
+                </div>
+                <div class="col-md-2">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100 w-100"
+                    (click)="openFileModalPopup(fileUploadFileFor.recordAudioVideo, i)"> Capture
+                  </button>
+                </div>
+                <div class="col-md-2 col-auto add-another" *ngIf="
+          getRecordInterviewControls().length != 1 &&
+          i != getRecordInterviewControls().length - 1
+        ">
+                  <a href="javascript:void(0)" class="delete-item" (click)="removeRecordInterview(i)"><i
+                      class="fa fa-trash-o text-danger"></i></a>
+                </div>
+                <div class="col-auto add-another" *ngIf="i == getRecordInterviewControls().length - 1">
+                  <a href="javascript:void(0);" (click)="addRecordInterview()">+ Add more</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </article>
+</div>
+
+
+<!-- START: Common Modal Popup for File Upload and Preview -->
+<div class="modal fade" id="demofileUploadModalPopup" tabindex="-1" aria-labelledby="demofileUploadModalPopupLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header p-2 common_button_color">
+        <h6 class="modal-title fs-6" id="demofileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+      </div>
+      <div class="modal-body">
+        <!-- START : Image - 1  -->
+        <div class="row" [hidden]="!fileUpload.new.isImage1Required">
+          <div class="col-md-6 mb-1">
+            <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
+            <input class="form-control form-control-sm formFileSm" id="formFileSm" type="file" value=""
+              (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="image/*">
+          </div>
+          <div class="col-md-6 mb-1">
+            <p class="fs-6">Preview Image</p>
+            <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1"
+              style="height: 150px; width: 150px" /><br>
+            <a *ngIf="fileUpload.new.imageSrc1" [href]="fileUpload.new.imageSrc1" target="_blank">View File</a>
+          </div>
+
+        </div>
+        <!-- END : Image - 1 -->
+
+        <!-- START : Image - 2 -->
+        <div class="row" [hidden]="!fileUpload.new.isImage2Required">
+          <hr class="mt-1" />
+          <div class="col-md-6 mb-1">
+            <label for="formFileSm2" class="form-label">{{fileUpload.imageHeading2}}</label>
+            <input class="form-control form-control-sm formFileSm" id="formFileSm2" type="file"
+              (change)="onFileChange($event,'BACK_IMAGE', fileUpload.new.fileIndex)" accept="image/*">
+          </div>
+          <div class="col-md-6 mb-1">
+            <p class="fs-6">Preview Image</p>
+            <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2"
+              style="height: 150px; width: 150px" /><br>
+            <a *ngIf="fileUpload.new.imageSrc2" [href]="fileUpload.new.imageSrc2" target="_blank">View File</a>
+          </div>
+
+        </div>
+        <!-- END : Image - 2 -->
+        <!-- START : Image - Multiple  -->
+        <div class="row" [hidden]="!fileUpload.new.isMultiple">
+          <div class="col-md-6 mb-1">
+            <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
+            <input class="form-control form-control-sm formFileSm" id="formFileSm" type="file"
+              (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="image/*"
+              *ngIf="fileUpload.new.isMultiple" multiple="">
+          </div>
+        </div>
+        <div class="row" [hidden]="!fileUpload.new.imageMultiple">
+          <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length"
+            *ngFor="let imageSrc of fileUpload.new.imageMultiple">
+            <p class="fs-6">Preview Image</p>
+            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" /><br />
+            <a *ngIf="imageSrc" [href]="imageSrc" target="_blank">View File</a>
+          </div>
+
+        </div>
+        <!-- END : Image - Multiple -->
+        <!-- START : Audio Video - 1  -->
+        <div class="row" [hidden]="!fileUpload.new.isAudioVideoRequired">
+          <div class="col-md-6 mb-1">
+            <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
+            <input class="form-control form-control-sm formFileSm" id="formFileSm" type="file"
+              (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="">
+          </div>
+          <div class="col-md-6 mb-1">
+            <p class="fs-6">File</p>
+            <a *ngIf="fileUpload.new.imageSrc1" href="javascript:void(0)"
+              (click)="downloadFile(fileUpload.new.imageSrc1)">View File</a>
+          </div>
+        </div>
+        <!-- END : Audio Video - 1 -->
+      </div>
+      <div class="modal-footer p-2">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary btn-sm">Save</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END: Common Modal Popup for File Upload and Preview -->

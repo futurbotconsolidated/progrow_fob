@@ -1,0 +1,6 @@
+.modal{
+    z-index: 9999;
+}
+.txt-capitalize{
+    text-transform: capitalize;
+}

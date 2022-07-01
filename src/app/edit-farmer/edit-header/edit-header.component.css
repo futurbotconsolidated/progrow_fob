@@ -1,0 +1,43 @@
+.hori-navigation ul {
+  justify-content: flex-start;
+}
+.color-black {
+  color: #000;
+}
+.color-green {
+  color: #28710F;
+}
+ul.ul-flex{
+  list-style: none;
+  padding-left: 0px;
+  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap; 
+  width: 90%;
+  padding-left: 10%; 
+}
+ul.ul-flex li {
+  width: 50%;
+  margin: 8px 0;
+}
+.far-pro-btn{
+  background-color: #000;
+  color: #FFF;
+  padding: 8px 30px;
+  border-radius: 50px;
+}
+.far-p-con{
+  width: 100%;
+  margin: 5px 0px 8px;
+  border-bottom: 1px solid #A4A4A4;
+  display: inline-block;
+  position: relative;
+  padding: 0 0 15px 0;
+}
+.hori-navigation ul li a{
+  padding: 6px 14px;
+}
+.logout-div{
+  cursor: pointer;
+  text-align: center;
+}

@@ -1,0 +1,228 @@
+<div class="main-farmer">
+    <app-sidenav></app-sidenav>
+    <article class="right-sec">
+        <app-header></app-header>
+        <div class="main-sec">
+            <div class="crop-maket-plan">
+                <h3 class="form-title">Capture various input sources and operational practices for undertaking
+                    cultivation in the coming cycle</h3>
+                <form [formGroup]="cropMarketPlanForm">
+                    <div class="form-details">
+                        <div class="form-details-inner">
+                            <h3 class="form-title">1A. Where do you procure the seed for different crops? </h3>
+                            <div class="row align-items-center">
+                                <div class="select-advice innovative-way">
+                                    <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['seedProcure']">
+                                        <label class="form-check-label form-check bordered-check" for="{{indStat}}">
+                                            <input class="form-check-input" type="checkbox" id="{{indStat}}" name="{{indStat}}" (click)="
+                                            selectCultivationAdvice($event, 'seedProcure', indStat)
+                                          " [checked]="this.cropMarketPlanForm.controls['seedProcure'].value?.includes(indStat)">{{indStat}}
+                                        </label>
+                                    </div>
+                                    <div class="col-auto lable-top">
+                                        <label>Others</label>
+                                        <input type="text" class="form-control" placeholder="" formControlName="seedProcureOther">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-details-inner">
+                            <h3 class="form-title">1B. If used hybrid variety seeds, what difference do you observe in
+                                comparison to local varieties?
+                            </h3>
+                            <div class="row align-items-center">
+                                <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['varietyComparison']">
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType}}">
+                                        <input class="form-check-input" type="radio" formControlName="varietyComparison" value="{{indType}}" id="{{indType}}"><span>{{indType}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">2. How much of the crop output is used for seed replacement in the next
+                            crop cycle? </h3>
+                        <div class="row align-items-center form-details-inner">
+                            <div class="col-md-2 lable-top">
+                                <label>Year-Season</label>
+                                <select class="form-select" formControlName="year1">
+                                    <option value="">...</option>
+                                    <option *ngFor="let crpSesn of commonMaster['season']" [value]="crpSesn">{{crpSesn}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1 lable-top">
+                                <label>Crop</label>
+                                <select class="form-select" formControlName="crop1">
+                                    <option value="">...</option>
+                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                        {{indVal}}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 lable-top">
+                                <label>% used for Self Consumption</label>
+                                <input type="text" class="form-control" formControlName="selfConsumption1" (keypress)="validateDecimalNo($event)" maxlength="6">
+                            </div>
+                            <div class="col-md-3 lable-top">
+                                <label>% used for Seed Replacement</label>
+                                <input type="text" class="form-control" formControlName="seedReplacement1" (keypress)="validateDecimalNo($event)" maxlength="6">
+                            </div>
+                            <div class="col-md-3 lable-top">
+                                <label>% used for Selling at Market Place</label>
+                                <input type="text" class="form-control" formControlName="sellAtMarketPlace1" (keypress)="validateDecimalNo($event)" maxlength="6">
+                            </div>
+                        </div>
+                        <div class="row align-items-center form-details-inner">
+                            <div class="col-md-2 lable-top">
+                                <label>Year-Season</label>
+                                <select class="form-select" formControlName="year2">
+                                    <option value="">...</option>
+                                    <option *ngFor="let crpSesn of commonMaster['season']" [value]="crpSesn">{{crpSesn}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1 lable-top">
+                                <label>Crop</label>
+                                <select class="form-select" formControlName="crop2">
+                                    <option value="">...</option>
+                                    <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
+                                        {{indVal}}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 lable-top">
+                                <label>% used for Self Consumption</label>
+                                <input type="text" class="form-control" formControlName="selfConsumption2" (keypress)="validateDecimalNo($event)" maxlength="6">
+                            </div>
+                            <div class="col-md-3 lable-top">
+                                <label>% used for Seed Replacement</label>
+                                <input type="text" class="form-control" formControlName="seedReplacement2" (keypress)="validateDecimalNo($event)" maxlength="6">
+                            </div>
+                            <div class="col-md-3 lable-top">
+                                <label>% used for Selling at Market Place</label>
+                                <input type="text" class="form-control" formControlName="sellAtMarketPlace2" (keypress)="validateDecimalNo($event)" maxlength="6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">3. Where do you purchase your fertilizers and pesticides from for the
+                            cultivation cycle?</h3>
+                        <div class="row">
+                            <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['fertilizerPurchase']">
+                                <label class="form-check-label form-check bordered-check" for="{{indStat}}">
+                                    <input class="form-check-input" type="checkbox" id="{{indStat}}" name="{{indStat}}" (click)="
+                                    selectCultivationAdvice($event, 'fertilizerPurchase', indStat)
+                                  " [checked]="this.cropMarketPlanForm.controls['fertilizerPurchase'].value?.includes(indStat)">{{indStat}}
+                                </label>
+                            </div>
+                            <div class="col-auto lable-top">
+                                <label>Other</label>
+                                <input type="text" class="form-control" placeholder="" formControlName="fertilizerPurchaseOther">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">4. How satisfied are you with the fertilizer and pesticide
+                            quality/service from the local input supplier?</h3>
+                        <div class="row align-items-center">
+                            <div class="select-advice interested-child">
+                                <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['pesticideQuality']">
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType}}">
+                                        <input class="form-check-input" type="radio" formControlName="pesticideQuality" value="{{indType}}" id="{{indType}}"><span>{{indType}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">5. Who advises you on application of fertilizers/pesticides? </h3>
+                        <div class="row">
+                            <div class="col-auto" *ngFor="let indStat of cropMarketPlanMaster['fertilizerAdvise']">
+                                <label class="form-check-label form-check bordered-check" for="{{indStat}}">
+                                    <input class="form-check-input" type="checkbox" id="{{indStat}}" name="{{indStat}}" (click)="
+                                    selectCultivationAdvice($event, 'fertilizerAdvise', indStat)
+                                  " [checked]="this.cropMarketPlanForm.controls['fertilizerAdvise'].value?.includes(indStat)">{{indStat}}
+                                </label>
+                            </div>
+                            <div class="col-auto lable-top">
+                                <label>Other</label>
+                                <input type="text" class="form-control" placeholder="" formControlName="fertilizerAdviseOther">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-details">
+                        <div class="form-details-inner">
+                            <h3 class="form-title">6A. Where do you sell the produce?</h3>
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <table class="table loan product-table">
+                                        <thead>
+                                            <tr>
+                                                <td></td>
+                                                <td *ngFor="let x of sellProduceArray['thead']">{{x}}</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let x of sellProduceArray['tbody'];let i=index">
+                                                <td>{{x.displayLabel}}</td>
+                                                <td *ngFor="let perIndex of [0,1,2,3]">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" formControlName="{{x.formControlName}}" value="{{sellProduceArray.thead[perIndex]}}">
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="lable-top">
+                                        <label for="Comment" class="form-label">Comment</label>
+                                        <textarea class="form-control" id="Comment" rows="8" formControlName="sellProduceComment"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-details-inner">
+                            <h3 class="form-title">6B. Are you satisfied with the existing farm gate grading method?
+                            </h3>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['farmGateGrading']">
+                                    <label class="form-check-label form-check bordered-radio" for="{{indType}}farmGateGrading">
+                                        <input class="form-check-input" type="radio" formControlName="farmGateGrading" value="{{indType}}" id="{{indType}}farmGateGrading"><span>{{indType}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">7. How long does it take before receiving money for the produce sold?
+                        </h3>
+                        <div class="row align-items-center">
+                            <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['durationReceivingMoney']">
+                                <label class="form-check-label form-check bordered-radio" for="{{indType}}">
+                                    <input class="form-check-input" type="radio" formControlName="durationReceivingMoney" value="{{indType}}" id="{{indType}}"><span>{{indType}}</span>
+                                </label>
+                            </div>
+                            <div class="col-auto lable-top">
+                                <label>Others</label>
+                                <input type="text" class="form-control" name="" placeholder="" formControlName="durationReceivingMoneyOther">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-details">
+                        <h3 class="form-title">8. Would you like to warehouse your produce before selling at the highest
+                            price?</h3>
+                        <div class="row align-items-center">
+                            <div class="col-auto" *ngFor="let indType of cropMarketPlanMaster['warehouseProduce']">
+                                <label class="form-check-label form-check bordered-radio" for="{{indType}}warehouseProduce">
+                                    <input class="form-check-input" type="radio" formControlName="warehouseProduce" value="{{indType}}" id="{{indType}}warehouseProduce"><span>{{indType}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+</div>

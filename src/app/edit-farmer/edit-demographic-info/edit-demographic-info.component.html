@@ -1,0 +1,240 @@
+<article class="right-sec">
+    <app-edit-header></app-edit-header>
+    <div class="bg-color summery">
+        <div class="demographic-profile">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>KYC Details</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <div class="d-flex-profile kyc-details">
+                            <p *ngIf="demographicDisp?.identityProof?.NREGANumber">
+                                <span><i class="fa fa-check"></i>NREGA </span><span><a (click)="openFileModalPopup(fileUploadFileFor.NREGA, 0)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="demographicDisp?.identityProof?.aadhaarNumber">
+                                <span><i class="fa fa-check"></i>Aadhaar Card</span><span><a (click)="openFileModalPopup(fileUploadFileFor.aadhaarCard, 0)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="demographicDisp?.identityProof?.drivingLicenceNumber">
+                                <span><i class="fa fa-check"></i>Driving Licence</span><span><a (click)="openFileModalPopup(fileUploadFileFor.drivingLicence, 0)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="demographicDisp?.identityProof?.panNumber">
+                                <span><i class="fa fa-check"></i>Pan Card</span><span><a (click)="openFileModalPopup(fileUploadFileFor.panCard, 0)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="demographicDisp?.identityProof?.passportNumber">
+                                <span><i class="fa fa-check"></i>Passport</span><span><a (click)="openFileModalPopup(fileUploadFileFor.passport, 0)" href="javascript:void(0);">View</a></span>
+                            </p>
+                            <p *ngIf="demographicDisp?.identityProof?.voterIdNumber">
+                                <span><i class="fa fa-check"></i>Voter Id</span><span><a (click)="openFileModalPopup(fileUploadFileFor.voterId, 0)" href="javascript:void(0);">View</a></span>
+                            </p>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Family and Relationship</span><a href="javascript:void(0)">
+                                <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <ul class="d-flex-profile">
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Relation</th>
+                                        <th>Education</th>
+                                        <th>Occupation</th>
+                                        <th>Dependency</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of demographicDisp?.familyMembers">
+                                        <td>{{x.name}}</td>
+                                        <td>{{x.relation}}</td>
+                                        <td>{{x.education}}</td>
+                                        <td>{{x.occupation}}</td>
+                                        <td>{{x.dependency}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Future Interest</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <div class="d-flex-profile">
+                            <p>Younger generation interested in
+                                farming:
+                                <span><b>
+                                        {{demographicDisp?.agricultureChildrenInterested}}</b></span>
+                            </p>
+                            <p>Agri Tech Interests:
+                                <span *ngFor="let x of demographicDisp?.innovativeFarmingWays;let xindex=index;"> <b>
+                                    {{ (xindex>0)? ', ':'' }} {{x }} </b></span>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Advisory outreach</span> <a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <div class="d-flex-profile">
+                            <p>Phone Type:
+                                <span><b> {{demographicDisp?.phoneType}}</b></span>
+                            </p>
+                            <p>Who is operating Phone: <span><b>
+                                        {{demographicDisp?.phoneUsedBy}}</b></span></p>
+                            <p>Preferable advisory medium:
+                                <span *ngFor="let x of demographicDisp?.adviceMedium;let xindex=index;"><b>{{ (xindex>0)? ', ':'' }} {{x}}</b></span>
+                                <span><b> {{demographicDisp?.adviceMediumOther}}</b></span>
+
+                            </p>
+                            <p>Advisory medium on
+                                cultivation: <span *ngFor="let x of demographicDisp?.cultivationAdvice;let xindex=index;"> <b>{{ (xindex>0)? ', ':'' }}
+                                        {{x}}</b>
+                                </span>
+                                <span><b> {{demographicDisp?.cultivationAdviceOther}}</b></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Property ownership</span><a  href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <ul class="d-flex-profile">
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Photo</th>
+                                        <th>Ownership Type</th>
+                                        <th>Perticular</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of demographicDisp?.propertyOwnership; let i = index;">
+                                        <td>{{x.propertyType}}</td>
+                                        <td>
+                                            <p *ngIf="(x.propertyType || x.ownershipType || x.particular || x.cumulativeValue)"><a href="javascript:void(0)" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">View</a></p>
+                                        </td>
+                                        <td>{{x.ownershipType}}</td>
+                                        <td>{{x.particular}}</td>
+                                        <td>{{x.cumulativeValue}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ul>
+                        <h4 class="summery-heading"><span>Record Interview</span><a  href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <ul class="d-flex-profile">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Audio/Video</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of demographicDisp?.recordInterview; let i = index;">
+                                        <td class="txt-capitalize">{{x.recordType}}</td>
+                                        <td>
+                                            <p *ngIf="(x.recordType)"><a href="javascript:void(0)" (click)="openFileModalPopup(fileUploadFileFor.recordAudioVideo, i)">View</a></p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="actual-facts summery-bg full-height">
+                        <h4 class="summery-heading"><span>Income Streams</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <div class="d-flex-profile">
+                            <p *ngFor="let x of demographicDisp?.sourceOfIncome;let i=index">
+                                {{i+1}}. {{x}}
+                            </p>
+                            <p *ngIf="demographicDisp?.sourceOfIncomeOther">
+                                {{demographicDisp?.sourceOfIncome?.length+1}}. {{demographicDisp?.sourceOfIncomeOther}}
+                            </p>
+                            <p *ngIf="demographicDisp?.propertyStatus">Property Status: <b>{{demographicDisp?.propertyStatus}}</b>
+                            </p>
+                            <p *ngIf="demographicDisp?.monthlyRent">Monthly Rent(₹): <b>{{demographicDisp?.monthlyRent}}</b></p>
+                            <p *ngIf="demographicDisp?.otherDetails?.annualIncome">Annual Income(₹): <b>{{demographicDisp?.otherDetails?.annualIncome}}</b></p>
+                            <p *ngIf="demographicDisp?.otherDetails?.educationalQualification">Educational Qualification: <b>{{demographicDisp?.otherDetails?.educationalQualification}}</b></p>
+                            <p *ngIf="demographicDisp?.otherDetails?.occupation">Occupation: <b>{{demographicDisp?.otherDetails?.occupation}}</b>
+                            </p>
+                        </div>
+                        <h4 class="summery-heading"><span>Farmer Details</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <div class="d-flex-profile">                            
+                            <p *ngIf="demographicDisp?.farmerDetails?.religion">Religion: <b>{{demographicDisp?.farmerDetails?.religion}}</b>
+                            </p>
+                            <p *ngIf="demographicDisp?.farmerDetails?.caste">Caste: <b>{{demographicDisp?.farmerDetails?.caste}}</b>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- START: Common Modal Popup for File Upload and Preview -->
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header p-2 common_button_color">
+          <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 mb-1 txt-capitalize" [hidden]="!fileUpload.description">{{fileUpload.description}}</div>
+            <div class="col-md-12 mb-1" [hidden]="!fileUpload.kyc"><b>KYC Detail:</b>
+                <div class="row" *ngIf="this.fileUpload.fileFor == this.fileUploadFileFor.aadhaarCard ">
+                    <div class="col-md-9">   
+                    <p>Verified: {{fileUpload.kyc?.isVerified || 'NA'}}</p>                     
+                    <p>Name: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.name || ''}}</p>
+                    <p>Gender: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.gender || ''}}</p>
+                    <p>DOB: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.dob || ''}}</p>
+                    <p>Current Address: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.current_address || ''}}</p>
+                    <p>Permanent Address: {{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.permanent_address || ''}}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <img *ngIf="fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.image" src="data:image/jpeg;base64,{{fileUpload.kyc?.data?.actions[0]?.details?.aadhaar?.image}}" alt="">
+                    </div>
+                </div>
+                <div class="row" *ngIf="this.fileUpload.fileFor != this.fileUploadFileFor.aadhaarCard ">
+                    <div class="col-md-6 txt-capitalize" *ngFor="let x of fileUpload.kyc">
+                        {{x}}
+                    </div>
+                </div>
+            </div> 
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageSrc1">
+              <p class="fs-6">Preview Image</p>
+              <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" /><br>
+              <a [href]="fileUpload.new.imageSrc1" target="_blank">View File</a>
+            </div>
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageSrc2">
+              <p class="fs-6">Preview Image</p>
+              <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" /><br>
+              <a [href]="fileUpload.new.imageSrc2" target="_blank">View File</a>
+            </div>
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.fileurl">
+                <p class="fs-6">File</p>
+                <a [href]="fileUpload.new.fileurl" target="_blank">View File</a>
+              </div>
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let imageSrc of fileUpload.new.imageMultiple">
+              <p class="fs-6">Preview Image</p>
+              <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" /><br/>
+              <a [href]="imageSrc" target="_blank">View File</a>
+            </div>  
+          </div>
+        </div>
+        <div class="modal-footer p-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Common Modal Popup for File Upload and Preview -->

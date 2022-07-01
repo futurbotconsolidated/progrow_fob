@@ -1,0 +1,3 @@
+.ques-radio label input[type="radio"]:checked + span {
+	background: #def5d6;
+}

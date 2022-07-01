@@ -1,0 +1,94 @@
+/* START: MAP ****************************************** */
+.map {
+  background-color: #f3f3f3;
+  width: 100%;
+  height: 90vh;
+}
+html,
+body,
+#existing_farmers_mapbox,
+#farms_pipeline_mapbox {
+  width: 100%;
+  height: 100%;
+}
+ul.nav-pills li.nav-item:focus-visible {
+  outline: none;
+}
+.lsn-tv-div{
+  display: none;
+}
+table.dataTable tbody tr {
+	cursor: default;
+}
+.db-filter-type{
+  height: 40px;
+}
+.logo a img {
+    width: 100%;
+    max-width: 235px;
+}
+.btn-send-for-loan {
+	background: #2EADC4 0% 0% no-repeat padding-box;
+	box-shadow: 0px 1px 2px #00000038;
+	border-radius: 5px;
+	color: #fff;
+	font-size: 14px;
+	padding: 8px 8px;
+	min-width: 116px;
+}
+.btn-view-f {
+	background: #2EADC4 0% 0% no-repeat padding-box;
+	box-shadow: 0px 1px 2px #00000038;
+	border-radius: 5px;
+	color: #fff;
+	font-size: 14px;
+	padding: 8px 8px;
+}
+.modal{
+  z-index: 9992;
+}
+.txt-capitalize{
+  text-transform: capitalize;
+  overflow-wrap: break-word;
+}
+.fw-500{
+  font-weight: 500;
+}
+@media only screen and (min-device-width: 992px) and (max-device-width: 1500px) {
+  article.right-sec.lsn-rs-collapse header{
+    padding-left: 55px;
+   }
+  .lsn-tv-div {
+    position: fixed;
+    top: 15px;
+    z-index: 9999;    
+    background-color: #DEF5D6;
+    display: inline-block;
+  }
+  .lsn-tv-extend{
+    left: 233px;
+  }
+  .lsn-tv-collapse{
+    left: 0px;
+  }
+  .lsn-tv-div a{
+    display: inline-block;
+    padding: 0px 8px;
+  }
+  .lsn-tv-div a .fa{
+    font-size: 35px;  
+    color: #000;  
+  }
+  .lsn-tv-inactive{
+    display: none;
+  }
+  .lsn-tv-active{
+    display: block;
+  }
+}
+@media only screen and (max-device-width: 991px) {
+  .left-menu{
+      height: auto;
+      min-height: 1px;
+  }
+}

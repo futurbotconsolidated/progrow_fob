@@ -1,0 +1,7 @@
+.actual-facts ul table td {
+  color: #292929;
+  font-weight: 600;
+}
+.modal{
+  z-index: 9999;
+}
