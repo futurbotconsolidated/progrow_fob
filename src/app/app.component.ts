@@ -32,14 +32,19 @@ export class AppComponent {
         ) {
           localStorage.removeItem('filter-value');
           localStorage.removeItem('master-data');
+          localStorage.removeItem('saveroute');
           sessionStorage.clear();
           this.oauthService.initCodeFlow();
         } else {
-          this.router.navigate(['/bd/dashboard']);
+          if (localStorage.getItem('saveroute') == '/bd/display-map') {
+            this.router.navigate(['/bd/display-map']);
+          } else {
+            this.router.navigate(['/bd/dashboard']);
+          }
         }
       });
   }
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   get token() {
     let claims: any = this.oauthService.getIdentityClaims();

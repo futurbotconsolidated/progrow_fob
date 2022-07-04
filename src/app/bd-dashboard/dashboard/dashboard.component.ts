@@ -54,6 +54,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    localStorage.removeItem('saveroute');
     this.tableMaxWidth = { 'max-width': (window.innerWidth - 50) + 'px' };
     this.loadData();
     if (localStorage.getItem('draft_farmer_new')) {
@@ -152,6 +153,9 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/add/concept-cards']);
   }
 
+  routeLeadPage() {
+    this.router.navigate(['/bd/display-map']);
+  }
   overlayMap(type: string) {
     this.spinner.show();
     this.overlayData.length = 0; // clear data

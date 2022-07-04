@@ -1,5 +1,5 @@
-export const baseUrl =
-  'https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding';
+export const baseUrl = 'https://api.dev.progrow.adaptiwise.com/v1/farmeronboarding';
+export const leadUrl = `https://api.dev.progrow.adaptiwise.com/v1/leadmanagement/metadata`;
 
 export const endPoints = {
   getAllFarmers: '/get_all_farmers',
@@ -15,6 +15,8 @@ export const endPoints = {
   checkMobile: '/check_mobile',
   checkPAN: '/check_pan',
   getAudit: '/get_audit',
+  postAreaOfInterest: '/post_area_of_interest',
+  getFilterMeta: '/uiformconstants',
 
   ekyc: {
     getKycData: '/kyc_check',
