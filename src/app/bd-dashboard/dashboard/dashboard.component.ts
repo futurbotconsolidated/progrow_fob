@@ -937,7 +937,6 @@ export class DashboardComponent implements OnInit {
   }
   getLoanAccountById(farmerId: any, type: string, index: number) {
     if (confirm("Are you sure ? you want to send for loan")) {
-      console.log("confirm if");
       this.spinner.show();
       this.commonService.sendToMifin(farmerId).subscribe(
         (res: any) => {
@@ -968,8 +967,6 @@ export class DashboardComponent implements OnInit {
           }
         }
       );
-    } else {
-      console.log('confirm else');
     }
   }
 

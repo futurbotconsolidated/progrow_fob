@@ -310,6 +310,50 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="actual-facts summery-bg">
+                        <div>
+                            <h4 class="summery-heading"><span>Following Farm Machinery do you Own/Rent:</span><a href="javascript:void(0)"> <img
+                                src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                            <div class="d-flex-profile">
+                                <p>{{financialPlanDisp.farmMachinery?.toString().replaceAll(',', ', ') || 'NA'}}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="summery-heading"><span>The reason for preferring any of the above agents:</span><a href="javascript:void(0)"> <img
+                                src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                            <div class="d-flex-profile">
+                                <p>{{financialPlanDisp.reasonAgent?.toString().replaceAll(',', ', ') || 'NA'}}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="summery-heading"><span>The collateral being pledged against credit outside KCC:</span><a href="javascript:void(0)"> <img
+                                src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                            <div class="d-flex-profile">
+                                <p>{{financialPlanDisp.pledgedCollateral?.toString().replaceAll(',', ', ') || 'NA'}}</p>
+                                <p><b>Other:</b> {{financialPlanDisp.pledgedCollateralOther || 'NA'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="actual-facts summery-bg">                       
+                        <div>
+                            <h4 class="summery-heading"><span>FRCM loan products:</span><a href="javascript:void(0)"> <img
+                                src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                            <div class="d-flex-profile">
+                                <p><b>Housing Loan:</b> {{financialPlanDisp.housingLoan || 'NA'}}</p>
+                                <p><b>Tractor Finance Loan:</b> {{financialPlanDisp.tractorFinanceLoan || 'NA'}}</p>
+                                <p><b>FRCM Crop Insurance:</b> {{financialPlanDisp.FRCMCropInsurance || 'NA'}}</p>
+                                <p><b>Personal Loan:</b> {{financialPlanDisp.personalLoan || 'NA'}}</p>
+                                <p><b>Comment:</b> {{financialPlanDisp.interestedFRCMLoanProductsComment || 'NA'}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

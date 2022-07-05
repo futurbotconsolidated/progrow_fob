@@ -47,6 +47,8 @@ export class DemographicInfoComponent
     new: {
       imageSrc1: '',
       imageSrc2: '',
+      imageName1: '',
+      imageName2: '',
       imageMultiple: [] as any,
       isImage1Required: true,
       isImage2Required: false,
@@ -577,6 +579,8 @@ export class DemographicInfoComponent
     this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
     this.fileUpload.new.imageSrc2 = '';
+    this.fileUpload.new.imageName1 = '';
+    this.fileUpload.new.imageName2 = '';
     this.fileUpload.new.imageMultiple = [];
     this.fileUpload.new.isImage1Required = false;
     this.fileUpload.new.isImage2Required = false;
@@ -925,7 +929,10 @@ export class DemographicInfoComponent
       for (let findex: any = 0; findex < event.target.files.length; findex++) {
         const file = event.target.files[findex];
         if (this.fileUpload.fileFor === this.fileUploadFileFor.recordAudioVideo) {
-          if (file.size > (1024 * 1024 * 5)) {
+          if (!(file.type.split('/')[0] == 'audio' || file.type.split('/')[0] == 'video')) {
+            this.toastr.error('Only Audio/Video files are allowed.', 'Error!');
+            return;
+          } else if (file.size > (1024 * 1024 * 5)) {
             this.toastr.error('Audio/Video size can be upto 5MB Maximum.', 'Error!');
             return;
           }

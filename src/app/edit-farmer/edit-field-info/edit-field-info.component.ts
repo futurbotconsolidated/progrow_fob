@@ -53,13 +53,14 @@ export class EditFieldInfoComponent implements OnInit {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.fieldInfo = JSON.parse(A).fieldInfo;
-      console.log('this.fieldInfo : ', this.fieldInfo);
     }
   }
 
   ngOnInit(): void {
     if (this.fieldInfo) {
       this.editFieldArea = [];
+      this.enumerateDetails = [];
+      this.typesOfTests = [];
       // this.spinner.show();
       this.fieldInfo?.forEach((el: any) => {
         this.ownerShipDetails.push(el.field_ownership_detail);
@@ -71,7 +72,7 @@ export class EditFieldInfoComponent implements OnInit {
           el.test_on_fields?.forEach((eltof: any) => {
             this.typesOfTests.push(eltof);
           });
-        } 
+        }
         // else {
         //   this.typesOfTests.push(el.test_on_fields);
         // }
@@ -82,7 +83,6 @@ export class EditFieldInfoComponent implements OnInit {
           this.setGeoLocation.bind(this)
         );
       }
-console.log('typesOfTests : ', this.typesOfTests)
       this.fieldInfo.forEach((el: any) => {
         this.editFieldArea.push(el.field_area_ha);
         let arr = el.field_boundary.geometry.coordinates;
@@ -112,8 +112,8 @@ console.log('typesOfTests : ', this.typesOfTests)
 
   getDepth(id: any, type: string) {
     return type == 'Bore'
-      ? this.enumerateDetails[id].boreDepth
-      : this.enumerateDetails[id].pumpDepth;
+      ? this.enumerateDetails[id]?.boreDepth
+      : this.enumerateDetails[id]?.pumpDepth;
   }
 
   drawMap(latitude: any, longitude: any) {
