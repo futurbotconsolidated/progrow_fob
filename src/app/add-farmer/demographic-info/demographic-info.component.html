@@ -1145,6 +1145,7 @@
             <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1"
               style="height: 150px; width: 150px" /><br>
             <a *ngIf="fileUpload.new.imageSrc1" [href]="fileUpload.new.imageSrc1" target="_blank">View File</a>
+            <p *ngIf="fileUpload.new.imageName1" class="word-wrap-anywhere">{{fileUpload.new.imageName1}}</p>
           </div>
 
         </div>
@@ -1163,6 +1164,7 @@
             <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2"
               style="height: 150px; width: 150px" /><br>
             <a *ngIf="fileUpload.new.imageSrc2" [href]="fileUpload.new.imageSrc2" target="_blank">View File</a>
+            <p *ngIf="fileUpload.new.imageName2" class="word-wrap-anywhere">{{fileUpload.new.imageName2}}</p>
           </div>
 
         </div>
@@ -1180,8 +1182,9 @@
           <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length"
             *ngFor="let imageSrc of fileUpload.new.imageMultiple">
             <p class="fs-6">Preview Image</p>
-            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" /><br />
-            <a *ngIf="imageSrc" [href]="imageSrc" target="_blank">View File</a>
+            <img [src]="imageSrc.file" *ngIf="imageSrc.file" style="height: 150px; width: 150px" /><br />
+            <a *ngIf="imageSrc.file" [href]="imageSrc.file" target="_blank">View File</a>
+            <p *ngIf="imageSrc.name" class="word-wrap-anywhere">{{imageSrc.name}}</p>
           </div>
 
         </div>
@@ -1197,6 +1200,7 @@
             <p class="fs-6">File</p>
             <a *ngIf="fileUpload.new.imageSrc1" href="javascript:void(0)"
               (click)="downloadFile(fileUpload.new.imageSrc1)">View File</a>
+              <p *ngIf="fileUpload.new.imageName1" class="word-wrap-anywhere">{{fileUpload.new.imageName1}}</p>
           </div>
         </div>
         <!-- END : Audio Video - 1 -->

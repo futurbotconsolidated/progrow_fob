@@ -45,6 +45,8 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     new: {
       imageSrc1: '',
       imageSrc2: '',
+      imageName1: '',
+      imageName2: '',      
       isImage1Required: true,
       isImage2Required: false,
     },
@@ -643,6 +645,8 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
     this.fileUpload.fileFor = type;
     this.fileUpload.new.imageSrc1 = '';
     this.fileUpload.new.imageSrc2 = '';
+    this.fileUpload.new.imageName1 = '';
+    this.fileUpload.new.imageName2 = '';    
     this.fileUpload.new.isImage1Required = false;
     this.fileUpload.new.isImage2Required = false;
     this.fileUpload.imageHeading1 = 'Front Image';
@@ -667,6 +671,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.panCard.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (
       type === this.fileUploadFileFor.coa2.panCard &&
@@ -690,6 +695,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.panCard.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (
       type === this.fileUploadFileFor.coa1.aadhaarCard &&
@@ -714,6 +720,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.aadhaarCard.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -728,6 +735,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.aadhaarCard.back
             );
+            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (
       type === this.fileUploadFileFor.coa2.aadhaarCard &&
@@ -752,6 +760,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.aadhaarCard.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -766,6 +775,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.aadhaarCard.back
             );
+            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (
       type === this.fileUploadFileFor.coa1.drivingLicence &&
@@ -790,6 +800,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.drivingLicence.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -804,6 +815,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.drivingLicence.back
             );
+            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (
       type === this.fileUploadFileFor.coa2.drivingLicence &&
@@ -828,6 +840,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.drivingLicence.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -842,6 +855,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.drivingLicence.back
             );
+            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (
       type === this.fileUploadFileFor.coa1.voterId &&
@@ -866,6 +880,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.voterId.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -880,6 +895,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.voterId.back
             );
+            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (
       type === this.fileUploadFileFor.coa2.voterId &&
@@ -904,6 +920,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.voterId.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -918,6 +935,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.voterId.back
             );
+            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (
       type === this.fileUploadFileFor.coa1.passport &&
@@ -942,6 +960,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.passport.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -956,6 +975,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.passport.back
             );
+            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (
       type === this.fileUploadFileFor.coa2.passport &&
@@ -980,6 +1000,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.passport.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -994,6 +1015,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.passport.back
             );
+            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (type === this.fileUploadFileFor.coa1.NREGA && coaNo === 'coa1') {
       if (!this.coApplicantForm.value.NREGANumber) {
@@ -1015,6 +1037,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.NREGA.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -1029,6 +1052,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa1.NREGA.back
             );
+            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (type === this.fileUploadFileFor.coa2.NREGA && coaNo === 'coa2') {
       if (!this.coApplicantForm.value.NREGANumbercoa2) {
@@ -1050,6 +1074,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.NREGA.front
             );
+            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -1064,6 +1089,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.coa2.NREGA.back
             );
+            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (
       type === this.fileUploadFileFor.coa1.farmerProfile &&
@@ -1145,6 +1171,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
           type == 'FRONT_IMAGE'
         ) {
           this.fileUpload.new.imageSrc1 = imageSrc;
+          this.fileUpload.new.imageName1 = file.name;
           selectedImageFor = this.indexedDBFileNameManage.coa1.panCard.front;
         } else if (
           this.fileUpload.coaNo === 'coa2' &&
@@ -1152,6 +1179,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
           type == 'FRONT_IMAGE'
         ) {
           this.fileUpload.new.imageSrc1 = imageSrc;
+          this.fileUpload.new.imageName1 = file.name;
           selectedImageFor = this.indexedDBFileNameManage.coa2.panCard.front;
         } else if (
           this.fileUpload.coaNo === 'coa1' &&
@@ -1159,10 +1187,12 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor =
               this.indexedDBFileNameManage.coa1.aadhaarCard.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
+            this.fileUpload.new.imageName2 = file.name;
             selectedImageFor =
               this.indexedDBFileNameManage.coa1.aadhaarCard.back;
           }
@@ -1172,10 +1202,12 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor =
               this.indexedDBFileNameManage.coa2.aadhaarCard.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
+            this.fileUpload.new.imageName2 = file.name;
             selectedImageFor =
               this.indexedDBFileNameManage.coa2.aadhaarCard.back;
           }
@@ -1185,10 +1217,12 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor =
               this.indexedDBFileNameManage.coa1.drivingLicence.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
+            this.fileUpload.new.imageName2 = file.name;
             selectedImageFor =
               this.indexedDBFileNameManage.coa1.drivingLicence.back;
           }
@@ -1198,10 +1232,12 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor =
               this.indexedDBFileNameManage.coa2.drivingLicence.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
+            this.fileUpload.new.imageName2 = file.name;
             selectedImageFor =
               this.indexedDBFileNameManage.coa2.drivingLicence.back;
           }
@@ -1211,9 +1247,11 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa1.voterId.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
+            this.fileUpload.new.imageName2 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa1.voterId.back;
           }
         } else if (
@@ -1222,9 +1260,11 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa2.voterId.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
+            this.fileUpload.new.imageName2 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa2.voterId.back;
           }
         } else if (
@@ -1233,9 +1273,11 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa1.passport.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
+            this.fileUpload.new.imageName2 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa1.passport.back;
           }
         } else if (
@@ -1244,9 +1286,11 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa2.passport.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
+            this.fileUpload.new.imageName2 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa2.passport.back;
           }
         } else if (
@@ -1255,9 +1299,11 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa1.NREGA.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
+            this.fileUpload.new.imageName2 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa1.NREGA.back;
           }
         } else if (
@@ -1266,9 +1312,11 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa2.NREGA.front;
           } else if (type === 'BACK_IMAGE') {
             this.fileUpload.new.imageSrc2 = imageSrc;
+            this.fileUpload.new.imageName2 = file.name;
             selectedImageFor = this.indexedDBFileNameManage.coa2.NREGA.back;
           }
         } else if (
@@ -1277,6 +1325,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor =
               this.indexedDBFileNameManage.coa1.farmerProfile.front;
             this.displayCoApplicant1ProfileImage = imageSrc;
@@ -1287,6 +1336,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
           if (type === 'FRONT_IMAGE') {
             this.fileUpload.new.imageSrc1 = imageSrc;
+            this.fileUpload.new.imageName1 = file.name;
             selectedImageFor =
               this.indexedDBFileNameManage.coa2.farmerProfile.front;
             this.displayCoApplicant2ProfileImage = imageSrc;

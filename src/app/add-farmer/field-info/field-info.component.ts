@@ -907,7 +907,7 @@ export class FieldInfoComponent implements OnInit {
     var crop_arr: any = [];
 
     season_arr = this.fieldInfoForm.value.plannedSeason?.split('##');
-    if ((!season_arr[0]) || (!season_arr[1])) {
+    if (((!season_arr[0]) || (!season_arr[1])) && this.fieldIndexMapIds.length) {
       error_flag = 1;
       error_season = 1;
     }
