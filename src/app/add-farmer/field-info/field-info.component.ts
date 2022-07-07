@@ -6,13 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { CommonService } from '../../shared/common.service';
 
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder,
-  FormArray,
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray, } from '@angular/forms';
 import { Router } from '@angular/router';
 import { data } from '../../shared/fob_master_data';
 
@@ -41,8 +35,7 @@ export class FieldInfoComponent implements OnInit {
   fieldInforMaster = <any>{};
   commonMaster = <any>{};
 
-  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
-    SaveStatus.Idle;
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle = SaveStatus.Idle;
   SoilQualityStar = [] as any;
   selectedSoilQualityStar = [] as any;
   selectedWaterQualityStar = [] as any;
@@ -116,8 +109,6 @@ export class FieldInfoComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {
     this.fieldInfoForm = this.formBuilder.group({
-      plannedSeason: new FormControl('', [Validators.required]),
-      plannedCrops: new FormControl('', [Validators.required]),
       plannedFieldDetails: new FormArray([]),
       // historicalFieldDetails: new FormArray([]),
       fieldOwnership: new FormArray([]),
@@ -131,8 +122,6 @@ export class FieldInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.fieldInforMaster = data.fieldInfo; // read master data
-    // this.commonMaster = data.commonData; // read master data 
-
     this.SoilQualityStar = this.fieldInforMaster['soilQuality'];
 
     this.selectedCoordinates = [];
@@ -228,6 +217,8 @@ export class FieldInfoComponent implements OnInit {
             // );
             if (typeof (fiv.planned_season_detail.plannedFieldDetails) == 'object') {
               fiv.planned_season_detail.plannedFieldDetails.crop_id = fiv.crop_id;
+              fiv.planned_season_detail.plannedFieldDetails.crop_season_id = fiv?.crop_season_id;
+              fiv.planned_season_detail.plannedFieldDetails.plannedCrops = fiv.planned_season_detail.plannedCrops;
             }
             editFieldInfo.plannedFieldDetails.push(
               fiv.planned_season_detail.plannedFieldDetails
@@ -237,8 +228,6 @@ export class FieldInfoComponent implements OnInit {
               editFieldInfo.testType.push(fiv.test_on_fields);
             }
             editFieldInfo.cropCycleOnReports = fiv.undertaking_cultivation.uc;
-            editFieldInfo.plannedSeason = fiv.crop_season_id + '##' + fiv.planned_season_detail.plannedSeason;
-            editFieldInfo.plannedCrops = fiv.planned_season_detail.plannedCrops;
             this.editFieldArea.push(fiv.field_area_ha);
             this.editFieldFrcmScore.push(fiv.frcm_score);
             this.editFieldGroundVisits.push(fiv.ground_visits);
@@ -330,17 +319,17 @@ export class FieldInfoComponent implements OnInit {
     this.fieldInfoForm.patchValue(fieldValues);
     fieldValues.plannedFieldDetails.map((item: any, index: number) => {
       const plannedDetails = <any>{};
-      plannedDetails['fieldId'] = new FormControl(item.fieldId);
-      plannedDetails['fieldName'] = new FormControl(item.fieldName);
-      plannedDetails['fieldArea'] = new FormControl(item.fieldArea);
-      plannedDetails['irrigationSystem'] = new FormControl(
-        item.irrigationSystem
-      );
+      plannedDetails['crop_season_id'] = new FormControl(item?.crop_season_id);
+      plannedDetails['plannedCrops'] = new FormControl(item?.plannedCrops);
+      plannedDetails['fieldId'] = new FormControl(item?.fieldId);
+      plannedDetails['fieldName'] = new FormControl(item?.fieldName);
+      plannedDetails['fieldArea'] = new FormControl(item?.fieldArea);
+      plannedDetails['irrigationSystem'] = new FormControl(item?.irrigationSystem);
       plannedDetails['waterSource'] = new FormControl(item.waterSource);
-      if (item.crop_id) {
-        plannedDetails['crop'] = new FormControl(item.crop_id + '##' + item.crop);
+      if (item?.crop_id) {
+        plannedDetails['crop_id'] = new FormControl(item.crop_id);
       } else {
-        plannedDetails['crop'] = new FormControl(item.crop);
+        plannedDetails['crop_id'] = new FormControl(item?.crop);
       }
       plannedDetails['soilQuality'] = new FormControl(item.soilQuality);
       plannedDetails['waterQuality'] = new FormControl(item.waterQuality);
@@ -764,12 +753,14 @@ export class FieldInfoComponent implements OnInit {
 
   createFieldDetails(): FormGroup {
     return this.formBuilder.group({
+      crop_season_id: new FormControl('', [Validators.required]),
+      plannedCrops: new FormControl('', [Validators.required]),
       fieldId: new FormControl(this.display_field_id, [Validators.required]),
       fieldName: new FormControl('', [Validators.required]),
       fieldArea: new FormControl('', [Validators.required]),
       irrigationSystem: new FormControl('', [Validators.required]),
       waterSource: new FormControl('', [Validators.required]),
-      crop: new FormControl('', [Validators.required]),
+      crop_id: new FormControl('', [Validators.required]),
       soilQuality: new FormControl(' ', [Validators.required]),
       waterQuality: new FormControl(' ', [Validators.required]),
       yieldQuality: new FormControl(' ', [Validators.required]),
@@ -782,14 +773,11 @@ export class FieldInfoComponent implements OnInit {
   }
 
   getPlannedFieldDetailsControls() {
-    return (this.fieldInfoForm.get('plannedFieldDetails') as FormArray)
-      .controls;
+    return (this.fieldInfoForm.get('plannedFieldDetails') as FormArray).controls;
   }
 
   addPlannedFieldDetails(): void {
-    this.plannedFieldDetails = this.fieldInfoForm.get(
-      'plannedFieldDetails'
-    ) as FormArray;
+    this.plannedFieldDetails = this.fieldInfoForm.get('plannedFieldDetails') as FormArray;
     this.plannedFieldDetails.push(this.createFieldDetails());
   }
 
@@ -906,20 +894,13 @@ export class FieldInfoComponent implements OnInit {
     var season_arr: any = [];
     var crop_arr: any = [];
 
-    season_arr = this.fieldInfoForm.value.plannedSeason?.split('##');
-    if (((!season_arr[0]) || (!season_arr[1])) && this.fieldIndexMapIds.length) {
-      error_flag = 1;
-      error_season = 1;
-    }
-
-    if (error_season) {
-      this.toastr.error('Please select planned season', 'Error!');
-      return;
-    }
-
     this.fieldIndexMapIds.forEach((x: any, i: number) => {
-      crop_arr = this.fieldInfoForm.value.plannedFieldDetails[i]?.crop?.split('##');
-      if ((crop_arr === null) || (crop_arr === undefined) || (!crop_arr[0])) {
+      if (!this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_season_id) {
+        error_flag = 1;
+        error_season = 1;
+        return;
+      }
+      if (!this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_id) {
         error_flag = 1;
         error_crop = 1;
         return;
@@ -931,14 +912,12 @@ export class FieldInfoComponent implements OnInit {
       }
     });
 
-    if (error_crop) {
+    if (error_season) {
+      this.toastr.error('Please select planned season', 'Error!');
+    } else if (error_crop) {
       this.toastr.error('Please select field crop', 'Error!');
-      return;
-    }
-
-    if (error_phone) {
+    } else if (error_phone) {
       this.toastr.error('Please enter valid phone number', 'Error!');
-      return;
     }
 
     if (!error_flag) {
@@ -961,30 +940,27 @@ export class FieldInfoComponent implements OnInit {
             test_arr.push(tdata);
           }
         });
-        season_arr = this.fieldInfoForm.value.plannedSeason?.split('##');
-        crop_arr = this.fieldInfoForm.value.plannedFieldDetails[i]?.crop?.split('##');
-        let plannedFieldDetails_var = this.fieldInfoForm.value.plannedFieldDetails[i];        
-        if (crop_arr.length == 1) {
-          let crop_arr1 = this.commonMaster?.crops?.filter((y: any) => y?.crop_name.toString().toLowerCase().trim() == crop_arr[0].toString().toLowerCase().trim());
-          crop_arr[1] = crop_arr[0];
-          crop_arr[0] = crop_arr1[0]?.crop_id;
+        if (this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_season_id) {
+          season_arr = this.commonMaster?.season?.filter((y: any) => y?.crop_season_id.toString().toLowerCase().trim() == this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_season_id.toString().toLowerCase().trim());
         }
-        plannedFieldDetails_var.crop = crop_arr[1];
+        if (this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_id) {
+          crop_arr = this.commonMaster?.crops?.filter((y: any) => y?.crop_id.toString().toLowerCase().trim() == this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_id.toString().toLowerCase().trim());
+          this.fieldInfoForm.value.plannedFieldDetails[i].crop = crop_arr[0]?.crop_name;
+        }
 
         obj = {
           field_ui_id: field_ui_id,
-          crop_season_id: season_arr[0],
-          crop_id: crop_arr[0],
+          crop_season_id: this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_season_id,
+          crop_id: this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_id,
           field_name: this.fieldInfoForm.value.plannedFieldDetails[i].fieldName,
           field_boundary: drawnCoordinates_obj,
           field_area_ha:
             this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
           field_address: 'test',
           planned_season_detail: {
-            plannedSeason: season_arr[1],
-            plannedCrops: this.fieldInfoForm.value.plannedCrops,
-            plannedFieldDetails: plannedFieldDetails_var,
-            // plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
+            plannedSeason: season_arr[0]?.crop_season_name,
+            plannedCrops: this.fieldInfoForm.value.plannedFieldDetails[i]?.plannedCrops,
+            plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
           },
           historical_season_detail: {
             // historicalSeason: this.fieldInfoForm.value.historicalSeason,
@@ -1032,7 +1008,7 @@ export class FieldInfoComponent implements OnInit {
         );
       }
     }
-    if (!error_flag) {
+    if (error_flag === 0) {
       const url = `/add/${this.nextRoute}/${this.farmerId}`;
       this.router.navigate([url]);
     }
@@ -1316,7 +1292,7 @@ export class FieldInfoComponent implements OnInit {
 
   logOut() {
     this.oauthService.logOut();
-    this.router.navigate(['/']);
+    this.router.navigate(['/home']);
   }
 
 }

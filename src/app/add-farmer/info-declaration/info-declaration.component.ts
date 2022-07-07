@@ -224,7 +224,7 @@ export class InfoDeclarationComponent implements OnInit {
 
   logOut() {
     this.oauthService.logOut();
-    this.router.navigate(['/']);
+    this.router.navigate(['/home']);
   }
 
   clearRoute() {

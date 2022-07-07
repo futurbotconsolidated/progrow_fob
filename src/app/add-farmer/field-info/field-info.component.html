@@ -15,13 +15,18 @@
                     <div class="form-details">
                         <div class="form-details-inner">
                             <h3 class="form-title">1. Planned season details</h3>
+                        </div>
+                    <div formArrayName="plannedFieldDetails"
+                    *ngFor="let item of getPlannedFieldDetailsControls(); let i = index;">
+                    <div [formGroupName]="i">
+                        <div class="form-details-inner">
                             <div class="row align-items-center planned-season-deatils">
                                 <div class="col-md-3">
                                     <h3 class="form-title">A. Planned season</h3>
-                                    <select class="form-select" formControlName="plannedSeason">
+                                    <select class="form-select" formControlName="crop_season_id">
                                         <option value="##">...</option>
                                         <option *ngFor="let indVal of commonMaster['season']"
-                                            value="{{indVal.crop_season_id+'##'+indVal.crop_season_name}}">
+                                            value="{{indVal.crop_season_id}}">
                                             {{indVal.crop_season_name}}</option>
                                     </select>
                                 </div>
@@ -32,20 +37,16 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-details-inner">
                             <div class="row field-details">
                                 <div class="field-tooltip">
                                     <h3 class="form-title">C. Field details</h3>
-
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-details-inner pt-0">
-                            <div class="row field-details" formArrayName="plannedFieldDetails"
-                                *ngFor="let item of getPlannedFieldDetailsControls(); let i = index;">
-                                <div class="display-flex align-normal mb-3" [formGroupName]="i">
+                            <div class="row field-details" >
+                                <div class="display-flex align-normal mb-3" >
                                     <div class="col-md-1 lable-top">
                                         <label>Field ID</label>
                                         <input type="text" class="form-control  text-center" formControlName="fieldId"
@@ -83,11 +84,10 @@
                                         </div>
                                         <div class="col-md-2 lable-top">
                                             <label>Crop</label>
-                                            <select class="form-select" formControlName="crop">
+                                            <select class="form-select" formControlName="crop_id">
                                                 <option value="##">...</option>
                                                 <option *ngFor="let indVal of commonMaster['crops']"
-                                                    value="{{indVal.crop_id+'##'+indVal.crop_name}}">
-                                                    {{indVal.crop_name}}</option>
+                                                    value="{{indVal.crop_id}}">                                                    {{indVal.crop_name}}</option>
                                             </select>
 
                                         </div>
@@ -98,7 +98,7 @@
                                                 placeholder="Enter Value">
                                         </div>
                                         <div class="col-md-2 lable-top">
-                                            <label>Soil quality</label>
+                                            <label>Perceived soil quality</label>
                                             <div class="ratings">
                                                 <div class="star-rate">
                                                     <a *ngFor="let soilQualityStar of fieldInforMaster['soilQuality'];  let sqsi = index;"
@@ -160,6 +160,8 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        </div>
                         </div>
                     </div>
                     <!-- <div class="form-details">

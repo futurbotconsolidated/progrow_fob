@@ -1022,7 +1022,7 @@ export class DisplayMapComponent implements OnInit {
 
     this.oauthService.revokeTokenAndLogout();
     this.oauthService.logOut();
-    this.router.navigate(['/']);
+    this.router.navigate(['/home']);
   }
 
   onChangeFilter(event: any, type: string, value: any) {

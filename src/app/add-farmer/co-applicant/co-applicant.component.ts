@@ -2182,7 +2182,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
   logOut() {
     this.oauthService.logOut();
-    this.router.navigate(['/']);
+    this.router.navigate(['/home']);
   }
 
   setKycDataVariables(
