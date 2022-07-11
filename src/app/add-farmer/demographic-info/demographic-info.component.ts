@@ -1516,10 +1516,10 @@ export class DemographicInfoComponent
         }
       }
       if (edit_mobile_no != event.target.value) {
-        this.spinner.show();
+        // this.spinner.show();
         this.commonService.checkMobileNo(event.target.value.trim()).subscribe(
           (res: any) => {
-            this.spinner.hide();
+            // this.spinner.hide();
             if (res && !res.status) {
               this.check_errors.mobile = res.message;
               alert(`${res.message}`);
@@ -1528,7 +1528,7 @@ export class DemographicInfoComponent
             }
           },
           (error: any) => {
-            this.spinner.hide();
+            // this.spinner.hide();
             if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
               this.logOut();
               return;

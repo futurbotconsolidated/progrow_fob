@@ -113,7 +113,6 @@ export class EditCoApplicantComponent implements OnInit {
     const A: any = localStorage.getItem('farmer-details');
     if (A) {
       this.coApplicantDisp = JSON.parse(A).co_applicant_details;
-      console.log('coApplicantDisp : ', this.coApplicantDisp);
     }
   }
   ngOnInit(): void { }
