@@ -483,7 +483,7 @@
                             {{ (x.demographic_info_form.address1.length>20)? (x.demographic_info_form.address1 |
                             slice:0:20)+'...':(x.demographic_info_form.address1) }}
                           </td>
-                          <td><a (click)="editDraftFarmer(x.DF_ID)"><i class="fa fa-edit"></i> Edit</a></td>
+                          <td><a class="cursor-pointer" (click)="editDraftFarmer(x.DF_ID)"><i class="fa fa-edit"></i> Edit</a></td>
                         </tr>
                       </tbody>
                     </table>

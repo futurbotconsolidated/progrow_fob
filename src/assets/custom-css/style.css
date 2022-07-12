@@ -1457,7 +1457,9 @@ table tr th {
 .btn-filter:hover {
   color: #fff;
 }
-
+.cursor-pointer {
+  cursor: pointer;
+}
 /*Main section*/
 
 /*responsive*/

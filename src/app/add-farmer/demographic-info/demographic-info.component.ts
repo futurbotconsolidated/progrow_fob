@@ -7,15 +7,9 @@ import { CommonService } from '../../shared/common.service';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { formatDate } from '@angular/common';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder,
-  FormArray,
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray, } from '@angular/forms';
 import { validatePANNumber } from '../../shared/custom-validators';
-import { data } from '../../shared/fob_master_data';
+// import { data } from '../../shared/fob_master_data';
 declare var $: any;
 import { AddFarmerService } from '../add-farmer.service';
 
@@ -39,6 +33,7 @@ export class DemographicInfoComponent
   /* START: Varaibles ------------------------------------------------- */
   private observableSubscription: any;
 
+  masterData: any = {};
   demoGraphicMaster = <any>{};
   isSubmitted = false;
   fileUpload = {
@@ -306,7 +301,9 @@ export class DemographicInfoComponent
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
-    this.demoGraphicMaster = data.demoGraphic; // read master data
+    this.getMasterData();
+    this.demoGraphicMaster = this.masterData?.masterFile?.fob2?.demoGraphic; // read master data
+    // this.demoGraphicMaster = data.demoGraphic; // read master data
 
     // populate
     this.commonService.fetchFarmerDocument(
@@ -609,7 +606,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.panCard.front
             );
-            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     }
 
@@ -672,7 +669,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.aadhaarCard.front
             );
-            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -687,7 +684,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.aadhaarCard.back
             );
-            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (type === this.fileUploadFileFor.drivingLicence) {
       if (!this.demographicInfoForm.value.drivingLicenceNumber) {
@@ -709,7 +706,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.drivingLicence.front
             );
-            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -724,7 +721,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.drivingLicence.back
             );
-            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (type === this.fileUploadFileFor.voterId) {
       if (!this.demographicInfoForm.value.voterIdNumber) {
@@ -746,7 +743,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.voterId.front
             );
-            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -761,7 +758,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.voterId.back
             );
-            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (type === this.fileUploadFileFor.passport) {
       if (!this.demographicInfoForm.value.passportNumber) {
@@ -784,7 +781,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.passport.front
             );
-            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -799,7 +796,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.passport.back
             );
-            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (type === this.fileUploadFileFor.NREGA) {
       if (!this.demographicInfoForm.value.NREGANumber) {
@@ -822,7 +819,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.NREGA.front
             );
-            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
 
       this.dbService
@@ -837,7 +834,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.NREGA.back
             );
-            this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName2 = this.fileUpload.new.imageSrc2?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     } else if (type === this.fileUploadFileFor.farmerProfile) {
       this.fileUpload.popupTitle = 'Upload Farmer Profile Image';
@@ -932,7 +929,7 @@ export class DemographicInfoComponent
             this.commonService.fetchFarmerDocument(
               this.indexedDBFileNameManage.recordAudioVideo.front + '_' + this.fileUpload.new.fileIndex
             );
-            this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
+          this.fileUpload.new.imageName1 = this.fileUpload.new.imageSrc1?.split('/').pop().split('#')[0].split('?')[0].toString().substring(0, 60);
         });
     }
     $('input.formFileSm').val('');
@@ -1067,7 +1064,7 @@ export class DemographicInfoComponent
                 this.indexedDBFileNameManage.ownershipPicture.front +
                 '_' +
                 this.fileUpload.new.fileIndex +
-                '_' + (parseInt(c_file_count) + parseInt(findex));                
+                '_' + (parseInt(c_file_count) + parseInt(findex));
             }
           }
           /* START: ngx-indexed-db feature to store files(images/docs) */
@@ -1591,6 +1588,41 @@ export class DemographicInfoComponent
       }
     } else {
       this.check_errors.pan = 'Please enter valid PAN card number!';
+    }
+  }
+
+  getMasterData() {
+    let master_data = JSON.parse(localStorage.getItem('master-data') as any);
+    if (!master_data) {
+      this.spinner.show();
+      this.commonService.getMasterData().subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res && 'object' == typeof (res)) {
+            if (res.message != 'Success' || !res.status) {
+              console.log(`${res.message}`);
+            } else if (res?.data) {
+              this.masterData = res.data;
+              localStorage.setItem('master-data', JSON.stringify(res.data));
+            } else {
+              console.log('Failed to fetch master data !');
+            }
+          } else {
+            console.log('Failed to fetch master data !!');
+          }
+        },
+        (error: any) => {
+          this.spinner.hide();
+          if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+            this.logOut();
+            return;
+          } else {
+            console.log('Failed to fetch master data, please try again...');
+          }
+        }
+      );
+    } else {
+      this.masterData = master_data;
     }
   }
 

@@ -8,7 +8,7 @@ import { CommonService } from '../../shared/common.service';
 
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray, } from '@angular/forms';
 import { Router } from '@angular/router';
-import { data } from '../../shared/fob_master_data';
+// import { data } from '../../shared/fob_master_data';
 
 // import 'leaflet';
 declare const L: any;
@@ -32,11 +32,12 @@ declare var $: any;
 })
 export class FieldInfoComponent implements OnInit {
   /* START: Variables */
+  masterData: any = {};
   fieldInforMaster = <any>{};
   commonMaster = <any>{};
 
   saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle = SaveStatus.Idle;
-  SoilQualityStar = [] as any;
+  // SoilQualityStar = [] as any;
   selectedSoilQualityStar = [] as any;
   selectedWaterQualityStar = [] as any;
   selectedYieldQualityStar = [] as any;
@@ -121,8 +122,12 @@ export class FieldInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fieldInforMaster = data.fieldInfo; // read master data
-    this.SoilQualityStar = this.fieldInforMaster['soilQuality'];
+    this.getMasterData();
+    this.commonMaster.crops = this.masterData?.crops;
+    this.commonMaster.season = this.masterData?.seasons;
+    this.fieldInforMaster = this.masterData?.masterFile?.fob2?.fieldInfo; // read master data
+    // this.fieldInforMaster = data.fieldInfo; // read master data
+    // this.SoilQualityStar = this.fieldInforMaster['soilQuality'];
 
     this.selectedCoordinates = [];
     this.fieldArea = [];
@@ -130,9 +135,7 @@ export class FieldInfoComponent implements OnInit {
     this.editFieldFrcmScore = [];
     this.editFieldGroundVisits = [];
     this.fieldIndexMapIds = [];
-    this.commonMaster.crops = [];
-    this.commonMaster.season = [];
-    this.getMasterData();
+
 
     // -----------------------start auto save --------------------
     // draft feature is not required in edit operation
@@ -154,6 +157,7 @@ export class FieldInfoComponent implements OnInit {
           this.fieldIndexMapIds.forEach((fimi_value: any) => {
             fimi_coordinates.push(fimi_value.coordinates);
           });
+          localStorage.setItem('field-info-coordinates', JSON.stringify(fimi_coordinates));
           draft_farmer_new['field_info_form'] = form_values;
           draft_farmer_new['field_info_coordinates'] = fimi_coordinates;
           localStorage.setItem(
@@ -241,9 +245,7 @@ export class FieldInfoComponent implements OnInit {
     } else {
       let fieldInfo: any = localStorage.getItem('field-info-form');
       if (fieldInfo) {
-        let fieldInfoCoordinates: any = localStorage.getItem(
-          'field-info-coordinates'
-        );
+        let fieldInfoCoordinates: any = localStorage.getItem('field-info-coordinates');
         if (fieldInfoCoordinates) {
           fieldInfoCoordinates = JSON.parse(fieldInfoCoordinates);
         }
@@ -272,45 +274,37 @@ export class FieldInfoComponent implements OnInit {
   }
 
   getMasterData() {
-    if (!this.commonMaster.season.length && !this.commonMaster.crops.length) {
-      let master_data = JSON.parse(localStorage.getItem('master-data') as any);
-      if (!master_data || !master_data.seasons.length || !master_data.crops.length) {
-        this.spinner.show();
-        this.commonService.getMasterData().subscribe(
-          (res: any) => {
-            this.spinner.hide();
-            if (res && 'object' == typeof (res)) {
-              if (res.message != 'Success' || !res.status) {
-                console.log(`${res.message}`);
-              } else if (res?.data) {
-                localStorage.setItem('master-data', JSON.stringify(res.data));
-                if (res.data && res.data.crops) {
-                  this.commonMaster.crops = res.data.crops;
-                }
-                if (res.data && res.data.seasons) {
-                  this.commonMaster.season = res.data.seasons;
-                }
-              } else {
-                console.log('Failed to fetch master data !');
-              }
+    let master_data = JSON.parse(localStorage.getItem('master-data') as any);
+    if (!master_data || !master_data?.seasons.length || !master_data?.crops.length) {
+      this.spinner.show();
+      this.commonService.getMasterData().subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res && 'object' == typeof (res)) {
+            if (res.message != 'Success' || !res.status) {
+              console.log(`${res.message}`);
+            } else if (res?.data) {
+              this.masterData = res.data;
+              localStorage.setItem('master-data', JSON.stringify(res.data));
             } else {
-              console.log('Failed to fetch master data !!');
+              console.log('Failed to fetch master data !');
             }
-          },
-          (error: any) => {
-            this.spinner.hide();
-            if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
-              this.logOut();
-              return;
-            } else {
-              console.log('Failed to fetch master data, please try again...');
-            }
+          } else {
+            console.log('Failed to fetch master data !!');
           }
-        );
-      } else {
-        this.commonMaster.crops = master_data.crops;
-        this.commonMaster.season = master_data.seasons;
-      }
+        },
+        (error: any) => {
+          this.spinner.hide();
+          if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+            this.logOut();
+            return;
+          } else {
+            console.log('Failed to fetch master data, please try again...');
+          }
+        }
+      );
+    } else {
+      this.masterData = master_data;
     }
   }
 
@@ -893,40 +887,42 @@ export class FieldInfoComponent implements OnInit {
     var error_phone = 0;
     var season_arr: any = [];
     var crop_arr: any = [];
+    var fimi_coordinates = [] as any;
 
     this.fieldIndexMapIds.forEach((x: any, i: number) => {
       if (!this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_season_id) {
         error_flag = 1;
         error_season = 1;
-        return;
+        // return;
       }
       if (!this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_id) {
         error_flag = 1;
         error_crop = 1;
-        return;
+        // return;
       }
       if (this.fieldInfoForm.value.fieldOwnership[i]?.fieldOwnCoPh.length > 0 && this.fieldInfoForm.value.fieldOwnership[i]?.fieldOwnCoPh.length != 10) {
         error_flag = 1;
         error_phone = 1;
-        return;
+        // return;
       }
     });
 
-    if (error_season) {
+    if (error_season == 1) {
       this.toastr.error('Please select planned season', 'Error!');
-    } else if (error_crop) {
+    } else if (error_crop == 1) {
       this.toastr.error('Please select field crop', 'Error!');
-    } else if (error_phone) {
+    } else if (error_phone == 1) {
       this.toastr.error('Please enter valid phone number', 'Error!');
     }
 
-    if (!error_flag) {
+    if (error_flag === 0) {
       this.fieldIndexMapIds.forEach((x: any, i: number) => {
         field_ui_id = i + 1;
         this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
         // this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
         this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
         this.fieldInfoForm.value.fieldOwnership[i].fieldOwnId = i + 1;
+        fimi_coordinates.push(x?.coordinates);
         var drawnCoordinates_obj = {
           type: 'field-boundary',
           geometry: {
@@ -983,7 +979,7 @@ export class FieldInfoComponent implements OnInit {
 
       console.log('fieldArr : ', fieldArr);
 
-      if (!fieldArr.length && this.display_field_id == 1) {
+      if (this.farmerId && !fieldArr.length && this.display_field_id == 1) {
         let farmer_details: any = localStorage.getItem('farmer-details');
         if (farmer_details) {
           fieldArr = JSON.parse(farmer_details).fieldInfo;
@@ -993,23 +989,19 @@ export class FieldInfoComponent implements OnInit {
       //   this.toastr.error('Please Plot at least One Field', 'Error!');
       //   return;
       // } else {
-
       if (this.farmerId) {
         localStorage.setItem('edit-field-info', JSON.stringify(fieldArr));
-        localStorage.setItem(
-          'edit-field-info-form',
-          JSON.stringify(this.fieldInfoForm.value)
-        );
+        localStorage.setItem('edit-field-info-form', JSON.stringify(this.fieldInfoForm.value));
       } else {
         localStorage.setItem('field-info', JSON.stringify(fieldArr));
-        localStorage.setItem(
-          'field-info-form',
-          JSON.stringify(this.fieldInfoForm.value)
-        );
+        localStorage.setItem('field-info-form', JSON.stringify(this.fieldInfoForm.value));
+        localStorage.setItem('field-info-coordinates', JSON.stringify(fimi_coordinates));
       }
-    }
-    if (error_flag === 0) {
+      // }
       const url = `/add/${this.nextRoute}/${this.farmerId}`;
+      this.router.navigate([url]);
+    } else {
+      const url = `/add/field-info/${this.farmerId}`;
       this.router.navigate([url]);
     }
     // }

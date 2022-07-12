@@ -12,7 +12,7 @@ import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { formatDate } from '@angular/common';
 
 declare var $: any;
-import { data } from '../../shared/fob_master_data';
+// import { data } from '../../shared/fob_master_data';
 import { AddFarmerService } from '../add-farmer.service';
 
 enum SaveStatus {
@@ -34,6 +34,7 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
   /* START: Varaibles ---------------------------------------------*/
   private observableSubscription: any;
 
+  masterData: any = {};
   coApplicantMaster = <any>{};
   demoGraphicMaster = <any>{};
 
@@ -424,8 +425,12 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
-    this.coApplicantMaster = data.coApplicant; // read master data
-    this.demoGraphicMaster = data.demoGraphic; // read master data
+    this.getMasterData();
+    this.coApplicantMaster = this.masterData?.masterFile?.fob2?.coApplicant; // read master data
+    this.demoGraphicMaster = this.masterData?.masterFile?.fob2?.demoGraphic; // read master data
+    // this.coApplicantMaster = data.coApplicant; // read master data
+    // this.demoGraphicMaster = data.demoGraphic; // read master data
+    console.log(this.coApplicantMaster)
     // ----------------------- Start auto save --------------------
     // draft feature is not required in edit operation
     if (!this.farmerId) {
@@ -2178,6 +2183,41 @@ export class CoApplicantComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     );
+  }
+
+  getMasterData() {
+    let master_data = JSON.parse(localStorage.getItem('master-data') as any);
+    if (!master_data || !master_data?.seasons.length || !master_data?.crops.length) {
+      this.spinner.show();
+      this.commonService.getMasterData().subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res && 'object' == typeof (res)) {
+            if (res.message != 'Success' || !res.status) {
+              console.log(`${res.message}`);
+            } else if (res?.data) {
+              this.masterData = res.data;
+              localStorage.setItem('master-data', JSON.stringify(res.data));
+            } else {
+              console.log('Failed to fetch master data !');
+            }
+          } else {
+            console.log('Failed to fetch master data !!');
+          }
+        },
+        (error: any) => {
+          this.spinner.hide();
+          if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+            this.logOut();
+            return;
+          } else {
+            console.log('Failed to fetch master data, please try again...');
+          }
+        }
+      );
+    } else {
+      this.masterData = master_data;
+    }
   }
 
   logOut() {

@@ -151,13 +151,13 @@
                             </li>
                             <li>
                                 <p>Cultivation expenditure/season</p>
-                                <b>{{summary?.cultivation_expenditure || 'N/A'}} </b>
+                                <b>{{(summary?.cultivation_expenditure != 'NaN')?(summary?.cultivation_expenditure):'N/A'}} </b>
                             </li>
                             <li>
-                                <p>Household expenditure/month</p> <b>{{summary?.household_expenditure || 'N/A'}}</b>
+                                <p>Household expenditure/month</p> <b>{{(summary?.household_expenditure != 'NaN')?(summary?.household_expenditure):'N/A'}}</b>
                             </li>
                             <li>
-                                <p>Outstanding liability/month</p><b>{{summary?.household_expenditure || 'N/A'}}</b>
+                                <p>Outstanding liability/month</p><b>{{(summary?.household_expenditure != 'NaN')?(summary?.household_expenditure):'N/A'}}</b>
                             </li>
                             <li>
                                 <p>Interest in other loan product</p>

@@ -492,7 +492,7 @@
                     (keypress)="validateNo($event)" maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" />
                   <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
                     <small *ngIf="f['pinCode'].errors['required']">
-                      PinCode is required</small>
+                      Pincode is required</small>
                     <small *ngIf="f['pinCode'].errors['minlength']">
                       Should be 6 digits</small>
                     <small *ngIf="f['pinCode'].errors['maxlength']">

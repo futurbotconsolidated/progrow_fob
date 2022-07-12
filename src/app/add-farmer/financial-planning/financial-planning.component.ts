@@ -32,6 +32,7 @@ export class FinancialPlanningComponent
   /* START: Variables ---------------------------------------------*/
   private observableSubscription: any;
 
+  masterData: any = {};
   KCCLoanRepaymentDateError = false;
   otherLoanRepaymentDateError = false;
   loanReqPlaned!: FormArray;
@@ -166,11 +167,13 @@ export class FinancialPlanningComponent
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
-    this.financialMaster = data.financialPlan; // read master data
-    //this.commonMaster = data.commonData; // read master data
-    this.commonMaster.crops = [];
-    this.commonMaster.season = [];
     this.getMasterData();
+    this.commonMaster.crops = this.masterData?.crops;
+    this.commonMaster.season = this.masterData?.seasons;
+    this.financialMaster = this.masterData?.masterFile?.fob2?.financialPlan; // read master data
+    // this.financialMaster = data.financialPlan; // read master data
+    //this.commonMaster = data.commonData; // read master data
+
     // -----------------------start auto save --------------------
     // draft feature is not required in edit operation
     if (!this.farmerId) {
@@ -544,45 +547,37 @@ export class FinancialPlanningComponent
   }
 
   getMasterData() {
-    if (!this.commonMaster.season.length && !this.commonMaster.crops.length) {
-      let master_data = JSON.parse(localStorage.getItem('master-data') as any);
-      if (!master_data || !master_data.seasons.length || !master_data.crops.length) {
-        this.spinner.show();
-        this.commonService.getMasterData().subscribe(
-          (res: any) => {
-            this.spinner.hide();
-            if (res && 'object' == typeof (res)) {
-              if (res.message != 'Success' || !res.status) {
-                console.log(`${res.message}`);
-              } else if (res?.data) {
-                localStorage.setItem('master-data', JSON.stringify(res.data));
-                if (res.data && res.data.crops) {
-                  this.commonMaster.crops = res.data.crops;
-                }
-                if (res.data && res.data.seasons) {
-                  this.commonMaster.season = res.data.seasons;
-                }
-              } else {
-                console.log('Failed to fetch master data !');
-              }
+    let master_data = JSON.parse(localStorage.getItem('master-data') as any);
+    if (!master_data || !master_data?.seasons.length || !master_data?.crops.length) {
+      this.spinner.show();
+      this.commonService.getMasterData().subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res && 'object' == typeof (res)) {
+            if (res.message != 'Success' || !res.status) {
+              console.log(`${res.message}`);
+            } else if (res?.data) {
+              this.masterData = res.data;
+              localStorage.setItem('master-data', JSON.stringify(res.data));
             } else {
-              console.log('Failed to fetch master data !!');
+              console.log('Failed to fetch master data !');
             }
-          },
-          (error: any) => {
-            this.spinner.hide();
-            if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
-              this.logOut();
-              return;
-            } else {
-              console.log('Failed to fetch master data, please try again...');
-            }
+          } else {
+            console.log('Failed to fetch master data !!');
           }
-        );
-      } else {
-        this.commonMaster.crops = master_data.crops;
-        this.commonMaster.season = master_data.seasons;
-      }
+        },
+        (error: any) => {
+          this.spinner.hide();
+          if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+            this.logOut();
+            return;
+          } else {
+            console.log('Failed to fetch master data, please try again...');
+          }
+        }
+      );
+    } else {
+      this.masterData = master_data;
     }
   }
 

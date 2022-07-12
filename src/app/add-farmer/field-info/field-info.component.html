@@ -24,7 +24,7 @@
                                 <div class="col-md-3">
                                     <h3 class="form-title">A. Planned season</h3>
                                     <select class="form-select" formControlName="crop_season_id">
-                                        <option value="##">...</option>
+                                        <option value="">...</option>
                                         <option *ngFor="let indVal of commonMaster['season']"
                                             value="{{indVal.crop_season_id}}">
                                             {{indVal.crop_season_name}}</option>
@@ -85,7 +85,7 @@
                                         <div class="col-md-2 lable-top">
                                             <label>Crop</label>
                                             <select class="form-select" formControlName="crop_id">
-                                                <option value="##">...</option>
+                                                <option value="">...</option>
                                                 <option *ngFor="let indVal of commonMaster['crops']"
                                                     value="{{indVal.crop_id}}">                                                    {{indVal.crop_name}}</option>
                                             </select>
