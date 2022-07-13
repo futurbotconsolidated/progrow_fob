@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../../shared/common.service';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { Router } from '@angular/router';
 
 declare const L: any;
 import 'leaflet-draw';
@@ -11,6 +13,7 @@ declare var $: any;
   styleUrls: ['./edit-field-info.component.css'],
 })
 export class EditFieldInfoComponent implements OnInit {
+  masterData: any = {};
   fieldInfo = {} as any;
   selectedCoordinates = [] as any;
   ownerShipDetails = [] as any;
@@ -47,6 +50,8 @@ export class EditFieldInfoComponent implements OnInit {
     testPicture: 'TEST_PICTURE',
   };
   constructor(
+    public oauthService: OAuthService,
+    public router: Router,
     public commonService: CommonService,
     private spinner: NgxSpinnerService
   ) {
@@ -58,12 +63,23 @@ export class EditFieldInfoComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.fieldInfo) {
+      this.getMasterData();
       this.editFieldArea = [];
       this.enumerateDetails = [];
       this.typesOfTests = [];
       // this.spinner.show();
       this.fieldInfo?.forEach((el: any) => {
         this.ownerShipDetails.push(el.field_ownership_detail);
+        el.planned_season_detail.plannedFieldDetails.plannedCrops = el.planned_season_detail?.plannedCrops;
+        let season_arr: any = [];
+        if (el?.crop_season_id) {
+          season_arr = this.masterData?.seasons?.filter((y: any) => y?.crop_season_id.toString().toLowerCase().trim() == el?.crop_season_id.toString().toLowerCase().trim());
+        }
+        if (season_arr[0]?.crop_season_name) {
+          el.planned_season_detail.plannedFieldDetails.plannedSeason = season_arr[0]?.crop_season_name;
+        } else {
+          el.planned_season_detail.plannedFieldDetails.plannedSeason = el.planned_season_detail?.plannedSeason;
+        }
         this.plannedDetails.push(el.planned_season_detail.plannedFieldDetails);
         this.historicalDetails.push(
           el.historical_season_detail.historicalFieldDetails
@@ -73,9 +89,6 @@ export class EditFieldInfoComponent implements OnInit {
             this.typesOfTests.push(eltof);
           });
         }
-        // else {
-        //   this.typesOfTests.push(el.test_on_fields);
-        // }
         this.enumerateDetails.push(el.enumerate_planned_season);
       });
       if (navigator.geolocation) {
@@ -257,6 +270,46 @@ export class EditFieldInfoComponent implements OnInit {
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
+  }
+
+  getMasterData() {
+    let master_data = JSON.parse(localStorage.getItem('master-data') as any);
+    if (!master_data || !master_data?.seasons.length) {
+      this.spinner.show();
+      this.commonService.getMasterData().subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res && 'object' == typeof (res)) {
+            if (res.message != 'Success' || !res.status) {
+              console.log(`${res.message}`);
+            } else if (res?.data) {
+              this.masterData = res.data;
+              localStorage.setItem('master-data', JSON.stringify(res.data));
+            } else {
+              console.log('Failed to fetch master data !');
+            }
+          } else {
+            console.log('Failed to fetch master data !!');
+          }
+        },
+        (error: any) => {
+          this.spinner.hide();
+          if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+            this.logOut();
+            return;
+          } else {
+            console.log('Failed to fetch master data, please try again...');
+          }
+        }
+      );
+    } else {
+      this.masterData = master_data;
+    }
+  }
+
+  logOut() {
+    this.oauthService.logOut();
+    this.router.navigate(['/home']);
   }
 
 }

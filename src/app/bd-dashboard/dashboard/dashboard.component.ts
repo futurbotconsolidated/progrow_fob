@@ -9,7 +9,7 @@ import { CommonService } from '../../shared/common.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 declare var $: any;
-import { mapData } from '../../../assets/overlay_data';
+// import { mapData } from '../../../assets/overlay_data';
 
 @Component({
   selector: 'app-dashboard',
@@ -879,7 +879,7 @@ export class DashboardComponent implements OnInit {
     for (let i = 0; i < array.length; i++) {
       let line = '';
       for (let j = 0; j < array[i].length; j++) {
-        line += (array[i][j]).toString().replace(/,/g, '') + ',';
+        line += (array[i][j])?.toString().replace(/,/g, '') || '' + ',';
       }
       csvData += line + '\r\n';
     }

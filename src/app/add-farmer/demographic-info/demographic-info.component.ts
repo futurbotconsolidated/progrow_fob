@@ -229,17 +229,17 @@ export class DemographicInfoComponent
 
       address1: new FormControl('', [Validators.required]),
       address2: new FormControl(''),
-      taluk: new FormControl(''),
-      // taluk: new FormControl('', [Validators.required]),
-      city: new FormControl(''),
-      // city: new FormControl('', [Validators.required]),
+      // taluk: new FormControl(''),
+      taluk: new FormControl('', [Validators.required]),
+      // city: new FormControl(''),
+      city: new FormControl('', [Validators.required]),
       pinCode: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(6),
       ]),
-      state: new FormControl(''),
-      // state: new FormControl('', [Validators.required]),
+      // state: new FormControl(''),
+      state: new FormControl('', [Validators.required]),
       landmark: new FormControl(''),
 
       phoneNumber: new FormControl('', [
@@ -1465,7 +1465,7 @@ export class DemographicInfoComponent
         (res: any) => {
           this.spinner.hide();
           if (res && !res.status) {
-            alert(`${res[0].Message}`);
+            alert(`${res.message}`);
           } else {
             if (type === 'ADDRESS') {
               this.pinCodeAPIData = res.data;
