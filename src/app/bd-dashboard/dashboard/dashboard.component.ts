@@ -699,7 +699,7 @@ export class DashboardComponent implements OnInit {
       });
       this.score_farmer.push(score);
     });
-    if(this.score_farmer.length){
+    if (this.score_farmer.length) {
       this.audit_data = false;
     }
     $('#scoreModalPopup').modal('show');
@@ -879,7 +879,11 @@ export class DashboardComponent implements OnInit {
     for (let i = 0; i < array.length; i++) {
       let line = '';
       for (let j = 0; j < array[i].length; j++) {
-        line += (array[i][j])?.toString().replace(/,/g, '') || '' + ',';
+        if ((array[i][j])?.toString().replace(/,/g, '')) {
+          line += (array[i][j])?.toString().replace(/,/g, '') + ',';
+        } else {
+          line += ',';
+        }
       }
       csvData += line + '\r\n';
     }
