@@ -1149,6 +1149,10 @@ export class FieldInfoComponent implements OnInit {
       this.fileUpload.new.fileIndex = fileIndex;
       for (let findex = 0; findex < event.target.files.length; findex++) {
         const file = event.target.files[findex];
+        if (file.type.split('/')[0] == 'audio' || file.type.split('/')[0] == 'video') {
+          this.toastr.error('Audio/Video file is not allowed.', 'Error!');
+          return;
+        }
         // if (file.size > 300000) {
         //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
         //   return;

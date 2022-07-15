@@ -1541,9 +1541,20 @@ export class DemographicInfoComponent
   }
 
   downloadFile(data: any) {
-    console.log(data);
     let dwldLink = document.createElement("a");
     dwldLink.setAttribute("target", "_blank");
+    let type = data.split(';base64');
+    if (type && type[0]?.split(':')) {
+      type = type[0].split(':');
+      if (type && type[1]?.split('/')) {
+        type = type[1].split('/');
+        if (type[0] == 'audio') {
+          dwldLink.setAttribute("download", "audio-"+Date.now());
+        } else if (type[0] == 'video') {
+          dwldLink.setAttribute("download", "video-"+Date.now());
+        }
+      }
+    }
     dwldLink.setAttribute("href", data);
     dwldLink.style.visibility = "hidden";
     document.body.appendChild(dwldLink);
