@@ -44,9 +44,11 @@ export class DashboardComponent implements OnInit {
   ) {
     localStorage.removeItem('farmer-details');
     this.userInfo = this.oauthService.getIdentityClaims();
-    const A = localStorage.getItem('filter-value');
-    if (!A) {
+    let filter_value = localStorage.getItem('filter-value');
+    if (!filter_value) {
       this.filterType = 'this_month';
+    } else {
+      this.filterType = filter_value;
     }
   }
 
@@ -94,7 +96,7 @@ export class DashboardComponent implements OnInit {
   filterFarms(type: string) {
     this.selectedViewType = type;
     if (type == 'EXISTING_FARMS_LIST_VIEW') {
-      if (!this.allExistingFarmers) this.getExistingFarmers('');
+      if (!this.allExistingFarmers) this.getExistingFarmers(this.filterType);
     } else if (type == 'EXISTING_FARMS_MAP_VIEW') {
       this.overlayMap('EXISTING_FARMS_MAP_VIEW');
     } else if (type == 'FARMS_PIPELINE_LIST_VIEW') {
@@ -156,11 +158,11 @@ export class DashboardComponent implements OnInit {
     let useData = [] as any;
     if (type == 'EXISTING_FARMS_MAP_VIEW') {
       mapViewType = 'existing_farmers_mapbox';
-      if (!this.allExistingFarmers) this.getExistingFarmers('');
+      if (!this.allExistingFarmers) this.getExistingFarmers(this.filterType);
       useData = this.allExistingFarmers;
     } else if (type == 'FARMS_PIPELINE_MAP_VIEW') {
       mapViewType = 'farms_pipeline_mapbox';
-      if (!this.allPipelineFarmers) this.getExistingFarmers('');
+      if (!this.allPipelineFarmers) this.getExistingFarmers(this.filterType);
       useData = this.allPipelineFarmers;
     }
     //  Start Overlay Code
@@ -650,7 +652,8 @@ export class DashboardComponent implements OnInit {
   onChangeFilter(event: any) {
     localStorage.setItem('filter-value', event.target.value);
     this.filterType = event.target.value;
-    this.getExistingFarmers(event.target.value);
+    window.location.reload();
+    //this.getExistingFarmers(event.target.value);
   }
 
   clearLocalStorageOnEditAndView() {
