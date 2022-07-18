@@ -5,35 +5,26 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="actual-facts summery-bg full-height">
-                        <h4 class="summery-heading"><span>Crop Loan</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Crop Loan</span><a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
 
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            Field Id
-                                        </th>
-                                        <th>
-                                            Loan Product
-                                        </th>
-                                        <th>
-                                            Area
-                                        </th>
-                                        <th>
-                                            Required Amount
-                                        </th>
-                                        <th>
-                                            Crop
-                                        </th>
+                                        <th> Field Id </th>
+                                        <th> Loan Product </th>
+                                        <th> Area(In Hectares) </th>
+                                        <th> Required Amount(₹) </th>
+                                        <th> Crop </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let x of financialPlanDisp?.loanReqPlaned">
                                         <td>{{x.fieldId}}</td>
                                         <td>{{x.cropLoanProduct}}</td>
-                                        <td>{{x.hectares}}</td>
                                         <td>{{x.plannedCultivationArea}}</td>
+                                        <td>{{x.hectares}}</td>
                                         <td>{{x.crop}} </td>
                                     </tr>
                                 </tbody>
@@ -43,12 +34,13 @@
                 </div>
                 <div class="col-md-3">
                     <div class="actual-facts summery-bg full-height">
-                        <h4 class="summery-heading"><span>Other Loan</span> <a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Other Loan</span> <a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile kyc-details">
                             <p>Bank: {{financialPlanDisp?.otherLoanBank || 'NA'}}</p>
-                            <p>Credited Amount: {{financialPlanDisp?.otherLoanCreditedAmount || 'NA'}}</p>
+                            <p>Credited Amount(₹): {{financialPlanDisp?.otherLoanCreditedAmount || 'NA'}}</p>
                             <p>Disbursement Date: {{financialPlanDisp?.otherLoanDisbursementDate || 'NA'}}</p>
-                            <p>Repayment Amount: {{financialPlanDisp?.otherLoanRepaymentAmount || 'NA'}}</p>
+                            <p>Repayment Amount(₹): {{financialPlanDisp?.otherLoanRepaymentAmount || 'NA'}}</p>
                             <p>Repayment Date: {{financialPlanDisp?.otherLoanRepaymentDate || 'NA'}}</p>
                             <!-- <p><span><i class="fa fa-check"></i>N/A</span></p> -->
                         </div>
@@ -58,7 +50,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><span>Cultivation Costs</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Cultivation Costs</span><a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
                             <li>
                                 <h5>&nbsp;</h5>
@@ -95,7 +88,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><span>Monthly Expenses</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Monthly Expenses</span><a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
                             <li>
                                 <h5>&nbsp;</h5>
@@ -136,28 +130,18 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><span>Season crop wise selling information</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Season crop wise selling information</span><a
+                                href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a>
+                        </h4>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>
-                                        Season
-                                    </th>
-                                    <th>
-                                        Crop
-                                    </th>
-                                    <th>
-                                        Sold at
-                                    </th>
-                                    <th>
-                                        Quantity Sold (in KG)
-                                    </th>
-                                    <th>
-                                        Selling Price(₹)
-                                    </th>
-                                    <th>
-                                        Selling Date
-                                    </th>
+                                    <th> Season </th>
+                                    <th> Crop </th>
+                                    <th> Sold at </th>
+                                    <th> Quantity Sold (in KG) </th>
+                                    <th> Selling Price(₹) </th>
+                                    <th> Selling Date </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -170,46 +154,46 @@
                                     <td>{{x.sellingDate}} </td>
                                 </tr>
                             </tbody>
-                        </table>                        
+                        </table>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="actual-facts summery-bg full-height">
-                        <h4 class="summery-heading"><span>KCC Details</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>KCC Details</span><a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile kcc-details">
                             <p><span>Bank:</span><span><b>{{financialPlanDisp?.KCCLoanBank || 'NA'}}</b></span></p>
-                            <p><span>Credit Amount:</span><span><b>{{financialPlanDisp?.KCCLoanCreditedAmount || 'NA'}}</b></span></p>
-                            <p><span>Disbursement Date:</span><span><b>{{financialPlanDisp?.KCCLoanDisbursementDate || 'NA'}}</b></span></p>
-                            <p><span>Repayment Amount:</span><span><b>{{financialPlanDisp?.KCCLoanRepaymentAmount || 'NA'}} </b></span></p>
-                            <p><span>Repayment Date:</span><span><b>{{financialPlanDisp?.KCCLoanRepaymentDate || 'NA'}}</b></span></p>
-                            <p><span>Availed Farm loan Wavier:</span><span><b>{{financialPlanDisp?.availedFarmLoanWaiver || 'NA'}}</b></span></p>
-                            <p><span>Availed Farm loan Wavier Other:</span><span><b>{{financialPlanDisp?.availedFarmLoanWaiverOther || 'NA'}}</b></span></p>
+                            <p><span>Credit Amount(₹):</span><span><b>{{financialPlanDisp?.KCCLoanCreditedAmount ||
+                                        'NA'}}</b></span></p>
+                            <p><span>Disbursement Date:</span><span><b>{{financialPlanDisp?.KCCLoanDisbursementDate ||
+                                        'NA'}}</b></span></p>
+                            <p><span>Repayment Amount(₹):</span><span><b>{{financialPlanDisp?.KCCLoanRepaymentAmount ||
+                                        'NA'}} </b></span></p>
+                            <p><span>Repayment Date:</span><span><b>{{financialPlanDisp?.KCCLoanRepaymentDate ||
+                                        'NA'}}</b></span></p>
+                            <p><span>Availed Farm loan Wavier:</span><span><b>{{financialPlanDisp?.availedFarmLoanWaiver
+                                        || 'NA'}}</b></span></p>
+                            <p><span>Availed Farm loan Wavier
+                                    Other:</span><span><b>{{financialPlanDisp?.availedFarmLoanWaiverOther ||
+                                        'NA'}}</b></span></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="actual-facts summery-bg full-height">
-                        <h4 class="summery-heading"><span>Insurance</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Insurance</span><a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile kcc-details">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Insurance Type
-                                        </th>
-                                        <th>
-                                            Month-Year last taken
-                                        </th>
-                                        <th>
-                                            Premium paid(₹)
-                                        </th>
-                                        <th>
-                                            Settlement amount credited?
-                                        </th>
-                                        <th>
-                                            Satisfied with the disbursement?
-                                        </th>
+                                        <th>Insurance Type </th>
+                                        <th> Month-Year last taken </th>
+                                        <th> Premium paid(₹) </th>
+                                        <th> Settlement amount credited? </th>
+                                        <th> Satisfied with the disbursement? </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -221,8 +205,8 @@
                                         <td>{{x.isDisbursementSatisfied}} </td>
                                     </tr>
                                 </tbody>
-                            </table> 
-                            
+                            </table>
+
                             <!-- <p><span>Crop insurance premium paid in last season:</span><span><b>N/A</b></span>
                             </p>
                             <p><span>Date of payment:</span><span><b>N/A</b></span></p>
@@ -236,7 +220,8 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><span>Credit Outside KCC</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Credit Outside KCC</span><a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <table>
                             <tbody>
                                 <tr>
@@ -298,7 +283,8 @@
                         </div>
                     </div> -->
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><span>Bank Details</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Bank Details</span><a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <table>
                             <thead>
                                 <tr>
@@ -324,23 +310,66 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="actual-facts summery-bg">
+                        <div>
+                            <h4 class="summery-heading"><span>Following Farm Machinery do you Own/Rent:</span><a href="javascript:void(0)"> <img
+                                src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                            <div class="d-flex-profile">
+                                <p>{{financialPlanDisp.farmMachinery?.toString().replaceAll(',', ', ') || 'NA'}}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="summery-heading"><span>The reason for preferring any of the above agents:</span><a href="javascript:void(0)"> <img
+                                src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                            <div class="d-flex-profile">
+                                <p>{{financialPlanDisp.reasonAgent?.toString().replaceAll(',', ', ') || 'NA'}}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="summery-heading"><span>The collateral being pledged against credit outside KCC:</span><a href="javascript:void(0)"> <img
+                                src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                            <div class="d-flex-profile">
+                                <p>{{financialPlanDisp.pledgedCollateral?.toString().replaceAll(',', ', ') || 'NA'}}</p>
+                                <p><b>Other:</b> {{financialPlanDisp.pledgedCollateralOther || 'NA'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="actual-facts summery-bg">                       
+                        <div>
+                            <h4 class="summery-heading"><span>FRCM loan products:</span><a href="javascript:void(0)"> <img
+                                src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                            <div class="d-flex-profile">
+                                <p><b>Housing Loan:</b> {{financialPlanDisp.housingLoan || 'NA'}}</p>
+                                <p><b>Tractor Finance Loan:</b> {{financialPlanDisp.tractorFinanceLoan || 'NA'}}</p>
+                                <p><b>FRCM Crop Insurance:</b> {{financialPlanDisp.FRCMCropInsurance || 'NA'}}</p>
+                                <p><b>Personal Loan:</b> {{financialPlanDisp.personalLoan || 'NA'}}</p>
+                                <p><b>Comment:</b> {{financialPlanDisp.interestedFRCMLoanProductsComment || 'NA'}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
 
 </article>
 
-<div class="modal" tabindex="-1" id="other_loan" aria-modal="true" role="dialog" style="padding-right: 1px; display: none;">
+<div class="modal" tabindex="-1" id="other_loan" aria-modal="true" role="dialog"
+    style="padding-right: 1px; display: none;">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0">
             <div class="modal-header border-0">
-                <h5 class="modal-title" style="width: 100%">Other loan<a href="javascript:void(0)" style="float: right;"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h5>
-
+                <h5 class="modal-title" style="width: 100%">Other loan<a href="javascript:void(0)"
+                        style="float: right;"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h5>
             </div>
             <div class="modal-body">
                 <ul class="modal-other-loan">
-
-
                     <li>
                         <p>Bank Name</p>
                         <p><b>ABC Bank of India</b></p>
@@ -363,7 +392,6 @@
                     </li>
                 </ul>
             </div>
-
         </div>
     </div>
 </div>

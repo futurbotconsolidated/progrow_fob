@@ -115,14 +115,33 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let x of demographicDisp?.propertyOwnership; let i = index">
+                                    <tr *ngFor="let x of demographicDisp?.propertyOwnership; let i = index;">
                                         <td>{{x.propertyType}}</td>
                                         <td>
-                                            <p><a href="javascript:void(0)" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">View</a></p>
+                                            <p *ngIf="(x.propertyType || x.ownershipType || x.particular || x.cumulativeValue)"><a href="javascript:void(0)" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">View</a></p>
                                         </td>
                                         <td>{{x.ownershipType}}</td>
                                         <td>{{x.particular}}</td>
                                         <td>{{x.cumulativeValue}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ul>
+                        <h4 class="summery-heading"><span>Record Interview</span><a  href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <ul class="d-flex-profile">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Audio/Video</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of demographicDisp?.recordInterview; let i = index;">
+                                        <td class="txt-capitalize">{{x.recordType}}</td>
+                                        <td>
+                                            <p *ngIf="(x.recordType)"><a href="javascript:void(0)" (click)="openFileModalPopup(fileUploadFileFor.recordAudioVideo, i)">View</a></p>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -141,9 +160,17 @@
                             </p>
                             <p *ngIf="demographicDisp?.propertyStatus">Property Status: <b>{{demographicDisp?.propertyStatus}}</b>
                             </p>
-                            <p *ngIf="demographicDisp?.otherDetails?.annualIncome">Annual Income(₹): <b>{{demographicDisp?.otherDetails?.annualIncome}}</b>
-                            <p *ngIf="demographicDisp?.otherDetails?.educationalQualification">Educational Qualification: <b>{{demographicDisp?.otherDetails?.educationalQualification}}</b>
+                            <p *ngIf="demographicDisp?.monthlyRent">Monthly Rent(₹): <b>{{demographicDisp?.monthlyRent}}</b></p>
+                            <p *ngIf="demographicDisp?.otherDetails?.annualIncome">Annual Income(₹): <b>{{demographicDisp?.otherDetails?.annualIncome}}</b></p>
+                            <p *ngIf="demographicDisp?.otherDetails?.educationalQualification">Educational Qualification: <b>{{demographicDisp?.otherDetails?.educationalQualification}}</b></p>
                             <p *ngIf="demographicDisp?.otherDetails?.occupation">Occupation: <b>{{demographicDisp?.otherDetails?.occupation}}</b>
+                            </p>
+                        </div>
+                        <h4 class="summery-heading"><span>Farmer Details</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <div class="d-flex-profile">                            
+                            <p *ngIf="demographicDisp?.farmerDetails?.religion">Religion: <b>{{demographicDisp?.farmerDetails?.religion}}</b>
+                            </p>
+                            <p *ngIf="demographicDisp?.farmerDetails?.caste">Caste: <b>{{demographicDisp?.farmerDetails?.caste}}</b>
                             </p>
                         </div>
                     </div>
@@ -193,6 +220,10 @@
               <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" /><br>
               <a [href]="fileUpload.new.imageSrc2" target="_blank">View File</a>
             </div>
+            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.fileurl">
+                <p class="fs-6">File</p>
+                <a [href]="fileUpload.new.fileurl" target="_blank">View File</a>
+              </div>
             <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let imageSrc of fileUpload.new.imageMultiple">
               <p class="fs-6">Preview Image</p>
               <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" /><br/>

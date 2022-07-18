@@ -2,17 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { CommonService } from '../../shared/common.service';
 
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder,
-  FormArray,
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray, } from '@angular/forms';
 import { Router } from '@angular/router';
-import { data } from '../../shared/fob_master_data';
+// import { data } from '../../shared/fob_master_data';
 
 // import 'leaflet';
 declare const L: any;
@@ -36,12 +32,12 @@ declare var $: any;
 })
 export class FieldInfoComponent implements OnInit {
   /* START: Variables */
+  masterData: any = {};
   fieldInforMaster = <any>{};
   commonMaster = <any>{};
 
-  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle =
-    SaveStatus.Idle;
-  SoilQualityStar = [] as any;
+  saveStatus: SaveStatus.Saving | SaveStatus.Saved | SaveStatus.Idle = SaveStatus.Idle;
+  // SoilQualityStar = [] as any;
   selectedSoilQualityStar = [] as any;
   selectedWaterQualityStar = [] as any;
   selectedYieldQualityStar = [] as any;
@@ -67,7 +63,7 @@ export class FieldInfoComponent implements OnInit {
   editFieldFrcmScore = <any>[];
   editFieldGroundVisits = <any>[];
   fieldIndexMapIds = <any>[];
-
+  display_field_id = 1;
   farmerId = ''; // edit feature
 
   fileUpload = {
@@ -79,7 +75,7 @@ export class FieldInfoComponent implements OnInit {
       fileIndex: 0,
     },
     imageHeading1: 'Front Image',
-   } as any;
+  } as any;
   /* END: Variables */
   /* START: indexed db variables */
   localStoragePageName = 'field-info-files';
@@ -103,17 +99,17 @@ export class FieldInfoComponent implements OnInit {
   /* END: indexed db variables */
 
   constructor(
+    public oauthService: OAuthService,
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
     public router: Router,
     private toastr: ToastrService,
     private dbService: NgxIndexedDBService,
     public commonService: CommonService,
+    private spinner: NgxSpinnerService,
     private activatedRoute: ActivatedRoute
   ) {
     this.fieldInfoForm = this.formBuilder.group({
-      plannedSeason: new FormControl('', [Validators.required]),
-      plannedCrops: new FormControl('', [Validators.required]),
       plannedFieldDetails: new FormArray([]),
       // historicalFieldDetails: new FormArray([]),
       fieldOwnership: new FormArray([]),
@@ -126,10 +122,12 @@ export class FieldInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fieldInforMaster = data.fieldInfo; // read master data
-    // this.commonMaster = data.commonData; // read master data 
-
-    this.SoilQualityStar = this.fieldInforMaster['soilQuality'];
+    this.getMasterData();
+    this.commonMaster.crops = this.masterData?.crops;
+    this.commonMaster.season = this.masterData?.seasons;
+    this.fieldInforMaster = this.masterData?.masterFile?.fob2?.fieldInfo; // read master data
+    // this.fieldInforMaster = data.fieldInfo; // read master data
+    // this.SoilQualityStar = this.fieldInforMaster['soilQuality'];
 
     this.selectedCoordinates = [];
     this.fieldArea = [];
@@ -137,6 +135,8 @@ export class FieldInfoComponent implements OnInit {
     this.editFieldFrcmScore = [];
     this.editFieldGroundVisits = [];
     this.fieldIndexMapIds = [];
+
+
     // -----------------------start auto save --------------------
     // draft feature is not required in edit operation
     if (!this.farmerId) {
@@ -157,6 +157,7 @@ export class FieldInfoComponent implements OnInit {
           this.fieldIndexMapIds.forEach((fimi_value: any) => {
             fimi_coordinates.push(fimi_value.coordinates);
           });
+          localStorage.setItem('field-info-coordinates', JSON.stringify(fimi_coordinates));
           draft_farmer_new['field_info_form'] = form_values;
           draft_farmer_new['field_info_coordinates'] = fimi_coordinates;
           localStorage.setItem(
@@ -179,7 +180,7 @@ export class FieldInfoComponent implements OnInit {
         if (map_info) {
           this.editFieldArea = [];
           this.editFieldFrcmScore = [];
-          this.editFieldGroundVisits = [];          
+          this.editFieldGroundVisits = [];
           this.selectedCoordinates = [];
           map_info.forEach((el: any) => {
             this.editFieldArea.push(el.field_area_ha);
@@ -191,6 +192,12 @@ export class FieldInfoComponent implements OnInit {
           });
         }
         editForm = JSON.parse(editForm);
+        editForm.plannedFieldDetails.forEach((el: any, eindex: number) => {
+          if (!(el?.crop_id)) {
+            let crop_arr = this.commonMaster?.crops?.filter((y: any) => y?.crop_name.toString().toLowerCase().trim() == el?.crop.toString().toLowerCase().trim());
+            editForm.plannedFieldDetails[eindex].crop_id = crop_arr[0]?.crop_id;
+          }
+        });
         this.bindItemsInEdit(editForm);
       } else {
         const farmer_details: any = localStorage.getItem('farmer-details');
@@ -212,8 +219,10 @@ export class FieldInfoComponent implements OnInit {
             // editFieldInfo.historicalFieldDetails.push(
             //   fiv.historical_season_detail.historicalFieldDetails
             // );
-            if(typeof(fiv.planned_season_detail.plannedFieldDetails) == 'object'){
+            if (typeof (fiv.planned_season_detail.plannedFieldDetails) == 'object') {
               fiv.planned_season_detail.plannedFieldDetails.crop_id = fiv.crop_id;
+              fiv.planned_season_detail.plannedFieldDetails.crop_season_id = fiv?.crop_season_id;
+              fiv.planned_season_detail.plannedFieldDetails.plannedCrops = fiv.planned_season_detail.plannedCrops;
             }
             editFieldInfo.plannedFieldDetails.push(
               fiv.planned_season_detail.plannedFieldDetails
@@ -223,11 +232,9 @@ export class FieldInfoComponent implements OnInit {
               editFieldInfo.testType.push(fiv.test_on_fields);
             }
             editFieldInfo.cropCycleOnReports = fiv.undertaking_cultivation.uc;
-            editFieldInfo.plannedSeason = fiv.crop_season_id+'##'+fiv.planned_season_detail.plannedSeason;
-            editFieldInfo.plannedCrops = fiv.planned_season_detail.plannedCrops;
             this.editFieldArea.push(fiv.field_area_ha);
             this.editFieldFrcmScore.push(fiv.frcm_score);
-            this.editFieldGroundVisits.push(fiv.ground_visits);            
+            this.editFieldGroundVisits.push(fiv.ground_visits);
             this.selectedCoordinates.push(
               fiv.field_boundary.geometry.coordinates
             );
@@ -238,9 +245,7 @@ export class FieldInfoComponent implements OnInit {
     } else {
       let fieldInfo: any = localStorage.getItem('field-info-form');
       if (fieldInfo) {
-        let fieldInfoCoordinates: any = localStorage.getItem(
-          'field-info-coordinates'
-        );
+        let fieldInfoCoordinates: any = localStorage.getItem('field-info-coordinates');
         if (fieldInfoCoordinates) {
           fieldInfoCoordinates = JSON.parse(fieldInfoCoordinates);
         }
@@ -266,28 +271,41 @@ export class FieldInfoComponent implements OnInit {
     if (!(this.fieldInfoForm.get('testType') as FormArray).controls.length) {
       this.addTestType();
     }
+  }
 
-    this.commonMaster.crops = [];
-    this.commonMaster.season = [];
-    this.commonService.getMasterData().subscribe(
-      (res: any) => {
-        //this.spinner.hide();
-        if (res && !res.status) {
-          console.log(`${res[0].Message}`);
-        } else {
-          if(res.data && res.data.crops){
-            this.commonMaster.crops = res.data.crops;
+  getMasterData() {
+    let master_data = JSON.parse(localStorage.getItem('master-data') as any);
+    if (!master_data || !master_data?.seasons.length || !master_data?.crops.length) {
+      this.spinner.show();
+      this.commonService.getMasterData().subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res && 'object' == typeof (res)) {
+            if (res.message != 'Success' || !res.status) {
+              console.log(`${res.message}`);
+            } else if (res?.data) {
+              this.masterData = res.data;
+              localStorage.setItem('master-data', JSON.stringify(res.data));
+            } else {
+              console.log('Failed to fetch master data !');
+            }
+          } else {
+            console.log('Failed to fetch master data !!');
           }
-          if(res.data && res.data.seasons){
-            this.commonMaster.season = res.data.seasons;
+        },
+        (error: any) => {
+          this.spinner.hide();
+          if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+            this.logOut();
+            return;
+          } else {
+            console.log('Failed to fetch master data, please try again...');
           }
         }
-      },
-      (error: any) => {
-        //this.spinner.hide();
-        console.log('Failed to fetch PinCode Details, please try again...');
-      }
-    );
+      );
+    } else {
+      this.masterData = master_data;
+    }
   }
 
   bindItemsInEdit(fieldValues: any) {
@@ -295,17 +313,17 @@ export class FieldInfoComponent implements OnInit {
     this.fieldInfoForm.patchValue(fieldValues);
     fieldValues.plannedFieldDetails.map((item: any, index: number) => {
       const plannedDetails = <any>{};
-      plannedDetails['fieldId'] = new FormControl(item.fieldId);
-      plannedDetails['fieldName'] = new FormControl(item.fieldName);
-      plannedDetails['fieldArea'] = new FormControl(item.fieldArea);
-      plannedDetails['irrigationSystem'] = new FormControl(
-        item.irrigationSystem
-      );
+      plannedDetails['crop_season_id'] = new FormControl(item?.crop_season_id);
+      plannedDetails['plannedCrops'] = new FormControl(item?.plannedCrops);
+      plannedDetails['fieldId'] = new FormControl(item?.fieldId);
+      plannedDetails['fieldName'] = new FormControl(item?.fieldName);
+      plannedDetails['fieldArea'] = new FormControl(item?.fieldArea);
+      plannedDetails['irrigationSystem'] = new FormControl(item?.irrigationSystem);
       plannedDetails['waterSource'] = new FormControl(item.waterSource);
-      if(item.crop_id){
-        plannedDetails['crop'] = new FormControl(item.crop_id+'##'+item.crop);
+      if (item?.crop_id) {
+        plannedDetails['crop_id'] = new FormControl(item.crop_id);
       } else {
-      plannedDetails['crop'] = new FormControl(item.crop);
+        plannedDetails['crop_id'] = new FormControl(item?.crop);
       }
       plannedDetails['soilQuality'] = new FormControl(item.soilQuality);
       plannedDetails['waterQuality'] = new FormControl(item.waterQuality);
@@ -367,7 +385,7 @@ export class FieldInfoComponent implements OnInit {
     });
 
     this.testType = this.fieldInfoForm.get('testType') as FormArray;
-    fieldValues.testType.forEach((listitem: any) => {
+    fieldValues?.testType?.forEach((listitem: any) => {
       if (listitem.hasOwnProperty('fieldId')) {
         let item = listitem;
         const testTypeDetails = <any>{};
@@ -378,7 +396,7 @@ export class FieldInfoComponent implements OnInit {
         testTypeDetails['testResult'] = new FormControl(item.testResult);
         this.testType.push(new FormGroup(testTypeDetails));
       } else {
-        listitem.map((item: any) => {
+        listitem?.map((item: any) => {
           const testTypeDetails = <any>{};
           testTypeDetails['fieldId'] = new FormControl(item.fieldId);
           testTypeDetails['typeOfTest'] = new FormControl(item.typeOfTest);
@@ -529,12 +547,20 @@ export class FieldInfoComponent implements OnInit {
           type: event.layerType,
         },
       };
+      var pfd_display_last_index = 0;
+      this.fieldIndexMapIds.forEach((x: any, index: number) => {
+        if (x.field_display_index >= pfd_display_last_index) {
+          pfd_display_last_index = x.field_display_index;
+        }
+      });
+      pfd_display_last_index++;
+      this.display_field_id = pfd_display_last_index;
       this.drawnCoordinates.push(ob);
       this.addPlannedFieldDetails();
       // this.addHistoFieldDetail();
       this.addFieldOwnershipDetail();
       this.addEnumerate();
-      console.log(this.plannedFieldDetails);
+      // console.log(this.plannedFieldDetails);
       drawnItems.addLayer(layer);
       var pfd_last_index = -1;
       (
@@ -546,6 +572,7 @@ export class FieldInfoComponent implements OnInit {
         field_index: pfd_last_index,
         leaflet_id: layer._leaflet_id,
         coordinates: drawnLatLng,
+        field_display_index: pfd_display_last_index,
       };
       this.fieldIndexMapIds.push(fimi_ob);
       var area_sq_meter = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
@@ -567,7 +594,7 @@ export class FieldInfoComponent implements OnInit {
       // });
       layer
         .bindPopup(
-          `Field ID : ${pfd_last_index + 1} <br/> Area : ${area_hec} (Hectare)`
+          `Field ID : ${pfd_display_last_index} <br/> Area : ${area_hec} (Hectare)`
         )
         .openPopup();
     });
@@ -575,7 +602,7 @@ export class FieldInfoComponent implements OnInit {
     map.on(L.Draw.Event.EDITED, (e: any) => {
       console.log('Event.EDITED', e);
       let layers = e.layers;
-      console.log(this.fieldIndexMapIds);
+      // console.log(this.fieldIndexMapIds);
       let fieldIndexMapIds_var = this.fieldIndexMapIds;
       var field_index = -1;
       var area_hec = '';
@@ -591,8 +618,7 @@ export class FieldInfoComponent implements OnInit {
             area_hec = (area_sq_meter / 10000).toFixed(2);
             layer
               .bindPopup(
-                `Field ID : ${field_index + 1
-                } <br/> Area : ${area_hec} (Hectare)`
+                `Field ID : ${x.pfd_display_last_index} <br/> Area : ${area_hec} (Hectare)`
               )
               .openPopup();
           }
@@ -652,6 +678,10 @@ export class FieldInfoComponent implements OnInit {
         return el != null;
       });
       this.fieldIndexMapIds = fieldIndexMapIds_v;
+      this.fieldIndexMapIds.forEach((x: any, index: number) => {
+        this.fieldIndexMapIds[index].field_index = x.field_index - 1;
+      });
+      this.display_field_id = this.fieldIndexMapIds.length;
     });
 
     map.on('draw:editvertex', (e: any) => {
@@ -709,6 +739,7 @@ export class FieldInfoComponent implements OnInit {
         coordinates: x,
         frcm_score: this.editFieldFrcmScore[index],
         ground_visits: this.editFieldGroundVisits[index],
+        field_display_index: index + 1,
       };
       this.fieldIndexMapIds.push(fimi_ob);
     });
@@ -716,12 +747,14 @@ export class FieldInfoComponent implements OnInit {
 
   createFieldDetails(): FormGroup {
     return this.formBuilder.group({
-      fieldId: new FormControl('', [Validators.required]),
+      crop_season_id: new FormControl('', [Validators.required]),
+      plannedCrops: new FormControl('', [Validators.required]),
+      fieldId: new FormControl(this.display_field_id, [Validators.required]),
       fieldName: new FormControl('', [Validators.required]),
       fieldArea: new FormControl('', [Validators.required]),
       irrigationSystem: new FormControl('', [Validators.required]),
       waterSource: new FormControl('', [Validators.required]),
-      crop: new FormControl('', [Validators.required]),
+      crop_id: new FormControl('', [Validators.required]),
       soilQuality: new FormControl(' ', [Validators.required]),
       waterQuality: new FormControl(' ', [Validators.required]),
       yieldQuality: new FormControl(' ', [Validators.required]),
@@ -734,14 +767,11 @@ export class FieldInfoComponent implements OnInit {
   }
 
   getPlannedFieldDetailsControls() {
-    return (this.fieldInfoForm.get('plannedFieldDetails') as FormArray)
-      .controls;
+    return (this.fieldInfoForm.get('plannedFieldDetails') as FormArray).controls;
   }
 
   addPlannedFieldDetails(): void {
-    this.plannedFieldDetails = this.fieldInfoForm.get(
-      'plannedFieldDetails'
-    ) as FormArray;
+    this.plannedFieldDetails = this.fieldInfoForm.get('plannedFieldDetails') as FormArray;
     this.plannedFieldDetails.push(this.createFieldDetails());
   }
 
@@ -782,7 +812,7 @@ export class FieldInfoComponent implements OnInit {
 
   createFieldOwnershipDetails(): FormGroup {
     return this.formBuilder.group({
-      fieldOwnId: new FormControl('', [Validators.required]),
+      fieldOwnId: new FormControl(this.display_field_id, [Validators.required]),
       ownerType: new FormControl('', []),
       fieldOwnCoOwner: new FormControl('', [Validators.required]),
       fieldOwnCoPh: new FormControl('', [Validators.required]),
@@ -804,7 +834,7 @@ export class FieldInfoComponent implements OnInit {
 
   createEnumerate(): FormGroup {
     return this.formBuilder.group({
-      fieldId: new FormControl('', [Validators.required]),
+      fieldId: new FormControl(this.display_field_id, [Validators.required]),
       waterSource: new FormControl('', [Validators.required]),
       boreDepth: new FormControl('', [Validators.required]),
       pumpDepth: new FormControl('', [Validators.required]),
@@ -852,96 +882,128 @@ export class FieldInfoComponent implements OnInit {
     let obj;
     var field_ui_id = 0;
     var error_flag = 0;
-    this.fieldIndexMapIds.forEach((x: any, i: number) => {
-      field_ui_id = i + 1;
-      this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
-      // this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
-      this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
-      this.fieldInfoForm.value.fieldOwnership[i].fieldOwnId = i + 1;
-      var drawnCoordinates_obj = {
-        type: 'field-boundary',
-        geometry: {
-          coordinates: x.coordinates,
-          type: 'Polygon',
-        },
-      } as any;
-      var test_arr = [] as any;
-      this.fieldInfoForm.value.testType.forEach((tdata: any, ti: number) => {
-        if (tdata.fieldId == field_ui_id) {
-          test_arr.push(tdata);
-        }
-      });
-      let season_arr = this.fieldInfoForm.value.plannedSeason.split('##');
-      let crop_arr = this.fieldInfoForm.value.plannedFieldDetails[i].crop?.split('##');
-      let plannedFieldDetails = this.fieldInfoForm.value.plannedFieldDetails[i];
-      plannedFieldDetails.crop = crop_arr[1];
-      if(!season_arr[0]){
-        this.toastr.error('Please select planned season', 'Error!');
-        error_flag = 1;
-        return;
-      }
-      if(!crop_arr[0]){
-        this.toastr.error('Please select field crop', 'Error!');
-        error_flag = 1;
-        return;
-      }
+    var error_season = 0;
+    var error_crop = 0;
+    var error_phone = 0;
+    var season_arr: any = [];
+    var crop_arr: any = [];
+    var fimi_coordinates = [] as any;
 
-      obj = {
-        field_ui_id: field_ui_id,
-        crop_season_id: season_arr[0],
-        crop_id: crop_arr[0],
-        field_name: this.fieldInfoForm.value.plannedFieldDetails[i].fieldName,
-        field_boundary: drawnCoordinates_obj,
-        field_area_ha:
-          this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
-        field_address: 'test',
-        planned_season_detail: {
-          plannedSeason: season_arr[1],
-          plannedCrops: this.fieldInfoForm.value.plannedCrops,
-          plannedFieldDetails: plannedFieldDetails,
-          // plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
-        },
-        historical_season_detail: {
-          // historicalSeason: this.fieldInfoForm.value.historicalSeason,
-          // historicalCrops: this.fieldInfoForm.value.historicalCrops,
-          // historicalFieldDetails:
-          //   this.fieldInfoForm.value.historicalFieldDetails[i],
-        },
-        field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
-        enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
-        test_on_fields: test_arr || '', //this.fieldInfoForm.value.testType[i] || '',
-        undertaking_cultivation: {
-          uc: this.fieldInfoForm.value.cropCycleOnReports,
-        },
-        is_required_yn: true,
-        frcm_score: x.frcm_score || {},
-        ground_visits: x.ground_visits || [],
-      };
-      fieldArr.push(obj);
+    this.fieldIndexMapIds.forEach((x: any, i: number) => {
+      if (!this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_season_id) {
+        error_flag = 1;
+        error_season = 1;
+        // return;
+      }
+      if (!this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_id) {
+        error_flag = 1;
+        error_crop = 1;
+        // return;
+      }
+      if (this.fieldInfoForm.value.fieldOwnership[i]?.fieldOwnCoPh.length > 0 && this.fieldInfoForm.value.fieldOwnership[i]?.fieldOwnCoPh.length != 10) {
+        error_flag = 1;
+        error_phone = 1;
+        // return;
+      }
     });
 
-    console.log('fieldArr : ', fieldArr);
-    // if (!fieldArr.length) {
-    //   this.toastr.error('Please Plot at least One Field', 'Error!');
-    //   return;
-    // } else {
+    if (error_season == 1) {
+      this.toastr.error('Please select planned season', 'Error!');
+    } else if (error_crop == 1) {
+      this.toastr.error('Please select field crop', 'Error!');
+    } else if (error_phone == 1) {
+      this.toastr.error('Please enter valid phone number', 'Error!');
+    }
+
+    if (error_flag === 0) {
+      this.fieldIndexMapIds.forEach((x: any, i: number) => {
+        field_ui_id = i + 1;
+        this.fieldInfoForm.value.plannedFieldDetails[i].fieldId = i + 1;
+        // this.fieldInfoForm.value.historicalFieldDetails[i].fieldId = i + 1;
+        this.fieldInfoForm.value.enumerate[i].fieldId = i + 1;
+        this.fieldInfoForm.value.fieldOwnership[i].fieldOwnId = i + 1;
+        fimi_coordinates.push(x?.coordinates);
+        var drawnCoordinates_obj = {
+          type: 'field-boundary',
+          geometry: {
+            coordinates: x.coordinates,
+            type: 'Polygon',
+          },
+        } as any;
+        var test_arr = [] as any;
+        this.fieldInfoForm.value.testType.forEach((tdata: any, ti: number) => {
+          if (tdata.fieldId == field_ui_id) {
+            test_arr.push(tdata);
+          }
+        });
+        if (this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_season_id) {
+          season_arr = this.commonMaster?.season?.filter((y: any) => y?.crop_season_id.toString().toLowerCase().trim() == this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_season_id.toString().toLowerCase().trim());
+        }
+        if (this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_id) {
+          crop_arr = this.commonMaster?.crops?.filter((y: any) => y?.crop_id.toString().toLowerCase().trim() == this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_id.toString().toLowerCase().trim());
+          this.fieldInfoForm.value.plannedFieldDetails[i].crop = crop_arr[0]?.crop_name;
+        }
+
+        obj = {
+          field_ui_id: field_ui_id,
+          crop_season_id: this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_season_id,
+          crop_id: this.fieldInfoForm.value.plannedFieldDetails[i]?.crop_id,
+          field_name: this.fieldInfoForm.value.plannedFieldDetails[i].fieldName,
+          field_boundary: drawnCoordinates_obj,
+          field_area_ha:
+            this.fieldInfoForm.value.plannedFieldDetails[i].fieldArea,
+          field_address: 'test',
+          planned_season_detail: {
+            plannedSeason: season_arr[0]?.crop_season_name,
+            plannedCrops: this.fieldInfoForm.value.plannedFieldDetails[i]?.plannedCrops,
+            plannedFieldDetails: this.fieldInfoForm.value.plannedFieldDetails[i],
+          },
+          historical_season_detail: {
+            // historicalSeason: this.fieldInfoForm.value.historicalSeason,
+            // historicalCrops: this.fieldInfoForm.value.historicalCrops,
+            // historicalFieldDetails:
+            //   this.fieldInfoForm.value.historicalFieldDetails[i],
+          },
+          field_ownership_detail: this.fieldInfoForm.value.fieldOwnership[i],
+          enumerate_planned_season: this.fieldInfoForm.value.enumerate[i],
+          test_on_fields: test_arr || '', //this.fieldInfoForm.value.testType[i] || '',
+          undertaking_cultivation: {
+            uc: this.fieldInfoForm.value.cropCycleOnReports,
+          },
+          is_required_yn: true,
+          frcm_score: x.frcm_score || {},
+          ground_visits: x.ground_visits || [],
+        };
+        fieldArr.push(obj);
+      });
+
+      console.log('fieldArr : ', fieldArr);
+
+      if (this.farmerId && !fieldArr.length && this.display_field_id == 1) {
+        let farmer_details: any = localStorage.getItem('farmer-details');
+        if (farmer_details) {
+          fieldArr = JSON.parse(farmer_details).fieldInfo;
+        }
+      }
+      // if (!fieldArr.length) {
+      //   this.toastr.error('Please Plot at least One Field', 'Error!');
+      //   return;
+      // } else {
       if (this.farmerId) {
         localStorage.setItem('edit-field-info', JSON.stringify(fieldArr));
-        localStorage.setItem(
-          'edit-field-info-form',
-          JSON.stringify(this.fieldInfoForm.value)
-        );
+        localStorage.setItem('edit-field-info-form', JSON.stringify(this.fieldInfoForm.value));
       } else {
         localStorage.setItem('field-info', JSON.stringify(fieldArr));
-        localStorage.setItem(
-          'field-info-form',
-          JSON.stringify(this.fieldInfoForm.value)
-        );
+        localStorage.setItem('field-info-form', JSON.stringify(this.fieldInfoForm.value));
+        localStorage.setItem('field-info-coordinates', JSON.stringify(fimi_coordinates));
       }
-      if(!error_flag){
+      // }
       const url = `/add/${this.nextRoute}/${this.farmerId}`;
       this.router.navigate([url]);
-      }
+    } else {
+      const url = `/add/field-info/${this.farmerId}`;
+      this.router.navigate([url]);
+    }
     // }
   }
 
@@ -998,7 +1060,7 @@ export class FieldInfoComponent implements OnInit {
 
   /* START: functions used indexed-db ============================================ */
   openFileModalPopup(type: string, fileIndex: number) {
-    this.fileUpload.fileFor = type;    
+    this.fileUpload.fileFor = type;
     this.fileUpload.new.imageMultiple = [];
     this.fileUpload.new.isMultiple = false;
     this.fileUpload.new.fileIndex = fileIndex;
@@ -1063,7 +1125,7 @@ export class FieldInfoComponent implements OnInit {
               );
             if (imageSrc) {
               let type = 'file';
-              if ( imageSrc.includes('data:image/') || imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
+              if (imageSrc.includes('data:image/') || imageSrc.includes('.png') || imageSrc.includes('.jpg') || imageSrc.includes('.jpeg') || imageSrc.includes('.gif')) {
                 type = 'image';
               }
               let filename = imageSrc.split('/').pop().split('#')[0].split('?')[0];
@@ -1077,15 +1139,20 @@ export class FieldInfoComponent implements OnInit {
           });
       }
     }
+    $('input.formFileSm').val('');
     $('#fileUploadModalPopup').modal('show');
   }
 
   onFileChange(event: any, type = '', fileIndex: number) {
     if (event.target.files && event.target.files.length) {
       let c_file_count = this.fileUpload.new.imageMultiple.length;
-      this.fileUpload.new.fileIndex = fileIndex;      
+      this.fileUpload.new.fileIndex = fileIndex;
       for (let findex = 0; findex < event.target.files.length; findex++) {
-        const file = event.target.files[findex];        
+        const file = event.target.files[findex];
+        if (file.type.split('/')[0] == 'audio' || file.type.split('/')[0] == 'video') {
+          this.toastr.error('Audio/Video file is not allowed.', 'Error!');
+          return;
+        }
         // if (file.size > 300000) {
         //   this.toastr.error('Image size can be upto 300KB Maximum.', 'Error!');
         //   return;
@@ -1104,31 +1171,31 @@ export class FieldInfoComponent implements OnInit {
           if (
             this.fileUpload.fileFor === this.fileUploadFileFor.ownershipPicture
           ) {
-              let type = 'file';
-              if (imageSrc.includes('data:image/')) {
-                type = 'image';                
-              }
-              let imgObj = {
-                file: imageSrc,
-                type: type,
-                name: file.name,
-              };
-              this.fileUpload.new.imageMultiple.push(imgObj);
-              selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+c_file_count);            
+            let type = 'file';
+            if (imageSrc.includes('data:image/')) {
+              type = 'image';
+            }
+            let imgObj = {
+              file: imageSrc,
+              type: type,
+              name: file.name,
+            };
+            this.fileUpload.new.imageMultiple.push(imgObj);
+            selectedImageFor = this.indexedDBFileNameManage.ownershipPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex + c_file_count);
           } else if (
             this.fileUpload.fileFor === this.fileUploadFileFor.testPicture
           ) {
-              let type = 'file';
-              if (imageSrc.includes('data:image/')) {
-                type = 'image';
-              }
-              let imgObj = {
-                file: imageSrc,
-                type: type,
-                name: file.name,
-              };
-              this.fileUpload.new.imageMultiple.push(imgObj);
-              selectedImageFor = this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex+c_file_count);            
+            let type = 'file';
+            if (imageSrc.includes('data:image/')) {
+              type = 'image';
+            }
+            let imgObj = {
+              file: imageSrc,
+              type: type,
+              name: file.name,
+            };
+            this.fileUpload.new.imageMultiple.push(imgObj);
+            selectedImageFor = this.indexedDBFileNameManage.testPicture.front + '_' + this.fileUpload.new.fileIndex + '_' + (findex + c_file_count);
           }
           /* START: ngx-indexed-db feature to store files(images/docs) */
           // if file already exist then delete then add
@@ -1178,9 +1245,9 @@ export class FieldInfoComponent implements OnInit {
         fieldInfoFiles = JSON.parse(fieldInfoFiles);
       } else {
         fieldInfoFiles = {};
-      }      
-      if(fieldInfoFiles[difkey]){
-      fieldInfoFiles[difkey] = parseInt(fieldInfoFiles[difkey]) + event.target.files.length;
+      }
+      if (fieldInfoFiles[difkey]) {
+        fieldInfoFiles[difkey] = parseInt(fieldInfoFiles[difkey]) + event.target.files.length;
       } else {
         fieldInfoFiles[difkey] = event.target.files.length;
       }
@@ -1197,26 +1264,31 @@ export class FieldInfoComponent implements OnInit {
         fCount = fieldInfoFiles[ckey];
       }
     }
-      let farmerFiles: any = localStorage.getItem('farmer-files');
-      if (farmerFiles) {
-        farmerFiles = JSON.parse(farmerFiles);
-        for (let ffi = 0; ffi < Object.keys(farmerFiles).length; ffi++) {
-          if (farmerFiles.hasOwnProperty(fkey + '_' + ffi)) {
-            fCount++;
-          }
+    let farmerFiles: any = localStorage.getItem('farmer-files');
+    if (farmerFiles) {
+      farmerFiles = JSON.parse(farmerFiles);
+      for (let ffi = 0; ffi < Object.keys(farmerFiles).length; ffi++) {
+        if (farmerFiles.hasOwnProperty(fkey + '_' + ffi)) {
+          fCount++;
         }
       }
+    }
     return fCount;
   }
 
   downloadFile(data: any) {
-     let dwldLink = document.createElement("a");
+    let dwldLink = document.createElement("a");
     dwldLink.setAttribute("target", "_blank");
     dwldLink.setAttribute("href", data);
     dwldLink.style.visibility = "hidden";
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
+  }
+
+  logOut() {
+    this.oauthService.logOut();
+    this.router.navigate(['/home']);
   }
 
 }

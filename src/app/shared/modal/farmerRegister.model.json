@@ -1,0 +1,321 @@
+export const farmerModel = {
+  "bd_id": "ZZ00000BD00000",
+  "pan_number": "",
+  "mobile": "8888881110",
+  "demographic_info": {
+    "profileImg": "",
+    "identityProof": {
+      "panNumber": "",
+      "panImg": ""
+    },
+    "addressProof": {
+      "selectedIdProof": "",
+      "selectedIdProofFrontImg": "",
+      "selectedIdProofBackImg": ""
+    },
+    "farmerDetails": {
+      "firstName": "Test",
+      "middleName": "",
+      "lastName": "Test",
+      "dob": "",
+      "gender": "",
+      "religion": "",
+      "caste": ""
+    },
+    "address": {
+      "addressLine1": "Noida",
+      "addressLine2": "",
+      "pincode": "201301",
+      "mobileNumber": "8888886111"
+    },
+    "otherDetails": {
+      "occupation": "",
+      "annualIncome": ""
+    },
+    "familyMembers": [
+      {
+        "name": "",
+        "relation": "",
+        "education": "",
+        "occupation": "",
+        "dependency": ""
+      }
+    ],
+    "propertyOwnership": [
+      {
+        "propertyType": "",
+        "propertyPic": "",
+        "ownershipType": "",
+        "particular": "",
+        "cumulativeValue": ""
+      }
+    ],
+    "phoneType": "",
+    "phoneUsedBy": "",
+    "cultivationAdvice": [],
+    "cultivationAdviceOther": "",
+    "adviceMedium": [],
+    "adviceMediumOther": "",
+    "sourceOfIncome": [],
+    "sourceOfIncomeOther": "",
+    "agricultureChildrenInterested": "",
+    "innovativeFarmingWays": []
+  },
+  "field_info": [
+    {
+      "field_ui_id":1,
+      "crop_season_id":"CS7",
+      "crop_id":"CP1",
+      "field_name":"Test1",
+      "field_boundary": {
+        "type": "field-boundary",
+        "geometry": {
+          "coordinates": [
+            [
+              28.62797802408542,
+              77.3771917819977
+            ],
+            [
+              28.627521287610126,
+              77.3772829771042
+            ],
+            [
+              28.627596625722315,
+              77.3777335882187
+            ]
+          ],
+          "type": "polygon"
+        }
+      },
+      "field_area_ha": "0.12",
+      "field_address": "test",
+      "planned_season_detail": {
+        "plannedSeason": "kharif_2022",
+        "plannedCrops": "wer",
+        "plannedFieldDetails": {
+          "fieldId": 1,
+          "fieldArea": "1",
+          "irrigationSystem": "surface_irrigation",
+          "waterSource": "pond",
+          "crop": "Mustard",
+          "soilQuality": " ",
+          "waterQuality": " ",
+          "yieldQuality": " ",
+          "expectedProduce": "1000"
+        }
+      },
+      "historical_season_detail": {
+        "historicalFieldDetails": {
+          "historicalSeason": "kharif_2022",
+          "historicalCrops": "sdcfsdf",
+          "fieldId": 1,
+          "fieldArea": "1",
+          "irrigationSystem": "surface_irrigation",
+          "waterSource": "pond",
+          "crop": "Mustard",
+          "soilQuality": " ",
+          "waterQuality": " ",
+          "yieldQuality": " "
+        }
+      },
+      "field_ownership_detail": {
+        "fieldOwnId": 1,
+        "ownerType": "",
+        "fieldOwnCoOwner": "",
+        "fieldOwnCoPh": ""
+      },
+      "enumerate_planned_season": {
+        "fieldId": 1,
+        "waterSource": "",
+        "boreDepth": "",
+        "pumpDepth": ""
+      },
+      "test_on_fields": {
+        "typeOfTest": "",
+        "yesNo": "",
+        "lastDone": "",
+        "testResult": ""
+      },
+      "undertaking_cultivation": {
+        "uc": ""
+      },
+      "is_required_yn": true
+    }
+  ],
+  "crop_market_plan": {
+    "seedProcure": [
+      "locally_from_village",
+      "hybrid_variety_seeds_from_input_supplier"
+    ],
+    "varietyComparison": "high_yield",
+    "fertilizerPurchase": [],
+    "pesticideQuality": "",
+    "fertilizerAdvise": [],
+    "farmGateGrading": "",
+    "durationReceivingMoney": "",
+    "warehouseProduce": ""
+  },
+  "financial_planning": {
+    "loanReqPlaned": [
+      {
+        "fieldId": "1",
+        "cropLoanProduct": "crop_loan_product_1",
+        "plannedCultivationArea": "1",
+        "hectares": "350000",
+        "crop": "Mustard"
+      }
+    ],
+    "ownerType": [],
+    "bankDetails": [
+      {
+        "bankName": "",
+        "accountNum": "",
+        "IFSCode": "",
+        "customerID": ""
+      }
+    ],
+    "availKccLoan": "",
+    "creditedAmount": ""
+  },
+  "produce_aggregator": {
+    "verticals": [
+      "working_capital_cycle_requirement"
+    ],
+    "associatedWithFPO": [
+      "On demand access to financing"
+    ],
+    "enrolFPO": "",
+    "followSuggestions": "yes",
+    "consolidateLoans": "yes1"
+  },
+  "technology_adoption": {
+    "farmYieldImprovisation": "yes",
+    "farmCaseStudies": "yes",
+    "payForTechnology": "yes",
+    "payForTechnologyComment": "",
+    "tissueCulture": null,
+    "polyHouse": "",
+    "microIrrigation": "",
+    "iotSensors": "",
+    "weatherData": "",
+    "satelliteTracking": ""
+  },
+  "co_applicant_details": [
+    {
+      "profileImg": "",
+      "identityProof": {
+        "panNumber": "",
+        "panImg": ""
+      },
+      "addressProof": {
+        "selectedIdProof": "voter_id",
+        "selectedIdProofFrontImg": "",
+        "selectedIdProofBackImg": ""
+      },
+      "passportNumber": "",
+      "passportFrontImage": "",
+      "passportBackImage": "",
+      "NREGANumber": "",
+      "NREGAFrontImage": "",
+      "NREGABackImage": "",
+      "farmerDetails": {
+        "firstName": "Test1",
+        "middleName": "",
+        "lastName": "1234",
+        "dob": "",
+        "gender": "",
+        "religion": "",
+        "caste": ""
+      },
+      "address": {
+        "addressLine1": "Noida ",
+        "addressLine2": "",
+        "pincode": "201301",
+        "mobileNumber": "8989898989",
+        "taluk": "Noida",
+        "city": "Gautam Buddha Nagar",
+        "state": "Uttar Pradesh",
+        "landmark": "",
+        "yrsInAddress": "",
+        "yrsInCity": ""
+      },
+      "email": "",
+      "propertyStatus": "",
+      "monthlyRent": "",
+      "commOrPerAddress": "same_above",
+      "otherDetails": {
+        "occupation": "",
+        "fpoName": ""
+      },
+      "familyMembers": [
+        {
+          "name": "",
+          "relation": "",
+          "education": "",
+          "occupation": "",
+          "dependency": ""
+        }
+      ]
+    },
+    {
+      "profileImg": "",
+      "identityProof": {
+        "panNumber": "",
+        "panImg": ""
+      },
+      "addressProof": {
+        "selectedIdProof": "",
+        "selectedIdProofFrontImg": "",
+        "selectedIdProofBackImg": ""
+      },
+      "passportNumber": "",
+      "passportFrontImage": "",
+      "passportBackImage": "",
+      "NREGANumber": "",
+      "NREGAFrontImage": "",
+      "NREGABackImage": "",
+      "farmerDetails": {
+        "firstName": "",
+        "middleName": "",
+        "lastName": "",
+        "dob": "",
+        "gender": "",
+        "religion": "",
+        "caste": ""
+      },
+      "address": {
+        "addressLine1": "",
+        "addressLine2": "",
+        "pincode": "",
+        "mobileNumber": "",
+        "taluk": "",
+        "city": "",
+        "state": "",
+        "landmark": "",
+        "yrsInAddress": "",
+        "yrsInCity": ""
+      },
+      "email": "",
+      "propertyStatus": "",
+      "monthlyRent": "",
+      "commOrPerAddress": "",
+      "otherDetails": {
+        "occupation": "",
+        "fpoName": ""
+      },
+      "familyMembers": [
+        {
+          "name": "",
+          "relation": "",
+          "education": "",
+          "occupation": "",
+          "dependency": ""
+        }
+      ]
+    }
+  ],
+  "data_source":"FOB2",
+  "created_by":"Anil Mohite",
+  "updated_by":"Anil Mohite",
+  "is_required_yn": true
+}

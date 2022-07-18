@@ -129,17 +129,15 @@ export class InfoDeclarationComponent implements OnInit {
                       requestData.fileData[x.fileFor] = x.file;
                       this.addFarmerService.documentUpload(requestData).subscribe(
                         (res: any) => {
-                          if (res.message != 'Success' || !res.status) {
-                            console.log(`${res.message}!`);
-                            // this.toastr.error(`${res.message}!`);
-                            // return;
-                          }
+                          // if (res.message != 'Success' || !res.status) {
+                          //   this.toastr.error(`${res.message}!`);
+                          // } else {
+                          //   this.toastr.success('Upload document details success.');
+                          // }
                         },
                         (error: any) => {
-                          console.log('Failed to upload a document details, please try again...');
-                          // this.toastr.error(
-                          //   'Failed to upload a document details, please try again...'
-                          // );
+                          console.log('error : ', error);
+                          // this.toastr.error('Failed to upload a document details, please try again...');
                         }
                       );
                       if ((files.length - 1) == fi) {
@@ -157,9 +155,12 @@ export class InfoDeclarationComponent implements OnInit {
         },
         (error: any) => {
           this.spinner.hide();
-          this.toastr.error(
-            'Failed to update farmer details, please try again...'
-          );
+          if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+            this.logOut();
+            return;
+          } else {
+            this.toastr.error('Failed to update farmer details, please try again...');
+          }
         }
       );
     } else {
@@ -184,21 +185,15 @@ export class InfoDeclarationComponent implements OnInit {
                       requestData.fileData[x.fileFor] = x.file;
                       this.addFarmerService.documentUpload(requestData).subscribe(
                         (res: any) => {
-                          // this.spinner.hide();
-                          if (res.message != 'Success' || !res.status) {
-                            console.log(`${res.message}!`);
-                            // this.toastr.error(`${res.message}!`);
-                            return;
-                          } else {
-                            // this.clearRoute();
-                          }
+                          // if (res.message != 'Success' || !res.status) {
+                          //   this.toastr.error(`${res.message}!`);                            
+                          // } else {
+                          //   this.toastr.success('Upload document details success.');                            
+                          // }
                         },
                         (error: any) => {
-                          console.log('Failed to upload a document details, please try again...');
-                          // this.spinner.hide();
-                          // this.toastr.error(
-                          //   'Failed to upload a document details, please try again...'
-                          // );
+                          console.log('error : ', error);
+                          // this.toastr.error('Failed to upload a document details, please try again...');
                         }
                       );
                       if ((files.length - 1) == fi) {
@@ -216,13 +211,22 @@ export class InfoDeclarationComponent implements OnInit {
         },
         (error: any) => {
           this.spinner.hide();
-          this.toastr.error(
-            'Failed to register farmer details, please try again...'
-          );
+          if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+            this.logOut();
+            return;
+          } else {
+            this.toastr.error('Failed to register farmer details, please try again...');
+          }
         }
       );
     }
   }
+
+  logOut() {
+    this.oauthService.logOut();
+    this.router.navigate(['/home']);
+  }
+
   clearRoute() {
     if (this.farmerId) {
       this.toastr.success('Farmer Update Success.');

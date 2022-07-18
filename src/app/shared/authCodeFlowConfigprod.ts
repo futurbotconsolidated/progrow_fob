@@ -6,7 +6,7 @@ export const authCodeFlowConfig: AuthConfig = {
   redirectUri: window.location.origin + '/home',
   clientId: '1806krf02bdr6a953e0mnk6l54',
   logoutUrl:
-    'https://auth1.agrisaathi.com/logout?client_id=1806krf02bdr6a953e0mnk6l54&response_type=code&scope=openid+profile&redirect_uri=http://localhost:4200/login',
+    'https://auth1.agrisaathi.com/logout?client_id=1806krf02bdr6a953e0mnk6l54&response_type=code&scope=openid+profile&redirect_uri=https://fob.agrisaathi.com/login',
 
   scope: 'openid profile email',
   strictDiscoveryDocumentValidation: false,

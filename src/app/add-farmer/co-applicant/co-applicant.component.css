@@ -17,8 +17,7 @@
 .co-app-detail .form-title {
   margin-bottom: 0px;
 }
-input.form-control,
-.form-select {
+input.form-control, .form-select {
   margin-bottom: 20px;
   position: relative;
 }
@@ -36,11 +35,9 @@ input.form-control,
 .form-details .form-details-inner + .form-details-inner {
   padding-top: 20px;
 }
-
 .modal {
   z-index: 9999;
 }
-
 .dropdown_scroll_bar {
   height: 99%;
   max-height: 200px;
@@ -52,4 +49,7 @@ input.form-control,
 }
 .p-10{
   padding: 10px;
+}
+.word-wrap-anywhere{
+  word-wrap: anywhere;
 }

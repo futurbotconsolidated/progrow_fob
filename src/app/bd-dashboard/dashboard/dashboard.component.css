@@ -49,6 +49,7 @@ table.dataTable tbody tr {
 }
 .txt-capitalize{
   text-transform: capitalize;
+  overflow-wrap: break-word;
 }
 .fw-500{
   font-weight: 500;

@@ -51,8 +51,18 @@ export class SummaryComponent implements OnInit {
           return;
         }
       });
+      this.summary.type_of_house = '';
+      this.summary?.demographic_info?.propertyOwnership.forEach((x: any) => {
+        if (x?.propertyType?.toString().toLowerCase() == 'house') {
+          if(!this.summary.type_of_house){
+            this.summary.type_of_house += x?.ownershipType+' ';
+          } else {
+            this.summary.type_of_house += ', '+x?.ownershipType+'';
+          }          
+        }
+      });
     }
   }
-  
+
   ngOnInit(): void { }
 }

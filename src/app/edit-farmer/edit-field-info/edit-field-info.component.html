@@ -42,33 +42,42 @@
                         </ul>
                     </div> -->
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><span>Field info</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Field info</span><a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
 
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th> Field ID</th>
-                                        <th> Area</th>
-                                        <th> Irrigation</th>
-                                        <th> Water Source</th>
-                                        <th> Yield</th>
-                                        <th> Soil Quality </th>
-                                        <th> Water Quality </th>
-                                        <th> Exp. Produce </th>
-                                        <th> Bore Depth</th>
-                                        <th> Pump depth</th>
+                                        <th>Field ID</th>
+                                        <th>Field Name</th>
+                                        <th>Area</th>
+                                        <th>Planned Season</th>
+                                        <th>Planned Crops</th>
+                                        <th>Irrigation</th>
+                                        <th>Water Source</th>
+                                        <th>Crop</th>
+                                        <th>Soil Quality </th>
+                                        <th>Water Quality </th>
+                                        <th>Yield Quality</th>
+                                        <th>Exp. Produce </th>
+                                        <th>Bore Depth(per feet)</th>
+                                        <th>Pump Depth(per feet)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let x of plannedDetails; let i = index">
                                         <td>{{x.fieldId}}</td>
+                                        <td>{{x.fieldName}}</td>
                                         <td>{{x.fieldArea}}</td>
+                                        <td>{{x.plannedSeason}}</td>
+                                        <td>{{x.plannedCrops}}</td>
                                         <td>{{x.irrigationSystem}}</td>
                                         <td>{{x.waterSource}}</td>
                                         <td>{{x.crop}}</td>
                                         <td>{{x.soilQuality}}</td>
                                         <td>{{x.waterQuality}}</td>
+                                        <td>{{x.yieldQuality}}</td>
                                         <td>{{x.expectedProduce}}</td>
                                         <td>{{getDepth(i,'Bore')}}</td>
                                         <td>{{getDepth(i,'Pump')}}</td>
@@ -78,27 +87,18 @@
                         </ul>
                     </div>
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><span>Field info</span><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><span>Field info</span><a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <ul class="d-flex-profile">
 
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            Field ID
-                                        </th>
-                                        <th>
-                                            Ownership Type
-                                        </th>
-                                        <th>
-                                            Co-owner Name
-                                        </th>
-                                        <th>
-                                            Co-owner Contact no
-                                        </th>
-                                        <th>
-                                            Ownership Doc
-                                        </th>
+                                        <th>Field ID</th>
+                                        <th>Ownership Type</th>
+                                        <th>Co-owner Name</th>
+                                        <th>Co-owner Contact no</th>
+                                        <th>Ownership Doc</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -107,13 +107,12 @@
                                         <td>{{x.ownerType}}</td>
                                         <td>{{x.fieldOwnCoOwner}}</td>
                                         <td>{{x.fieldOwnCoPh}}</td>
-                                        <td>{{x.dependency}} <a href="javascript:void(0);" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">View</a></td>
+                                        <td><a *ngIf="x.fieldOwnId || x.ownerType || x.fieldOwnCoOwner || x.fieldOwnCoOwner || x.fieldOwnCoPh" href="javascript:void(0);"
+                                                (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">View</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
-
-
-
                         </ul>
                     </div>
                     <div class="actual-facts summery-bg">
@@ -123,78 +122,74 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            Type of test
-                                        </th>
-                                        <th>
-                                            Yes/No
-                                        </th>
-                                        <th>
-                                            When
-                                        </th>
-                                        <th>
-                                            Report Recieved
-                                        </th>
-                                        <th>
-                                            Report
-                                        </th>
+                                        <th>Field ID</th>
+                                        <th>Type of test </th>
+                                        <th>Yes/No </th>
+                                        <th>When </th>
+                                        <th>Report Recieved </th>
+                                        <th>Report </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let x of typesOfTests; let i = index;">
+                                        <td>{{x?.fieldId}}</td>
                                         <td>{{x?.typeOfTest}}</td>
                                         <td>{{x?.yesNo}}</td>
                                         <td>{{x?.lastDone}}</td>
                                         <td>{{x?.testResult}}</td>
-                                        <td>{{x?.dependency}} <a href="javascript:void(0);" (click)="openFileModalPopup(fileUploadFileFor.testPicture, i)">View</a></td>
+                                        <td><a *ngIf="x?.fieldId || x?.typeOfTest || x?.yesNo || x?.lastDone || x?.testResult" href="javascript:void(0);"
+                                                (click)="openFileModalPopup(fileUploadFileFor.testPicture, i)">View</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </ul>
                     </div>
                     <div class="actual-facts summery-bg">
-                        <h4 class="summery-heading"><a href="javascript:void(0)"> <img src="../../../assets/images/edit-img.svg" alt=""></a></h4>
+                        <h4 class="summery-heading"><a href="javascript:void(0)"> <img
+                                    src="../../../assets/images/edit-img.svg" alt=""></a></h4>
                         <div class="d-flex-profile ">
                             <p><span>Interested in planning cropping cycle based on soil and water
-                                    test:</span><span><b> {{fieldInfo[0]?.undertaking_cultivation?.uc}}</b></span></p>
-
+                                    test:</span><span><b> {{fieldInfo[0]?.undertaking_cultivation?.uc ||
+                                        'NA'}}</b></span></p>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
-
 </article>
 
 
 <!-- START: Common Modal Popup for File Upload and Preview -->
-<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel" aria-hidden="true">
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header p-2 common_button_color">
-          <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+        <div class="modal-content">
+            <div class="modal-header p-2 common_button_color">
+                <h6 class="modal-title fs-6" id="fileUploadModalPopupLabel">{{ fileUpload.popupTitle }}</h6>
+            </div>
+            <div class="modal-body">
+                <!-- START : Image - Multiple  -->
+                <div class="row" [hidden]="!fileUpload.new.imageMultiple">
+                    <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length"
+                        *ngFor="let fileData of fileUpload.new.imageMultiple">
+                        <p class="fs-6" *ngIf="fileData.type=='image'">Preview Image</p>
+                        <p class="fs-6" *ngIf="fileData.type !='image'">File</p>
+                        <img [src]="fileData.file" *ngIf="fileData.type=='image'"
+                            style="height: 150px; width: 150px" /><br />
+                        <p *ngIf="fileData.type=='image'"><a href="{{fileData.file}}" target="_blank">View File</a></p>
+                        <p *ngIf="fileData.type!='image'"><a href="javascript:void(0)"
+                                (click)="downloadFile(fileData.file)">View File</a></p>
+                        <!-- <p class="word-wrap-anywhere">{{fileData.name}}</p> -->
+                    </div>
+                </div>
+                <!-- END : Image - Multiple -->
+            </div>
+            <div class="modal-footer p-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-body">
-          <!-- START : Image - Multiple  -->
-            <div class="row" [hidden]="!fileUpload.new.imageMultiple">
-            <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length" *ngFor="let fileData of fileUpload.new.imageMultiple">
-              <p class="fs-6" *ngIf="fileData.type=='image'">Preview Image</p>
-              <p class="fs-6" *ngIf="fileData.type !='image'">File</p>
-              <img [src]="fileData.file" *ngIf="fileData.type=='image'" style="height: 150px; width: 150px" /><br/>
-              <p *ngIf="fileData.type=='image'"><a href="{{fileData.file}}" target="_blank">View File</a></p>
-              <p *ngIf="fileData.type!='image'"><a href="javascript:void(0)" (click)="downloadFile(fileData.file)">View File</a></p>            
-                <!-- <p class="word-wrap-anywhere">{{fileData.name}}</p> -->
-            </div>  
-          </div>
-          <!-- END : Image - Multiple -->
-        </div>
-        <div class="modal-footer p-2">
-          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
-  <!-- END: Common Modal Popup for File Upload and Preview -->
+</div>
+<!-- END: Common Modal Popup for File Upload and Preview -->
