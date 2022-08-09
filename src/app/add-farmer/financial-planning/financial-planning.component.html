@@ -7,33 +7,38 @@
                 <form [formGroup]="financialForm">
                     <div class="form-details">
                         <h3 class="form-title">1. What is your crop loan requirement for the planned crop season? </h3>
-                        <div class="mb-3" formArrayName="loanReqPlaned" *ngFor="let item of getLoanReqPlanedControls(); let i = index;">
+                        <div class="mb-3" formArrayName="loanReqPlaned"
+                            *ngFor="let item of getLoanReqPlanedControls(); let i = index;">
                             <div class="row align-items-center form-details-inner" [formGroupName]="i">
                                 <div class="col-md-1 lable-top">
                                     <label>Field ID</label>
-                                    <input type="text" class="form-control text-center" formControlName="fieldId" value="{{i+1}}" placeholder="{{i+1}}">
+                                    <input type="text" class="form-control text-center" formControlName="fieldId"
+                                        value="{{i+1}}" placeholder="{{i+1}}">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Crop-Loan Product</label>
                                     <select class="form-select" formControlName="cropLoanProduct">
-                                        <option *ngFor="let indVal of financialMaster['cropLoanProduct']" value="{{indVal}}">
+                                        <option *ngFor="let indVal of financialMaster['cropLoanProduct']"
+                                            value="{{indVal}}">
                                             {{indVal}}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Planned cultivation area (In Hectares)</label>
-                                    <input type="text" class="form-control" maxlength="6" (keypress)="validateDecimalNo($event)" formControlName="plannedCultivationArea">
+                                    <input type="text" class="form-control" maxlength="6"
+                                        (keypress)="validateDecimalNo($event)" formControlName="plannedCultivationArea">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label>Amount(₹)</label>
-                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="hectares">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (keypress)="validateNo($event)" formControlName="hectares">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Crop</label>
                                     <select class="form-select" formControlName="crop">
                                         <option value="">...</option>
-                                        <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">
-                                            {{indVal}}</option>
+                                        <option *ngFor="let indVal of commonMaster['crops']"
+                                            value="{{indVal.crop_name}}">{{indVal.crop_name}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -55,7 +60,9 @@
                                             <td>{{x.displayLabel}}</td>
                                             <td *ngFor="let perIndex of [0,1,2]">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" formControlName="{{x.formControlName}}" value="{{interestedFRCMLoanProductsArray.thead[perIndex]}}">
+                                                    <input class="form-check-input" type="radio"
+                                                        formControlName="{{x.formControlName}}"
+                                                        value="{{interestedFRCMLoanProductsArray.thead[perIndex]}}">
                                                     <label class="form-check-label"></label>
                                                 </div>
                                             </td>
@@ -66,13 +73,15 @@
                             <div class="col-md-6">
                                 <div class="lable-top">
                                     <label for="Comment" class="form-label">Comment</label>
-                                    <textarea class="form-control" id="Comment" rows="8" formControlName="interestedFRCMLoanProductsComment"></textarea>
+                                    <textarea class="form-control" id="Comment" rows="8"
+                                        formControlName="interestedFRCMLoanProductsComment"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">3. What is your approximate expenditure for following farming activities?</h3>
+                        <h3 class="form-title">3. What is your approximate expenditure for following farming activities?
+                        </h3>
                         <div class="cultivation-cost form-details-inner" formGroupName="cultivationCost">
                             <h3 class="form-title">A. Cultivation Cost</h3>
                             <div class="row g-3 align-items-center form-details-inner">
@@ -81,15 +90,18 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" formControlName="seedPlanned1" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="seedPlanned1"
+                                        (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Planned)</label>
-                                    <input type="text" class="form-control" formControlName="seedPlanned2" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="seedPlanned2"
+                                        (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" formControlName="seedHistorical" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="seedHistorical"
+                                        (keypress)="validateNo($event)">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center form-details-inner">
@@ -98,15 +110,18 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" formControlName="labourPlanned1" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="labourPlanned1"
+                                        (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Planned)</label>
-                                    <input type="text" class="form-control" formControlName="labourPlanned2" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="labourPlanned2"
+                                        (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" formControlName="labourHistorical" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="labourHistorical"
+                                        (keypress)="validateNo($event)">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center form-details-inner">
@@ -115,15 +130,18 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" formControlName="farmElectricityPlanned1" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="farmElectricityPlanned1"
+                                        (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Planned)</label>
-                                    <input type="text" class="form-control" formControlName="farmElectricityPlanned2" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="farmElectricityPlanned2"
+                                        (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" formControlName="farmElectricityHistorical" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="farmElectricityHistorical"
+                                        (keypress)="validateNo($event)">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center form-details-inner">
@@ -132,51 +150,63 @@
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2022 (Planned)</label>
-                                    <input type="text" class="form-control" formControlName="machineryPlanned1" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="machineryPlanned1"
+                                        (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Kharif 2022 (Planned)</label>
-                                    <input type="text" class="form-control" formControlName="machineryPlanned2" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="machineryPlanned2"
+                                        (keypress)="validateNo($event)">
                                 </div>
                                 <div class="col-md-3 lable-top">
                                     <label for="">Rabi 2021 (Historical)</label>
-                                    <input type="text" class="form-control" formControlName="machineryHistorical" (keypress)="validateNo($event)">
+                                    <input type="text" class="form-control" formControlName="machineryHistorical"
+                                        (keypress)="validateNo($event)">
                                 </div>
                             </div>
                         </div>
                         <div class="crop-wise-selling form-details-inner">
                             <h3 class="form-title">B. Season crop wise selling information</h3>
-                            <div formArrayName="seasonCrop" *ngFor="let item of getSeasonCropControls(); let i = index;">
+                            <div formArrayName="seasonCrop"
+                                *ngFor="let item of getSeasonCropControls(); let i = index;">
                                 <div class="display-flex" [formGroupName]="i">
                                     <div class="flex-1 lable-top">
                                         <label for="">Season</label>
                                         <select class="form-select" formControlName="season">
                                             <option value="">...</option>
-                                            <option *ngFor="let indVal of commonMaster['season']" value="{{indVal}}">{{indVal}}</option>
+                                            <option *ngFor="let indVal of commonMaster['season']"
+                                                value="{{indVal.crop_season_name}}"> {{indVal.crop_season_name}}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="flex-1 lable-top">
                                         <label>Crop</label>
                                         <select class="form-select" formControlName="crop">
                                             <option value="">...</option>
-                                            <option *ngFor="let indVal of commonMaster['crops']" value="{{indVal}}">{{indVal}}</option>
+                                            <option *ngFor="let indVal of commonMaster['crops']"
+                                                value="{{indVal.crop_name}}">{{indVal.crop_name}}</option>
                                         </select>
                                     </div>
                                     <div class="flex-1 lable-top">
                                         <label>Sold at</label>
                                         <select class="form-select" formControlName="soldAt">
                                             <option value="">...</option>
-                                            <option *ngFor="let indVal of financialMaster['cropSoldPlace']" value="{{indVal}}">
+                                            <option *ngFor="let indVal of financialMaster['cropSoldPlace']"
+                                                value="{{indVal}}">
                                                 {{indVal}}</option>
                                         </select>
                                     </div>
                                     <div class="flex-1 lable-top">
                                         <label for="">Quantity Sold (in KG)</label>
-                                        <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="" formControlName="quantitySold">
+                                        <input type="text" class="form-control" maxlength="10"
+                                            (keypress)="validateNo($event)" id="" placeholder=""
+                                            formControlName="quantitySold">
                                     </div>
                                     <div class="flex-1 lable-top">
                                         <label for="">Selling Price(₹)</label>
-                                        <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" id="" placeholder="" formControlName="sellingPrice">
+                                        <input type="text" class="form-control" maxlength="10"
+                                            (keypress)="validateNo($event)" id="" placeholder=""
+                                            formControlName="sellingPrice">
                                     </div>
                                     <div class="flex-1 lable-top">
                                         <label for="">Selling Date</label>
@@ -184,9 +214,11 @@
                                     </div>
                                 </div>
                                 <div class="flex-1 add-another">
-                                    <a *ngIf="getSeasonCropControls().length!=1  && i!=getSeasonCropControls().length-1" href="javascript:void(0)" class="delete-item " (click)="removeSeasonCrop(i)"><i
+                                    <a *ngIf="getSeasonCropControls().length!=1  && i!=getSeasonCropControls().length-1"
+                                        href="javascript:void(0)" class="delete-item " (click)="removeSeasonCrop(i)"><i
                                             class="fa fa-trash-o text-danger"></i></a>
-                                    <a *ngIf="i==getSeasonCropControls().length-1" href="javascript:void(0)" (click)="addSeasonCrop()">+ Add Another</a>
+                                    <a *ngIf="i==getSeasonCropControls().length-1" href="javascript:void(0)"
+                                        (click)="addSeasonCrop()">+ Add Another</a>
                                 </div>
                             </div>
 
@@ -349,19 +381,27 @@
                                     <tbody>
                                         <tr>
                                             <td>Household – Grocery/Repairs</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="groceryExpense"></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (keypress)="validateNo($event)" formControlName="groceryExpense">
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Health - Doctors Expense/ Medical Treatment</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="medicalExpense"></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (keypress)="validateNo($event)" formControlName="medicalExpense">
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Education</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="educationExpense"></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (keypress)="validateNo($event)" formControlName="educationExpense">
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Rental paying</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="rentalExpense"></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (keypress)="validateNo($event)" formControlName="rentalExpense">
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -377,15 +417,20 @@
                                     <tbody>
                                         <tr>
                                             <td>House Electricity</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="electricityExpense"></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (keypress)="validateNo($event)"
+                                                    formControlName="electricityExpense"></td>
                                         </tr>
                                         <tr>
                                             <td>Interest Payments</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="interestExpense"></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (keypress)="validateNo($event)" formControlName="interestExpense">
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Others, please specify</td>
-                                            <td><input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="otherExpense"></td>
+                                            <td><input type="text" class="form-control" maxlength="10"
+                                                    (keypress)="validateNo($event)" formControlName="otherExpense"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -399,12 +444,14 @@
                             <div class="display-flex">
                                 <div class="flex-1" *ngFor="let indType of financialMaster['KCCLoanBank']">
                                     <label class="form-check-label form-check bordered-radio" for="{{indType}}">
-                                        <input class="form-check-input" type="radio" formControlName="KCCLoanBank" value="{{indType}}" id="{{indType}}"><span>{{indType}}</span>
+                                        <input class="form-check-input" type="radio" formControlName="KCCLoanBank"
+                                            value="{{indType}}" id="{{indType}}"><span>{{indType}}</span>
                                     </label>
                                 </div>
                                 <div class="col-auto lable-top">
                                     <label>Other</label>
-                                    <input type="text" class="form-control" placeholder="" formControlName="KCCLoanBankOther">
+                                    <input type="text" class="form-control" placeholder=""
+                                        formControlName="KCCLoanBankOther">
                                 </div>
                             </div>
                         </div>
@@ -414,21 +461,26 @@
                             <div class="display-flex">
                                 <div class="flex-1 lable-top">
                                     <label>Credited Amount(₹)</label>
-                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="KCCLoanCreditedAmount">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (keypress)="validateNo($event)" formControlName="KCCLoanCreditedAmount">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="date" class="form-control" formControlName="KCCLoanDisbursementDate" (change)="checkRepaymentDate()">
+                                    <input type="date" class="form-control" formControlName="KCCLoanDisbursementDate"
+                                        (change)="checkRepaymentDate()">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Repayment Amount(₹)</label>
-                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="KCCLoanRepaymentAmount">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (keypress)="validateNo($event)" formControlName="KCCLoanRepaymentAmount">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="date" class="form-control" formControlName="KCCLoanRepaymentDate" (change)="checkRepaymentDate()">
+                                    <input type="date" class="form-control" formControlName="KCCLoanRepaymentDate"
+                                        (change)="checkRepaymentDate()">
                                     <div *ngIf="KCCLoanRepaymentDateError" class="form-text text-danger">
-                                        <small *ngIf="KCCLoanRepaymentDateError">Repayment date is greater than date of disbursement</small>
+                                        <small *ngIf="KCCLoanRepaymentDateError">Repayment date is greater than date of
+                                            disbursement</small>
                                     </div>
                                 </div>
                             </div>
@@ -448,11 +500,13 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="takenOtherLoanYES">
-                                        <input class="form-check-input" type="radio" formControlName="takenOtherLoan" value="Yes" id="takenOtherLoanYES">Yes</label>
+                                        <input class="form-check-input" type="radio" formControlName="takenOtherLoan"
+                                            value="Yes" id="takenOtherLoanYES">Yes</label>
                                 </div>
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="takenOtherLoanNO">
-                                        <input class="form-check-input" type="radio" formControlName="takenOtherLoan" value="No" id="takenOtherLoanNO">No</label>
+                                        <input class="form-check-input" type="radio" formControlName="takenOtherLoan"
+                                            value="No" id="takenOtherLoanNO">No</label>
                                 </div>
                             </div>
                         </div>
@@ -465,21 +519,26 @@
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Credited Amount(₹)</label>
-                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="otherLoanCreditedAmount">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (keypress)="validateNo($event)" formControlName="otherLoanCreditedAmount">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Date of disbursement</label>
-                                    <input type="date" class="form-control" formControlName="otherLoanDisbursementDate" (change)="checkOtherRepaymentDate()">
+                                    <input type="date" class="form-control" formControlName="otherLoanDisbursementDate"
+                                        (change)="checkOtherRepaymentDate()">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Amount(₹)</label>
-                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="otherLoanRepaymentAmount">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (keypress)="validateNo($event)" formControlName="otherLoanRepaymentAmount">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Repayment Date</label>
-                                    <input type="date" class="form-control" formControlName="otherLoanRepaymentDate" (change)="checkOtherRepaymentDate()">
+                                    <input type="date" class="form-control" formControlName="otherLoanRepaymentDate"
+                                        (change)="checkOtherRepaymentDate()">
                                     <div *ngIf="otherLoanRepaymentDateError" class="form-text text-danger">
-                                        <small *ngIf="otherLoanRepaymentDateError">Repayment date is greater than date of disbursement</small>
+                                        <small *ngIf="otherLoanRepaymentDateError">Repayment date is greater than date
+                                            of disbursement</small>
                                     </div>
                                 </div>
                             </div>
@@ -492,7 +551,8 @@
                             <div class="row align-items-center">
                                 <div class="col-md-2 lable-top">
                                     <label>Amount paid(₹)</label>
-                                    <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="PMFBYAmountPaid">
+                                    <input type="text" class="form-control" maxlength="10"
+                                        (keypress)="validateNo($event)" formControlName="PMFBYAmountPaid">
                                 </div>
                                 <div class="col-md-2 lable-top">
                                     <label>Date of payment</label>
@@ -502,13 +562,15 @@
                         </div>
                         <div class="form-details-inner">
                             <h3 class="form-title">6B. Follow up question</h3>
-                            <div formArrayName="insuranceDetails" *ngFor="let item of getInsuranceDetailsControls(); let i = index;">
+                            <div formArrayName="insuranceDetails"
+                                *ngFor="let item of getInsuranceDetailsControls(); let i = index;">
                                 <div class="row align-items-center form-details-inner" [formGroupName]="i">
                                     <div class="col-md-2 lable-top">
                                         <label>Insurance type</label>
                                         <select class="form-select" formControlName="insuranceType">
                                             <option value="">...</option>
-                                            <option *ngFor="let indVal of financialMaster['insuranceType']" value="{{indVal}}">
+                                            <option *ngFor="let indVal of financialMaster['insuranceType']"
+                                                value="{{indVal}}">
                                                 {{indVal}}</option>
                                         </select>
                                     </div>
@@ -518,19 +580,22 @@
                                     </div>
                                     <div class="col-md-2 lable-top">
                                         <label>Premium paid(₹)</label>
-                                        <input type="text" class="form-control" maxlength="10" (keypress)="validateNo($event)" formControlName="premiumPaid">
+                                        <input type="text" class="form-control" maxlength="10"
+                                            (keypress)="validateNo($event)" formControlName="premiumPaid">
                                     </div>
                                     <div class="col-md-3 lable-top">
                                         <label>Settlement amount credited?</label>
                                         <div class="two-radio">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" id="Amount-Yes{{i}}" formControlName="isSettlementAmountCredited" value="Yes"><label
+                                                <input class="form-check-input" type="radio" id="Amount-Yes{{i}}"
+                                                    formControlName="isSettlementAmountCredited" value="Yes"><label
                                                     class="form-check-label" for="Amount-Yes{{i}}">
                                                     Yes</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" id="Amount-No{{i}}" formControlName="isSettlementAmountCredited" value="No"><label class="form-check-label"
-                                                    for="Amount-No{{i}}">
+                                                <input class="form-check-input" type="radio" id="Amount-No{{i}}"
+                                                    formControlName="isSettlementAmountCredited" value="No"><label
+                                                    class="form-check-label" for="Amount-No{{i}}">
                                                     No</label>
                                             </div>
                                         </div>
@@ -539,27 +604,33 @@
                                         <label>Satisfied with the disbursement?</label>
                                         <div class="two-radio">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" id="disbursement-Yes{{i}}" formControlName="isDisbursementSatisfied" value="Yes"><label
+                                                <input class="form-check-input" type="radio" id="disbursement-Yes{{i}}"
+                                                    formControlName="isDisbursementSatisfied" value="Yes"><label
                                                     class="form-check-label" for="disbursement-Yes{{i}}"> Yes</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" id="disbursement-No{{i}}" formControlName="isDisbursementSatisfied" value="No"><label
+                                                <input class="form-check-input" type="radio" id="disbursement-No{{i}}"
+                                                    formControlName="isDisbursementSatisfied" value="No"><label
                                                     class="form-check-label" for="disbursement-No{{i}}"> No</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="flex-1 add-another">
-                                    <a *ngIf="getInsuranceDetailsControls().length!=1  && i!=getInsuranceDetailsControls().length-1" href="javascript:void(0)" class="delete-item"
-                                        (click)="removeInsuranceDetails(i)"><i class="fa fa-trash-o text-danger"></i></a>
-                                    <a *ngIf="i==getInsuranceDetailsControls().length-1" href="javascript:void(0)" (click)="addInsuranceDetails()">+ Add Another</a>
+                                    <a *ngIf="getInsuranceDetailsControls().length!=1  && i!=getInsuranceDetailsControls().length-1"
+                                        href="javascript:void(0)" class="delete-item"
+                                        (click)="removeInsuranceDetails(i)"><i
+                                            class="fa fa-trash-o text-danger"></i></a>
+                                    <a *ngIf="i==getInsuranceDetailsControls().length-1" href="javascript:void(0)"
+                                        (click)="addInsuranceDetails()">+ Add Another</a>
                                 </div>
                             </div>
                         </div>
 
                     </div>
                     <div class="form-details">
-                        <h3 class="form-title">7. Preferred source of credit outside KCC?<br> <span style="color: #6a6a6a;font-size: 14px;">Specify interest rate (2% per month, 3%
+                        <h3 class="form-title">7. Preferred source of credit outside KCC?<br> <span
+                                style="color: #6a6a6a;font-size: 14px;">Specify interest rate (2% per month, 3%
                                 per month, etc.)</span> </h3>
                         <div class="row align-items-center">
                             <div class="advice-cultivation">
@@ -591,19 +662,24 @@
                                 </div>
                                 <div class="credit-outside rank-order">
                                     <div class="col-auto">
-                                        <input class="form-control" type="text" formControlName="commissionAgentROICharge">
+                                        <input class="form-control" type="text"
+                                            formControlName="commissionAgentROICharge" (keypress)="validateNo($event)">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text" formControlName="familyROICharge">
+                                        <input class="form-control" type="text" formControlName="familyROICharge"
+                                            (keypress)="validateNo($event)">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text" formControlName="inputSupplierROICharge">
+                                        <input class="form-control" type="text" formControlName="inputSupplierROICharge"
+                                            (keypress)="validateNo($event)">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text" formControlName="localSahookarROICharge">
+                                        <input class="form-control" type="text" formControlName="localSahookarROICharge"
+                                            (keypress)="validateNo($event)">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text" formControlName="goldLoanROICharge">
+                                        <input class="form-control" type="text" formControlName="goldLoanROICharge"
+                                            (keypress)="validateNo($event)">
                                     </div>
                                 </div>
                             </div>
@@ -613,19 +689,24 @@
                                 </div>
                                 <div class="credit-outside rank-order">
                                     <div class="col-auto">
-                                        <input class="form-control" type="text" formControlName="commissionAgentLoanAmount">
+                                        <input class="form-control" type="text"
+                                            formControlName="commissionAgentLoanAmount" (keypress)="validateNo($event)">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text" formControlName="familyLoanAmount">
+                                        <input class="form-control" type="text" formControlName="familyLoanAmount"
+                                            (keypress)="validateNo($event)">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text" formControlName="inputSupplierLoanAmount">
+                                        <input class="form-control" type="text"
+                                            formControlName="inputSupplierLoanAmount" (keypress)="validateNo($event)">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text" formControlName="localSahookarLoanAmount">
+                                        <input class="form-control" type="text"
+                                            formControlName="localSahookarLoanAmount" (keypress)="validateNo($event)">
                                     </div>
                                     <div class="col-auto">
-                                        <input class="form-control" type="text" formControlName="goldLoanLoanAmount">
+                                        <input class="form-control" type="text" formControlName="goldLoanLoanAmount"
+                                            (keypress)="validateNo($event)">
                                     </div>
                                 </div>
                             </div>
@@ -637,7 +718,8 @@
                             8. What is the reason for preferring any of the above agents?
                         </h3>
                         <div class="agent-rank-order">
-                            <label class="form-check-label form-check bordered-check" *ngFor="let indStat of financialMaster['reasonAgent']" for="{{ indStat }}reasonAgent">
+                            <label class="form-check-label form-check bordered-check"
+                                *ngFor="let indStat of financialMaster['reasonAgent']" for="{{ indStat }}reasonAgent">
                                 <input class="form-check-input" type="checkbox" id="{{ indStat }}reasonAgent" (click)="
                                 selectCheckboxArray(
                                     $event,
@@ -656,8 +738,10 @@
                         <h3 class="form-title">9. What is the collateral being pledged against credit outside KCC? </h3>
                         <div class="row">
                             <div class="col-auto" *ngFor="let indStat of financialMaster['pledgedCollateral']">
-                                <label class="form-check-label form-check bordered-check" for="{{ indStat }}pledgedCollateral">
-                                    <input class="form-check-input" type="checkbox" id="{{ indStat }}pledgedCollateral" (click)="
+                                <label class="form-check-label form-check bordered-check"
+                                    for="{{ indStat }}pledgedCollateral">
+                                    <input class="form-check-input" type="checkbox" id="{{ indStat }}pledgedCollateral"
+                                        (click)="
                                     selectCheckboxArray(
                                         $event,
                                         'pledgedCollateral',
@@ -681,19 +765,23 @@
                         <div class="row">
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="loan-yes">
-                                    <input class="form-check-input" type="radio" formControlName="availedFarmLoanWaiver" id="loan-yes" value="Yes">Yes</label>
+                                    <input class="form-check-input" type="radio" formControlName="availedFarmLoanWaiver"
+                                        id="loan-yes" value="Yes">Yes</label>
                             </div>
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="loan-no">
-                                    <input class="form-check-input" type="radio" formControlName="availedFarmLoanWaiver" id="loan-no" value="No">No</label>
+                                    <input class="form-check-input" type="radio" formControlName="availedFarmLoanWaiver"
+                                        id="loan-no" value="No">No</label>
                             </div>
                             <div class="col-auto">
                                 <label class="form-check-label form-check bordered-check" for="loan-gold">
-                                    <input class="form-check-input" type="radio" formControlName="availedFarmLoanWaiver" id="loan-gold" value="Gold">Gold</label>
+                                    <input class="form-check-input" type="radio" formControlName="availedFarmLoanWaiver"
+                                        id="loan-gold" value="Gold">Gold</label>
                             </div>
                             <div class="col-auto lable-top">
                                 <label>Mention other (if any)</label>
-                                <input type="text" class="form-control" name="" placeholder="" formControlName="availedFarmLoanWaiverOther">
+                                <input type="text" class="form-control" name="" placeholder=""
+                                    formControlName="availedFarmLoanWaiverOther">
                             </div>
                         </div>
                     </div>
@@ -703,11 +791,13 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="tractor-yes">
-                                        <input class="form-check-input" type="radio" formControlName="ownTractor" id="tractor-yes" value="Yes">Yes</label>
+                                        <input class="form-check-input" type="radio" formControlName="ownTractor"
+                                            id="tractor-yes" value="Yes">Yes</label>
                                 </div>
                                 <div class="col-auto">
                                     <label class="form-check-label form-check bordered-radio" for="tractor-no">
-                                        <input class="form-check-input" type="radio" formControlName="ownTractor" id="tractor-no" value="No">No</label>
+                                        <input class="form-check-input" type="radio" formControlName="ownTractor"
+                                            id="tractor-no" value="No">No</label>
                                 </div>
                             </div>
                         </div>
@@ -716,8 +806,11 @@
                             </h3>
                             <div class="row align-items-center">
                                 <div class="select-advice innovative-way">
-                                    <label class="form-check-label form-check bordered-check" *ngFor="let indStat of financialMaster['farmMachinery']" for="{{ indStat }}farmMachinery">
-                                        <input class="form-check-input" type="checkbox" id="{{ indStat }}farmMachinery" (click)="
+                                    <label class="form-check-label form-check bordered-check"
+                                        *ngFor="let indStat of financialMaster['farmMachinery']"
+                                        for="{{ indStat }}farmMachinery">
+                                        <input class="form-check-input" type="checkbox" id="{{ indStat }}farmMachinery"
+                                            (click)="
                                         selectCheckboxArray(
                                               $event,
                                               'farmMachinery',
@@ -743,7 +836,8 @@
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label for="">Account Number</label>
-                                    <input type="text" class="form-control" maxlength="14" (keypress)="validateNo($event)" formControlName="accountNum">
+                                    <input type="text" class="form-control" maxlength="14"
+                                        (keypress)="validateNo($event)" formControlName="accountNum">
                                 </div>
                                 <div class="flex-1 lable-top">
                                     <label for="">IFSC Code</label>
@@ -755,9 +849,11 @@
                                 </div>
                             </div>
                             <div class="flex-1 add-another">
-                                <a *ngIf="getBankDetailsControls().length!=1  && i!=getBankDetailsControls().length-1" href="javascript:void(0)" class="delete-item " (click)="removeBankDetails(i)"><i
+                                <a *ngIf="getBankDetailsControls().length!=1  && i!=getBankDetailsControls().length-1"
+                                    href="javascript:void(0)" class="delete-item " (click)="removeBankDetails(i)"><i
                                         class="fa fa-trash-o text-danger"></i></a>
-                                <a *ngIf="i==getBankDetailsControls().length-1" href="javascript:void(0)" (click)="addBankDetails()">+ Add Another</a>
+                                <a *ngIf="i==getBankDetailsControls().length-1" href="javascript:void(0)"
+                                    (click)="addBankDetails()">+ Add Another</a>
                             </div>
                         </div>
                     </div>

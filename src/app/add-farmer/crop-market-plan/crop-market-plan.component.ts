@@ -21,8 +21,7 @@ enum SaveStatus {
   styleUrls: ['./crop-market-plan.component.css'],
 })
 export class CropMarketPlanComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   /* START: Variables ---------------------------------------------*/
   private observableSubscription: any;
 
@@ -176,6 +175,17 @@ export class CropMarketPlanComponent
   validateNo(e: any): boolean {
     const charCode = e.which ? e.which : e.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
+  validateDecimalNo(e: any): boolean {
+    const charCode = e.which ? e.which : e.keyCode;
+    if (
+      (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46) ||
+      (charCode == 46 && e.target.value.indexOf('.') !== -1)
+    ) {
       return false;
     }
     return true;

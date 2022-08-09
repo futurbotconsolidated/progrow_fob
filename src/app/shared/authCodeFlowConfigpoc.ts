@@ -6,7 +6,7 @@ export const authCodeFlowConfig: AuthConfig = {
   redirectUri: window.location.origin + '/home',
   clientId: '5bl9jg0r0dolhksblp49b8ifj2',
   logoutUrl:
-    'https://auth.poc.progrow.adaptiwise.com/logout?client_id=5bl9jg0r0dolhksblp49b8ifj2&response_type=code&scope=openid+profile&redirect_uri=http://localhost:4200/login',
+    'https://auth.poc.progrow.adaptiwise.com/logout?client_id=5bl9jg0r0dolhksblp49b8ifj2&response_type=code&scope=openid+profile&redirect_uri=https://fob.poc.progrow.adaptiwise.com/login',
 
   scope: 'openid profile email',
   strictDiscoveryDocumentValidation: false,

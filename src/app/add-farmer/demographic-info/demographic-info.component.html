@@ -16,7 +16,7 @@
                 <div class="farmer-details-inner lable-top">
                   <label for="PANnumber">PAN Card Number </label>
                   <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber"
-                    placeholder="Enter PAN Number" [readonly]="kycData.pan.isVerified" (keyup)="checkPAN($event)" />
+                    placeholder="Enter PAN Number" [readonly]="kycData.pan.isVerified" (change)="checkPAN($event)" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
                       Please enter valid PAN Number</small>
@@ -37,7 +37,7 @@
                 </div>
                 <!-- Image Upload Button modal-->
                 <div class="lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100"
                     (click)="openFileModalPopup(fileUploadFileFor.panCard, 0)"> Upload Image
                   </button>
                 </div>
@@ -142,8 +142,8 @@
 
 
               <!-- Image Upload Button modal-->
-              <div class="lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+              <div class="lable-top">                
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
                   (click)="openFileModalPopup(fileUploadFileFor.aadhaarCard, 0)"> Upload Image
                 </button>
               </div>
@@ -230,7 +230,7 @@
               </div>
               <div class="lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm p-10" data-bs-toggle="modal"
+                <button type="button" class="btn common_button_color text-white btn-sm p-10" 
                   (click)="openFileModalPopup(fileUploadFileFor.drivingLicence, 0)"> Upload Image
                 </button>
               </div>
@@ -290,7 +290,7 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
                   (click)="openFileModalPopup(fileUploadFileFor.voterId, 0)">
                   Upload Image
                 </button>
@@ -330,7 +330,7 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" 
                   (click)="openFileModalPopup(fileUploadFileFor.passport, 0)">
                   Upload Image
                 </button>
@@ -346,7 +346,7 @@
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" 
                   (click)="openFileModalPopup(fileUploadFileFor.NREGA, 0)">
                   Upload Image
                 </button>
@@ -492,7 +492,7 @@
                     (keypress)="validateNo($event)" maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" />
                   <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
                     <small *ngIf="f['pinCode'].errors['required']">
-                      PinCode is required</small>
+                      Pincode is required</small>
                     <small *ngIf="f['pinCode'].errors['minlength']">
                       Should be 6 digits</small>
                     <small *ngIf="f['pinCode'].errors['maxlength']">
@@ -638,7 +638,8 @@
               <div class="farmer-details">
                 <div class="farmer-details-inner lable-top">
                   <label for="">Monthly Rent (If rented)(₹)</label>
-                  <input type="text" class="form-control" formControlName="monthlyRent" placeholder="" />
+                  <input type="text" class="form-control" formControlName="monthlyRent" placeholder=""
+                    (keypress)="validateNo($event)" />
                 </div>
               </div>
             </div>
@@ -822,8 +823,7 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label>Upload pictures</label>
-                  <div class="fileUpload" data-bs-toggle="modal"
-                    (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">
+                  <div class="fileUpload" (click)="openFileModalPopup(fileUploadFileFor.ownershipPicture, i)">
                     <span></span><img src="../../../assets/images/photo-camera.png" />
                     <input type="text" name="" class="form-control" />
                   </div>
@@ -1018,7 +1018,7 @@
             </div>
           </div>
           <!-- Question [11] -->
-          <!-- <div class="form-details">
+          <div class="form-details">
             <h3 class="form-title">11. Record Interview</h3>
             <div class="mb-2" formArrayName="recordInterview"
               *ngFor="let item of getRecordInterviewControls(); let i = index">
@@ -1101,7 +1101,7 @@
                 </div>
                 <div class="col-md-2">
                   <button type="button" class="btn common_button_color text-white btn-sm h-100 w-100"
-                    data-bs-toggle="modal" (click)="openFileModalPopup(fileUploadFileFor.recordAudioVideo, i)"> Capture
+                    (click)="openFileModalPopup(fileUploadFileFor.recordAudioVideo, i)"> Capture
                   </button>
                 </div>
                 <div class="col-md-2 col-auto add-another" *ngIf="
@@ -1116,7 +1116,7 @@
                 </div>
               </div>
             </div>
-          </div> -->
+          </div>
         </form>
       </div>
     </div>
@@ -1137,7 +1137,7 @@
         <div class="row" [hidden]="!fileUpload.new.isImage1Required">
           <div class="col-md-6 mb-1">
             <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
-            <input class="form-control form-control-sm" id="formFileSm" type="file"
+            <input class="form-control form-control-sm formFileSm" id="formFileSm" type="file" value=""
               (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="image/*">
           </div>
           <div class="col-md-6 mb-1">
@@ -1145,6 +1145,7 @@
             <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1"
               style="height: 150px; width: 150px" /><br>
             <a *ngIf="fileUpload.new.imageSrc1" [href]="fileUpload.new.imageSrc1" target="_blank">View File</a>
+            <p *ngIf="fileUpload.new.imageName1" class="word-wrap-anywhere">{{fileUpload.new.imageName1}}</p>
           </div>
 
         </div>
@@ -1155,7 +1156,7 @@
           <hr class="mt-1" />
           <div class="col-md-6 mb-1">
             <label for="formFileSm2" class="form-label">{{fileUpload.imageHeading2}}</label>
-            <input class="form-control form-control-sm" id="formFileSm2" type="file"
+            <input class="form-control form-control-sm formFileSm" id="formFileSm2" type="file"
               (change)="onFileChange($event,'BACK_IMAGE', fileUpload.new.fileIndex)" accept="image/*">
           </div>
           <div class="col-md-6 mb-1">
@@ -1163,6 +1164,7 @@
             <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2"
               style="height: 150px; width: 150px" /><br>
             <a *ngIf="fileUpload.new.imageSrc2" [href]="fileUpload.new.imageSrc2" target="_blank">View File</a>
+            <p *ngIf="fileUpload.new.imageName2" class="word-wrap-anywhere">{{fileUpload.new.imageName2}}</p>
           </div>
 
         </div>
@@ -1171,7 +1173,7 @@
         <div class="row" [hidden]="!fileUpload.new.isMultiple">
           <div class="col-md-6 mb-1">
             <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
-            <input class="form-control form-control-sm" id="formFileSm" type="file"
+            <input class="form-control form-control-sm formFileSm" id="formFileSm" type="file"
               (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="image/*"
               *ngIf="fileUpload.new.isMultiple" multiple="">
           </div>
@@ -1180,8 +1182,9 @@
           <div class="col-md-3 mb-1" [hidden]="!fileUpload.new.imageMultiple.length"
             *ngFor="let imageSrc of fileUpload.new.imageMultiple">
             <p class="fs-6">Preview Image</p>
-            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 150px; width: 150px" /><br />
-            <a *ngIf="imageSrc" [href]="imageSrc" target="_blank">View File</a>
+            <img [src]="imageSrc.file" *ngIf="imageSrc.file" style="height: 150px; width: 150px" /><br />
+            <a *ngIf="imageSrc.file" [href]="imageSrc.file" target="_blank">View File</a>
+            <p *ngIf="imageSrc.name" class="word-wrap-anywhere">{{imageSrc.name}}</p>
           </div>
 
         </div>
@@ -1190,13 +1193,14 @@
         <div class="row" [hidden]="!fileUpload.new.isAudioVideoRequired">
           <div class="col-md-6 mb-1">
             <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
-            <input class="form-control form-control-sm" id="formFileSm" type="file"
+            <input class="form-control form-control-sm formFileSm" id="formFileSm" type="file"
               (change)="onFileChange($event,'FRONT_IMAGE', fileUpload.new.fileIndex)" accept="">
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">File</p>
-            <a *ngIf="fileUpload.new.imageSrc1 !=''" href="javascript:void(0)"
+            <a *ngIf="fileUpload.new.imageSrc1" href="javascript:void(0)"
               (click)="downloadFile(fileUpload.new.imageSrc1)">View File</a>
+              <p *ngIf="fileUpload.new.imageName1" class="word-wrap-anywhere">{{fileUpload.new.imageName1}}</p>
           </div>
         </div>
         <!-- END : Audio Video - 1 -->

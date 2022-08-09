@@ -18,7 +18,8 @@
                 <!-- PAN Card Field -->
                 <div class="farmer-details-inner lable-top">
                   <label for="PANnumber">PAN Card Number </label>
-                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber" placeholder="Enter PAN card number" [readonly]="kycData.coa1.pan.isVerified" />
+                  <input type="text" class="form-control" id="PANnumber" formControlName="PANnumber"
+                    placeholder="Enter PAN card number" [readonly]="kycData.coa1.pan.isVerified" />
                   <div *ngIf="f['PANnumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumber'].errors['invalidPanNumber']">
                       Please enter valid PAN Number</small>
@@ -26,23 +27,29 @@
                 </div>
                 <!-- KYC Buttons -->
                 <div class="lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.pan.showVerify" (click)="getKycData($event,'coa1',kycProofNames.coa1.pan)">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                    [hidden]="!kycData.coa1.pan.showVerify" (click)="getKycData($event,'coa1',kycProofNames.coa1.pan)">
                     {{kycFieldButtonLabels.verify}}</button>
-                  <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa1.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                    [hidden]="!kycData.coa1.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
                     {{kycFieldButtonLabels.verified}}</button>
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.pan.showTryAgain" (click)="getKycData($event,'coa1',kycProofNames.coa1.pan)"> <i
-                      class="fa fa-undo" aria-hidden="true"></i>
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                    [hidden]="!kycData.coa1.pan.showTryAgain"
+                    (click)="getKycData($event,'coa1',kycProofNames.coa1.pan)"> <i class="fa fa-undo"
+                      aria-hidden="true"></i>
                     {{kycFieldButtonLabels.try_again}}</button>
                 </div>
                 <!-- Image Upload Button modal-->
                 <div class="lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.panCard)"> Upload Image
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                    (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.panCard)"> Upload Image
                   </button>
                 </div>
               </div>
 
               <!-- START: show PAN kyc api data with confirm button -->
-              <small class="text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa1.pan.data)" data-bs-toggle="collapse" data-bs-target="#coa1PanKYCArea" aria-expanded="false"
+              <small class="text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa1.pan.data)"
+                data-bs-toggle="collapse" data-bs-target="#coa1PanKYCArea" aria-expanded="false"
                 aria-controls="coa1PanKYCArea">
                 Show/Hide details
               </small>
@@ -52,7 +59,8 @@
                     <p><b>Full Name:</b> {{kycData.coa1.pan.data['full_name']}}</p>
                     <p><b>Category:</b> {{kycData.coa1.pan.data['category']}}</p>
                     <p><b>Status:</b> {{kycData.coa1.pan.data['status']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa1.pan.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10"
+                      [hidden]="!kycData.coa1.pan.showConfirm"
                       (click)="setKycDataVariables('coa1',kycProofNames.coa1.pan,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -67,10 +75,12 @@
               <h4>Profile Picture</h4>
               <div class="update-profile">
                 <div class="pro-img">
-                  <img class="profile-pic" [hidden]="!displayCoApplicant1ProfileImage" src="{{displayCoApplicant1ProfileImage}}" />
+                  <img class="profile-pic" [hidden]="!displayCoApplicant1ProfileImage"
+                    src="{{displayCoApplicant1ProfileImage}}" />
                 </div>
                 <div class="pro-update">
-                  <a class="avatar" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.farmerProfile)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <a class="avatar" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.farmerProfile)"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -82,7 +92,8 @@
                       <path
                         d="M9.827,21.763,14.31,14l3.532,6.117a10.023,10.023,0,0,1-8.015,1.646ZM7.89,21.12A10.028,10.028,0,0,1,2.458,15h8.965L7.89,21.119ZM2.05,13A9.964,9.964,0,0,1,4.633,5.239L9.112,13ZM6.159,3.883a10.021,10.021,0,0,1,8.014-1.646L9.69,10,6.159,3.883Zm9.951-1A10.028,10.028,0,0,1,21.542,9H12.577L16.11,2.881ZM21.95,11a9.964,9.964,0,0,1-2.583,7.761L14.888,11h7.064Z" />
                     </svg><span>Retake</span></a>
-                  <a (click)="removeImage($event,'FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <a (click)="removeImage($event,'FARMER_PROFILE')"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                      height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -107,8 +118,9 @@
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label for="PANnumber">Aadhaar Number </label>
-                <input type="text" class="form-control" id="aadhaarNumber" formControlName="aadhaarNumber" placeholder="Enter Aadhaar Number" maxlength="12"
-                  [readonly]="kycData.coa1.aadhaar.isVerified" (keypress)="validateNo($event)" />
+                <input type="text" class="form-control" id="aadhaarNumber" formControlName="aadhaarNumber"
+                  placeholder="Enter Aadhaar Number" maxlength="12" [readonly]="kycData.coa1.aadhaar.isVerified"
+                  (keypress)="validateNo($event)" />
                 <div *ngIf="f['aadhaarNumber'].errors" class="form-text text-danger">
                   <small *ngIf="f['aadhaarNumber'].errors['minlength']">
                     Should be 12 digits</small>
@@ -120,42 +132,55 @@
 
               <!-- KYC Buttons -->
               <div class="lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.aadhaar.showVerify"
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa1.aadhaar.showVerify"
                   (click)="getAadhaarEkycVerification($event,'coa1',kycProofNames.coa1.aadhaar)">
                   {{kycFieldButtonLabels.verify}}</button>
-                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa1.aadhaar.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                  [hidden]="!kycData.coa1.aadhaar.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
                   {{kycFieldButtonLabels.verified}}</button>
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.aadhaar.showTryAgain"
-                  (click)="getAadhaarEkycVerification($event,'coa1',kycProofNames.coa1.aadhaar)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa1.aadhaar.showTryAgain"
+                  (click)="getAadhaarEkycVerification($event,'coa1',kycProofNames.coa1.aadhaar)"> <i class="fa fa-undo"
+                    aria-hidden="true"></i>
                   {{kycFieldButtonLabels.try_again}}</button>
               </div>
 
               <!-- Button trigger modal -->
               <div class="lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.aadhaarCard)"> Upload
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.aadhaarCard)"> Upload
                   Image
                 </button>
               </div>
             </div>
 
             <!-- START: show Aadhaar Id kyc api data with confirm button -->
-            <div class="mb-4" *ngIf="objectKeyCount(kycData.coa1.aadhaar.verificationLinkData) || objectKeyCount(kycData.coa1.aadhaar.data)">
-              <small class="mt-2 text-decoration-underline" data-bs-toggle="collapse" data-bs-target="#coa1AadhaarIdKYCArea" aria-expanded="false" aria-controls="coa1AadhaarIdKYCArea">
+            <div class="mb-4"
+              *ngIf="objectKeyCount(kycData.coa1.aadhaar.verificationLinkData) || objectKeyCount(kycData.coa1.aadhaar.data)">
+              <small class="mt-2 text-decoration-underline" data-bs-toggle="collapse"
+                data-bs-target="#coa1AadhaarIdKYCArea" aria-expanded="false" aria-controls="coa1AadhaarIdKYCArea">
                 Show/Hide details
               </small>
               <div class="collapse" id="coa1AadhaarIdKYCArea">
                 <div class="card card-body">
                   <!-- first api data: verification link display -->
-                  <div [hidden]="!objectKeyCount(kycData.coa1.aadhaar.verificationLinkData) || objectKeyCount(kycData.coa1.aadhaar.data)">
-                    <small>Please click on below link and complete the verification process and then click on below <u>Get Aadhaar Details</u> button to get the details and confirm to complete the
+                  <div
+                    [hidden]="!objectKeyCount(kycData.coa1.aadhaar.verificationLinkData) || objectKeyCount(kycData.coa1.aadhaar.data)">
+                    <small>Please click on below link and complete the verification process and then click on below
+                      <u>Get Aadhaar Details</u> button to get the details and confirm to complete the
                       Aadhaar KYC
                       Process.</small><br />
-                    <p><b>Verification Link: </b> <a href="{{kycData.coa1.aadhaar.verificationLinkData['redirect_url']}}" target="_blank">Click Here</a></p>
+                    <p><b>Verification Link: </b> <a
+                        href="{{kycData.coa1.aadhaar.verificationLinkData['redirect_url']}}" target="_blank">Click
+                        Here</a></p>
 
-                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10" [hidden]="objectKeyCount(kycData.coa1.aadhaar.data)"
+                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10"
+                      [hidden]="objectKeyCount(kycData.coa1.aadhaar.data)"
                       (click)="getAadhaarDetails($event,'coa1',kycProofNames.coa1.aadhaar)">
                       Get Aadhaar Details</button><br />
-                    <small>Please wait for at least 10 seconds after completing the verification process using above Verifiction Link and then click on Above <u>Get Aadhaar Details</u> button.
+                    <small>Please wait for at least 10 seconds after completing the verification process using above
+                      Verifiction Link and then click on Above <u>Get Aadhaar Details</u> button.
                     </small>
                   </div>
 
@@ -163,19 +188,24 @@
                   <div *ngIf="objectKeyCount(kycData.coa1.aadhaar.data)">
                     <div class="row">
                       <div class="col-md-9">
-                    <p><b>Name:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.name || ''}}</p>
-                    <p><b>Gender:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.gender || ''}}</p>
-                    <p><b>DOB:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.dob || ''}}</p>
-                    <p><b>Current Address:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.current_address || ''}}</p>
-                    <p><b>Permanent Address:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.permanent_address || ''}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10" [hidden]="!kycData.coa1.aadhaar.showConfirm"
-                      (click)="setAadhaarEkycDataVariables('coa1','api_2',kycProofNames.coa1.aadhaar,'confirm','')">
-                      {{kycFieldButtonLabels.confirm}}</button>
+                        <p><b>Name:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.name || ''}}</p>
+                        <p><b>Gender:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.gender || ''}}</p>
+                        <p><b>DOB:</b> {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.dob || ''}}</p>
+                        <p><b>Current Address:</b>
+                          {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.current_address || ''}}</p>
+                        <p><b>Permanent Address:</b>
+                          {{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.permanent_address || ''}}</p>
+                        <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10"
+                          [hidden]="!kycData.coa1.aadhaar.showConfirm"
+                          (click)="setAadhaarEkycDataVariables('coa1','api_2',kycProofNames.coa1.aadhaar,'confirm','')">
+                          {{kycFieldButtonLabels.confirm}}</button>
+                      </div>
+                      <div class="col-md-3">
+                        <img *ngIf="kycData.coa1.aadhaar.data.actions[0].details.aadhaar.image"
+                          src="data:image/jpeg;base64,{{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.image}}"
+                          alt="">
+                      </div>
                     </div>
-                    <div class="col-md-3">
-                      <img *ngIf="kycData.coa1.aadhaar.data.actions[0].details.aadhaar.image" src="data:image/jpeg;base64,{{kycData.coa1.aadhaar.data.actions[0].details.aadhaar.image}}" alt="">
-                    </div>
-                    </div>                      
                   </div>
                 </div>
               </div>
@@ -189,24 +219,29 @@
             <div class="farmer-details mt-2">
               <div class="farmer-details-inner lable-top">
                 <label for="drivingLicenceNumber">Driving Licence Number </label>
-                <input type="text" class="form-control" id="drivingLicenceNumber" formControlName="drivingLicenceNumber" placeholder="Enter Driving Licence Number"
-                  [readonly]="kycData.coa1.driving_licence.isVerified" />
+                <input type="text" class="form-control" id="drivingLicenceNumber" formControlName="drivingLicenceNumber"
+                  placeholder="Enter Driving Licence Number" [readonly]="kycData.coa1.driving_licence.isVerified" />
               </div>
 
               <!-- KYC Buttons -->
               <div class="lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.driving_licence.showVerify"
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa1.driving_licence.showVerify"
                   (click)="getKycData($event,'coa1',kycProofNames.coa1.driving_licence)">
                   {{kycFieldButtonLabels.verify}}</button>
-                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa1.driving_licence.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                  [hidden]="!kycData.coa1.driving_licence.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
                   {{kycFieldButtonLabels.verified}}</button>
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.driving_licence.showTryAgain"
-                  (click)="getKycData($event,'coa1',kycProofNames.coa1.driving_licence)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa1.driving_licence.showTryAgain"
+                  (click)="getKycData($event,'coa1',kycProofNames.coa1.driving_licence)"> <i class="fa fa-undo"
+                    aria-hidden="true"></i>
                   {{kycFieldButtonLabels.try_again}}</button>
               </div>
               <div class="lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.drivingLicence)"> Upload
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.drivingLicence)"> Upload
                   Image
                 </button>
               </div>
@@ -214,8 +249,10 @@
 
             <!-- START: show DRIVING LICENSE kyc api data with confirm button -->
             <div class="">
-              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa1.driving_licence.data)" data-bs-toggle="collapse" data-bs-target="#coa1DrivingLicenceKYCArea"
-                aria-expanded="false" aria-controls="coa1DrivingLicenceKYCArea">
+              <small class="mt-2 text-decoration-underline"
+                [hidden]="!objectKeyCount(kycData.coa1.driving_licence.data)" data-bs-toggle="collapse"
+                data-bs-target="#coa1DrivingLicenceKYCArea" aria-expanded="false"
+                aria-controls="coa1DrivingLicenceKYCArea">
                 Show/Hide details
               </small>
 
@@ -224,10 +261,12 @@
                   <div>
                     <p><b>Holder's Name:</b> {{kycData.coa1.driving_licence.data['Holder\'s Name']}}</p>
                     <p><b>Initial Issue Date:</b> {{kycData.coa1.driving_licence.data['Initial Issue Date']}}</p>
-                    <p><b>Initial Issuing Office:</b> {{kycData.coa1.driving_licence.data['Initial Issuing Office']}}</p>
+                    <p><b>Initial Issuing Office:</b> {{kycData.coa1.driving_licence.data['Initial Issuing Office']}}
+                    </p>
                     <p><b>Current Status:</b> {{kycData.coa1.driving_licence.data['Current Status']}}</p>
                     <p><b>Old / New DL No.:</b> {{kycData.coa1.driving_licence.data['Old / New DL No.']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa1.driving_licence.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10"
+                      [hidden]="!kycData.coa1.driving_licence.showConfirm"
                       (click)="setKycDataVariables('coa1',kycProofNames.coa1.driving_licence,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -246,29 +285,36 @@
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Voter Id</label>
-                <input type="text" class="form-control" formControlName="voterIdNumber" [readonly]="kycData.coa1.voter_id.isVerified" />
+                <input type="text" class="form-control" formControlName="voterIdNumber"
+                  [readonly]="kycData.coa1.voter_id.isVerified" />
               </div>
               <!-- KYC Buttons -->
               <div class="lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.voter_id.showVerify"
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa1.voter_id.showVerify"
                   (click)="getKycData($event,'coa1',kycProofNames.coa1.voter_id)">
                   {{kycFieldButtonLabels.verify}}</button>
-                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa1.voter_id.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                  [hidden]="!kycData.coa1.voter_id.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
                   {{kycFieldButtonLabels.verified}}</button>
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa1.voter_id.showTryAgain"
-                  (click)="getKycData($event,'coa1',kycProofNames.coa1.voter_id)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa1.voter_id.showTryAgain"
+                  (click)="getKycData($event,'coa1',kycProofNames.coa1.voter_id)"> <i class="fa fa-undo"
+                    aria-hidden="true"></i>
                   {{kycFieldButtonLabels.try_again}}</button>
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.voterId)">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.voterId)">
                   Upload Image
                 </button>
               </div>
             </div>
             <!-- START: show Voter Id kyc api data with confirm button -->
             <div class="mb-4">
-              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa1.voter_id.data)" data-bs-toggle="collapse" data-bs-target="#coa1VoterIdKYCArea" aria-expanded="false"
+              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa1.voter_id.data)"
+                data-bs-toggle="collapse" data-bs-target="#coa1VoterIdKYCArea" aria-expanded="false"
                 aria-controls="coa1VoterIdKYCArea">
                 Show/Hide details
               </small>
@@ -280,7 +326,8 @@
                     <p><b>Taluk:</b> {{kycData.coa1.voter_id.data['ac_name']}}</p>
                     <p><b>District:</b> {{kycData.coa1.voter_id.data['dist_name']}}</p>
                     <p><b>State:</b> {{kycData.coa1.voter_id.data['st_name']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa1.voter_id.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10"
+                      [hidden]="!kycData.coa1.voter_id.showConfirm"
                       (click)="setKycDataVariables('coa1',kycProofNames.coa1.voter_id,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -298,7 +345,8 @@
                 <input type="text" class="form-control" formControlName="passportNumber" />
               </div>
               <div class="farmer-details-inner lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.passport)">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.passport)">
                   Upload Image
                 </button>
               </div>
@@ -309,7 +357,8 @@
                 <input type="text" class="form-control" formControlName="NREGANumber" />
               </div>
               <div class="farmer-details-inner lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.NREGA)">Upload
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('coa1',fileUploadFileFor.coa1.NREGA)">Upload
                   Image
                 </button>
               </div>
@@ -358,8 +407,10 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.B Gender</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen }}gender1">
-                  <input class="form-check-input" type="radio" formControlName="gender" value="{{ indGen }}" id="{{ indGen }}gender1" /><span>{{
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen }}gender1">
+                  <input class="form-check-input" type="radio" formControlName="gender" value="{{ indGen }}"
+                    id="{{ indGen }}gender1" /><span>{{
                     indGen
                     }}</span>
                 </label>
@@ -368,8 +419,10 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.C Religion</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion }}religion1">
-                  <input class="form-check-input" type="radio" formControlName="religion" value="{{ indReligion }}" id="{{ indReligion }}religion1" /><span>{{
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion }}religion1">
+                  <input class="form-check-input" type="radio" formControlName="religion" value="{{ indReligion }}"
+                    id="{{ indReligion }}religion1" /><span>{{
                     indReligion }}</span>
                 </label>
               </div>
@@ -377,8 +430,10 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.D Caste/Tribe</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste }}caste1">
-                  <input class="form-check-input" type="radio" formControlName="caste" value="{{ indCaste }}" id="{{ indCaste }}caste1" /><span>{{
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste }}caste1">
+                  <input class="form-check-input" type="radio" formControlName="caste" value="{{ indCaste }}"
+                    id="{{ indCaste }}caste1" /><span>{{
                     indCaste
                     }}</span>
                 </label>
@@ -407,7 +462,8 @@
                 </div>
                 <div class="farmer-details-inner lable-top">
                   <label>Annual Income(₹)</label>
-                  <input type="text" class="form-control" formControlName="annualIncome" placeholder="" maxlength="10" (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="annualIncome" placeholder="" maxlength="10"
+                    (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['annualIncome'].errors" class="form-text text-danger">
                     <small *ngIf="f['annualIncome'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -438,8 +494,8 @@
               <div class="display-flex">
                 <div class="flex-1 lable-top">
                   <label class="">Pincode</label>
-                  <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')"
-                    (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="pinCode" placeholder="" minlength="6"
+                    maxlength="6" (keyup)="getPinCodeData($event,'ADDRESS')" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['pinCode'].errors" class="form-text text-danger">
                     <small *ngIf="f['pinCode'].errors['required']">
                       PinCode is required</small>
@@ -454,11 +510,14 @@
 
                   <!-- START: datalist -->
                   <ng-container>
-                    <input formControlName="taluk" (blur)="setSelectedValue($event, 'taluk', '', 'manual')" id="talukDropdown" class="form-control" autocomplete="off" data-bs-toggle="dropdown"
+                    <input formControlName="taluk" (blur)="setSelectedValue($event, 'taluk', '', 'manual')"
+                      id="talukDropdown" class="form-control" autocomplete="off" data-bs-toggle="dropdown"
                       aria-expanded="false" />
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="talukDropdown">
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left"
+                      aria-labelledby="talukDropdown">
                       <div class="dropdown_scroll_bar">
-                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIData" value="{{ indVal.office_name }}"
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIData"
+                          value="{{ indVal.office_name }}"
                           (click)="setSelectedValue($event, 'taluk', indVal.office_name, 'list')">
                           {{ indVal.office_name }}
                         </button>
@@ -502,7 +561,8 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">Phone No.</label>
-                  <input type="text" class="form-control" formControlName="phoneNumber" placeholder="" maxlength="10" (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="phoneNumber" placeholder="" maxlength="10"
+                    (keypress)="validateNo($event)" />
                   <div *ngIf="f['phoneNumber'].errors" class="form-text text-danger">
                     <small *ngIf="f['phoneNumber'].errors['minlength']">
                       Should be 10 digits</small>
@@ -517,7 +577,8 @@
               <div class="display-flex">
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in present address</label>
-                  <input type="text" class="form-control" formControlName="yrsInAddress" placeholder="" maxlength="3" (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="yrsInAddress" placeholder="" maxlength="3"
+                    (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['yrsInAddress'].errors" class="form-text text-danger">
                     <small *ngIf="f['yrsInAddress'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -525,7 +586,8 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in city/village</label>
-                  <input type="text" class="form-control" formControlName="yrsInCity" placeholder="" maxlength="3" (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="yrsInCity" placeholder="" maxlength="3"
+                    (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['yrsInCity'].errors" class="form-text text-danger">
                     <small *ngIf="f['yrsInCity'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -535,8 +597,7 @@
                   <label for="">Email Address</label>
                   <input type="text" class="form-control" formControlName="email" placeholder="" />
                   <div *ngIf="isSubmitted && f['email'].errors" class="form-text text-danger">
-                    <small *ngIf="f['email'].errors['email']">
-                      Email address is invalid</small>
+                    <small *ngIf="f['email'].errors['email']">Email address is invalid</small>
                   </div>
                 </div>
               </div>
@@ -544,8 +605,10 @@
             <div class="form-details-inner">
               <h3 class="form-title">5.B Property status</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat }}propStatus1">
-                  <input class="form-check-input" type="radio" formControlName="propertyStatus" value="{{ indStat }}" id="{{ indStat }}propStatus1" /><span>{{
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat }}propStatus1">
+                  <input class="form-check-input" type="radio" formControlName="propertyStatus" value="{{ indStat }}"
+                    id="{{ indStat }}propStatus1" /><span>{{
                     indStat
                     }}</span>
                 </label>
@@ -560,8 +623,10 @@
             <div class="form-details-inner">
               <h3 class="form-title ">5.C Communication/Permanent address</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat }}">
-                  <input class="form-check-input" type="radio" formControlName="commOrPerAddress" value="{{ indStat }}" id="{{ indStat }}" /><span>{{ indStat
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat }}">
+                  <input class="form-check-input" type="radio" formControlName="commOrPerAddress" value="{{ indStat }}"
+                    id="{{ indStat }}" /><span>{{ indStat
                     }}</span>
                 </label>
                 <div *ngIf="isSubmitted && f['commOrPerAddress'].errors" class="form-text text-danger">
@@ -583,7 +648,9 @@
               <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddress!='Different address'">
                 <div class="flex-1 lable-top">
                   <label class="">Pincode</label>
-                  <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')" (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="permPincode" placeholder="" minlength="6"
+                    maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESS')"
+                    (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['permPincode'].errors" class="form-text text-danger">
                     <small *ngIf="f['permPincode'].errors['required']">
                       PinCode is required</small>
@@ -599,11 +666,14 @@
 
                   <!-- START: datalist -->
                   <ng-container>
-                    <input formControlName="permTaluk" (blur)="setSelectedValue($event, 'permTaluk', '', 'manual')" id="permTalukDropdown" class="form-control" autocomplete="off"
-                      data-bs-toggle="dropdown" aria-expanded="false" />
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="permTalukDropdown">
+                    <input formControlName="permTaluk" (blur)="setSelectedValue($event, 'permTaluk', '', 'manual')"
+                      id="permTalukDropdown" class="form-control" autocomplete="off" data-bs-toggle="dropdown"
+                      aria-expanded="false" />
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left"
+                      aria-labelledby="permTalukDropdown">
                       <div class="dropdown_scroll_bar">
-                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIData" value="{{ indVal.office_name }}"
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIData"
+                          value="{{ indVal.office_name }}"
                           (click)="setSelectedValue($event, 'permTaluk', indVal.office_name, 'list')">
                           {{ indVal.office_name }}
                         </button>
@@ -650,7 +720,8 @@
               <h3 class="form-title">
                 6. How many members in the family? Record for each member.
               </h3>
-              <div class="mb-2" formArrayName="familyMembers" *ngFor="let item of getFamilyMembersControls(''); let i = index">
+              <div class="mb-2" formArrayName="familyMembers"
+                *ngFor="let item of getFamilyMembersControls(''); let i = index">
                 <div class="display-flex" [formGroupName]="i">
                   <div class="flex-2 lable-top">
                     <label>Name</label>
@@ -698,7 +769,8 @@
                       getFamilyMembersControls('').length != 1 &&
                       i != getFamilyMembersControls('').length - 1
                     " class="flex-1 lable-top">
-                    <a href="javascript:void(0)" class="delete-item" (click)="removeFamilyMembers(i, '')"><i class="fa fa-trash-o text-danger"></i></a>
+                    <a href="javascript:void(0)" class="delete-item" (click)="removeFamilyMembers(i, '')"><i
+                        class="fa fa-trash-o text-danger"></i></a>
                   </div>
                   <div *ngIf="i == getFamilyMembersControls('').length - 1" class="flex-1 add-another">
                     <a href="javascript:void(0);" (click)="addFamilyMembers('')">+ Add Another</a>
@@ -724,7 +796,8 @@
                 <!-- PAN Card Field -->
                 <div class="farmer-details-inner lable-top">
                   <label for="PANnumbercoa2">PAN Card Number </label>
-                  <input type="text" class="form-control" id="PANnumbercoa2" formControlName="PANnumbercoa2" placeholder="Enter PAN card number" [readonly]="kycData.coa2.pan.isVerified" />
+                  <input type="text" class="form-control" id="PANnumbercoa2" formControlName="PANnumbercoa2"
+                    placeholder="Enter PAN card number" [readonly]="kycData.coa2.pan.isVerified" />
                   <div *ngIf="f['PANnumbercoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['PANnumbercoa2'].errors['invalidPanNumber']">
                       Please enter valid PAN number</small>
@@ -732,23 +805,29 @@
                 </div>
                 <!-- KYC Buttons -->
                 <div class="lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.pan.showVerify" (click)="getKycData($event,'coa2',kycProofNames.coa2.pan)">
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                    [hidden]="!kycData.coa2.pan.showVerify" (click)="getKycData($event,'coa2',kycProofNames.coa2.pan)">
                     {{kycFieldButtonLabels.verify}}</button>
-                  <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa2.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                  <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                    [hidden]="!kycData.coa2.pan.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
                     {{kycFieldButtonLabels.verified}}</button>
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.pan.showTryAgain" (click)="getKycData($event,'coa2',kycProofNames.coa2.pan)"> <i
-                      class="fa fa-undo" aria-hidden="true"></i>
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                    [hidden]="!kycData.coa2.pan.showTryAgain"
+                    (click)="getKycData($event,'coa2',kycProofNames.coa2.pan)"> <i class="fa fa-undo"
+                      aria-hidden="true"></i>
                     {{kycFieldButtonLabels.try_again}}</button>
                 </div>
                 <!-- Image Upload Button modal-->
                 <div class="lable-top">
-                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.panCard)"> Upload Image
+                  <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                    (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.panCard)"> Upload Image
                   </button>
                 </div>
               </div>
 
               <!-- START: show PAN kyc api data with confirm button -->
-              <small class="text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa2.pan.data)" data-bs-toggle="collapse" data-bs-target="#coa2PanKYCArea" aria-expanded="false"
+              <small class="text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa2.pan.data)"
+                data-bs-toggle="collapse" data-bs-target="#coa2PanKYCArea" aria-expanded="false"
                 aria-controls="coa2PanKYCArea">
                 Show/Hide details
               </small>
@@ -758,7 +837,8 @@
                     <p><b>Full Name:</b> {{kycData.coa2.pan.data['full_name']}}</p>
                     <p><b>Category:</b> {{kycData.coa2.pan.data['category']}}</p>
                     <p><b>Status:</b> {{kycData.coa2.pan.data['status']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa2.pan.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10"
+                      [hidden]="!kycData.coa2.pan.showConfirm"
                       (click)="setKycDataVariables('coa2',kycProofNames.coa2.pan,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -773,10 +853,12 @@
               <h4>Profile Picture</h4>
               <div class="update-profile">
                 <div class="pro-img">
-                  <img class="profile-pic" [hidden]="!displayCoApplicant2ProfileImage" src="{{displayCoApplicant2ProfileImage}}" />
+                  <img class="profile-pic" [hidden]="!displayCoApplicant2ProfileImage"
+                    src="{{displayCoApplicant2ProfileImage}}" />
                 </div>
                 <div class="pro-update">
-                  <a class="avatar" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.farmerProfile)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <a class="avatar" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.farmerProfile)"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -788,7 +870,8 @@
                       <path
                         d="M9.827,21.763,14.31,14l3.532,6.117a10.023,10.023,0,0,1-8.015,1.646ZM7.89,21.12A10.028,10.028,0,0,1,2.458,15h8.965L7.89,21.119ZM2.05,13A9.964,9.964,0,0,1,4.633,5.239L9.112,13ZM6.159,3.883a10.021,10.021,0,0,1,8.014-1.646L9.69,10,6.159,3.883Zm9.951-1A10.028,10.028,0,0,1,21.542,9H12.577L16.11,2.881ZM21.95,11a9.964,9.964,0,0,1-2.583,7.761L14.888,11h7.064Z" />
                     </svg><span>Retake</span></a>
-                  <a (click)="removeImage($event,'FARMER_PROFILEcoa2')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <a (click)="removeImage($event,'FARMER_PROFILEcoa2')"><svg xmlns="http://www.w3.org/2000/svg"
+                      width="24" height="24" viewBox="0 0 24 24">
                       <defs>
                         <style>
                           .a {
@@ -813,8 +896,9 @@
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label for="aadhaarNumbercoa2">Aadhaar Number </label>
-                <input type="text" class="form-control" id="aadhaarNumbercoa2" formControlName="aadhaarNumbercoa2" placeholder="Enter Aadhaar Number" maxlength="12"
-                  [readonly]="kycData.coa2.aadhaar.isVerified" (keypress)="validateNo($event)" />
+                <input type="text" class="form-control" id="aadhaarNumbercoa2" formControlName="aadhaarNumbercoa2"
+                  placeholder="Enter Aadhaar Number" maxlength="12" [readonly]="kycData.coa2.aadhaar.isVerified"
+                  (keypress)="validateNo($event)" />
 
                 <div *ngIf="f['aadhaarNumbercoa2'].errors" class="form-text text-danger">
                   <small *ngIf="f['aadhaarNumbercoa2'].errors['minlength']">
@@ -826,20 +910,25 @@
 
               <!-- KYC Buttons -->
               <div class="lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.aadhaar.showVerify"
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa2.aadhaar.showVerify"
                   (click)="getAadhaarEkycVerification($event,'coa2',kycProofNames.coa2.aadhaar)">
                   {{kycFieldButtonLabels.verify}}</button>
-                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa2.aadhaar.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                  [hidden]="!kycData.coa2.aadhaar.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
                   {{kycFieldButtonLabels.verified}}</button>
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.aadhaar.showTryAgain"
-                  (click)="getAadhaarEkycVerification($event,'coa2',kycProofNames.coa2.aadhaar)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa2.aadhaar.showTryAgain"
+                  (click)="getAadhaarEkycVerification($event,'coa2',kycProofNames.coa2.aadhaar)"> <i class="fa fa-undo"
+                    aria-hidden="true"></i>
                   {{kycFieldButtonLabels.try_again}}</button>
               </div>
 
 
               <div class="lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.aadhaarCard)"> Upload
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.aadhaarCard)"> Upload
                   Image
                 </button>
               </div>
@@ -847,23 +936,31 @@
 
 
             <!-- START: show Aadhaar Id kyc api data with confirm button -->
-            <div class="mb-4" [hidden]="!objectKeyCount(kycData.coa2.aadhaar.verificationLinkData) && !objectKeyCount(kycData.coa2.aadhaar.data)">
-              <small class="mt-2 text-decoration-underline" data-bs-toggle="collapse" data-bs-target="#coa2AadhaarIdKYCArea" aria-expanded="false" aria-controls="coa2AadhaarIdKYCArea">
+            <div class="mb-4"
+              [hidden]="!objectKeyCount(kycData.coa2.aadhaar.verificationLinkData) && !objectKeyCount(kycData.coa2.aadhaar.data)">
+              <small class="mt-2 text-decoration-underline" data-bs-toggle="collapse"
+                data-bs-target="#coa2AadhaarIdKYCArea" aria-expanded="false" aria-controls="coa2AadhaarIdKYCArea">
                 Show/Hide details
               </small>
               <div class="collapse" id="coa2AadhaarIdKYCArea">
                 <div class="card card-body">
                   <!-- first api data: verification link display -->
-                  <div [hidden]="!objectKeyCount(kycData.coa2.aadhaar.verificationLinkData) || objectKeyCount(kycData.coa2.aadhaar.data)">
-                    <small>Please click on below link and complete the verification process and then click on below <u>Get Aadhaar Details</u> button to get the details and confirm to complete the
+                  <div
+                    [hidden]="!objectKeyCount(kycData.coa2.aadhaar.verificationLinkData) || objectKeyCount(kycData.coa2.aadhaar.data)">
+                    <small>Please click on below link and complete the verification process and then click on below
+                      <u>Get Aadhaar Details</u> button to get the details and confirm to complete the
                       Aadhaar KYC
                       Process.</small><br />
-                    <p><b>Verification Link: </b> <a href="{{(kycData.coa2.aadhaar.verificationLinkData && kycData.coa2.aadhaar.verificationLinkData['redirect_url'])?kycData.coa2.aadhaar.verificationLinkData['redirect_url']:''}}" target="_blank">Click Here</a></p>
+                    <p><b>Verification Link: </b> <a
+                        href="{{(kycData.coa2.aadhaar.verificationLinkData && kycData.coa2.aadhaar.verificationLinkData['redirect_url'])?kycData.coa2.aadhaar.verificationLinkData['redirect_url']:''}}"
+                        target="_blank">Click Here</a></p>
 
-                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10" [hidden]="objectKeyCount(kycData.coa2.aadhaar.data)"
+                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10"
+                      [hidden]="objectKeyCount(kycData.coa2.aadhaar.data)"
                       (click)="getAadhaarDetails($event,'coa2',kycProofNames.coa2.aadhaar)">
                       Get Aadhaar Details</button><br />
-                    <small>Please wait for at least 10 seconds after completing the verification process using above Verifiction Link and then click on Above <u>Get Aadhaar Details</u> button.
+                    <small>Please wait for at least 10 seconds after completing the verification process using above
+                      Verifiction Link and then click on Above <u>Get Aadhaar Details</u> button.
                     </small>
                   </div>
 
@@ -871,19 +968,24 @@
                   <div *ngIf="objectKeyCount(kycData.coa2.aadhaar.data)">
                     <div class="row">
                       <div class="col-md-9">
-                    <p><b>Name:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.name || ''}}</p>
-                    <p><b>Gender:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.gender || ''}}</p>
-                    <p><b>DOB:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.dob || ''}}</p>
-                    <p><b>Current Address:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.current_address || ''}}</p>
-                    <p><b>Permanent Address:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.permanent_address || ''}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10" [hidden]="!kycData.coa2.aadhaar.showConfirm"
-                      (click)="setAadhaarEkycDataVariables('coa2','api_2',kycProofNames.coa2.aadhaar,'confirm','')">
-                      {{kycFieldButtonLabels.confirm}}</button>
-                    </div>
+                        <p><b>Name:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.name || ''}}</p>
+                        <p><b>Gender:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.gender || ''}}</p>
+                        <p><b>DOB:</b> {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.dob || ''}}</p>
+                        <p><b>Current Address:</b>
+                          {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.current_address || ''}}</p>
+                        <p><b>Permanent Address:</b>
+                          {{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.permanent_address || ''}}</p>
+                        <button type="button" class="btn common_button_color text-white btn-sm mt-2 p-10"
+                          [hidden]="!kycData.coa2.aadhaar.showConfirm"
+                          (click)="setAadhaarEkycDataVariables('coa2','api_2',kycProofNames.coa2.aadhaar,'confirm','')">
+                          {{kycFieldButtonLabels.confirm}}</button>
+                      </div>
                       <div class="col-md-3">
-                        <img *ngIf="kycData.coa2.aadhaar.data.actions[0].details.aadhaar.image" src="data:image/jpeg;base64,{{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.image}}" alt="">
-                      </div> 
-                      </div>                     
+                        <img *ngIf="kycData.coa2.aadhaar.data.actions[0].details.aadhaar.image"
+                          src="data:image/jpeg;base64,{{kycData.coa2.aadhaar.data.actions[0].details.aadhaar.image}}"
+                          alt="">
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -896,24 +998,30 @@
             <div class="farmer-details mt-2">
               <div class="farmer-details-inner lable-top">
                 <label for="drivingLicenceNumbercoa2">Driving Licence Number </label>
-                <input type="text" class="form-control" id="drivingLicenceNumbercoa2" formControlName="drivingLicenceNumbercoa2" placeholder="Enter Driving Licence Number"
+                <input type="text" class="form-control" id="drivingLicenceNumbercoa2"
+                  formControlName="drivingLicenceNumbercoa2" placeholder="Enter Driving Licence Number"
                   [readonly]="kycData.coa2.driving_licence.isVerified" />
               </div>
 
               <!-- KYC Buttons -->
               <div class="lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.driving_licence.showVerify"
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa2.driving_licence.showVerify"
                   (click)="getKycData($event,'coa2',kycProofNames.coa2.driving_licence)">
                   {{kycFieldButtonLabels.verify}}</button>
-                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa2.driving_licence.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                  [hidden]="!kycData.coa2.driving_licence.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
                   {{kycFieldButtonLabels.verified}}</button>
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.driving_licence.showTryAgain"
-                  (click)="getKycData($event,'coa2',kycProofNames.coa2.driving_licence)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa2.driving_licence.showTryAgain"
+                  (click)="getKycData($event,'coa2',kycProofNames.coa2.driving_licence)"> <i class="fa fa-undo"
+                    aria-hidden="true"></i>
                   {{kycFieldButtonLabels.try_again}}</button>
               </div>
               <div class="lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.drivingLicence)"> Upload
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.drivingLicence)"> Upload
                   Image
                 </button>
               </div>
@@ -921,8 +1029,10 @@
 
             <!-- START: show DRIVING LICENSE kyc api data with confirm button -->
             <div class="">
-              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa2.driving_licence.data)" data-bs-toggle="collapse" data-bs-target="#coa2DrivingLicenceKYCArea"
-                aria-expanded="false" aria-controls="coa2DrivingLicenceKYCArea">
+              <small class="mt-2 text-decoration-underline"
+                [hidden]="!objectKeyCount(kycData.coa2.driving_licence.data)" data-bs-toggle="collapse"
+                data-bs-target="#coa2DrivingLicenceKYCArea" aria-expanded="false"
+                aria-controls="coa2DrivingLicenceKYCArea">
                 Show/Hide details
               </small>
 
@@ -931,10 +1041,12 @@
                   <div>
                     <p><b>Holder's Name:</b> {{kycData.coa2.driving_licence.data['Holder\'s Name']}}</p>
                     <p><b>Initial Issue Date:</b> {{kycData.coa2.driving_licence.data['Initial Issue Date']}}</p>
-                    <p><b>Initial Issuing Office:</b> {{kycData.coa2.driving_licence.data['Initial Issuing Office']}}</p>
+                    <p><b>Initial Issuing Office:</b> {{kycData.coa2.driving_licence.data['Initial Issuing Office']}}
+                    </p>
                     <p><b>Current Status:</b> {{kycData.coa2.driving_licence.data['Current Status']}}</p>
                     <p><b>Old / New DL No.:</b> {{kycData.coa2.driving_licence.data['Old / New DL No.']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa2.driving_licence.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10"
+                      [hidden]="!kycData.coa2.driving_licence.showConfirm"
                       (click)="setKycDataVariables('coa2',kycProofNames.coa2.driving_licence,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -952,29 +1064,36 @@
             <div class="farmer-details">
               <div class="farmer-details-inner lable-top">
                 <label>Voter Id</label>
-                <input type="text" class="form-control" formControlName="voterIdNumbercoa2" [readonly]="kycData.coa2.voter_id.isVerified" />
+                <input type="text" class="form-control" formControlName="voterIdNumbercoa2"
+                  [readonly]="kycData.coa2.voter_id.isVerified" />
               </div>
               <!-- KYC Buttons -->
               <div class="lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.voter_id.showVerify"
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa2.voter_id.showVerify"
                   (click)="getKycData($event,'coa2',kycProofNames.coa2.voter_id)">
                   {{kycFieldButtonLabels.verify}}</button>
-                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100" [hidden]="!kycData.coa2.voter_id.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text_lightgreen btn-sm h-100"
+                  [hidden]="!kycData.coa2.voter_id.isVerified"> <i class="fa fa-check" aria-hidden="true"></i>
                   {{kycFieldButtonLabels.verified}}</button>
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" [hidden]="!kycData.coa2.voter_id.showTryAgain"
-                  (click)="getKycData($event,'coa2',kycProofNames.coa2.voter_id)"> <i class="fa fa-undo" aria-hidden="true"></i>
+                <button type="button" class="btn common_button_color text-white btn-sm h-100"
+                  [hidden]="!kycData.coa2.voter_id.showTryAgain"
+                  (click)="getKycData($event,'coa2',kycProofNames.coa2.voter_id)"> <i class="fa fa-undo"
+                    aria-hidden="true"></i>
                   {{kycFieldButtonLabels.try_again}}</button>
               </div>
               <div class="farmer-details-inner lable-top">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.voterId)">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.voterId)">
                   Upload Image
                 </button>
               </div>
             </div>
             <!-- START: show Voter Id kyc api data with confirm button -->
             <div class="mb-4">
-              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa2.voter_id.data)" data-bs-toggle="collapse" data-bs-target="#coa2VoterIdKYCArea" aria-expanded="false"
+              <small class="mt-2 text-decoration-underline" [hidden]="!objectKeyCount(kycData.coa2.voter_id.data)"
+                data-bs-toggle="collapse" data-bs-target="#coa2VoterIdKYCArea" aria-expanded="false"
                 aria-controls="coa2VoterIdKYCArea">
                 Show/Hide details
               </small>
@@ -986,7 +1105,8 @@
                     <p><b>Taluk:</b> {{kycData.coa2.voter_id.data['ac_name']}}</p>
                     <p><b>District:</b> {{kycData.coa2.voter_id.data['dist_name']}}</p>
                     <p><b>State:</b> {{kycData.coa2.voter_id.data['st_name']}}</p>
-                    <button type="button" class="btn common_button_color text-white btn-sm p-10" [hidden]="!kycData.coa2.voter_id.showConfirm"
+                    <button type="button" class="btn common_button_color text-white btn-sm p-10"
+                      [hidden]="!kycData.coa2.voter_id.showConfirm"
                       (click)="setKycDataVariables('coa2',kycProofNames.coa2.voter_id,'confirm','')">
                       {{kycFieldButtonLabels.confirm}}</button>
                   </div>
@@ -1003,7 +1123,8 @@
                 <input type="text" class="form-control" formControlName="passportNumbercoa2" />
               </div>
               <div class="farmer-details-inner lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.passport)">
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.passport)">
                   Upload Image
                 </button>
               </div>
@@ -1014,7 +1135,8 @@
                 <input type="text" class="form-control" formControlName="NREGANumbercoa2" />
               </div>
               <div class="farmer-details-inner lable-top">
-                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal" (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.NREGA)">Upload
+                <button type="button" class="btn common_button_color text-white btn-sm h-100" data-bs-toggle="modal"
+                  (click)="openFileModalPopup('coa2',fileUploadFileFor.coa2.NREGA)">Upload
                   Image
                 </button>
               </div>
@@ -1063,8 +1185,10 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.B Gender</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen }}gender2">
-                  <input class="form-check-input" type="radio" formControlName="gendercoa2" value="{{ indGen }}" id="{{ indGen }}gender2" /><span>{{
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indGen of demoGraphicMaster['gender']" for="{{ indGen }}gender2">
+                  <input class="form-check-input" type="radio" formControlName="gendercoa2" value="{{ indGen }}"
+                    id="{{ indGen }}gender2" /><span>{{
                     indGen
                     }}</span>
                 </label>
@@ -1073,8 +1197,10 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.C Religion</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion }}religion2">
-                  <input class="form-check-input" type="radio" formControlName="religioncoa2" value="{{ indReligion }}" id="{{ indReligion }}religion2" /><span>{{
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indReligion of demoGraphicMaster['religion']" for="{{ indReligion }}religion2">
+                  <input class="form-check-input" type="radio" formControlName="religioncoa2" value="{{ indReligion }}"
+                    id="{{ indReligion }}religion2" /><span>{{
                     indReligion }}</span>
                 </label>
               </div>
@@ -1082,8 +1208,10 @@
             <div class="form-details-inner">
               <h3 class="form-title">4.D Caste/Tribe</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste }}caste2">
-                  <input class="form-check-input" type="radio" formControlName="castecoa2" value="{{ indCaste }}" id="{{ indCaste }}caste2" /><span>{{
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indCaste of demoGraphicMaster['caste']" for="{{ indCaste }}caste2">
+                  <input class="form-check-input" type="radio" formControlName="castecoa2" value="{{ indCaste }}"
+                    id="{{ indCaste }}caste2" /><span>{{
                     indCaste
                     }}</span>
                 </label>
@@ -1112,7 +1240,8 @@
                 </div>
                 <div class="farmer-details-inner lable-top">
                   <label>Annual Income(₹)</label>
-                  <input type="text" class="form-control" formControlName="annualIncomecoa2" placeholder="" maxlength="10" (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="annualIncomecoa2" placeholder=""
+                    maxlength="10" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['annualIncomecoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['annualIncomecoa2'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -1139,8 +1268,8 @@
               <div class="display-flex">
                 <div class="flex-1 lable-top">
                   <label class="">Pincode</label>
-                  <input type="text" class="form-control" formControlName="pinCodecoa2" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'ADDRESScoa2')"
-                    (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="pinCodecoa2" placeholder="" minlength="6"
+                    maxlength="6" (keyup)="getPinCodeData($event,'ADDRESScoa2')" (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['pinCodecoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['pinCodecoa2'].errors['required']">
                       PinCode is required</small>
@@ -1155,11 +1284,14 @@
 
                   <!-- START: datalist -->
                   <ng-container>
-                    <input formControlName="talukcoa2" (blur)="setSelectedValue($event, 'talukcoa2', '', 'manual')" id="talukcoa2Dropdown" class="form-control" autocomplete="off"
-                      data-bs-toggle="dropdown" aria-expanded="false" />
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="talukcoa2Dropdown">
+                    <input formControlName="talukcoa2" (blur)="setSelectedValue($event, 'talukcoa2', '', 'manual')"
+                      id="talukcoa2Dropdown" class="form-control" autocomplete="off" data-bs-toggle="dropdown"
+                      aria-expanded="false" />
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left"
+                      aria-labelledby="talukcoa2Dropdown">
                       <div class="dropdown_scroll_bar">
-                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIDatacoa2" value="{{ indVal.office_name }}"
+                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of pinCodeAPIDatacoa2"
+                          value="{{ indVal.office_name }}"
                           (click)="setSelectedValue($event, 'talukcoa2', indVal.office_name, 'list')">
                           {{ indVal.office_name }}
                         </button>
@@ -1204,7 +1336,8 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label class="">Phone No.</label>
-                  <input type="text" class="form-control" formControlName="phoneNumbercoa2" placeholder="" maxlength="10" (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="phoneNumbercoa2" placeholder=""
+                    maxlength="10" (keypress)="validateNo($event)" />
                   <div *ngIf="f['phoneNumbercoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['phoneNumbercoa2'].errors['minlength']">
                       Should be 10 digits</small>
@@ -1218,7 +1351,8 @@
               <div class="display-flex">
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in present address</label>
-                  <input type="text" class="form-control" formControlName="yrsInAddresscoa2" placeholder="" maxlength="3" />
+                  <input type="text" class="form-control" formControlName="yrsInAddresscoa2" placeholder=""
+                    maxlength="3" />
                   <div *ngIf="isSubmitted && f['yrsInAddresscoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['yrsInAddresscoa2'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -1226,7 +1360,8 @@
                 </div>
                 <div class="flex-1 lable-top">
                   <label for="">No. of years in city/village</label>
-                  <input type="text" class="form-control" formControlName="yrsInCitycoa2" placeholder="" maxlength="3" />
+                  <input type="text" class="form-control" formControlName="yrsInCitycoa2" placeholder=""
+                    maxlength="3" />
                   <div *ngIf="isSubmitted && f['yrsInCitycoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['yrsInCitycoa2'].errors['pattern']">
                       Only Numbers are allowed</small>
@@ -1236,8 +1371,7 @@
                   <label for="">Email Address</label>
                   <input type="text" class="form-control" formControlName="emailcoa2" placeholder="" />
                   <div *ngIf="isSubmitted && f['emailcoa2'].errors" class="form-text text-danger">
-                    <small *ngIf="f['emailcoa2'].errors['emailcoa2']">
-                      Email address is invalid</small>
+                    <small *ngIf="f['emailcoa2'].errors['email']">Email address is invalid</small>
                   </div>
                 </div>
               </div>
@@ -1245,8 +1379,10 @@
             <div class="form-details-inner">
               <h3 class="form-title">5.B Property status</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio" *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat }}propStatus2">
-                  <input class="form-check-input" type="radio" formControlName="propertyStatuscoa2" value="{{ indStat }}" id="{{ indStat }}propStatus2" /><span>{{
+                <label class="form-check-label form-check bordered-radio"
+                  *ngFor="let indStat of demoGraphicMaster['propertyStatus']" for="{{ indStat }}propStatus2">
+                  <input class="form-check-input" type="radio" formControlName="propertyStatuscoa2"
+                    value="{{ indStat }}" id="{{ indStat }}propStatus2" /><span>{{
                     indStat
                     }}</span>
                 </label>
@@ -1261,8 +1397,10 @@
             <div class="form-details-inner">
               <h3 class="form-title">5.C Communication/Permanent address</h3>
               <div class="farmer-details">
-                <label class="form-check-label form-check bordered-radio " *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat }}coa2">
-                  <input class="form-check-input" type="radio" formControlName="commOrPerAddresscoa2" value="{{ indStat }}" id="{{ indStat }}coa2" /><span>{{
+                <label class="form-check-label form-check bordered-radio "
+                  *ngFor="let indStat of demoGraphicMaster['commOrPerAddress']" for="{{ indStat }}coa2">
+                  <input class="form-check-input" type="radio" formControlName="commOrPerAddresscoa2"
+                    value="{{ indStat }}" id="{{ indStat }}coa2" /><span>{{
                     indStat
                     }}</span>
                 </label>
@@ -1285,10 +1423,12 @@
               <div class="farmer-details" [hidden]="coApplicantForm.value.commOrPerAddresscoa2!='Different address'">
                 <div class="flex-1 lable-top">
                   <label class="">Pincode</label>
-                  <input type="text" class="form-control" formControlName="permPincodecoa2" placeholder="" minlength="6" maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESScoa2')" (keypress)="validateNo($event)" />
+                  <input type="text" class="form-control" formControlName="permPincodecoa2" placeholder="" minlength="6"
+                    maxlength="6" (keyup)="getPinCodeData($event,'PERMANENT_ADDRESScoa2')"
+                    (keypress)="validateNo($event)" />
                   <div *ngIf="isSubmitted && f['permPincodecoa2'].errors" class="form-text text-danger">
                     <small *ngIf="f['permPincodecoa2'].errors['required']">
-                      PinCode is required</small>
+                      Pincode is required</small>
                     <small *ngIf="f['permPincodecoa2'].errors['minlength']">
                       Should be 6 digits</small>
                     <small *ngIf="f['permPincodecoa2'].errors['maxlength']">
@@ -1301,11 +1441,14 @@
 
                   <!-- START: datalist -->
                   <ng-container>
-                    <input formControlName="permTalukcoa2" (blur)="setSelectedValue($event, 'permTalukcoa2', '', 'manual')" id="permTalukcoa2Dropdown" class="form-control" autocomplete="off"
-                      data-bs-toggle="dropdown" aria-expanded="false" />
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="permTalukcoa2Dropdown">
+                    <input formControlName="permTalukcoa2"
+                      (blur)="setSelectedValue($event, 'permTalukcoa2', '', 'manual')" id="permTalukcoa2Dropdown"
+                      class="form-control" autocomplete="off" data-bs-toggle="dropdown" aria-expanded="false" />
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left"
+                      aria-labelledby="permTalukcoa2Dropdown">
                       <div class="dropdown_scroll_bar">
-                        <button class="w-100 btn btn-sm btn-light text-left" *ngFor="let indVal of permPinCodeAPIDatacoa2" value="{{ indVal.office_name }}"
+                        <button class="w-100 btn btn-sm btn-light text-left"
+                          *ngFor="let indVal of permPinCodeAPIDatacoa2" value="{{ indVal.office_name }}"
                           (click)="setSelectedValue($event, 'permTalukcoa2', indVal.office_name, 'list')">
                           {{ indVal.office_name }}
                         </button>
@@ -1349,7 +1492,8 @@
               <h3 class="form-title">
                 6. How many members in the family? Record for each member.
               </h3>
-              <div class="mb-2" formArrayName="familyMemberscoa2" *ngFor="let item of getFamilyMembersControls('coa2'); let i = index">
+              <div class="mb-2" formArrayName="familyMemberscoa2"
+                *ngFor="let item of getFamilyMembersControls('coa2'); let i = index">
                 <div class="display-flex" [formGroupName]="i">
                   <div class="flex-2 lable-top">
                     <label>Name</label>
@@ -1397,7 +1541,8 @@
                       getFamilyMembersControls('coa2').length != 1 &&
                       i != getFamilyMembersControls('coa2').length - 1
                     " class="flex-1 lable-top">
-                    <a href="javascript:void(0)" class="delete-item" (click)="removeFamilyMembers(i, 'coa2')"><i class="fa fa-trash-o text-danger"></i></a>
+                    <a href="javascript:void(0)" class="delete-item" (click)="removeFamilyMembers(i, 'coa2')"><i
+                        class="fa fa-trash-o text-danger"></i></a>
                   </div>
                   <div *ngIf="i == getFamilyMembersControls('coa2').length - 1" class="flex-1 add-another">
                     <a href="javascript:void(0);" (click)="addFamilyMembers('coa2')">+ Add Another</a>
@@ -1415,7 +1560,8 @@
 </div>
 
 <!-- START: Common Modal Popup for File Upload and Preview -->
-<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel" aria-hidden="true">
+<div class="modal fade" id="fileUploadModalPopup" tabindex="-1" aria-labelledby="fileUploadModalPopupLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header p-2 common_button_color">
@@ -1427,12 +1573,15 @@
         <div class="row" [hidden]="!fileUpload.new.isImage1Required">
           <div class="col-md-6 mb-1">
             <label for="formFileSm" class="form-label">{{fileUpload.imageHeading1}}</label>
-            <input class="form-control form-control-sm file-control" id="formFileSm" type="file" (change)="onFileChange($event,'FRONT_IMAGE')" accept="image/*">
+            <input class="form-control form-control-sm file-control formFileSm" id="formFileSm" type="file"
+              (change)="onFileChange($event,'FRONT_IMAGE')" accept="image/*">
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
-            <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1" style="height: 150px; width: 150px" />
+            <img [src]="fileUpload.new.imageSrc1" *ngIf="fileUpload.new.imageSrc1"
+              style="height: 150px; width: 150px" />
             <p *ngIf="fileUpload.new.imageSrc1"><a [href]="fileUpload.new.imageSrc1" target="_blank">View File</a></p>
+            <p *ngIf="fileUpload.new.imageName1" class="word-wrap-anywhere">{{fileUpload.new.imageName1}}</p>
           </div>
 
         </div>
@@ -1443,12 +1592,15 @@
           <hr class="mt-1" />
           <div class="col-md-6 mb-1">
             <label for="formFileSm" class="form-label">{{fileUpload.imageHeading2}}</label>
-            <input class="form-control form-control-sm file-control" id="formFileSm" type="file" (change)="onFileChange($event,'BACK_IMAGE')" accept="image/*">
+            <input class="form-control form-control-sm file-control formFileSm" id="formFileSm" type="file"
+              (change)="onFileChange($event,'BACK_IMAGE')" accept="image/*">
           </div>
           <div class="col-md-6 mb-1">
             <p class="fs-6">Preview Image</p>
-            <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2" style="height: 150px; width: 150px" />
+            <img [src]="fileUpload.new.imageSrc2" *ngIf="fileUpload.new.imageSrc2"
+              style="height: 150px; width: 150px" />
             <p *ngIf="fileUpload.new.imageSrc2"><a [href]="fileUpload.new.imageSrc2" target="_blank">View File</a></p>
+            <p *ngIf="fileUpload.new.imageName2" class="word-wrap-anywhere">{{fileUpload.new.imageName2}}</p>
           </div>
 
         </div>

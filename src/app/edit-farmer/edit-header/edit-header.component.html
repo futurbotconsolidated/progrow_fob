@@ -9,7 +9,7 @@
       </div>
       <div class="bd-header-right col-sm-2 col-md-2 col-xl-1">
         <div class="logout-div">
-          <a (click)="logOut()">Logout </a><!--class="btn btn-primary active" style="margin-left: 10px;"-->
+          <a class="btn btn-primary active" (click)="logOut()">Logout</a>
         </div>
       </div>
     </header>
@@ -147,7 +147,7 @@
                 </div>      -->
                 <ul class="ul-flex">
                     <li>
-                        <span>{{demographicDisp?.farmerDetails?.firstName}}
+                        <span>{{demographicDisp?.farmerDetails?.salutation}} {{demographicDisp?.farmerDetails?.firstName}}
                             {{demographicDisp?.farmerDetails?.middleName}}
                             {{demographicDisp?.farmerDetails?.lastName}}</span><br/>
                             <span *ngIf="dob"><img src="../../../assets/images/profile-date.svg" alt=""> {{dob}}</span>
@@ -179,8 +179,8 @@
             <ul>
                 <li>
                     <span><img src="../../../assets/images/profile-address.svg" alt=""></span>
-                    <div><span><b>KYC Valid Address: </b> {{demographicDisp?.address?.addressLine1}}
-                            {{demographicDisp?.address?.addressLine2}} {{demographicDisp?.address?.landmark}} {{demographicDisp?.address?.taluk}} {{demographicDisp?.address?.city}} {{demographicDisp?.address?.state}} {{demographicDisp?.address?.pincode}} </span>
+                    <div><span><b>KYC Valid Address: </b> {{demographicDisp?.address?.addressLine1}} <br *ngIf="demographicDisp?.address?.addressLine2"/>
+                            {{demographicDisp?.address?.addressLine2}} <br/> {{demographicDisp?.address?.landmark}} {{demographicDisp?.address?.taluk}} {{demographicDisp?.address?.city}} {{demographicDisp?.address?.state}} {{demographicDisp?.address?.pincode}} </span>
                         <br><span><b>Communication Address: </b> <span *ngIf="demographicDisp?.permAddress?.commOrPerAddress == 'Same as above' ">N/A</span>
                         <span *ngIf="!(demographicDisp?.permAddress?.commOrPerAddress == 'Same as above')">{{demographicDisp?.permAddress?.addressLine1}} {{demographicDisp?.permAddress?.addressLine2}} {{demographicDisp?.permAddress?.taluk}} {{demographicDisp?.permAddress?.city}} {{demographicDisp?.permAddress?.state}} {{demographicDisp?.permAddress?.pincode}} </span>
                         </span>

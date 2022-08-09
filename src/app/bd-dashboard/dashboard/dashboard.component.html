@@ -161,6 +161,12 @@
             </button>
           </li>
           <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#farmer_app" type="button" role="tab"
+              aria-selected="false" (click)="filterFarms('FARMER_APP_LIST_VIEW')">
+              Farmer App
+            </button>
+          </li>
+          <li class="nav-item">
             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#draft_farmer" type="button" role="tab"
               aria-selected="false" (click)="filterFarms('DRAFT_FARMER_LIST_VIEW')">
               Draft Farmer
@@ -168,6 +174,7 @@
           </li>
         </ul>
         <div class="add-farmer">
+          <!-- <a href="javascript:void(0)" (click)="routeLeadPage()" class="btn btn-farmer">Lead Map Display</a> -->
           <a href="javascript:void(0)" (click)="routePage()" class="btn btn-farmer">Add New Farmer</a>
         </div>
       </div>
@@ -255,6 +262,7 @@
                                 <th>Branch</th>
                                 <th></th>
                                 <th></th>
+                                <th>Audit Log</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -290,6 +298,8 @@
                                     class="btn btn-view-f cursor-pointer">View</a></td>
                                 <td><a (click)="getFarmerDetailsById(x.farmerId,'edit')"
                                     class="btn btn-view-f cursor-pointer">Edit</a></td>
+                                <td><a (click)="openAuditModalPopup(x.farmerId)" href="javascript:void(0)"
+                                    class="btn btn-view-f cursor-pointer">View</a></td>
                               </tr>
                             </tbody>
                           </table>
@@ -422,6 +432,99 @@
             </div>
           </div>
           <!-- END: Farms In Pipeline Content -->
+          <!-- START: Farmer App Content -->
+          <div class="tab-pane fade" id="farmer_app" role="tabpanel">
+            <div class="table-result">
+              <ul class="nav nav-tabs view-data" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#farmer_app_list_view"
+                    type="button" role="tab" aria-selected="true" (click)="filterFarms('FARMER_APP_LIST_VIEW')">
+                    <label class="form-check-label form-check" for="listview-farmerapp">
+                      <input class="form-check-input" type="radio" name="ListViewFarmerApp" id="listview-farmerapp"
+                        value="List View" [checked]="selectedViewType == 'FARMER_APP_LIST_VIEW'" />
+                      <span> List View </span></label>
+                  </button>
+                </li>
+                <!-- <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#farmer_app_map_view" type="button"
+                    role="tab" aria-selected="false" (click)="filterFarms('FARMER_APP_MAP_VIEW')">
+                    <label class="form-check-label form-check" for="mapview-farmerapp"><input class="form-check-input"
+                        type="radio" name="ListViewFarmerApp" id="mapview-farmerapp" value="Map View"
+                        [checked]="selectedViewType == 'FARMER_APP_MAP_VIEW'" /><span>Map View</span>
+                    </label>
+                  </button>
+                </li> -->
+              </ul>
+              <div class="show-result">
+                <p>{{ allFarmerAppFarmers.length }} Results</p>
+              </div>
+            </div>
+            <div>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade" [ngClass]="{
+                    show: selectedViewType == 'FARMER_APP_LIST_VIEW',
+                    active: selectedViewType == 'FARMER_APP_LIST_VIEW'
+                  }" id="farmer_app_list_view" role="tabpanel">
+                  <div class="table-responsive listview-table">
+                    <table *ngIf="allFarmerAppFarmers.length" datatable [dtOptions]="dtOptions"
+                      class="table table-hover current-max-width">
+                      <thead>
+                        <tr>
+                          <th>FRCM Score</th>
+                          <th>URN</th>
+                          <th>Farmer Name</th>
+                          <th>Farm Size (Hectares)</th>
+                          <th>Mobile</th>
+                          <th>Date of Registration</th>
+                          <!-- <th>Land Record</th> -->
+                          <th>Added By</th>
+                          <th>Branch Name</th>
+                          <!-- <th></th>
+                          <th></th> -->
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let x of allFarmerAppFarmers">
+                          <td>{{x.fa_frcm_score || 'NA' }}</td>
+                          <td>{{x.farmerId}}</td>
+                          <td>
+                            {{ x.farmerDetails?.firstName }}
+                            {{ x.farmerDetails?.middleName }}
+                            {{ x.farmerDetails?.lastName }}
+                          </td>
+                          <td>{{x.fa_field_size || 'NA' }}</td>
+                          <td>
+                            {{ x.address?.mobileNumber }}
+                          </td>
+                          <td>
+                            {{ x.createdDate | date:'EE, MMM d, y' }}
+                          </td>
+                          <!-- <td><span *ngIf="!x.fa_ownership_document_url">NA</span><a *ngIf="x.fa_ownership_document_url"
+                              href="{{x.fa_ownership_document_url}}" target="_blank">View</a></td> -->
+                          <td>{{ x.createdBy }}</td>
+                          <td>{{ x.branch_name }}</td>
+                          <!-- <td><a (click)="getFarmerDetailsById(x.farmerId,'view')"
+                              class="btn btn-view-f cursor-pointer">View</a></td>
+                          <td><a (click)="getFarmerDetailsById(x.farmerId,'edit')"
+                              class="btn btn-view-f cursor-pointer">Edit</a></td> -->
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div *ngIf="!allFarmerAppFarmers.length">No data available in table</div>
+                  </div>
+                </div>
+                <!-- <div class="tab-pane fade" [ngClass]="{
+                  show: selectedViewType == 'FARMER_APP_MAP_VIEW',
+                  active: selectedViewType == 'FARMER_APP_MAP_VIEW'
+                }" id="farmer_app_map_view" role="tabpanel">
+                  <div class="map p-3">
+                    <div class="map" id="farmer_app_mapbox" class="match-parent"></div>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <!-- END: Farmer App Content -->
           <!-- START: Draft Farmer Content-->
           <div class="tab-pane fade" id="draft_farmer" role="tabpanel">
             <div class="table-result">
@@ -479,7 +582,7 @@
                             {{ (x.demographic_info_form.address1.length>20)? (x.demographic_info_form.address1 |
                             slice:0:20)+'...':(x.demographic_info_form.address1) }}
                           </td>
-                          <td><a (click)="editDraftFarmer(x.DF_ID)"><i class="fa fa-edit"></i> Edit</a></td>
+                          <td><a class="cursor-pointer" (click)="editDraftFarmer(x.DF_ID)"><i class="fa fa-edit"></i> Edit</a></td>
                         </tr>
                       </tbody>
                     </table>
@@ -502,14 +605,27 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header p-2 common_button_color">
-        <h6 class="modal-title fs-6" id="scoreModalPopupLabel">FRCM Score</h6>
+        <h6 *ngIf="score_farmer" class="modal-title fs-6" id="scoreModalPopupLabel">FRCM Score</h6>
+        <h6 *ngIf="audit_data" class="modal-title fs-6" id="scoreModalPopupLabel">Audit Report</h6>
       </div>
       <div class="modal-body">
+        <div *ngIf="score_farmer">
         <div class="row" *ngFor="let field of score_farmer; let i = index;">
           <div class="col-md-12 txt-capitalize"><b>Field : {{i+1}} </b></div>
           <div class="col-md-6 txt-capitalize" *ngFor="let fd of field; let fdi = index;"><span
               class="fw-500">{{fd.title}}:</span> {{fd.value}} </div>
         </div>
+      </div>
+      <div *ngIf="audit_data">
+        <div class="row" *ngFor="let ad of audit_data; let i = index;">
+          <div class="col-md-12 txt-capitalize"><b>Audit : {{i+1}} </b></div>
+          <div class="col-md-6 txt-capitalize"><b>API Name:</b> {{ad.api_name}} </div>
+          <div class="col-md-6 txt-capitalize"><b>Created By:</b> {{ad.created_by}} </div>
+          <div class="col-md-6 txt-capitalize"><b>Date:</b> {{ad.created_timestamp}} </div>
+          <div class="col-md-6 txt-capitalize"><b>Farmer Unique Id:</b> {{ad.farmer_unique_id}} </div>
+          <div class="col-md-12"><b>Following fields are updated:</b> {{ad.updated_data}} </div>          
+        </div>
+      </div>
       </div>
       <div class="modal-footer p-2">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>

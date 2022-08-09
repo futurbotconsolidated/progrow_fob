@@ -1,0 +1,432 @@
+<div class="main-farmer">
+  <!-- START: Side Navbar -->
+  <aside class="dashboard-left">
+    <div class="nav-tab">
+      <ul>
+        <li class="active">
+          <a routerLink="/bd/dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="32"
+              viewBox="0 0 48 32">
+              <g id="Home-Red" transform="translate(-32 -727)">
+                <rect id="Rectangle_1974" data-name="Rectangle 1974" width="48" height="32"
+                  transform="translate(32 727)" fill="#5e9739" opacity="0" />
+                <g id="Iconly_Bold_Home" data-name="Iconly/Bold/Home" transform="translate(44.5 731)">
+                  <g id="Home" transform="translate(2.5 2)">
+                    <path id="Path_2" data-name="Path 2"
+                      d="M6.635,18.773V15.716A1.419,1.419,0,0,1,8.058,14.3h2.874a1.429,1.429,0,0,1,1.007.414,1.408,1.408,0,0,1,.417,1v3.058a1.213,1.213,0,0,0,.356.867,1.231,1.231,0,0,0,.871.36h1.961a3.46,3.46,0,0,0,2.443-1A3.41,3.41,0,0,0,19,16.578V7.867a2.473,2.473,0,0,0-.9-1.9L11.434.676A3.1,3.1,0,0,0,7.485.747L.967,5.965A2.474,2.474,0,0,0,0,7.867v8.7A3.444,3.444,0,0,0,3.456,20H5.372a1.231,1.231,0,0,0,1.236-1.218Z" />
+                  </g>
+                </g>
+              </g>
+            </svg><br />Home</a>
+        </li>
+        <li>
+          <a (click)="logOut()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32">
+              <g id="Products-Grey" transform="translate(-98 -727)">
+                <rect id="Rectangle_1975" data-name="Rectangle 1975" width="48" height="32"
+                  transform="translate(98 727)" fill="#fff" opacity="0" />
+                <g id="Group_9804" data-name="Group 9804" transform="translate(6.962 508.864)">
+                  <path id="Path_2940" data-name="Path 2940"
+                    d="M124.4,224.694a5.866,5.866,0,0,1,.9.277c2.271,1.122,4.534,2.261,6.8,3.392.181.09.327.2.324.423s-.144.316-.317.4q-3.413,1.7-6.823,3.411a1.831,1.831,0,0,1-1.729.008q-3.421-1.712-6.842-3.424a.7.7,0,0,1-.242-.181c-.166-.215-.079-.471.208-.617.676-.343,1.355-.68,2.033-1.018,1.582-.791,3.161-1.588,4.749-2.366A6.9,6.9,0,0,1,124.4,224.694Z"
+                    transform="translate(-9.693)" fill="#303030" />
+                  <path id="Path_2941" data-name="Path 2941"
+                    d="M114.107,361.6q0,1.886,0,3.773c0,.517-.243.672-.714.455q-3.063-1.414-6.124-2.831a1.7,1.7,0,0,1-1.063-1.668q.006-3.619,0-7.238c0-.4.265-.581.624-.416q3.29,1.515,6.576,3.036a1.17,1.17,0,0,1,.7,1.163C114.1,359.117,114.107,360.359,114.107,361.6Z"
+                    transform="translate(0 -122.79)" fill="#303030" />
+                  <path id="Path_2942" data-name="Path 2942"
+                    d="M297.81,361.647c0-1.226.009-2.452,0-3.678a1.253,1.253,0,0,1,.815-1.258c2.146-.981,4.285-1.976,6.427-2.965.386-.178.661-.006.661.418q0,3.618,0,7.237a1.68,1.68,0,0,1-1.034,1.641q-3.091,1.436-6.189,2.859c-.021.01-.042.022-.064.031a.4.4,0,0,1-.61-.393c0-.886,0-1.772,0-2.658q0-.617,0-1.234Z"
+                    transform="translate(-182.488 -122.848)" />
+                </g>
+              </g>
+            </svg><br />Logout</a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+  <!-- END: Side Navbar -->
+  <!-- START: Filter Area and MAP -->
+  <article class="filter-crop">
+    <!-- START: Filter Area -->
+    <div class="filter-by">
+      <div class="user_details">
+        <div>
+          Welcome: <span>{{ userInfo["name"] }}</span>
+        </div>
+      </div>
+      <div id="editFilterbox" style="display:none">
+        <p class="filter_heading"><strong>Edit Filters:</strong></p>
+        <form class="filter-form h_550 overflow-auto scrollbar_success">
+          <div class="form-floating">
+            <select id="stateselect" class="form-select text-capitalize" formControlName="state" name="state"
+              (click)="onChangeFilter($event, 'state', '')">
+              <option value="">select...</option>
+              <option *ngFor="let indState of dropdownValues" [value]="indState.state_value">
+                {{ indState.state_disp | titlecase }}
+              </option>
+            </select>
+            <label>State</label>
+            <div *ngIf="isSubmitted && f.state.errors" class="form-text text-danger">
+              <small *ngIf="f.state.errors.required"> State is required</small>
+            </div>
+          </div>
+          <div class="form-floating">
+            <select id="districtselect" class="form-select text-capitalize" formControlName="district" name="district"
+              (click)="onChangeFilter($event, 'district', '')">
+              <option value="">select...</option>
+              <option *ngFor="let indDistrict of filters?.districts" [value]="indDistrict.district_value">
+                {{ indDistrict.district_disp | titlecase }}
+              </option>
+            </select>
+            <label>District</label>
+            <div *ngIf="isSubmitted && f.district.errors" class="form-text text-danger">
+              <small *ngIf="f.district.errors.required"> District is required</small>
+            </div>
+          </div>
+          <div class="form-floating">
+            <select class="form-select text-capitalize" formControlName="block" name="block"
+              (click)="onChangeFilter($event, 'block', '')">
+              <option value="">select...</option>
+              <option [value]="indBlock.block_value" *ngFor="let indBlock of filters?.blocks" class="text-capitalize">
+                {{ indBlock.block_disp | titlecase }}
+              </option>
+            </select>
+            <label>Block</label>
+            <div *ngIf="isSubmitted && f.block.errors" class="form-text text-danger">
+              <small *ngIf="f.block.errors.required"> Block is required</small>
+            </div>
+          </div>
+          <div class="form-floating">
+            <select class="form-select text-capitalize" formControlName="areaOfInterest" name="areaOfInterest"
+              (click)="onChangeFilter($event, 'area_of_interest', '')">
+              <option value="">select...</option>
+              <option [value]="indAreaOfInterest.area_of_interest_value"
+                *ngFor="let indAreaOfInterest of filters?.areaOfInterests">
+                {{ indAreaOfInterest.area_of_interest_disp | titlecase }}
+              </option>
+            </select>
+            <label>Area of interest</label>
+            <div *ngIf="isSubmitted && f.areaOfInterest.errors" class="form-text text-danger">
+              <small *ngIf="f.areaOfInterest.errors.required"> Area of interest is required </small>
+            </div>
+          </div>
+          <div class="form-floating">
+            <select class="form-select text-capitalize" formControlName="nameOfVillage" name="nameOfVillage"
+              (click)="onChangeFilter($event, 'name_of_village', '')">
+              <option value="">select...</option>
+              <option [value]="indNameOfVillage" *ngFor="let indNameOfVillage of filters?.nameOfVillages">
+                {{ indNameOfVillage.replaceAll('_', ' ') | titlecase }}
+              </option>
+            </select>
+            <label>Village</label>
+            <div *ngIf="isSubmitted && f.nameOfVillage.errors" class="form-text text-danger">
+              <small *ngIf="f.nameOfVillage.errors.required">
+                Village is required
+              </small>
+            </div>
+          </div>
+          <div class="form-floating">
+            <select class="form-select text-capitalize" formControlName="season_id" name="season"
+              (click)="onChangeFilter($event, 'season', '')">
+              <option value="">select...</option>
+              <option [value]="indSeason.season_id" *ngFor="let indSeason of filters?.seasons">
+                {{ indSeason.name }} {{ indSeason.year }}
+              </option>
+            </select>
+            <label>Season</label>
+            <div *ngIf="isSubmitted && f.season_id.errors" class="form-text text-danger">
+              <small *ngIf="f.season_id.errors.required"> Season is required </small>
+            </div>
+          </div>
+          <!-- START: Crop -->
+          <div class="form-floating">
+            <div class="forn-group form-checkbox" id="cropdiv">
+              <div>All
+                <input type="checkbox" name="" id="cropall" value="all" class="field-checkbox text-capitalize"
+                  (click)="arrayPush($event, 'crop', 'all')" />
+              </div>
+              <div *ngFor="let indCrop of filters?.crops; let i = index">
+                {{ indCrop.crop_disp | titlecase }}
+                <input type="checkbox" name="" id="" [value]="i+1" class="field-checkbox text-capitalize"
+                  (click)="arrayPush($event, 'crop', indCrop.crop_value)" />
+              </div>
+            </div>
+            <label>Crop</label>
+            <div *ngIf="isSubmitted && f.crop.errors" class="form-text text-danger">
+              <small *ngIf="f.crop.errors.required"> Crop is required</small>
+            </div>
+          </div>
+          <!-- END: Crop -->
+          <!-- START: FRCM Score -->
+          <div class="form-floating">
+            <div class="forn-group form-checkbox" id="formScorediv">
+              <div>All
+                <input type="checkbox" name="" id="formScoreall" value="all" class="field-checkbox text-capitalize"
+                  (click)="arrayPush($event, 'formScore', 'all')" />
+              </div>
+              <div *ngFor="let frmScore of formScoreArray ; let i = index">
+                {{ frmScore.displayName }}
+                <input type="checkbox" name="" id="" [value]="i+1" class="field-checkbox"
+                  (click)="arrayPush($event, 'formScore', frmScore.id)" />
+              </div>
+            </div>
+            <label>FRCM Score</label>
+            <div *ngIf="isSubmitted && f.formScore.errors" class="form-text text-danger">
+              <small *ngIf="f.formScore.errors.required"> Please select atleast one FRCM Score</small>
+            </div>
+          </div>
+          <!-- END: FRCM Score -->
+          <!-- START: Farm Size -->
+          <div class="form-floating">
+            <div class="forn-group form-checkbox" id="formSizediv">
+              <div>All
+                <input type="checkbox" name="" id="formSizeall" value="all" class="field-checkbox text-capitalize"
+                  (click)="arrayPush($event, 'formSize', 'all')" />
+              </div>
+              <div *ngFor="let frcmSize of formSizeArray; let i = index">
+                {{ frcmSize.displayName }}
+                <input type="checkbox" name="" id="" [value]="i+1" class="field-checkbox"
+                  (click)="arrayPush($event, 'formSize', frcmSize.id)" />
+              </div>
+            </div>
+            <label>Farm Size</label>
+            <div *ngIf="isSubmitted && f.formSize.errors" class="form-text text-danger">
+              <small *ngIf="f.formSize.errors.required">Please select atleast one Farm Size</small>
+            </div>
+          </div>
+          <!-- END: Farm Size -->
+        </form>
+        <div class="text-center">
+          <button type="button" class="btn btn-filter w-35" (click)="filterData()"> Apply </button>
+        </div>
+      </div>
+      <div id="viewFilterbox">
+        <!-- Filter applied: -->
+        <p class="filter_heading"><strong>Filter Applied:</strong></p>
+        <div class="h_550 overflow-auto scrollbar_success">
+          <div class="filter-form selected_filters">
+            <div class="form-floating">
+              <div class="form-select text-capitalize">{{ filters?.state?.toString() }}</div>
+              <label>State</label>
+            </div>
+            <div class="form-floating">
+              <div class="form-select text-capitalize">
+                {{ filters?.district | titlecase }}
+              </div>
+              <label>District</label>
+            </div>
+            <div class="form-floating">
+              <div class="form-select text-capitalize">{{ filters?.block | titlecase }}</div>
+              <label>Block</label>
+            </div>
+            <div class="form-floating">
+              <div class="form-select text-capitalize">
+                {{ filters?.areaOfInterest | titlecase }}
+              </div>
+              <label>Area Of Interest</label>
+            </div>
+            <div class="form-floating">
+              <div class="form-select text-capitalize">
+                {{ filters?.nameOfVillage | titlecase }}
+              </div>
+              <label>Village</label>
+            </div>
+            <div class="form-floating">
+              <div class="form-select text-capitalize">
+                {{ filters?.season_name | titlecase }} {{ filters?.season_year }}
+              </div>
+              <label>Season</label>
+            </div>
+            <div class="form-floating">
+              <div class="form-select text-capitalize">
+                <span *ngFor="let fcrop of filters?.crop; let cindex = index;">{{(cindex>0)? ',
+                  ':''}}{{fcrop.replaceAll('_', ' ') | titlecase }}</span>
+              </div>
+              <label>Crop</label>
+            </div>
+            <div class="form-floating">
+              <div class="form-select">
+                {{ displayFormScore?.join(", ") }}
+              </div>
+              <label>FRCM Score</label>
+            </div>
+            <div class="form-floating">
+              <div class="form-select">
+                {{ displayFormSize?.join(", ") }}
+              </div>
+              <label>Farm Size</label>
+            </div>
+          </div>
+          <!-- START: Area Analytics: -->
+          <div class="filter-form">
+            <p class="filter_heading mt-1 mb-0">
+              <strong>Area Analytics:</strong>
+            </p>
+            <h4 class="mini_heading text-capitalize">
+              {{ filters?.areaOfInterest | titlecase }}
+            </h4>
+            <h4 class="mini_heading text-capitalize">
+              {{ filters?.season_name | titlecase }} {{ filters?.season_year }}
+            </h4>
+            <div class="area_analytics">
+              <div>
+                <span>Total Area Analyzed</span><span class="pull-right">{{ Number(totalAreaAnalyzed)?.toFixed(2) }}
+                  Ha</span>
+              </div>
+              <!-- <div>
+              <span>Average Field Size</span
+              ><span class="pull-right"
+                >{{ Number(averageFieldSize)?.toFixed(2) }} Ha</span
+              >
+            </div> -->
+              <div>
+                <span>Minimum Field Size detected</span><span class="pull-right">{{
+                  Number(minFieldSizeDetected)?.toFixed(2) }} Ha</span>
+              </div>
+              <div>
+                <span>Maximum Field Size detected</span><span class="pull-right">{{
+                  Number(maxFieldSizeDetected)?.toFixed(2) }} Ha</span>
+              </div>
+            </div>
+            <!--  -->
+            <h4 class="mini_heading mt-2"> Crops Classified in {{ filters?.season_name | titlecase }} {{
+              filters?.season_year }} </h4>
+            <div class="crops_classified overflow-auto">
+              <table class="table listview-table w_270">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th *ngFor="let crpName of filters?.crop" class="text-capitalize">
+                      {{ crpName.replaceAll('_', ' ') | titlecase }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="td_title">Farms</td>
+                    <td *ngFor="let crpName of filters?.crop">
+                      {{ (classficationCounts?.farms[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')])?
+                      classficationCounts?.farms[crpName?.toString().toLowerCase().trim().replaceAll(' ',
+                      '_')]?.toString() : 'NA' }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="td_title">Area</td>
+                    <td *ngFor="let crpName of filters?.crop; ">
+                      {{
+                      (classficationCounts?.area[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')])?
+                      classficationCounts?.area[crpName?.toString().toLowerCase().trim().replaceAll(' ',
+                      '_')]?.toFixed(2)
+                      : 'NA'
+                      }} Ha
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="td_title">Yield</td>
+                    <td *ngFor="let crpName of filters?.crop">
+                      {{
+                      (classficationCounts?.yield[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')] >= 0.00
+                      && classficationCounts?.farms[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')] >=
+                      0.00 )?
+                      ( classficationCounts?.yield[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')] /
+                      classficationCounts?.farms[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')]
+                      ).toFixed(2)
+                      : 'NA'
+                      }} Kg/ Ha
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="td_title">Produce</td>
+                    <td *ngFor="let crpName of filters?.crop">
+                      {{
+                      (classficationCounts?.area[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')] >= 0.00
+                      && classficationCounts?.yield[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')] >=
+                      0.00 && classficationCounts?.farms[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')]
+                      >= 0.00 )?
+                      (
+                      (classficationCounts?.area[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')] *
+                      (classficationCounts?.yield[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')] /
+                      classficationCounts?.farms[crpName?.toString().toLowerCase().trim().replaceAll(' ', '_')] )) /
+                      1000
+                      ).toFixed(2)
+                      : 'NA'
+                      }}
+                      Tonnes
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <button type="button" class="btn btn-filter w-35" (click)="ShowEditbox()"> Edit </button>
+          <!-- <button type="button" class="btn btn-filter w-35" (click)="resetEditBox()"> Reset </button> -->
+        </div>
+        <!-- END: Area Analytics: -->
+      </div>
+    </div>
+    <!-- END: Filter Area -->
+    <!-- START: MAP Area -->
+    <div class="map p-3" id=farmLayer>
+      <div class="map" id="map" class="match-parent"></div>
+      <!-- Layer Controls  -->
+      <div class="map_form_controls">
+        <h6 class="text-center font-sm layer_controls_heading">LAYER CONTROLS</h6>
+        <div class="row">
+          <div class="col-md-12 layer_control_type">
+            <select name="" id="" class="form-control custom-select" (change)="onChangeMainFilter($event, 'CROP', {})">
+              <option value="CROP">Crop</option>
+              <option value="FARM_SIZE">Farm Size</option>
+              <option value="FRCM_SCORE">FRCM Score</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-2 layer_control_list_buttons">
+          <div class="col-md-12">
+            <div *ngIf="selectedType === 'FARM_SIZE'" class="h_80 overflow-auto scrollbar_success p-2">
+              <div *ngFor="let frcmSize of formSizeArray" class="d-inline">
+                <div class="mb-2" [hidden]="!filters?.formSize.includes(frcmSize.id.toString())">
+                  <span>
+                    <button style="margin-left: 0rem!important;height: 17px;width: 35px;" class="btn px-3 py-2 enf"
+                      [ngStyle]="{ 'background-color': frcmSize.backgroundColor }"
+                      (click)="onChangeMainFilter($event, 'SUB_FARM_SIZE', frcmSize)"></button>
+                  </span>
+                  <span class="pl-2 pull-right">{{ frcmSize.displayName }}</span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedType === 'FRCM_SCORE'" class="h_80 overflow-auto scrollbar_success p-2">
+              <div *ngFor="let frcmScore of formScoreArray" class="d-inline">
+                <div class="mb-2" [hidden]="!filters?.formScore.includes(frcmScore.id.toString())">
+                  <span>
+                    <button style="margin-left: 0rem!important;height: 17px;width: 35px;" type=""
+                      class="btn px-3 py-2 enf" [ngStyle]="{ 'background-color': frcmScore.backgroundColor }"
+                      (click)="onChangeMainFilter($event, 'SUB_FRCM_SCORE', frcmScore)"></button>
+                  </span>
+                  <span class="pl-2 pull-right">{{ frcmScore.displayName }}</span>
+                </div>
+              </div>
+            </div>
+            <!-- Task 2 Solution below-->
+            <div *ngIf="selectedType === 'CROP' && cropObjectArray && cropColors" class="crop_buttons" id="crpdv">
+              <button type="submit" *ngFor="let crpA of cropObjectArray; let i = index" class="btn btn-sm m-1"
+                id="{{i}}-{{crpA.crop_value}}" [hidden]="!filters?.crop.includes(crpA.crop_value)" [ngStyle]="cropColors[crpA.crop_value.toString().toLowerCase().trim().replaceAll(' ', '_')] && {
+            'background-color': cropColors[crpA.crop_value.toString().toLowerCase().trim().replaceAll(' ', '_')].backgroundColor,
+            color: cropColors[crpA.crop_value.toString().toLowerCase().trim().replaceAll(' ', '_')].color
+          }" (click)="onChangeMainFilter($event, 'SUB_CROP', crpA)">
+                {{ crpA.crop_disp }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-md-12">
+            <button class="btn btn-sm btn-primary" (click)="onChangeMainFilter('', selectedType, {})">
+              All
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END: MAP Area -->
+  </article>
+  <!-- END: Filter Area and MAP -->
+</div>

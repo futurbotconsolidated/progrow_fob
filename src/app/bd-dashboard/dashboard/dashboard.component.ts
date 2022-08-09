@@ -9,7 +9,7 @@ import { CommonService } from '../../shared/common.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 declare var $: any;
-import { mapData } from '../../../assets/overlay_data';
+// import { mapData } from '../../../assets/overlay_data';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,6 +22,7 @@ export class DashboardComponent implements OnInit {
   selectedViewType = 'EXISTING_FARMS_LIST_VIEW';
   allExistingFarmers = [] as any;
   allPipelineFarmers = [] as any;
+  allFarmerAppFarmers = [] as any;
   allDraftFarmers = [] as any;
   allBranches = [] as any;
   overlayData = [] as any;
@@ -32,6 +33,7 @@ export class DashboardComponent implements OnInit {
   tableMaxWidth: any = { 'max-width': '1000px' };
   filterType = 'this_month';
   score_farmer: any = [];
+  audit_data: any = [];
   /* END: Variables */
 
   constructor(
@@ -53,6 +55,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    localStorage.removeItem('saveroute');
     this.tableMaxWidth = { 'max-width': (window.innerWidth - 50) + 'px' };
     this.loadData();
     if (localStorage.getItem('draft_farmer_new')) {
@@ -100,9 +103,13 @@ export class DashboardComponent implements OnInit {
     } else if (type == 'EXISTING_FARMS_MAP_VIEW') {
       this.overlayMap('EXISTING_FARMS_MAP_VIEW');
     } else if (type == 'FARMS_PIPELINE_LIST_VIEW') {
-      this.getFarmersPipeline();
+      if (!this.allPipelineFarmers) this.getExistingFarmers(this.filterType);
     } else if (type == 'FARMS_PIPELINE_MAP_VIEW') {
       this.overlayMap('FARMS_PIPELINE_MAP_VIEW');
+    } else if (type == 'FARMER_APP_LIST_VIEW') {
+      if (!this.allFarmerAppFarmers) this.getExistingFarmers(this.filterType);
+    } else if (type == 'FARMER_APP_MAP_VIEW') {
+      this.overlayMap('FARMER_APP_MAP_VIEW');
     } else if (type == 'DRAFT_FARMER_LIST_VIEW') {
       if (localStorage.getItem('draft_farmers')) {
         this.allDraftFarmers = JSON.parse(
@@ -151,6 +158,9 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/add/concept-cards']);
   }
 
+  routeLeadPage() {
+    this.router.navigate(['/bd/display-map']);
+  }
   overlayMap(type: string) {
     this.spinner.show();
     this.overlayData.length = 0; // clear data
@@ -164,6 +174,10 @@ export class DashboardComponent implements OnInit {
       mapViewType = 'farms_pipeline_mapbox';
       if (!this.allPipelineFarmers) this.getExistingFarmers(this.filterType);
       useData = this.allPipelineFarmers;
+    } else if (type == 'FARMER_APP_MAP_VIEW') {
+      mapViewType = 'farmer_app_mapbox';
+      if (!this.allFarmerAppFarmers) this.getExistingFarmers(this.filterType);
+      useData = this.allFarmerAppFarmers;
     }
     //  Start Overlay Code
     // TO MAKE THE MAP APPEAR YOU MUST ADD  YOUR ACCESS TOKEN FROM https://account.mapbox.com
@@ -233,7 +247,7 @@ export class DashboardComponent implements OnInit {
            </div>
            <div class="row">
              <div class="col-md-6 text-left">
-               <label class="fw-bold">Date of registration</label>
+               <label class="fw-bold">Date Of Registration</label>
                <p class="text-capitalize">${formatDate(
                   elem['createdDate'],
                   'EE, MMM d, y',
@@ -242,7 +256,7 @@ export class DashboardComponent implements OnInit {
              </div>
              <div class="col-md-6 text-left">
                <label class="fw-bold">Address</label>
-               <p class="text-capitalize">${elem.address.addressLine1} ${elem.address.addressLine2
+               <p class="text-capitalize">${elem.address.addressLine1.toString().replaceAll(',', ', ').replaceAll(',  ', ', ')} ${elem.address.addressLine2.toString().replaceAll(',', ', ').replaceAll(',  ', ', ')
                 } ${elem.address.pincode}</p>
              </div>
            </div>        
@@ -546,7 +560,163 @@ export class DashboardComponent implements OnInit {
           this.spinner.hide();
         }
         console.log('field_f_index : ', field_f_index);
-        console.log('getStyle sources : ', map.getStyle().sources);
+        // console.log('getStyle sources : ', map.getStyle().sources);
+      });
+    } else if (mapViewType === 'farmer_app_mapbox') {
+      console.log('farmer_app_mapbox');
+      // geojson coordinates
+      map.on('load', () => {
+        let field_f_index = 0;
+        if (useData.length) {
+          useData.forEach((elem: any, index: number) => {
+            // prepare popup
+            elem['fieldInfo'].forEach((f_elem: any, f_index: number) => {
+              field_f_index++;
+              if (!f_elem.field_boundary.geometry.coordinates.length) {
+                return;
+              }
+              let coordinates_arr = [] as any;
+              if (
+                typeof f_elem.field_boundary.geometry.coordinates[0][0] ===
+                'number'
+              ) {
+                let coordinates_a = [] as any;
+                f_elem.field_boundary.geometry.coordinates.forEach(function (
+                  latlng: any,
+                  lli: number
+                ) {
+                  var ll_arr = [];
+                  ll_arr.push(latlng[1]);
+                  ll_arr.push(latlng[0]);
+                  coordinates_a.push(ll_arr);
+                });
+                coordinates_arr.push(coordinates_a);
+              } else {
+                let coordinates_a = [] as any;
+                f_elem.field_boundary.geometry.coordinates.forEach(function (
+                  latlng: any,
+                  lli: number
+                ) {
+                  latlng.forEach(function (ll: any, li: number) {
+                    var ll_arr = [];
+                    ll_arr.push(ll.lng);
+                    ll_arr.push(ll.lat);
+                    coordinates_a.push(ll_arr);
+                  });
+                });
+                coordinates_arr.push(coordinates_a);
+              }
+              const popupDescription = `<div class="field_popup">
+           <div class="row">
+             <div class="col-md-6 text-left">
+               <label class="fw-bold">Farmer Id</label>
+               <p class="text-capitalize">${elem['farmerId']}</p>
+             </div>
+             <div class="col-md-6 text-left">
+               <label class="fw-bold">Farmer Name</label>
+               <p class="text-capitalize">${elem['farmerDetails'].firstName} ${elem['farmerDetails'].middleName
+                } ${elem['farmerDetails'].lastName} </p>
+             </div>
+           </div>
+           <div class="row">
+             <div class="col-md-6 text-left">
+               <label class="fw-bold">Date of registration</label>
+               <p class="text-capitalize">${formatDate(
+                  elem['createdDate'],
+                  'EE, MMM d, y',
+                  'en_IN'
+                )}</p>
+             </div>
+             <div class="col-md-6 text-left">
+               <label class="fw-bold">Address</label>
+               <p class="text-capitalize">${elem.address.addressLine1} ${elem.address.addressLine2
+                } ${elem.address.pincode}</p>
+             </div>
+           </div>        
+           <div class="row">
+             <div class="col-md-6 text-left">
+               <label class="fw-bold">Visit Land</label>
+               <p class="text-capitalize">
+                 <a href="https://maps.google.com?q=${coordinates_arr[0][0][1]
+                },${coordinates_arr[0][0][0]}
+                 " target="_blank">Take Me</a> 
+                </p> 
+              </div> 
+              <div class="col-md-6 text-left d-none" >
+                <a routerLink="/edit/demographic-info/${elem['farmerId']
+                }"  class="btn btn-sm mt-2 btn-farmer p-1">View Profile</a>
+              </div>
+            </div>
+                  </div>`;
+
+              coordinates_arr.forEach((h: any, i: number) => {
+                // Add Source
+                map.addSource(`figure${i}_${index}_${f_index}_${field_f_index}`, {
+                  type: 'geojson',
+                  data: {
+                    type: 'Feature',
+                    geometry: {
+                      type: 'Polygon',
+                      coordinates: [h],
+                    },
+                    properties: {},
+                  } as any,
+                });
+
+                let line_h = h;
+                line_h.push(h[0]);
+                map.addSource(`line_source_figure${i}_${index}_${f_index}_${field_f_index}`, {
+                  type: 'geojson',
+                  data: {
+                    type: 'Feature',
+                    geometry: {
+                      type: 'Polygon',
+                      coordinates: [line_h],
+                    },
+                    properties: {},
+                  } as any,
+                });
+
+                // Add a layer showing the fields.
+                map.addLayer({
+                  id: `figure${i}_${index}_${f_index}_${field_f_index}`,
+                  type: 'fill',
+                  source: `figure${i}_${index}_${f_index}_${field_f_index}`,
+                  layout: {},
+                  paint: {
+                    'fill-outline-color': 'red',
+                    'fill-opacity': 1,
+                    'fill-color': 'transparent',
+                  },
+                });
+
+                // Add a layer showing the fields.
+                map.addLayer({
+                  id: `line_figure${i}_${index}_${f_index}_${field_f_index}`,
+                  type: 'line',
+                  source: `line_source_figure${i}_${index}_${f_index}_${field_f_index}`,
+                  layout: {},
+                  paint: {
+                    'line-color': 'red',
+                    'line-width': 3,
+                  },
+                });
+
+                // Create a default Marker and add it to the map.
+                const marker1 = new mapboxgl.Marker().setLngLat(h[0]).setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupDescription)).addTo(map);
+              });
+            });
+
+            // }
+            if (index == useData.length - 1) {
+              this.spinner.hide();
+            }
+          });
+        } else {
+          this.spinner.hide();
+        }
+        console.log('field_f_index : ', field_f_index);
+        // console.log('getStyle sources : ', map.getStyle().sources);
       });
     } else {
       map.on('load', () => {
@@ -638,7 +808,7 @@ export class DashboardComponent implements OnInit {
 
   logOut() {
     this.oauthService.logOut();
-    this.router.navigate(['/']);
+    this.router.navigate(['/home']);
   }
 
   showLeftSide(param: boolean) {
@@ -694,7 +864,14 @@ export class DashboardComponent implements OnInit {
       });
       this.score_farmer.push(score);
     });
+    if (this.score_farmer.length) {
+      this.audit_data = false;
+    }
     $('#scoreModalPopup').modal('show');
+  }
+  
+  openAuditModalPopup(farmerId: any) {
+    this.getAuditData(farmerId);
   }
 
   /* END: Non-API Function Calls */
@@ -711,7 +888,8 @@ export class DashboardComponent implements OnInit {
         } else {
           this.allExistingFarmers = [];
           this.allPipelineFarmers = [];
-          
+          this.allFarmerAppFarmers = [];
+
           res.data.forEach((farmer: any, index: number) => {
             let fa_frcm_score: any = 0;
             let fa_field_size: any = 0;
@@ -739,7 +917,9 @@ export class DashboardComponent implements OnInit {
               farmer.fa_frcm_score = 0;
             }
             farmer.fa_ownership_document_url = fa_ownership_document_url;
-            if (farmer.data_source == 'LEAD') {
+            if (farmer.data_source == 'FOB2_APP') {
+              this.allFarmerAppFarmers.push(farmer);
+            } else if (farmer.data_source == 'LEAD') {
               this.allPipelineFarmers.push(farmer);
             } else {
               this.allExistingFarmers.push(farmer);
@@ -798,6 +978,46 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
+
+  getAuditData(farmer_id: any) {
+    this.spinner.show();
+    this.commonService.getAudit(farmer_id).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        if (res && 'object' == typeof (res)) {
+          if (res.message != 'Success' || !res.status) {
+            alert(`${res.message}`);
+          } else if (res?.data) {
+            this.audit_data = res.data;
+            // console.log('audit_data : ', this.audit_data);            
+            if (this.audit_data.length) {
+              // console.log('updated_data : ', this.audit_data[0].updated_data, typeof(this.audit_data[0].updated_data));
+              // this.audit_data[0].updated_data.forEach((x: any, index: number) => {
+              //   console.log('x : ', x, typeof(x));
+              // });
+              this.score_farmer = false;
+              $('#scoreModalPopup').modal('show');
+            } else {
+              alert('Data Not Found');
+            }
+          } else {
+            console.log('Failed to fetch audit data !');
+          }
+        } else {
+          console.log('Failed to fetch audit data !!');
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+          this.logOut();
+          return;
+        } else {
+          console.log('Failed to fetch audit data, please try again...');
+        }
+      }
+    );
+  }
   downloadCsv() {
     this.spinner.show();
     this.commonService.getDownloadCsv(this.filterType).subscribe(
@@ -827,7 +1047,11 @@ export class DashboardComponent implements OnInit {
     for (let i = 0; i < array.length; i++) {
       let line = '';
       for (let j = 0; j < array[i].length; j++) {
-        line += (array[i][j]).toString().replace(/,/g, '') + ',';
+        if ((array[i][j])?.toString().replace(/,/g, '')) {
+          line += (array[i][j])?.toString().replace(/,/g, '') + ',';
+        } else {
+          line += ',';
+        }
       }
       csvData += line + '\r\n';
     }
@@ -849,12 +1073,6 @@ export class DashboardComponent implements OnInit {
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
-  }
-
-  getFarmersPipeline() {
-    // Other Variables
-    //this.allPipelineFarmers = [];
-    return;
   }
 
   getFarmerDetailsById(farmerId: any, type: string) {
@@ -885,7 +1103,6 @@ export class DashboardComponent implements OnInit {
   }
   getLoanAccountById(farmerId: any, type: string, index: number) {
     if (confirm("Are you sure ? you want to send for loan")) {
-      console.log("confirm if");
       this.spinner.show();
       this.commonService.sendToMifin(farmerId).subscribe(
         (res: any) => {
@@ -916,8 +1133,6 @@ export class DashboardComponent implements OnInit {
           }
         }
       );
-    } else {
-      console.log('confirm else');
     }
   }
 

@@ -30,10 +30,12 @@ import { AddFarmerService } from './add-farmer/add-farmer.service';
     NgxSpinnerModule,
     ToastrModule,
     OAuthModule.forRoot(),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+    }),
     NgxIndexedDBModule.forRoot(dbConfig),
   ],
   bootstrap: [AppComponent],
   providers: [OAuthService, AddFarmerService],
 })
-export class AppModule {}
+export class AppModule { }

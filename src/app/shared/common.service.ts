@@ -14,11 +14,154 @@ export class CommonService {
   userInfo: any;
   masterData: any = {};
 
+  /* START: Variables */
+  formScoreArray = [
+    {
+      id: 1,
+      displayName: '< 40',
+      from: '',
+      to: 40,
+      type: 'LEES_THAN',
+      backgroundColor: 'red',
+      color: '#FFFFFF',
+    },
+    {
+      id: 2,
+      displayName: '40 - 60',
+      from: 40,
+      to: 60,
+      type: 'BETWEEN',
+      backgroundColor: 'yellow',
+      color: '#FFFFFF',
+    },
+    {
+      id: 3,
+      displayName: '60 - 80',
+      from: 60,
+      to: 80,
+      type: 'BETWEEN',
+      backgroundColor: 'blue',
+      color: '#FFFFFF',
+    },
+    {
+      id: 4,
+      displayName: '> 80',
+      from: 80,
+      to: '',
+      type: 'GREATER_THAN',
+      backgroundColor: 'skyblue',
+      color: '#FFFFFF',
+    },
+  ];
+
+  formSizeArray = [
+    {
+      id: 1,
+      displayName: '< 1 Ha',
+      from: '',
+      to: 1,
+      type: 'LEES_THAN',
+      backgroundColor: 'red',
+      color: '#FFFFFF',
+    },
+    {
+      id: 2,
+      displayName: '1 - 2 Ha',
+      from: 1,
+      to: 2,
+      type: 'BETWEEN',
+      backgroundColor: 'skyblue',
+      color: '#FFFFFF',
+    },
+    {
+      id: 3,
+      displayName: '2 - 4 Ha',
+      from: 2,
+      to: 4,
+      type: 'BETWEEN',
+      backgroundColor: 'blue',
+      color: '#FFFFFF',
+    },
+    {
+      id: 4,
+      displayName: '4 - 8 Ha',
+      from: 4,
+      to: 8,
+      type: 'BETWEEN',
+      backgroundColor: 'yellow',
+      color: '#FFFFFF',
+    },
+    {
+      id: 5,
+      displayName: '> 8 Ha',
+      from: 8,
+      to: '',
+      type: 'GREATER_THAN',
+      backgroundColor: 'orange',
+      color: '#FFFFFF',
+    },
+  ];
+
+  // crops colors to display on map for filter
+  cropColors = {
+    cumin: {
+      backgroundColor: 'red',
+      color: '#FFFFFF',
+      pricePerKg: 100,
+    },
+    gram: {
+      backgroundColor: 'skyblue',
+      color: '#FFFFFF',
+      pricePerKg: 50,
+    },
+    isabgol: {
+      backgroundColor: 'blue',
+      color: '#FFFFFF',
+      pricePerKg: 80,
+    },
+    mustard: {
+      backgroundColor: 'orange',
+      color: '#FFFFFF',
+      pricePerKg: 55,
+    },
+    others: {
+      backgroundColor: '#1e16b7',
+      color: '#FFFFFF',
+      pricePerKg: 100,
+    },
+    wheat: {
+      backgroundColor: '#e4c317',
+      color: '#FFFFFF',
+      pricePerKg: 35,
+    },
+    ground_nut: {
+      backgroundColor: '#BD5949',
+      color: '#FFFFFF',
+      pricePerKg: 35,
+    },
+    green_gram: {
+      backgroundColor: '#93A64F',
+      color: '#FFFFFF',
+      pricePerKg: 35,
+    },
+    cluster_bean: {
+      backgroundColor: '#45C425',
+      color: '#FFFFFF',
+      pricePerKg: 35,
+    },
+    pearl_millet: {
+      backgroundColor: '#FFC800',
+      color: '#FFFFFF',
+      pricePerKg: 35,
+    },
+  };
+
   token: any;
   headers = new HttpHeaders();
 
   /* ============================================START: API Base and Endpoints ============================================ */
   private baseUrl = environment.baseUrl;
+  private leadUrl = environment.leadUrl;
   private endPoints = environment.endPoints;
   /* ============================================END: API Base and Endpoints ============================================ */
 
@@ -103,7 +246,7 @@ export class CommonService {
 
   checkPAN(data: any) {
     const input_obj = {
-      mobile: data,
+      pan_number: data,
     };
     headers = headers.delete('Bd-id');
     headers = headers.delete('Filter-Type');
@@ -111,6 +254,23 @@ export class CommonService {
     headers = headers.set('Authorization', this.token);
     return this.http.post(
       this.baseUrl + this.endPoints.checkPAN,
+      input_obj,
+      {
+        headers,
+      }
+    );
+  }
+
+  getAudit(data: any) {
+    const input_obj = {
+      farmer_id: data,
+    };
+    headers = headers.delete('Bd-id');
+    headers = headers.delete('Filter-Type');
+    headers = headers.delete('Farmer-Id');
+    headers = headers.set('Authorization', this.token);
+    return this.http.post(
+      this.baseUrl + this.endPoints.getAudit,
       input_obj,
       {
         headers,
@@ -206,6 +366,35 @@ export class CommonService {
       }
     );
   }
+
+  postAreaOfInterest(param: any) {
+    return this.http.post(this.leadUrl + this.endPoints.postAreaOfInterest,
+      param,
+      { headers: { Authorization: this.token || '' }, }
+    );
+  }
+
+  getFieldData(url: string) {
+    return this.http.get(url);
+  }
+
+  postFarmerData(param:any) {
+    param.bd_id = String(this.userInfo['custom:access_type']);
+    return this.http.post(
+      this.baseUrl + this.endPoints.registerFarmer,
+      param,
+      {
+        headers: { Authorization: this.token || '' },
+      }
+    );
+  }
+
+  getFilterMeta() {
+    return this.http.get(this.leadUrl + this.endPoints.getFilterMeta, {
+      headers: { Authorization: this.token || '' },
+    });
+  }
+  
   /* ============================================END: API Calls ============================================ */
 
   /* ============================================START: Non-API Calls ====================================== */
@@ -219,6 +408,14 @@ export class CommonService {
         return '';
       }
     }
+  }
+  
+  getLocalBaseData() {
+    return {
+      formScoreArray: this.formScoreArray,
+      formSizeArray: this.formSizeArray,
+      cropColors: this.cropColors,
+    };
   }
   /* ============================================END: Non-API Calls ====================================== */
 }

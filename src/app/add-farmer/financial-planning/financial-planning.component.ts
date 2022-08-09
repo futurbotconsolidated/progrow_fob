@@ -2,6 +2,9 @@ import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { CommonService } from '../../shared/common.service';
 
 import {
   FormGroup,
@@ -25,11 +28,11 @@ enum SaveStatus {
   styleUrls: ['./financial-planning.component.css'],
 })
 export class FinancialPlanningComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   /* START: Variables ---------------------------------------------*/
   private observableSubscription: any;
 
+  masterData: any = {};
   KCCLoanRepaymentDateError = false;
   otherLoanRepaymentDateError = false;
   loanReqPlaned!: FormArray;
@@ -72,10 +75,13 @@ export class FinancialPlanningComponent
   /* END: Variables ---------------------------------------------*/
 
   constructor(
+    public oauthService: OAuthService,
+    public commonService: CommonService,
     private formBuilder: FormBuilder,
     private addFarmerService: AddFarmerService,
     public router: Router,
     private toastr: ToastrService,
+    private spinner: NgxSpinnerService,
     private activatedRoute: ActivatedRoute
   ) {
     this.financialForm = this.formBuilder.group({
@@ -161,8 +167,12 @@ export class FinancialPlanningComponent
 
   /* START: Angular LifeCycle/Built-In Function Calls--------------------------------------------- */
   ngOnInit(): void {
-    this.financialMaster = data.financialPlan; // read master data
-    this.commonMaster = data.commonData; // read master data
+    this.getMasterData();
+    this.commonMaster.crops = this.masterData?.crops;
+    this.commonMaster.season = this.masterData?.seasons;
+    this.financialMaster = this.masterData?.masterFile?.fob2?.financialPlan; // read master data
+    // this.financialMaster = data.financialPlan; // read master data
+    //this.commonMaster = data.commonData; // read master data
 
     // -----------------------start auto save --------------------
     // draft feature is not required in edit operation
@@ -207,10 +217,10 @@ export class FinancialPlanningComponent
         }
       }
     } else {
-      let draftFarmerNew: any = localStorage.getItem('draft_farmer_new');      
+      let draftFarmerNew: any = localStorage.getItem('draft_farmer_new');
       if (draftFarmerNew) {
         var draftFarmerNewObj: any = JSON.parse(draftFarmerNew) || {};
-        if(draftFarmerNewObj.financial_planing){
+        if (draftFarmerNewObj.financial_planing) {
           this.editDynamicBindFormArray(draftFarmerNewObj.financial_planing);
         } else {
           this.editDynamicBindFormArray({});
@@ -271,7 +281,7 @@ export class FinancialPlanningComponent
     }
     return true;
   }
-  
+
   validateDecimalNo(e: any): boolean {
     const charCode = e.which ? e.which : e.keyCode;
     if (
@@ -363,54 +373,54 @@ export class FinancialPlanningComponent
 
   editDynamicBindFormArray(fieldValues: any = {}) {
     this.financialForm.patchValue(fieldValues);
-    if(fieldValues.bankDetails){
-    this.bankDetails = this.financialForm.get('bankDetails') as FormArray;
-    fieldValues.bankDetails.map((item: any) => {
-      this.bankDetails.push(
-        this.formBuilder.group({
-          bankName: new FormControl(item.bankName),
-          accountNum: new FormControl(item.accountNum),
-          IFSCode: new FormControl(item.IFSCode),
-          customerID: new FormControl(item.customerID),
-        })
-      );
-    });
-  }
-  if(fieldValues.insuranceDetails){
-    this.insuranceDetails = this.financialForm.get(
-      'insuranceDetails'
-    ) as FormArray;
-    fieldValues.insuranceDetails.map((item: any) => {
-      this.insuranceDetails.push(
-        this.formBuilder.group({
-          insuranceType: new FormControl(item.insuranceType),
-          monthYearTaken: new FormControl(item.monthYearTaken),
-          premiumPaid: new FormControl(item.premiumPaid),
-          isSettlementAmountCredited: new FormControl(
-            item.isSettlementAmountCredited
-          ),
-          isDisbursementSatisfied: new FormControl(
-            item.isDisbursementSatisfied
-          ),
-        })
-      );
-    });
-  }
-  if(fieldValues.seasonCrop){
-    this.seasonCrop = this.financialForm.get('seasonCrop') as FormArray;
-    fieldValues.seasonCrop?.map((item: any) => {
-      this.seasonCrop.push(
-        this.formBuilder.group({
-          season: new FormControl(item.season),
-          crop: new FormControl(item.crop),
-          soldAt: new FormControl(item.soldAt),
-          quantitySold: new FormControl(item.quantitySold),
-          sellingPrice: new FormControl(item.sellingPrice),
-          sellingDate: new FormControl(item.sellingDate),
-        })
-      );
-    });
-  }
+    if (fieldValues.bankDetails) {
+      this.bankDetails = this.financialForm.get('bankDetails') as FormArray;
+      fieldValues.bankDetails.map((item: any) => {
+        this.bankDetails.push(
+          this.formBuilder.group({
+            bankName: new FormControl(item.bankName),
+            accountNum: new FormControl(item.accountNum),
+            IFSCode: new FormControl(item.IFSCode),
+            customerID: new FormControl(item.customerID),
+          })
+        );
+      });
+    }
+    if (fieldValues.insuranceDetails) {
+      this.insuranceDetails = this.financialForm.get(
+        'insuranceDetails'
+      ) as FormArray;
+      fieldValues.insuranceDetails.map((item: any) => {
+        this.insuranceDetails.push(
+          this.formBuilder.group({
+            insuranceType: new FormControl(item.insuranceType),
+            monthYearTaken: new FormControl(item.monthYearTaken),
+            premiumPaid: new FormControl(item.premiumPaid),
+            isSettlementAmountCredited: new FormControl(
+              item.isSettlementAmountCredited
+            ),
+            isDisbursementSatisfied: new FormControl(
+              item.isDisbursementSatisfied
+            ),
+          })
+        );
+      });
+    }
+    if (fieldValues.seasonCrop) {
+      this.seasonCrop = this.financialForm.get('seasonCrop') as FormArray;
+      fieldValues.seasonCrop?.map((item: any) => {
+        this.seasonCrop.push(
+          this.formBuilder.group({
+            season: new FormControl(item.season),
+            crop: new FormControl(item.crop),
+            soldAt: new FormControl(item.soldAt),
+            quantitySold: new FormControl(item.quantitySold),
+            sellingPrice: new FormControl(item.sellingPrice),
+            sellingDate: new FormControl(item.sellingDate),
+          })
+        );
+      });
+    }
     let fieldInfo: any = '';
     if (this.farmerId) {
       fieldInfo = localStorage.getItem('edit-field-info');
@@ -515,7 +525,7 @@ export class FinancialPlanningComponent
       (this.financialForm.value.KCCLoanDisbursementDate >
         this.financialForm.value.KCCLoanRepaymentDate ||
         this.financialForm.value.KCCLoanDisbursementDate ==
-          this.financialForm.value.KCCLoanRepaymentDate)
+        this.financialForm.value.KCCLoanRepaymentDate)
     ) {
       this.KCCLoanRepaymentDateError = true;
     } else {
@@ -528,13 +538,54 @@ export class FinancialPlanningComponent
       (this.financialForm.value.otherLoanDisbursementDate >
         this.financialForm.value.otherLoanRepaymentDate ||
         this.financialForm.value.otherLoanDisbursementDate ==
-          this.financialForm.value.otherLoanRepaymentDate)
+        this.financialForm.value.otherLoanRepaymentDate)
     ) {
       this.otherLoanRepaymentDateError = true;
     } else {
       this.otherLoanRepaymentDateError = false;
     }
   }
+
+  getMasterData() {
+    let master_data = JSON.parse(localStorage.getItem('master-data') as any);
+    if (!master_data || !master_data?.seasons.length || !master_data?.crops.length) {
+      this.spinner.show();
+      this.commonService.getMasterData().subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res && 'object' == typeof (res)) {
+            if (res.message != 'Success' || !res.status) {
+              console.log(`${res.message}`);
+            } else if (res?.data) {
+              this.masterData = res.data;
+              localStorage.setItem('master-data', JSON.stringify(res.data));
+            } else {
+              console.log('Failed to fetch master data !');
+            }
+          } else {
+            console.log('Failed to fetch master data !!');
+          }
+        },
+        (error: any) => {
+          this.spinner.hide();
+          if (error?.statusText.toString().toLowerCase() == 'unauthorized') {
+            this.logOut();
+            return;
+          } else {
+            console.log('Failed to fetch master data, please try again...');
+          }
+        }
+      );
+    } else {
+      this.masterData = master_data;
+    }
+  }
+
+  logOut() {
+    this.oauthService.logOut();
+    this.router.navigate(['/home']);
+  }
+
   saveData() {
     if (this.KCCLoanRepaymentDateError || this.otherLoanRepaymentDateError) {
       this.toastr.error('please enter values for required fields', 'Error!');

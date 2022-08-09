@@ -22,7 +22,7 @@
                             </li>
                             <li>
                                 <h5>Location of field</h5>
-                                <p> <a [href]="'https://maps.google.com?q='+x.field_boundary.geometry.coordinates[0][1]+','+x.field_boundary.geometry.coordinates[0][0]"
+                                <p> <a [href]="'https://maps.google.com?q='+x.field_boundary.geometry.coordinates[0][0]+','+x.field_boundary.geometry.coordinates[0][1]"
                                         target="_blank">View</a> </p>
                             </li>
                             <li>
@@ -41,9 +41,7 @@
                             </li> -->
                             <li>
                                 <h5>Type of house</h5>
-                                <p><span *ngFor="let x of summary?.demographic_info?.propertyOwnership">
-                                        {{x.ownershipType}}
-                                    </span></p>
+                                <p>{{summary.type_of_house || 'N/A'}}</p>
                             </li>
                             <!-- <li>
                                 <h5>Vehicle</h5>
@@ -55,37 +53,37 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="summery-data">
-                        <div class="ambition summery-bg">
+                    <div class="">
+                        <div class="actual-facts summery-bg">
                             <h4 class="summery-heading"><span>Ambition</span></h4>
                             <ul>
                                 <li>
-                                    <p>FPO membership</p><span
-                                        class="yes">{{summary?.produce_aggregator?.consolidateLoans || 'N/A'}}</span>
+                                    <h5>FPO membership</h5>
+                                    <p>{{summary?.produce_aggregator?.consolidateLoans || 'N/A'}}</p>
                                 </li>
                                 <li>
-                                    <p>Hedging harvest produce</p>
-                                    <span *ngFor="let x of summary.harvest_produce; let xi = index;">
-                                        {{(xi>0)? ', ':''}}{{x.crop}}: {{x.expectedProduce}}
-                                    </span>
+                                    <h5>Hedging harvest produce</h5>
+                                    <p *ngFor="let x of summary.harvest_produce; let xi = index;">
+                                        {{x.crop}}: {{x.expectedProduce}}
+                                    </p>
                                 </li>
                                 <li>
-                                    <p>Yield improvement</p><span
-                                        class="yes">{{summary?.technology_adoption?.farmYieldImprovisation ||
-                                        'N/A'}}</span>
+                                    <h5>Yield improvement</h5>
+                                    <p>{{summary?.technology_adoption?.farmYieldImprovisation ||
+                                        'N/A'}}</p>
                                 </li>
                                 <li>
-                                    <p>Scientific crop cycle planning</p>
-                                    <span *ngFor="let x of summary.planned_crops; let xi = index;">
-                                        {{(xi>0)? ', ':''}}{{x}}
-                                    </span>
+                                    <h5>Scientific crop cycle planning</h5>
+                                    <p *ngFor="let x of summary.planned_crops; let xi = index;">
+                                        {{x}}
+                                    </p>
                                 </li>
                                 <!-- <li>
                                     <p>Attain benchmark yield quality</p><span class="no">N/A</span>
                                 </li> -->
                                 <li>
-                                    <p>Awareness of agri tech</p><span
-                                        class="yes">{{(summary?.technology_adoption?.farmYieldImprovisation ||
+                                    <h5>Awareness of agri tech</h5>
+                                    <p>{{(summary?.technology_adoption?.farmYieldImprovisation ||
                                         summary?.technology_adoption?.iotSensors ||
                                         summary?.technology_adoption?.microIrrigation ||
                                         summary?.technology_adoption?.payForTechnology ||
@@ -93,29 +91,27 @@
                                         summary?.technology_adoption?.polyHouse ||
                                         summary?.technology_adoption?.satelliteTracking ||
                                         summary?.technology_adoption?.tissueCulture ||
-                                        summary?.technology_adoption?.weatherData )?'Yes':'No'}}</span>
+                                        summary?.technology_adoption?.weatherData )?'Yes':'No'}}</p>
                                 </li>
                                 <li>
-                                    <p>Use of tech</p><span class="no">
-                                        <span *ngFor="let x of masterData.technologyAdoption.technologyOpinions">
-                                            {{x.title}}: {{summary?.technology_adoption[x.formCntrlName] ||
-                                            'N/A'}}<br />
-                                        </span>
-                                    </span>
+                                    <h5>Use of tech</h5>
+                                    <p *ngFor="let x of masterData.technologyAdoption.technologyOpinions">
+                                        {{x.title}}: {{summary?.technology_adoption[x.formCntrlName] ||
+                                        'N/A'}}<br />
+                                    </p>
                                 </li>
                             </ul>
                         </div>
-                        <div class="attitudes summery-bg">
+                        <div class="actual-facts summery-bg">
                             <h4 class="summery-heading"><span>Attitude</span></h4>
                             <ul>
                                 <li>
-                                    <p>Availed farm loan waiver</p><span
-                                        class="yes">{{summary?.financial_planning?.availedFarmLoanWaiver ||
-                                        'N/A'}}</span>
+                                    <h5>Availed farm loan waiver</h5>
+                                    <p>{{summary?.financial_planning?.availedFarmLoanWaiver || 'N/A'}}</p>
                                 </li>
                                 <li>
-                                    <p>Outlook on adoption of technology</p><span
-                                        class="yes">{{(summary?.technology_adoption?.farmYieldImprovisation ||
+                                    <h5>Outlook on adoption of technology</h5>
+                                    <p>{{(summary?.technology_adoption?.farmYieldImprovisation ||
                                         summary?.technology_adoption?.iotSensors ||
                                         summary?.technology_adoption?.microIrrigation ||
                                         summary?.technology_adoption?.payForTechnology ||
@@ -123,24 +119,23 @@
                                         summary?.technology_adoption?.polyHouse ||
                                         summary?.technology_adoption?.satelliteTracking ||
                                         summary?.technology_adoption?.tissueCulture ||
-                                        summary?.technology_adoption?.weatherData )?'Yes':'No'}}</span>
+                                        summary?.technology_adoption?.weatherData )?'Yes':'No'}}</p>
                                 </li>
                                 <li>
-                                    <p>Outlook on following SOP during cultivation</p><span
-                                        class="yes">{{summary?.produce_aggregator?.followSuggestions || 'N/A'}}</span>
+                                    <h5>Outlook on following SOP during cultivation</h5>
+                                    <p>{{summary?.produce_aggregator?.followSuggestions || 'N/A'}}</p>
                                 </li>
                                 <li>
-                                    <p>Outlook on harvest marketing advisory</p><span
-                                        class="yes">{{summary?.produce_aggregator?.associatedWithFPO || 'N/A'}}</span>
+                                    <h5>Outlook on harvest marketing advisory</h5>
+                                    <p>{{summary?.produce_aggregator?.associatedWithFPO || 'N/A'}}</p>
                                 </li>
                                 <li>
-                                    <p>Outlook on youngsters interested in farming</p><span
-                                        class="yes">{{summary?.demographic_info?.agricultureChildrenInterested ||
-                                        'N/A'}}</span>
+                                    <h5>Outlook on youngsters interested in farming</h5>
+                                    <p>{{summary?.demographic_info?.agricultureChildrenInterested || 'N/A'}}</p>
                                 </li>
                                 <li>
-                                    <p>Availed crop insurance benefits</p><span
-                                        class="yes">{{summary?.financial_planning?.FRCMCropInsurance || 'N/A'}}</span>
+                                    <h5>Availed crop insurance benefits</h5>
+                                    <p>{{summary?.financial_planning?.FRCMCropInsurance || 'N/A'}}</p>
                                 </li>
                             </ul>
                         </div>
@@ -151,17 +146,17 @@
                         <ul>
                             <li>
                                 <p>Household dependents</p>
-                                <span>{{summary.dependency || 'N/A'}}</span>
+                                <b>{{summary.dependency || 'N/A'}}</b>
                             </li>
                             <li>
                                 <p>Cultivation expenditure/season</p>
-                                <span>{{summary?.cultivation_expenditure}} </span>
+                                <b>{{(summary?.cultivation_expenditure != 'NaN')?(summary?.cultivation_expenditure):'N/A'}} </b>
                             </li>
                             <li>
-                                <p>Household expenditure/month</p> <span>{{summary?.household_expenditure}}</span>
+                                <p>Household expenditure/month</p> <b>{{(summary?.household_expenditure != 'NaN')?(summary?.household_expenditure):'N/A'}}</b>
                             </li>
                             <li>
-                                <p>Outstanding liability/month</p><span>{{summary?.household_expenditure}}</span>
+                                <p>Outstanding liability/month</p><b>{{(summary?.household_expenditure != 'NaN')?(summary?.household_expenditure):'N/A'}}</b>
                             </li>
                             <li>
                                 <p>Interest in other loan product</p>
